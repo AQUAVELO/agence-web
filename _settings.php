@@ -1,5 +1,7 @@
 <?php
 
+phpinfo();
+
 $settings = '';
 
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");

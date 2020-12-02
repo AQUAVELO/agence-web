@@ -12,8 +12,6 @@ $settings['mjusername'] = getenv("MAILJET_USERNAME");
 $settings['mjpassword'] = getenv("MAILJET_PASSWORD");
 $settings['mjfrom'] = "info@aquavelo.com";
 
-var_dump($settings)
-/*
 
 try
 {
@@ -24,5 +22,5 @@ catch(Exception $error)
 {
         die('Error : '.$error->getMessage());
 }
-*/
+
 ?>

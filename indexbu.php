@@ -118,7 +118,7 @@ body, td, th {
           <li class="dropdown<?php if($p == 'centres') echo' active';?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
             <ul class="dropdown-menu">
             
-            <?php foreach ($centers_list_d as $row_centers_list) { ?>
+            <?php foreach ($centers_list_d as &$row_centers_list) { ?>
             <li><a href="/centres/<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
             <?php } ?>
               

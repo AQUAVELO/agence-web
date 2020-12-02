@@ -49,7 +49,7 @@ votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
       </header>
       <div class="flexslider carousel-slider" data-slideshow="false" data-speed="7000" data-animspeed="600" data-loop="true" data-min="1" data-max="3" data-move="1" data-controls="true" data-dircontrols="true">
         <ul class="slides">
-            <?php foreach ($centers_last_d as $row_centers_last) {
+            <?php foreach ($centers_last_d as &$row_centers_last) {
 		$department = $database->prepare('SELECT nom FROM departements WHERE id = ?');
 	$department->execute(array($row_centers_last['department']));
 	$row_department = $department->fetch();

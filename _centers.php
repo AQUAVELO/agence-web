@@ -20,7 +20,7 @@
     </ul>
 
     <div id="galleryContainer" class="clearfix withSpaces col-3">
-      <?php foreach ($centers_list_d as $row_centers_list) { ?>
+      <?php foreach ($centers_list_d as &$row_centers_list) { ?>
       <div class="galleryItem france">
         <article class="portfolio-item">
           <div class="portfolio-thumbnail">

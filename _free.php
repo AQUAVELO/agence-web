@@ -29,7 +29,7 @@ $centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online
 $centers_free->execute(array(1, 1));
 while($free_d = $centers_free->fetch()) {
 ?>
-            <option <?php if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?php=$free_d['id']?>"><?php=$free_d['city']?></option>
+            <option <?php if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?=$free_d['id']?>"><?=$free_d['city']?></option>
             <?php } ?>
             </select>
           </div>
@@ -55,24 +55,24 @@ while($free_d = $centers_free->fetch()) {
        <dl>
             <dt>Adresse</dt>
             <dd>
-              <?php= $row_center['address']; ?>
+              <?= $row_center['address']; ?>
             </dd>
             <dt>Téléphone</dt>
             <dd>
-              <?php= $row_center['phone']; ?>
+              <?= $row_center['phone']; ?>
             </dd>
             <dt>Horaires</dt>
             <dd>
-              <?php= $row_center['openhours']; ?>
+              <?= $row_center['openhours']; ?>
             </dd>
             <dt>Web</dt>
             <dd>
-              <?php= $row_center['website']; ?>
+              <?= $row_center['website']; ?>
             </dd>
             
           </dl>
           <p>
-            <?php= $row_center['description']; ?>
+            <?= $row_center['description']; ?>
           </p>
       </div>
       </div>

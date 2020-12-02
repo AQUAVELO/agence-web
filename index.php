@@ -1,6 +1,6 @@
 <?php require'_settings.php'; ?>
 <?php
-#include
+echo getenv("MYSQL_ADDON_HOST");
 if(isset($_GET['p']) && is_file('_'.strip_tags($_GET['p']).'.php')) $page = strip_tags($_GET['p']); else $page = 'home'; 
 
 if($page == 'home') $title = 'Aquabiking collectif en piscine';
@@ -66,7 +66,7 @@ if(isset($_GET['city'])) {
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<title><?php=$title; ?> | Aquavelo</title>
+<title><?= $title; ?> | Aquavelo</title>
 <link rel="stylesheet" type="text/css" href="/css/animate.css">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -118,7 +118,7 @@ body, td, th {
             <ul class="dropdown-menu">
             
             <?php foreach ($centers_list_d as $row_centers_list) { ?>
-            <li><a href="/centres/<?php= $row_centers_list['city']; ?>" title="Aquabiking à <?php= $row_centers_list['city']; ?>"><?php= $row_centers_list['city']; ?></a></li>
+            <li><a href="/centres/<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
             <?php } ?>
               
             </ul>

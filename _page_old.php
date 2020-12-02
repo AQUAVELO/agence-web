@@ -1,12 +1,12 @@
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">Aquabiking à <?php echo $city; ?>,
-      <?php= $row_center['postal_code']; ?>
+      <?= $row_center['postal_code']; ?>
       , <?php echo $department; ?>, <?php echo $region; ?></h1>
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-      <li class="active"><?php= $city; ?>, <?php= $department; ?></li>
+      <li class="active"><?= $city; ?>, <?= $department; ?></li>
     </ol>
   </div>
 	
@@ -57,35 +57,35 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/1.jpg&w=800" alt=" ">
+      <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/1.jpg&w=800" alt=" ">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/2.jpg&w=800" alt=" "> </div>
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/3.jpg&w=800" alt=" "> </div>
+          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/2.jpg&w=800" alt=" "> </div>
+          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/3.jpg&w=800" alt=" "> </div>
         </div>
       </div>
       <div class="col-md-6">
-         <a href="/seance-decouverte/<?php= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
+         <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
 
          <dl style="margin-top:30px;">
           <dt>Adresse</dt>
           <dd>
-            <?php= $row_center['address']; ?>
+            <?= $row_center['address']; ?>
           </dd>
           <dt>Téléphone</dt>
           <dd>
-            <?php= $row_center['phone']; ?>
+            <?= $row_center['phone']; ?>
           </dd>
           <dt>Horaires</dt>
           <dd>
-            <?php= $row_center['openhours']; ?>
+            <?= $row_center['openhours']; ?>
           </dd>
           <dt>Web</dt>
           <dd>
-            <?php= $row_center['website']; ?>
+            <?= $row_center['website']; ?>
           </dd>
           <?php if($row_center['book_link']) { ?>
           <dt>Agenda</dt>
-          <dd> <a href="http://<?php=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
+          <dd> <a href="http://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
           <?php } ?>
           
           
@@ -103,7 +103,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           
         </dl>
         <p>
-          <?php= $row_center['description']; ?>
+          <?= $row_center['description']; ?>
         </p>
       </div>
     </div>

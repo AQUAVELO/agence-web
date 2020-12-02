@@ -15,8 +15,12 @@ $settings['mjfrom'] = "info@aquavelo.com";
 
 try
 {
-	$database = new PDO("mysql:host=".$settings['dbhost'].";dbname=".$settings['dbname'].";charset=utf8", $settings['dbusername'], $settings['dbpassword'],
+	$database = new PDO("mysql:host=".$settings['dbhost'].";dbname=".$settings['dbname'], $settings['dbusername'], $settings['dbpassword']);
+
+               /*
+               $database = new PDO("mysql:host=".$settings['dbhost'].";dbname=".$settings['dbname'].";charset=utf8", $settings['dbusername'], $settings['dbpassword'],
                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+               */
 }
 catch(Exception $error)
 {

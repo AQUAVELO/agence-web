@@ -90,9 +90,9 @@ if (isset($_POST['nom']) && empty($_POST['spam-check'])) {
 
 		//PHPMAILER
 		$mail->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
-		$mail->AddAddress($email_center, 'Aquavelo ' . $city);
-		$mail->AddBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
-		$mail->AddReplyTo($email, $name);
+		$mail->addAddress($email_center, 'Aquavelo ' . $city);
+		$mail->addBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
+		$mail->addReplyTo($email, $name);
 		$mail->Subject = 'Aquavelo, Un contact pour votre centre de ' . $city . ' !';
 		$mail->Body = '<p>Bonjour, </p><p>' . $name . ' <br/> Adresse &eacute;lectronique : <strong>' . $email . ' </strong> <br/> T&eacute;l&eacute;phone : <strong> ' . $tel . '</strong></p><p>La personne ci-dessus a command&eacute;e une s&eacute;ance d&eacute;couverte gratuite ainsi qu\'un bilan minceur dans votre centre. <br/><em>Nous vous invitons &agrave; la contacter pour prendre rendez-vous.</em></p><p>Cordialement,<br/>L\'&eacute;quipe Aquavelo</p><p><em>(Demande effectu&eacute;e &agrave; partir du site aquavelo.com, le ' . date("d-m-Y   H:i:s") . ')</em></p>';
 		$mail->AltBody = 'Bonjour, ' . $name . ' ' . $email . ' ' . $tel . '. La personne ci-dessus a command&eacute;e une s&eacute;ance d&eacute;couverte gratuite ainsi qu\'un bilan minceur dans votre centre. <br/><em>Nous vous invitons &agrave; la contacter pour prendre rendez-vous..</em></p><p>Cordialement,<br/>L\'&eacute;quipe Aquavelo</p><p><em>(Demande effectu&eacute;e &agrave; partir du site www.aquavelo.com, le ' . date("d-m-Y   H:i:s") . ')</em></p>';
@@ -120,10 +120,10 @@ if (isset($_POST['nom']) && empty($_POST['spam-check'])) {
 	<p><em>*Offre non cumulable, une fois le bilan effectu&eacute; nous prendrons rdv au centre pour effectuer le cours d Aquabiking.</em></p>
 	<p>Cordialement,<br>L\'&eacute;quipe Aquavelo<br>http://aquavelo.com/</p>';
 		//PHPMAILER
-		$mail2->SetFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
-		$mail2->AddAddress($email, $name);
-		$mail2->AddBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
-		$mail2->AddReplyTo('service.clients@aquavelo.com', 'Service clients Aquavelo');
+		$mail2->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
+		$mail2->addAddress($email, $name);
+		$mail2->addBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
+		$mail2->addReplyTo('service.clients@aquavelo.com', 'Service clients Aquavelo');
 		$mail2->Subject = 'Aquavelo - Votre seance decouverte gratuite';
 		$mail2->Body = $msg;
 		$mail2->AltBody = strip_tags($msg);

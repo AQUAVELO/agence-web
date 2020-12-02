@@ -1,6 +1,6 @@
 <?php
 
-$settings = '';
+$settings = [];
 
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");

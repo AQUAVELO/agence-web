@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 require_once('Database.php');
 
 function Redirect_To ($location) {

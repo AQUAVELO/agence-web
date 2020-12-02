@@ -1,6 +1,6 @@
-<?php require_once('Include/Sessions.php'); ?>
-<?php require_once('Include/functions.php') ?>
-<?php 
+<?phpphp require_once('Include/Sessions.php'); ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp 
 	if ( isset($_GET['id']) ) {
 		$post_id = $_GET['id'];
 		$post_title = "";
@@ -15,7 +15,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-	<title><?php echo $post_title; ?></title>
+	<title><?phpphp echo $post_title; ?></title>
 	<meta name="keywords" content="aquavelo, aquabiking, aquabike">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -128,9 +128,9 @@ body, td, th {
 		</div>
 		<div class="row">
 			<div class="col-md-8">
-				<?php echo SuccessMessage(); ?>
-				<?php echo Message(); ?>
-				<?php
+				<?phpphp echo SuccessMessage(); ?>
+				<?phpphp echo Message(); ?>
+				<?phpphp
 					if( isset($_GET['id'])) {
 						$query = "SELECT * FROM aquavelo_post WHERE post_id = '$_GET[id]'";
 						$exec = Query($query);
@@ -145,27 +145,27 @@ body, td, th {
 								$post_content = $post['post']; 
 							?>
 							<div class="post">
-								<div class="post-title"><h2><?php echo htmlentities($post_title); ?></h2></div>
+								<div class="post-title"><h2><?phpphp echo htmlentities($post_title); ?></h2></div>
 								<div class="thumbnail">
-									<img class="img-responsive img-rounded" src="Upload/Image/<?php echo $post_image; ?>">
+									<img class="img-responsive img-rounded" src="Upload/Image/<?phpphp echo $post_image; ?>">
 								</div>
 								<div class="post-info">
 									<p class="">
-									<?php 
+									<?phpphp 
 								     date_default_timezone_set('Europe/Paris');
 									 setlocale (LC_TIME, 'fr_FR.utf8','fra');
 									 $time = strtotime($post_date); 
                                      $date = getDate($time);
 									 $date_pub = strftime("%d", $time). " " . strftime("%B", $time) . " " .strftime("%Y", $time) ;
 									?>
-									Publier le : <?php echo htmlentities($date_pub); ?> | Catégorie: <?php echo htmlentities($post_category);?> | Par: <?php echo $post_author; ?>
+									Publier le : <?phpphp echo htmlentities($date_pub); ?> | Catégorie: <?phpphp echo htmlentities($post_category);?> | Par: <?phpphp echo $post_author; ?>
 									</p>
 								</div>
 								<div class="post-content">
-								<p class=""><?php echo nl2br($post_content); ?></p>
+								<p class=""><?phpphp echo nl2br($post_content); ?></p>
 								</div>
 							</div>
-							<?php
+							<?phpphp
 							}
 						}
 					}else {
@@ -186,11 +186,11 @@ body, td, th {
 						<div class="form-group">
 							<input type="submit" name="submit" class="btn btn-primary" value="Envoyer le Commentaire">
 						</div>
-						<input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+						<input type="hidden" name="id" value="<?phpphp echo $_GET['id']; ?>">
 					</form>
 				</div>
 				<div class="page-header"><h4>Commentaires</h4></div>
-				<?php
+				<?phpphp
 					date_default_timezone_set('Europe/Paris');
     				 setlocale (LC_TIME, 'fr_FR.utf8','fra');
 					$sql = "SELECT * FROM comment WHERE post_id = '$_GET[id]' AND status = 'approved'";
@@ -212,14 +212,14 @@ body, td, th {
 									<img src="Assets/Images/man.svg" height="70px" width="100px">
 									</div>
 									<div class="col-sm-10">
-										<div><span class="lead text-info"><?php echo $c_email; ?></span></div>
-										<div><span><?php echo $date_pub_cmt; ?></span></div>
-										<div><span class=""> a ecrit </span>: <span class="lead"> <?php echo $c_comment; ?></span></div>
+										<div><span class="lead text-info"><?phpphp echo $c_email; ?></span></div>
+										<div><span><?phpphp echo $date_pub_cmt; ?></span></div>
+										<div><span class=""> a ecrit </span>: <span class="lead"> <?phpphp echo $c_comment; ?></span></div>
 									</div>
 								</div>
 							</div>
 
-							<?php
+							<?phpphp
 						}
 					}else {
 							echo "Aucun commentaire ";
@@ -247,7 +247,7 @@ body, td, th {
 						<h2 class="panel-title">Articles récents</h2>
 					</div>
 					<div class="panel-body">
-						<?php
+						<?phpphp
 							$sql = "SELECT * FROM aquavelo_post ORDER BY post_date_time LIMIT 5";
 							$exec = Query($sql);
 							while ($recentPost = mysqli_fetch_assoc($exec)) {
@@ -255,10 +255,10 @@ body, td, th {
 								?>
 								<nav>
 									<ul>
-										<li><a href="Post.php?id=<?php echo $postID; ?>"><?php echo $recentPost['title'] ?></a></li>
+										<li><a href="Post.php?id=<?phpphp echo $postID; ?>"><?phpphp echo $recentPost['title'] ?></a></li>
 									</ul>
 								</nav>
-								<?php
+								<?phpphp
 							}
 						?>
 					</div>
@@ -271,14 +271,14 @@ body, td, th {
 					<div class="panel-body">
 						<nav>
 							<ul>
-						<?php 
+						<?phpphp 
 							$sql = "SELECT cat_name FROM aquavelo_category ";
 							$exec = Query($sql);
 							if (mysqli_num_rows($exec) > 0) {
 								while ($category = mysqli_fetch_assoc($exec)) {
 									?>
-									<li><a href="Blog.php?category=<?php echo $category['cat_name'] ?>"><?php echo $category['cat_name'] ?></a></li>
-									<?php
+									<li><a href="Blog.php?category=<?phpphp echo $category['cat_name'] ?>"><?phpphp echo $category['cat_name'] ?></a></li>
+									<?phpphp
 								}
 							}	
 						?>

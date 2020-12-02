@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 include('Include/Sessions.php');
 include('Include/functions.php');
 if ( isset($_POST['submit'])) {
@@ -43,7 +43,7 @@ if ( isset($_POST['submit'])) {
 <body>
   
 	<div class="col-md-4 col-md-offset-4 login-area">
-		<?php echo Message(); ?>
+		<?phpphp echo Message(); ?>
 				
 		<div class="">
 			<form method="POST" action="Login-Aquavelo-Blog.php">

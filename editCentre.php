@@ -1,7 +1,7 @@
-<?php require_once('Include/Sessions.php'); ?>
-<?php require_once('Include/functions.php') ?>
-<?php ConfirmLogin(); ?>
-<?php
+<?phpphp require_once('Include/Sessions.php'); ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp ConfirmLogin(); ?>
+<?phpphp
 if ( isset( $_POST['centre-update'])) {
 	$centre_name = mysqli_real_escape_string($con, $_POST['centre_name']);
 	$activites_annexes = mysqli_real_escape_string($con, $_POST['activites_annexes']);
@@ -80,43 +80,43 @@ if ( isset( $_POST['centre-update'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Mettre à jour le centre</h1></div>
-					<?php echo Message(); ?>
-					<?php echo SuccessMessage(); ?>
+					<?phpphp echo Message(); ?>
+					<?phpphp echo SuccessMessage(); ?>
 					<form action="editCentre.php" method="POST" enctype="multipart/form-data">
 						<fieldset>		
 							<div class="form-group">
-								<label>Nom du centre : <?php echo htmlentities($centre_name); ?></label>
-								<input type="hidden" name="centre_name" value="<?php echo $centre_name; ?>"><br>	      
+								<label>Nom du centre : <?phpphp echo htmlentities($centre_name); ?></label>
+								<input type="hidden" name="centre_name" value="<?phpphp echo $centre_name; ?>"><br>	      
 							</div>
-							<label>planning Actuelle: <a href="<?php echo $planning;  ?>" target="_blank" > <?php echo $planning;  ?></a></label>
+							<label>planning Actuelle: <a href="<?phpphp echo $planning;  ?>" target="_blank" > <?phpphp echo $planning;  ?></a></label>
 							<br /><br />
 							<div class="form-group">
 								<labal for="planning">Modifier le planning</labal>
-								<input type="text" name="planning" class="form-control" value="<?php echo $planning ?>">
+								<input type="text" name="planning" class="form-control" value="<?phpphp echo $planning ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Activités annexes :</labal>
-								<input type="text" name="activites_annexes" class="form-control" id="activites_annexes" value="<?php echo $activites_annexes ?>">
+								<input type="text" name="activites_annexes" class="form-control" id="activites_annexes" value="<?phpphp echo $activites_annexes ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Horaires :</labal>
-								<input type="text" name="horaires" class="form-control" id="activites_annexes" value="<?php echo $horaires ?>">
+								<input type="text" name="horaires" class="form-control" id="activites_annexes" value="<?phpphp echo $horaires ?>">
 							</div>
 	
 							<div class="form-group">
 								<labal for="centre-title">Page Facebook :</labal>
-								<input type="text" name="page_fb" class="form-control" id="page_fb" value="<?php echo $page_fb ?>">
+								<input type="text" name="page_fb" class="form-control" id="page_fb" value="<?phpphp echo $page_fb ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Vidéo :</labal>
-								<input type="text" name="video_youtube" class="form-control" id="video_youtube" value="<?php echo $video_youtube ?>">
+								<input type="text" name="video_youtube" class="form-control" id="video_youtube" value="<?phpphp echo $video_youtube ?>">
 							</div>
 							
-							<input type="hidden" name="idFromUrl" value="<?php echo $_GET['centre_id']; ?>">
-							<input type="hidden" name="currentplanning" value="<?php echo $planning; ?>">
+							<input type="hidden" name="idFromUrl" value="<?phpphp echo $_GET['centre_id']; ?>">
+							<input type="hidden" name="currentplanning" value="<?phpphp echo $planning; ?>">
 							<div class="form-group">
 								<button name="centre-update" class="btn btn-primary form-control">Mettre à jour</button>
 							</div>

@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /*
  * ntlm_sasl_client.php
  *

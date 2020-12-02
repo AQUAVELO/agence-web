@@ -1,6 +1,6 @@
-<?php require_once('Include/Sessions.php') ?>
-<?php require_once('Include/functions.php') ?>
-<?php ConfirmLogin(); ?>
+<?phpphp require_once('Include/Sessions.php') ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp ConfirmLogin(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,11 +32,11 @@
 			<div class="col-xs-10">
 				<div>
 					<h1>Gérer les informations du centre</h1>
-					<?php echo SuccessMessage(); ?>
-					<?php echo Message(); ?>
+					<?phpphp echo SuccessMessage(); ?>
+					<?phpphp echo Message(); ?>
 					<div class="table-responsive">
 						
-							<?php
+							<?phpphp
 							$centre_name= $_SESSION['user_centre'];
 							$sql = "SELECT * FROM aquavelo_centre WHERE centre_name = '$centre_name'";
 							$exec = Query($sql);
@@ -44,8 +44,8 @@
 							if(mysqli_num_rows($exec) < 1	) {
 								?>
 									<p class="lead">Votre centre n'est pas encore inscrit veuillez contacter l'administrateur</p>
-									<?php echo $_SESSION['user_type']; ?>
-								<?php
+									<?phpphp echo $_SESSION['user_type']; ?>
+								<?phpphp
 							}else{ ?>
 							<table class="table table-hover">
 							<tr>
@@ -57,7 +57,7 @@
 								<th>page facebook</th>
 								<th>video youtube</th>
 							</tr>
-							<?php
+							<?phpphp
 								while ($centre = mysqli_fetch_assoc($exec)) {
 									$centre_id = $centre['centre_id'];
 									$centre_name = $centre['centre_name'];
@@ -67,17 +67,17 @@
 									$video_youtube = $centre['video_youtube'];
 									?>
 									<tr>
-									<td><?php echo $centreNo; ?></td>
-									<td><?php echo $centre_name; ?></td>
-									<td><?php echo "<a href='".$planning."'>". substr($planning,0,20) ." </a>"; ?></td>
-									<td><?php echo  substr($horaires,0,20); ?></td>
-									<td><?php echo $activites_annexes; ?></td>
-									<td><a href="<?php echo $page_fb; ?>"><?php echo substr($page_fb,0, 20); ?></a></td>
-									<td><a href="<?php echo $video_youtube; ?>"><?php echo substr($video_youtube,0,20); ?></a></td>
-									<td><?php echo ''; ?></td>
-									<td><?php echo "<a href='editCentre.php?centre_id=$centre_id'>Modifier</a>"; ?></td>
+									<td><?phpphp echo $centreNo; ?></td>
+									<td><?phpphp echo $centre_name; ?></td>
+									<td><?phpphp echo "<a href='".$planning."'>". substr($planning,0,20) ." </a>"; ?></td>
+									<td><?phpphp echo  substr($horaires,0,20); ?></td>
+									<td><?phpphp echo $activites_annexes; ?></td>
+									<td><a href="<?phpphp echo $page_fb; ?>"><?phpphp echo substr($page_fb,0, 20); ?></a></td>
+									<td><a href="<?phpphp echo $video_youtube; ?>"><?phpphp echo substr($video_youtube,0,20); ?></a></td>
+									<td><?phpphp echo ''; ?></td>
+									<td><?phpphp echo "<a href='editCentre.php?centre_id=$centre_id'>Modifier</a>"; ?></td>
 									</tr>
-									<?php
+									<?phpphp
 									$centreNo++;
 								}
 							}

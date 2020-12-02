@@ -8,7 +8,7 @@ When you need it, create your POP3 object
 
 Right before I invoke PHP Mailer I activate the POP3 authorisation. POP3 before SMTP is a process whereby you login to your web hosts POP3 mail server BEFORE sending out any emails via SMTP. The POP3 logon 'verifies' your ability to send email by SMTP, which typically otherwise blocks you. On my web host (Pair Networks) a single POP3 logon is enough to 'verify' you for 90 minutes. Here is some sample PHP code that activates the POP3 logon and then sends an email via PHP Mailer:
 
-<?php
+<?phpphp
 $pop->authorise('pop3.example.com', 110, 30, 'mailer', 'password', 1);
 $mail = new PHPMailer(); $mail->SMTPDebug = 2; $mail->isSMTP();
 $mail->isHTML(false); $mail->Host = 'relay.example.com';

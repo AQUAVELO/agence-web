@@ -20,23 +20,23 @@
     </ul>
 
     <div id="galleryContainer" class="clearfix withSpaces col-3">
-      <?php foreach ($centers_list_d as $row_centers_list) { ?>
+      <?phpphp foreach ($centers_list_d as $row_centers_list) { ?>
       <div class="galleryItem france">
         <article class="portfolio-item">
           <div class="portfolio-thumbnail">
-            <a href="/centres/<?=strtolower($row_centers_list['city']);?>"><img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?=$row_centers_list['id'];?>/1.jpg&w=300" alt=" "></a>
-            <a href="/centres/<?=strtolower($row_centers_list['city']);?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a>
+            <a href="/centres/<?php=strtolower($row_centers_list['city']);?>"><img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php=$row_centers_list['id'];?>/1.jpg&w=300" alt=" "></a>
+            <a href="/centres/<?php=strtolower($row_centers_list['city']);?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a>
 			 
 			  
           </div>
           <div class="entry-meta">
             <span class="cat-links"><a href="#">France</a>, <a href="#">Europe</a></span>
           </div>
-          <h4 class="entry-title"><a href="/centres/<?=strtolower($row_centers_list['city']);?>"><?=$row_centers_list['city'];?></span> centre avec <?=$row_centers_list['TypeAQUAVELO'];?></a></h4>
+          <h4 class="entry-title"><a href="/centres/<?php=strtolower($row_centers_list['city']);?>"><?php=$row_centers_list['city'];?></span> centre avec <?php=$row_centers_list['TypeAQUAVELO'];?></a></h4>
         </article>
         <!-- / portfolio-item -->
       </div>
-      <?php } ?>
+      <?phpphp } ?>
 
       <div class="galleryItem maroc">
         <article class="portfolio-item">

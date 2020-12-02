@@ -1,5 +1,5 @@
-<?php require'_settings.php'; ?>
-<?
+<?phpphp require'_settings.php'; ?>
+<?php
 #include
 if(isset($_GET['p']) && is_file('_'.strip_tags($_GET['p']).'.php')) $page = strip_tags($_GET['p']); else $page = 'home'; 
 
@@ -66,7 +66,7 @@ if(isset($_GET['city'])) {
 <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<title><?=$title; ?> | Aquavelo</title>
+<title><?php=$title; ?> | Aquavelo</title>
 <link rel="stylesheet" type="text/css" href="/css/animate.css">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -107,29 +107,29 @@ body, td, th {
         </form>
         <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
         <ul class="nav navbar-nav navbar-right">
-          <li<?php if($p == 'home') echo' class="active"';?>> <a href="http://aquavelo.com/">Accueil</a> </li>
-          <li class="dropdown<?php if($p == 'aquabiking') echo' active';?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
+          <li<?phpphp if($p == 'home') echo' class="active"';?>> <a href="http://aquavelo.com/">Accueil</a> </li>
+          <li class="dropdown<?phpphp if($p == 'aquabiking') echo' active';?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
             <ul class="dropdown-menu">
               <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
               <li><a href="/aquabiking">Les bienfaits</a></li>
             </ul>
           </li>
-          <li class="dropdown<?php if($p == 'centres') echo' active';?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
+          <li class="dropdown<?phpphp if($p == 'centres') echo' active';?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
             <ul class="dropdown-menu">
             
-            <?php foreach ($centers_list_d as $row_centers_list) { ?>
-            <li><a href="/centres/<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
-            <?php } ?>
+            <?phpphp foreach ($centers_list_d as $row_centers_list) { ?>
+            <li><a href="/centres/<?php= $row_centers_list['city']; ?>" title="Aquabiking à <?php= $row_centers_list['city']; ?>"><?php= $row_centers_list['city']; ?></a></li>
+            <?phpphp } ?>
               
             </ul>
           </li>
-          <li class="dropdown<?php if($p == 'concept') echo' active';?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
+          <li class="dropdown<?phpphp if($p == 'concept') echo' active';?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
 <ul class="dropdown-menu">
               <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
             </ul>
           </li>
 		   <li><a target="_blank" href="https://minceurprod.com">Minceur</a></li>
-           <li <?php if($p == 'contact') echo' class="active"';?> class="dropdown<?php if($p == 'contact') echo' active';?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
+           <li <?phpphp if($p == 'contact') echo' class="active"';?> class="dropdown<?phpphp if($p == 'contact') echo' active';?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
 <ul class="dropdown-menu">
               <li><a href="/contact">Emploi</a></li>
               <li><a href="/contact">Contactez-nous</a></li>
@@ -141,7 +141,7 @@ body, td, th {
     </div>
   </nav>
   <!-- / navbar -->
-  <?php include'_'.$page.'.php'; ?>
+  <?phpphp include'_'.$page.'.php'; ?>
   
   <section class="content-area prefooter">
     <div class="container">

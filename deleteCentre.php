@@ -1,8 +1,8 @@
-<?php require_once('Include/Sessions.php'); ?>
-<?php require_once('Include/functions.php') ?>
-<?php ConfirmLogin(); ?>
-<?php AdminGle(); ?>
-<?php
+<?phpphp require_once('Include/Sessions.php'); ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp ConfirmLogin(); ?>
+<?phpphp AdminGle(); ?>
+<?phpphp
 if ( isset( $_POST['centre-delete'])) {
 	$sql = "DELETE  FROM aquavelo_centre WHERE centre_id = '$_POST[deleteID]' ";
 	$exec = Query($sql);
@@ -80,8 +80,8 @@ if ( isset( $_POST['centre-delete'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Supprimer le centre</h1></div>
-					<?php echo Message(); ?>
-					<?php echo SuccessMessage(); ?>
+					<?phpphp echo Message(); ?>
+					<?phpphp echo SuccessMessage(); ?>
 					<form action="deleteCentre.php" method="POST" enctype="multipart/form-data">
 						<fieldset>
 							<div class="form-group">
@@ -89,38 +89,38 @@ if ( isset( $_POST['centre-delete'])) {
 							</div>
 							<fieldset>		
 							<div class="form-group">
-								<label>Nom du centre : <?php echo htmlentities($centre_name); ?></label>
-								<input disabled type="hidden" name="centre_name" value="<?php echo $centre_name; ?>"><br>	      
+								<label>Nom du centre : <?phpphp echo htmlentities($centre_name); ?></label>
+								<input disabled type="hidden" name="centre_name" value="<?phpphp echo $centre_name; ?>"><br>	      
 							</div>
 
 							<div class="form-group">
 								<labal for="planning">Planning</labal>
-								<input disabled type="text" name="planning" class="form-control" value="<?php echo $planning ?>">
+								<input disabled type="text" name="planning" class="form-control" value="<?phpphp echo $planning ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Activités annexes :</labal>
-								<input disabled type="text" name="activites_annexes" class="form-control" id="activites_annexes" value="<?php echo $activites_annexes ?>">
+								<input disabled type="text" name="activites_annexes" class="form-control" id="activites_annexes" value="<?phpphp echo $activites_annexes ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Horaires :</labal>
-								<input disabled type="text" name="horaires" class="form-control" id="activites_annexes" value="<?php echo $horaires ?>">
+								<input disabled type="text" name="horaires" class="form-control" id="activites_annexes" value="<?phpphp echo $horaires ?>">
 							</div>
 	
 							<div class="form-group">
 								<labal for="centre-title">Page Facebook :</labal>
-								<input disabled type="text" name="page_fb" class="form-control" id="page_fb" value="<?php echo $page_fb ?>">
+								<input disabled type="text" name="page_fb" class="form-control" id="page_fb" value="<?phpphp echo $page_fb ?>">
 							</div>
 							
 							<div class="form-group">
 								<labal for="centre-title">Vidéo youtub:</labal>
-								<input disabled type="text" name="video_youtube" class="form-control" id="video_youtube" value="<?php echo $video_youtube ?>">
+								<input disabled type="text" name="video_youtube" class="form-control" id="video_youtube" value="<?phpphp echo $video_youtube ?>">
 							</div>
 							
 							
 							
-							<input type="hidden" name="deleteID" value="<?php echo $_GET['delete_centre_id']; ?>">
+							<input type="hidden" name="deleteID" value="<?phpphp echo $_GET['delete_centre_id']; ?>">
 				
 						</fieldset>
 					</form>

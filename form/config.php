@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /**
  * Setup mail server config
  */

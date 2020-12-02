@@ -1,16 +1,16 @@
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Aquabiking à <?php echo $city; ?>,
-      <?= $row_center['postal_code']; ?>
-      , <?php echo $department; ?>, <?php echo $region; ?></h1>
+    <h1 class="page-title pull-left">Aquabiking à <?phpphp echo $city; ?>,
+      <?php= $row_center['postal_code']; ?>
+      , <?phpphp echo $department; ?>, <?phpphp echo $region; ?></h1>
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-      <li class="active"><?= $city; ?>, <?= $department; ?></li>
+      <li class="active"><?php= $city; ?>, <?php= $department; ?></li>
     </ol>
   </div>
 	
-		  <?php if($row_center['id'] == 253) { ?>
+		  <?phpphp if($row_center['id'] == 253) { ?>
 
           <!-- Facebook Pixel Code -->
 
@@ -50,65 +50,65 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 <!-- End Facebook Pixel Code -->
 
-          <?php } ?>
+          <?phpphp } ?>
 	
 	
 </header>
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/1.jpg&w=800" alt=" ">
+      <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/1.jpg&w=800" alt=" ">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/2.jpg&w=800" alt=" "> </div>
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/3.jpg&w=800" alt=" "> </div>
+          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/2.jpg&w=800" alt=" "> </div>
+          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?php= $row_center['id']; ?>/3.jpg&w=800" alt=" "> </div>
         </div>
       </div>
       <div class="col-md-6">
-         <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
+         <a href="/seance-decouverte/<?php= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
 
          <dl style="margin-top:30px;">
           <dt>Adresse</dt>
           <dd>
-            <?= $row_center['address']; ?>
+            <?php= $row_center['address']; ?>
           </dd>
           <dt>Téléphone</dt>
           <dd>
-            <?= $row_center['phone']; ?>
+            <?php= $row_center['phone']; ?>
           </dd>
           <dt>Horaires</dt>
           <dd>
-            <?= $row_center['openhours']; ?>
+            <?php= $row_center['openhours']; ?>
           </dd>
           <dt>Web</dt>
           <dd>
-            <?= $row_center['website']; ?>
+            <?php= $row_center['website']; ?>
           </dd>
-          <?php if($row_center['book_link']) { ?>
+          <?phpphp if($row_center['book_link']) { ?>
           <dt>Agenda</dt>
-          <dd> <a href="http://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
-          <?php } ?>
+          <dd> <a href="http://<?php=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
+          <?phpphp } ?>
           
           
-          <?php if($row_center['id'] == 179) { ?>
+          <?phpphp if($row_center['id'] == 179) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/d4aioqoosov03em/PLANNING.pdf" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-          <?php } elseif ($row_center['id'] == 253) { ?>
+          <?phpphp } elseif ($row_center['id'] == 253) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/yvmr1e9os5znlnc/PLANNINGANTIBES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 305) { ?>
+           <?phpphp } elseif ($row_center['id'] == 305) { ?>
 			 <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/ippgfpky29n0vqg/PLANNING%20CANNES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 308) { ?>
+           <?phpphp } elseif ($row_center['id'] == 308) { ?>
 			 <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/lykwimvoey600r7/PLANNINGSTRAPHAEL.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 338) { ?>
+           <?phpphp } elseif ($row_center['id'] == 338) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/4t3epny43nyq60i/PLANNINGPUGET.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
- 			<?php } ?>
+ 			<?phpphp } ?>
           
         </dl>
         <p>
-          <?= $row_center['description']; ?>
+          <?php= $row_center['description']; ?>
         </p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /*~ class.pop3.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |

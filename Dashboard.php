@@ -1,7 +1,7 @@
-<?php require_once('Include/Sessions.php') ?>
-<?php require_once('Include/functions.php') ?>
-<?php ConfirmLogin(); ?>
-<?php AdminGle(); ?>
+<?phpphp require_once('Include/Sessions.php') ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp ConfirmLogin(); ?>
+<?phpphp AdminGle(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,11 +56,11 @@
 			<div class="col-xs-10">
 				<div>
 					<h1>Dashboard</h1>
-					<?php echo SuccessMessage(); ?>
-					<?php echo Message(); ?>
+					<?phpphp echo SuccessMessage(); ?>
+					<?phpphp echo Message(); ?>
 					<div class="table-responsive">
 						
-							<?php
+							<?phpphp
 							$sql = "SELECT * FROM aquavelo_post ORDER BY post_date_time";
 							$exec = Query($sql);
 							$postNo = 1;
@@ -68,7 +68,7 @@
 								?>
 									<p class="lead">Vous Avez 0 Post Pour le Moment</p>
 									<a href="NewPost.php"><button class="btn btn-info">Ajouter un Post</button></a>
-								<?php
+								<?phpphp
 							}else{ ?>
 							<table class="table table-hover">
 							<tr>
@@ -82,7 +82,7 @@
 								<th>Action</th>
 								<th>Details</th>
 							</tr>
-							<?php
+							<?phpphp
 								while ($post = mysqli_fetch_assoc($exec)) {
 									$post_id = $post['post_id'];
 									$post_date = $post['post_date_time'];
@@ -92,9 +92,9 @@
 									$image = $post['image'];
 									?>
 									<tr>
-									<td><?php echo $postNo; ?></td>
-									<td><?php echo $post_date; ?></td>
-									<td><?php 
+									<td><?phpphp echo $postNo; ?></td>
+									<td><?phpphp echo $post_date; ?></td>
+									<td><?phpphp 
 									if(strlen($post_title) > 20 ) {
 										echo substr($post_title,0,20) . '...';
 									}else {
@@ -102,14 +102,14 @@
 									}
 					
 									?></td>
-									<td><?php echo $author; ?></td>
-									<td><?php echo $category; ?></td>
-									<td><?php echo "<img class='img-responsive' src='Upload/Image/$image' width='100px' height='150px'>"; ?></td>
-									<td><?php echo 'Ongoing'; ?></td>
-									<td><?php echo "<a href='editpost.php?post_id=$post_id'>Edit</a> | <a href='deletepost.php?delete_post_id=$post_id'>Delete</a>"; ?></td>
-									<td><a href="Post.php?id=<?php echo $post_id; ?>"><button class="btn btn-primary">Live Preview</button></a></td>
+									<td><?phpphp echo $author; ?></td>
+									<td><?phpphp echo $category; ?></td>
+									<td><?phpphp echo "<img class='img-responsive' src='Upload/Image/$image' width='100px' height='150px'>"; ?></td>
+									<td><?phpphp echo 'Ongoing'; ?></td>
+									<td><?phpphp echo "<a href='editpost.php?post_id=$post_id'>Edit</a> | <a href='deletepost.php?delete_post_id=$post_id'>Delete</a>"; ?></td>
+									<td><a href="Post.php?id=<?phpphp echo $post_id; ?>"><button class="btn btn-primary">Live Preview</button></a></td>
 									</tr>
-									<?php
+									<?phpphp
 									$postNo++;
 								}
 							}

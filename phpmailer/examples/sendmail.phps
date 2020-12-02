@@ -5,7 +5,7 @@
     <title>PHPMailer - sendmail test</title>
 </head>
 <body>
-<?php
+<?phpphp
 require '../PHPMailerAutoload.php';
 
 //Create a new PHPMailer instance

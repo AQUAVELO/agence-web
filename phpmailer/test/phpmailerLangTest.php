@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /**
  * PHPMailer - language file tests
  * Requires PHPUnit 3.3 or later.

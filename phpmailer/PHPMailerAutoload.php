@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /**
  * PHPMailer SPL autoloader.
  * PHP Version 5.0.0

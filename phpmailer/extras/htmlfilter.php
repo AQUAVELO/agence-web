@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 /**
  * htmlfilter.inc
  * ---------------

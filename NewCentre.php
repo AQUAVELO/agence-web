@@ -1,9 +1,9 @@
-	<?php require_once('Include/Sessions.php'); ?>
-<?php require_once('Include/functions.php') ?>
-<?php ConfirmLogin(); ?>
-<?php AdminGle(); ?>
+	<?phpphp require_once('Include/Sessions.php'); ?>
+<?phpphp require_once('Include/functions.php') ?>
+<?phpphp ConfirmLogin(); ?>
+<?phpphp AdminGle(); ?>
 
-<?php
+<?phpphp
 
 date_default_timezone_set('Europe/Paris');
 $time = time();
@@ -84,8 +84,8 @@ if ( isset( $_POST['post-submit'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Ajouter les info d'un centre</h1></div>
-					<?php echo Message(); ?>
-					<?php echo SuccessMessage(); ?>
+					<?phpphp echo Message(); ?>
+					<?phpphp echo SuccessMessage(); ?>
 					<form action="NewCentre.php" method="POST" enctype="multipart/form-data">
 						<fieldset>
 							<div class="form-group">

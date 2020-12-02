@@ -1,4 +1,4 @@
-<?php
+<?phpphp
 session_start();
 
 function Message () {

@@ -23,14 +23,14 @@
          <div class="form-group">
             <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
             <select class="form-control" id="center" name="center">
-            <?
+            <?php
 			#nav
 $centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
 $centers_free->execute(array(1, 1));
 while($free_d = $centers_free->fetch()) {
 ?>
-            <option <?php if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?=$free_d['id']?>"><?=$free_d['city']?></option>
-            <?php } ?>
+            <option <?phpphp if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?php=$free_d['id']?>"><?php=$free_d['city']?></option>
+            <?phpphp } ?>
             </select>
           </div>
           <div class="form-group">
@@ -55,24 +55,24 @@ while($free_d = $centers_free->fetch()) {
        <dl>
             <dt>Adresse</dt>
             <dd>
-              <?= $row_center['address']; ?>
+              <?php= $row_center['address']; ?>
             </dd>
             <dt>Téléphone</dt>
             <dd>
-              <?= $row_center['phone']; ?>
+              <?php= $row_center['phone']; ?>
             </dd>
             <dt>Horaires</dt>
             <dd>
-              <?= $row_center['openhours']; ?>
+              <?php= $row_center['openhours']; ?>
             </dd>
             <dt>Web</dt>
             <dd>
-              <?= $row_center['website']; ?>
+              <?php= $row_center['website']; ?>
             </dd>
             
           </dl>
           <p>
-            <?= $row_center['description']; ?>
+            <?php= $row_center['description']; ?>
           </p>
       </div>
       </div>

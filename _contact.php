@@ -36,15 +36,15 @@
             <form action="#contact" method="post">
   <div class="form-group">
     <label for="exampleInputEmail1">Email</label>
-    <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo $_POST['email']; ?>" />
+    <input type="email" class="form-control" placeholder="Email" name="email" value="<?phpphp echo $_POST['email']; ?>" />
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Nom, prénom et ville concernée </label>
-    <input type="text" class="form-control" placeholder="Nom, prénom et ville concernée" name="nom" value="<?php echo $_POST['nom']; ?>" />
+    <input type="text" class="form-control" placeholder="Nom, prénom et ville concernée" name="nom" value="<?phpphp echo $_POST['nom']; ?>" />
   </div>
   <div class="form-group">
     <label for="exampleInputFile">Message</label>
-    <textarea class="form-control" placeholder="Message" name="message"><?php echo $_POST['message']; ?></textarea>
+    <textarea class="form-control" placeholder="Message" name="message"><?phpphp echo $_POST['message']; ?></textarea>
   </div>
   <div class="checkbox">
    
@@ -53,7 +53,7 @@
 </form>
 
 
-<?php
+<?phpphp
 if (isset($_POST['send']))
 {
 	

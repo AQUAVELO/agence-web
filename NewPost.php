@@ -1,8 +1,8 @@
-	<?phpphp require_once('Include/Sessions.php'); ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp ConfirmLogin(); ?>
-<?phpphp AdminGle(); ?>
-<?phpphp
+	<?php require_once('Include/Sessions.php'); ?>
+<?php require_once('Include/functions.php') ?>
+<?php ConfirmLogin(); ?>
+<?php AdminGle(); ?>
+<?php
 
 date_default_timezone_set('Europe/Paris');
 $time = time();
@@ -88,8 +88,8 @@ if ( isset( $_POST['post-submit'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Ajouter un nouveau article</h1></div>
-					<?phpphp echo Message(); ?>
-					<?phpphp echo SuccessMessage(); ?>
+					<?php echo Message(); ?>
+					<?php echo SuccessMessage(); ?>
 					<form action="NewPost.php" method="POST" enctype="multipart/form-data">
 						<fieldset>
 							<div class="form-group">
@@ -99,7 +99,7 @@ if ( isset( $_POST['post-submit'])) {
 							<div class="form-group">
 								<labal for="post-category">Categorie :</labal>
 								<select class="form-control" name="post-category" id="post-category">
-									<?phpphp
+									<?php
 										$sql = "SELECT * FROM aquavelo_category";
 										$exec = Query($sql);
 										while($row = mysqli_fetch_assoc($exec)){

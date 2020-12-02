@@ -1,7 +1,7 @@
-<?phpphp require_once('Include/Sessions.php'); ?>
-<?phpphp require_once('Include/functions.php') ?>
+<?php require_once('Include/Sessions.php'); ?>
+<?php require_once('Include/functions.php') ?>
 
-<?phpphp
+<?php
 date_default_timezone_set('Europe/Paris');
 ?>
 <!DOCTYPE html>
@@ -127,7 +127,7 @@ body, td, th {
 		</div>
 		<div class="row">
 			<div class="col-md-8">
-				<?phpphp
+				<?php
 					$page = 1;
 					$query = "";
 					if ( isset($_GET['search'])) {
@@ -165,33 +165,33 @@ body, td, th {
 								$post_content = substr($post['post'], 0,150) . '...'; 
 							?>
 							<div class="post">
-								<div class="post-title" style="color: #2D91FF !important;"><h3><?phpphp echo htmlentities($post_title); ?></h3></div>
+								<div class="post-title" style="color: #2D91FF !important;"><h3><?php echo htmlentities($post_title); ?></h3></div>
 								<div class="thumbnail">
-									<img class="img-responsive img-rounded" width = 50%; src="Upload/Image/<?phpphp echo $post_image; ?>">
+									<img class="img-responsive img-rounded" width = 50%; src="Upload/Image/<?php echo $post_image; ?>">
 								</div>
 								<div class="post-info">
 									<p class="">
-									 <?phpphp 
+									 <?php 
 									 date_default_timezone_set('Europe/Paris');
 									 setlocale (LC_TIME, 'fr_FR.utf8','fra');
 									 $time = strtotime($post_date); 
                                      $date = getDate($time);
 									 $date_pub = strftime("%d", $time). " " . strftime("%B", $time) . " " .strftime("%Y", $time) ;
 									 ?>
-									Publier le : <?phpphp echo htmlentities($date_pub); ?> | Categorie: <?phpphp echo htmlentities($post_category);?>
+									Publier le : <?php echo htmlentities($date_pub); ?> | Categorie: <?php echo htmlentities($post_category);?>
 									</p>
 								</div>
 								<div class="post-content">
-								<p class=""><?phpphp echo htmlentities($post_content); ?></p>
+								<p class=""><?php echo htmlentities($post_content); ?></p>
 								</div>
 								<p>
-									<a href="Post.php?id=<?phpphp echo $post_id;?>">
+									<a href="Post.php?id=<?php echo $post_id;?>">
 										<button class="btn btn-info" id="read_more_btn">Lire la suite</button>
 									</a>
 									<div class="clearfix"></div>
 								</p>
 							</div>
-							<?phpphp
+							<?php
 							}
 
 						}else {
@@ -202,13 +202,13 @@ body, td, th {
 					}
 
 				?>
-				<?phpphp  if(!isset($_GET['category'])) { ?>
+				<?php  if(!isset($_GET['category'])) { ?>
 				<ul class="pagination pagination-lg">
-				<?phpphp
+				<?php
 					if ($page > 1) {
 						?>
-						<li><a href="Blog.php?page=<?phpphp echo $page - 1; ?>"><</a></li>
-						<?phpphp
+						<li><a href="Blog.php?page=<?php echo $page - 1; ?>"><</a></li>
+						<?php
 					}
 					$sql = "SELECT COUNT(*) FROM aquavelo_post";
 					$exec = Query($sql);
@@ -219,21 +219,21 @@ body, td, th {
 					for ($count = 1; $count <= $postPerPage; $count++){
 						if ($page == $count) {
 							?>
-							<li class="active"><a href="Blog.php?page=<?phpphp echo $count ?>"><?phpphp echo $count ?></a></li>
-							<?phpphp
+							<li class="active"><a href="Blog.php?page=<?php echo $count ?>"><?php echo $count ?></a></li>
+							<?php
 						}else {
 							?>
-							<li><a href="Blog.php?page=<?phpphp echo $count ?>"><?phpphp echo $count ?></a></li>
-							<?phpphp
+							<li><a href="Blog.php?page=<?php echo $count ?>"><?php echo $count ?></a></li>
+							<?php
 						}
 					}
 					if($page < $postPerPage) {
 						?>
-						<li><a href="Blog.php?page=<?phpphp echo $page + 1; ?>">></a></li>
-						<?phpphp
+						<li><a href="Blog.php?page=<?php echo $page + 1; ?>">></a></li>
+						<?php
 					}
 				?>
-				<?phpphp
+				<?php
 					}
 				?>
 				</ul>
@@ -258,7 +258,7 @@ body, td, th {
 						<h2 class="panel-title">Articles récents</h2>
 					</div>
 					<div class="panel-body">
-						<?phpphp
+						<?php
 							$sql = "SELECT * FROM aquavelo_post ORDER BY post_date_time LIMIT 5";
 							$exec = Query($sql);
 							while ($recentPost = mysqli_fetch_assoc($exec)) {
@@ -266,10 +266,10 @@ body, td, th {
 								?>
 								<nav>
 									<ul class="nav-left-list">
-										<li class="nav-left"><a href="Post.php?id=<?phpphp echo $postID; ?>"><?phpphp echo $recentPost['title'] ?></a></li>
+										<li class="nav-left"><a href="Post.php?id=<?php echo $postID; ?>"><?php echo $recentPost['title'] ?></a></li>
 									</ul>
 								</nav>
-								<?phpphp
+								<?php
 							}
 						?>
 					</div>
@@ -281,14 +281,14 @@ body, td, th {
 					<div class="panel-body">
 						<nav>
 							<ul class="nav-left-list">
-						<?phpphp 
+						<?php 
 							$sql = "SELECT cat_name FROM aquavelo_category ";
 							$exec = Query($sql);
 							if (mysqli_num_rows($exec) > 0) {
 								while ($category = mysqli_fetch_assoc($exec)) {
 									?>
-									<li class='nav-left'><a href="Blog.php?category=<?phpphp echo $category['cat_name'] ?>"><?phpphp echo $category['cat_name'] ?></a></li>
-									<?phpphp
+									<li class='nav-left'><a href="Blog.php?category=<?php echo $category['cat_name'] ?>"><?php echo $category['cat_name'] ?></a></li>
+									<?php
 								}
 							}	
 						?>

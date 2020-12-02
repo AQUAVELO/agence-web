@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 /**
 * PHPMailer language file: refer to English translation for definitive list
 * Estonian Version

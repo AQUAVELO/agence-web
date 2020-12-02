@@ -1,8 +1,8 @@
-<?phpphp require_once('Include/Sessions.php') ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp ConfirmLogin(); ?>
-<?phpphp AdminGle(); ?>
-<?phpphp
+<?php require_once('Include/Sessions.php') ?>
+<?php require_once('Include/functions.php') ?>
+<?php ConfirmLogin(); ?>
+<?php AdminGle(); ?>
+<?php
 if ( isset($_GET['Approve_ID'])) {
 	if ( !empty($_GET['Approve_ID'])) {
 		$sql = "UPDATE comment SET status ='approved', approve_by = '$_SESSION[username]' WHERE id = '$_GET[Approve_ID]'";
@@ -86,17 +86,17 @@ if ( isset($_GET['Unapprove_ID'])) {
 			<div class="col-xs-10">
 				<div>
 					<h1>Commentaires</h1>
-					<?phpphp echo SuccessMessage(); ?>
-					<?phpphp echo Message(); ?>
+					<?php echo SuccessMessage(); ?>
+					<?php echo Message(); ?>
 					<div class="table-responsive">
-							<?phpphp
+							<?php
 							$sql = "SELECT * FROM comment WHERE status ='approved' ORDER BY date_time";
 							$exec = Query($sql);
 							$postNo = 1;
 							if(mysqli_num_rows($exec) < 1	) {
 								?>
 									<p class="lead">Aucun Commentaire Approuver</p>
-								<?phpphp
+								<?php
 							}else{ ?>
 							<span class="lead">Commentaires approuver</span>
 							<table class="table table-hover">
@@ -109,7 +109,7 @@ if ( isset($_GET['Unapprove_ID'])) {
 								<th>Action</th>
 								
 							</tr>
-							<?phpphp
+							<?php
 								while ($post = mysqli_fetch_assoc($exec)) {
 									$comment_id = $post['id'];
 									$comment_dateTime = $post['date_time'];
@@ -119,13 +119,13 @@ if ( isset($_GET['Unapprove_ID'])) {
 									$approved_by = $post['approve_by'];
 									?>
 									<tr>
-									<td><?phpphp echo $postNo; ?></td>
-									<td><?phpphp echo $comment_dateTime; ?></td>
-									<td><?phpphp echo $comment_email; ?></td>
-									<td><?phpphp echo $comment_content; ?></td>
-									<td><?phpphp echo $approved_by; ?></td>
-									<td><a href="Comments.php?Unapprove_ID=<?phpphp echo $comment_id; ?>"><button class="btn btn-danger">Inapprover</button></a></td>
-									<?phpphp
+									<td><?php echo $postNo; ?></td>
+									<td><?php echo $comment_dateTime; ?></td>
+									<td><?php echo $comment_email; ?></td>
+									<td><?php echo $comment_content; ?></td>
+									<td><?php echo $approved_by; ?></td>
+									<td><a href="Comments.php?Unapprove_ID=<?php echo $comment_id; ?>"><button class="btn btn-danger">Inapprover</button></a></td>
+									<?php
 									$postNo++;
 								}
 							}
@@ -133,14 +133,14 @@ if ( isset($_GET['Unapprove_ID'])) {
 						</table>
 					</div>
 					<div class="table-responsive">
-							<?phpphp
+							<?php
 							$sql = "SELECT * FROM comment WHERE status ='unapprove' ORDER BY date_time";
 							$exec = Query($sql);
 							$postNo = 1;
 							if(mysqli_num_rows($exec) < 1	) {
 								?>
 									<p class="lead">Aucun commentaire inapprouver</p>
-								<?phpphp
+								<?php
 							}else{ ?>
 							<span class="lead">Commentaires inapprouver</span>
 							<table class="table table-hover">
@@ -152,7 +152,7 @@ if ( isset($_GET['Unapprove_ID'])) {
 								<th>Status</th>
 								<th>Action</th>
 							</tr>
-							<?phpphp
+							<?php
 								while ($post = mysqli_fetch_assoc($exec)) {
 									$comment_id = $post['id'];
 									$comment_dateTime = $post['date_time'];
@@ -161,13 +161,13 @@ if ( isset($_GET['Unapprove_ID'])) {
 									$comment_status = $post['status'];
 									?>
 									<tr>
-									<td><?phpphp echo $postNo; ?></td>
-									<td><?phpphp echo $comment_dateTime; ?></td>
-									<td><?phpphp echo $comment_email; ?></td>
-									<td><?phpphp echo $comment_content; ?></td>
-									<td><?phpphp echo $comment_status; ?></td>
-									<td><a href="Comments.php?Approve_ID=<?phpphp echo $comment_id; ?>"><button class="btn btn-success">Approuver</button></a></td>
-									<?phpphp
+									<td><?php echo $postNo; ?></td>
+									<td><?php echo $comment_dateTime; ?></td>
+									<td><?php echo $comment_email; ?></td>
+									<td><?php echo $comment_content; ?></td>
+									<td><?php echo $comment_status; ?></td>
+									<td><a href="Comments.php?Approve_ID=<?php echo $comment_id; ?>"><button class="btn btn-success">Approuver</button></a></td>
+									<?php
 									$postNo++;
 								}
 							}

@@ -1,6 +1,6 @@
-<?phpphp require_once('Include/Sessions.php') ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp
+<?php require_once('Include/Sessions.php') ?>
+<?php require_once('Include/functions.php') ?>
+<?php
 $_SESSION['user_id'] = null;
 session_destroy();
 Redirect_To('Login-Aquavelo-Blog.php');

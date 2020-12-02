@@ -7,13 +7,13 @@
       <form method="post" id="newsletter" action="?">
         <div>
           <h3>Profitez de 50% de r&eacute;duction sur votre premi&egrave;re d&eacute;pilation en vous inscrivant ci-dessous:</h3>
-          <p><?phpphp echo $read; ?></p>
+          <p><?php echo $read; ?></p>
           <p>
-            <input name="emailform" type="text" class="input" id="emailform" onclick="javascript:this.value=''" value="<?phpphp echo $email; ?>" />
+            <input name="emailform" type="text" class="input" id="emailform" onclick="javascript:this.value=''" value="<?php echo $email; ?>" />
           </p>
           <p> <a href="#" class="right button1" onclick="document.getElementById('newsletter').submit()">S'inscrire</a>
-                    <input type="hidden" name="ip" id="ip" value="<?phpphp echo $_SERVER['REMOTE_ADDR']; ?>" />
-            <input type="hidden" name="lip" id="lip" value="<?phpphp echo $_POST['ip']; ?>" />
+                    <input type="hidden" name="ip" id="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>" />
+            <input type="hidden" name="lip" id="lip" value="<?php echo $_POST['ip']; ?>" />
         <input type="hidden" name="MM_insert" value="newsletter" /></p>
         </div>
       </form>

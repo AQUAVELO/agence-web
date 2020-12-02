@@ -1,8 +1,8 @@
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Aquabiking à <?phpphp echo $city; ?>,
+    <h1 class="page-title pull-left">Aquabiking à <?php echo $city; ?>,
       <?php= $row_center['postal_code']; ?>
-      , <?phpphp echo $department; ?>, <?phpphp echo $region; ?></h1>
+      , <?php echo $department; ?>, <?php echo $region; ?></h1>
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
@@ -10,7 +10,7 @@
     </ol>
   </div>
 	
-		  <?phpphp if($row_center['id'] == 253) { ?>
+		  <?php if($row_center['id'] == 253) { ?>
 
           <!-- Facebook Pixel Code -->
 
@@ -50,7 +50,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 <!-- End Facebook Pixel Code -->
 
-          <?phpphp } ?>
+          <?php } ?>
 	
 	
 </header>
@@ -83,23 +83,23 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
             <?php= $row_center['website']; ?>
           </dd>
-          <?phpphp if($row_center['book_link']) { ?>
+          <?php if($row_center['book_link']) { ?>
           <dt>Agenda</dt>
           <dd> <a href="http://<?php=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
-          <?phpphp } ?>
+          <?php } ?>
           
           
-          <?phpphp if($row_center['id'] == 179) { ?>
+          <?php if($row_center['id'] == 179) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/d4aioqoosov03em/PLANNING.pdf" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-          <?phpphp } elseif ($row_center['id'] == 253) { ?>
+          <?php } elseif ($row_center['id'] == 253) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/rrdr02uyxdsyp8n/PLANNING%2014%20AOUT.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?phpphp } elseif ($row_center['id'] == 305) { ?>
+           <?php } elseif ($row_center['id'] == 305) { ?>
           <dt>Planning</dt>
           <dd> <a href=
           "https://www.dropbox.com/s/ippgfpky29n0vqg/PLANNING%20CANNES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
- 			<?phpphp } ?>
+ 			<?php } ?>
           
         </dl>
         <p>

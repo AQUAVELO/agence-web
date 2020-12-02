@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 
 require'_settings.php';
 

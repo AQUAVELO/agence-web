@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 $server = 'localhost';
 $username = 'aquaveloblog';
 $password = 'e017D&xg';

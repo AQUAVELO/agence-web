@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 /**
  * TimThumb by Ben Gillbanks and Mark Maunder
  * Based on work done by Tim McDaniels and Darren Hoyt
@@ -166,7 +166,7 @@ class timthumb {
 	protected $cropTop = false;
 	protected $salt = "";
 	protected $fileCacheVersion = 1; //Generally if timthumb.php is modifed (upgraded) then the salt changes and all cache files are recreated. This is a backup mechanism to force regen.
-	protected $filePrependSecurityBlock = "<?phpphp die('Execution denied!'); //"; //Designed to have three letter mime type, space, question mark and greater than symbol appended. 6 bytes total.
+	protected $filePrependSecurityBlock = "<?php die('Execution denied!'); //"; //Designed to have three letter mime type, space, question mark and greater than symbol appended. 6 bytes total.
 	protected static $curlDataWritten = 0;
 	protected static $curlFH = false;
 	public static function start(){

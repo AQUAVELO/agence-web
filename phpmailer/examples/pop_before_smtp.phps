@@ -5,7 +5,7 @@
     <title>PHPMailer - POP-before-SMTP test</title>
 </head>
 <body>
-<?phpphp
+<?php
 require '../PHPMailerAutoload.php';
 
 //Authenticate via POP3

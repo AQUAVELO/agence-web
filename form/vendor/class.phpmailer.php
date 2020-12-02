@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 /*~ class.phpmailer.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |

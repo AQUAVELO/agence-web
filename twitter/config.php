@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 // The tokens, keys and secrets from the app you created at https://dev.twitter.com/apps
 
 $config = array(

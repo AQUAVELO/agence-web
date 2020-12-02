@@ -46,7 +46,7 @@ While installing the entire package manually or with composer is simple, conveni
 ## A Simple Example
 
 ```php
-<?phpphp
+<?php
 require 'PHPMailerAutoload.php';
 
 $mail = new PHPMailer;

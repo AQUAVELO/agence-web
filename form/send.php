@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 $ajax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
 $ajax = true;
 //we do not allow direct script access

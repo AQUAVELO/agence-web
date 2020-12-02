@@ -1,6 +1,6 @@
-<?phpphp require_once('Include/Sessions.php'); ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp
+<?php require_once('Include/Sessions.php'); ?>
+<?php require_once('Include/functions.php') ?>
+<?php
 	if(isset($_POST['submit'])) {
 		if(!empty($_POST['submit'])) {
 			date_default_timezone_set('Europe/Paris');

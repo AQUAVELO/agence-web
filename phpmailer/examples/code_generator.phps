@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 /*
 * revised, updated and corrected 27/02/2013
 * by matt.sturdy@gmail.com
@@ -308,22 +308,22 @@ $example_code .= "\n}";
 
         function startAgain() {
             var post_params = {
-                "From_Name": "<?phpphp echo $from_name; ?>",
-                "From_Email": "<?phpphp echo $from_email; ?>",
-                "To_Name": "<?phpphp echo $to_name; ?>",
-                "To_Email": "<?phpphp echo $to_email; ?>",
-                "cc_Email": "<?phpphp echo $cc_email; ?>",
-                "bcc_Email": "<?phpphp echo $bcc_email; ?>",
-                "Subject": "<?phpphp echo $subject; ?>",
-                "Message": "<?phpphp echo $message; ?>",
-                "test_type": "<?phpphp echo $test_type; ?>",
-                "smtp_debug": "<?phpphp echo $smtp_debug; ?>",
-                "smtp_server": "<?phpphp echo $smtp_server; ?>",
-                "smtp_port": "<?phpphp echo $smtp_port; ?>",
-                "smtp_secure": "<?phpphp echo $smtp_secure; ?>",
-                "smtp_authenticate": "<?phpphp echo $smtp_authenticate; ?>",
-                "authenticate_username": "<?phpphp echo $authenticate_username; ?>",
-                "authenticate_password": "<?phpphp echo $authenticate_password; ?>"
+                "From_Name": "<?php echo $from_name; ?>",
+                "From_Email": "<?php echo $from_email; ?>",
+                "To_Name": "<?php echo $to_name; ?>",
+                "To_Email": "<?php echo $to_email; ?>",
+                "cc_Email": "<?php echo $cc_email; ?>",
+                "bcc_Email": "<?php echo $bcc_email; ?>",
+                "Subject": "<?php echo $subject; ?>",
+                "Message": "<?php echo $message; ?>",
+                "test_type": "<?php echo $test_type; ?>",
+                "smtp_debug": "<?php echo $smtp_debug; ?>",
+                "smtp_server": "<?php echo $smtp_server; ?>",
+                "smtp_port": "<?php echo $smtp_port; ?>",
+                "smtp_secure": "<?php echo $smtp_secure; ?>",
+                "smtp_authenticate": "<?php echo $smtp_authenticate; ?>",
+                "authenticate_username": "<?php echo $authenticate_username; ?>",
+                "authenticate_password": "<?php echo $authenticate_password; ?>"
             };
 
             var resetForm = document.createElement("form");
@@ -354,7 +354,7 @@ $example_code .= "\n}";
     </script>
 </head>
 <body>
-<?phpphp
+<?php
 if (version_compare(PHP_VERSION, '5.0.0', '<')) {
     echo 'Current PHP version: ' . phpversion() . "<br>";
     echo exit("ERROR: Wrong PHP version. Must be PHP 5 or above.");
@@ -389,7 +389,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <label for="From_Name"><strong>From</strong> Name</label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="From_Name" name="From_Name" value="<?phpphp echo $from_name; ?>"
+                            <input type="text" id="From_Name" name="From_Name" value="<?php echo $from_name; ?>"
                                    style="width:95%;" autofocus placeholder="Your Name">
                         </td>
                     </tr>
@@ -398,7 +398,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <label for="From_Email"><strong>From</strong> Email Address</label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="From_Email" name="From_Email" value="<?phpphp echo $from_email; ?>"
+                            <input type="text" id="From_Email" name="From_Email" value="<?php echo $from_email; ?>"
                                    style="width:95%;" required placeholder="Your.Email@example.com">
                         </td>
                     </tr>
@@ -407,7 +407,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <label for="To_Name"><strong>To</strong> Name</label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="To_Name" name="To_Name" value="<?phpphp echo $to_name; ?>"
+                            <input type="text" id="To_Name" name="To_Name" value="<?php echo $to_name; ?>"
                                    style="width:95%;" placeholder="Recipient's Name">
                         </td>
                     </tr>
@@ -416,7 +416,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <label for="To_Email"><strong>To</strong> Email Address</label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="To_Email" name="To_Email" value="<?phpphp echo $to_email; ?>"
+                            <input type="text" id="To_Email" name="To_Email" value="<?php echo $to_email; ?>"
                                    style="width:95%;" required placeholder="Recipients.Email@example.com">
                         </td>
                     </tr>
@@ -427,7 +427,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             </label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="cc_Email" name="cc_Email" value="<?phpphp echo $cc_email; ?>"
+                            <input type="text" id="cc_Email" name="cc_Email" value="<?php echo $cc_email; ?>"
                                    style="width:95%;" placeholder="cc1@example.com, cc2@example.com">
                         </td>
                     </tr>
@@ -438,7 +438,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             </label>
                         </td>
                         <td class="colrite">
-                            <input type="text" id="bcc_Email" name="bcc_Email" value="<?phpphp echo $bcc_email; ?>"
+                            <input type="text" id="bcc_Email" name="bcc_Email" value="<?php echo $bcc_email; ?>"
                                    style="width:95%;" placeholder="bcc1@example.com, bcc2@example.com">
                         </td>
                     </tr>
@@ -447,7 +447,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <label for="Subject"><strong>Subject</strong></label>
                         </td>
                         <td class="colrite">
-                            <input type="text" name="Subject" id="Subject" value="<?phpphp echo $subject; ?>"
+                            <input type="text" name="Subject" id="Subject" value="<?php echo $subject; ?>"
                                    style="width:95%;" placeholder="Email Subject">
                         </td>
                     </tr>
@@ -459,7 +459,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                         </td>
                         <td class="colrite">
                             <textarea name="Message" id="Message" style="width:95%;height:5em;"
-                                      placeholder="Body of your email"><?phpphp echo $message; ?></textarea>
+                                      placeholder="Body of your email"><?php echo $message; ?></textarea>
                         </td>
                     </tr>
                 </table>
@@ -477,35 +477,35 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                                 <label for="radio-mail">Mail()</label>
                                 <input class="radio" type="radio" name="test_type" value="mail" id="radio-mail"
                                        onclick="showHideDiv(this.value, 'smtp-options-table');"
-                                       <?phpphp echo ($test_type == 'mail') ? 'checked' : ''; ?>
+                                       <?php echo ($test_type == 'mail') ? 'checked' : ''; ?>
                                        required>
                             </div>
                             <div class="radio">
                                 <label for="radio-sendmail">Sendmail</label>
                                 <input class="radio" type="radio" name="test_type" value="sendmail" id="radio-sendmail"
                                        onclick="showHideDiv(this.value, 'smtp-options-table');"
-                                       <?phpphp echo ($test_type == 'sendmail') ? 'checked' : ''; ?>
+                                       <?php echo ($test_type == 'sendmail') ? 'checked' : ''; ?>
                                        required>
                             </div>
                             <div class="radio">
                                 <label for="radio-qmail">Qmail</label>
                                 <input class="radio" type="radio" name="test_type" value="qmail" id="radio-qmail"
                                        onclick="showHideDiv(this.value, 'smtp-options-table');"
-                                       <?phpphp echo ($test_type == 'qmail') ? 'checked' : ''; ?>
+                                       <?php echo ($test_type == 'qmail') ? 'checked' : ''; ?>
                                        required>
                             </div>
                             <div class="radio">
                                 <label for="radio-smtp">SMTP</label>
                                 <input class="radio" type="radio" name="test_type" value="smtp" id="radio-smtp"
                                        onclick="showHideDiv(this.value, 'smtp-options-table');"
-                                       <?phpphp echo ($test_type == 'smtp') ? 'checked' : ''; ?>
+                                       <?php echo ($test_type == 'smtp') ? 'checked' : ''; ?>
                                        required>
                             </div>
                         </td>
                     </tr>
                 </table>
                 <div id="smtp-options-table" style="margin:1em 0 0 0;
-<?phpphp if ($test_type != 'smtp') {
+<?php if ($test_type != 'smtp') {
     echo "display: none;";
 } ?>">
                     <span style="margin:1.25em 0; display:block;"><strong>SMTP Specific Options:</strong></span>
@@ -514,13 +514,13 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <td class="colleft"><label for="smtp_debug">SMTP Debug ?</label></td>
                             <td class="colrite">
                                 <select size="1" id="smtp_debug" name="smtp_debug">
-                                    <option <?phpphp echo ($smtp_debug == '0') ? 'selected' : ''; ?> value="0">
+                                    <option <?php echo ($smtp_debug == '0') ? 'selected' : ''; ?> value="0">
                                         0 - Disabled
                                     </option>
-                                    <option <?phpphp echo ($smtp_debug == '1') ? 'selected' : ''; ?> value="1">
+                                    <option <?php echo ($smtp_debug == '1') ? 'selected' : ''; ?> value="1">
                                         1 - Client messages
                                     </option>
-                                    <option <?phpphp echo ($smtp_debug == '2') ? 'selected' : ''; ?> value="2">
+                                    <option <?php echo ($smtp_debug == '2') ? 'selected' : ''; ?> value="2">
                                         2 - Client and server messages
                                     </option>
                                 </select>
@@ -530,7 +530,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <td class="colleft"><label for="smtp_server">SMTP Server</label></td>
                             <td class="colrite">
                                 <input type="text" id="smtp_server" name="smtp_server"
-                                       value="<?phpphp echo $smtp_server; ?>" style="width:95%;"
+                                       value="<?php echo $smtp_server; ?>" style="width:95%;"
                                        placeholder="smtp.server.com">
                             </td>
                         </tr>
@@ -538,16 +538,16 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <td class="colleft" style="width: 5em;"><label for="smtp_port">SMTP Port</label></td>
                             <td class="colrite">
                                 <input type="text" name="smtp_port" id="smtp_port" size="3"
-                                       value="<?phpphp echo $smtp_port; ?>" placeholder="Port">
+                                       value="<?php echo $smtp_port; ?>" placeholder="Port">
                             </td>
                         </tr>
                         <tr>
                             <td class="colleft"><label for="smtp_secure">SMTP Security</label></td>
                             <td>
                                 <select size="1" name="smtp_secure" id="smtp_secure">
-                                    <option <?phpphp echo ($smtp_secure == 'none') ? 'selected' : '' ?>>None</option>
-                                    <option <?phpphp echo ($smtp_secure == 'tls') ? 'selected' : '' ?>>TLS</option>
-                                    <option <?phpphp echo ($smtp_secure == 'ssl') ? 'selected' : '' ?>>SSL</option>
+                                    <option <?php echo ($smtp_secure == 'none') ? 'selected' : '' ?>>None</option>
+                                    <option <?php echo ($smtp_secure == 'tls') ? 'selected' : '' ?>>TLS</option>
+                                    <option <?php echo ($smtp_secure == 'ssl') ? 'selected' : '' ?>>SSL</option>
                                 </select>
                             </td>
                         </tr>
@@ -556,17 +556,17 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <td class="colrite">
                                 <input type="checkbox" id="smtp-authenticate"
                                        name="smtp_authenticate"
-<?phpphp if ($smtp_authenticate != '') {
+<?php if ($smtp_authenticate != '') {
     echo "checked";
 } ?>
-                                       value="<?phpphp echo $smtp_authenticate; ?>">
+                                       value="<?php echo $smtp_authenticate; ?>">
                             </td>
                         </tr>
                         <tr>
                             <td class="colleft"><label for="authenticate_username">Authenticate Username</label></td>
                             <td class="colrite">
                                 <input type="text" id="authenticate_username" name="authenticate_username"
-                                       value="<?phpphp echo $authenticate_username; ?>" style="width:95%;"
+                                       value="<?php echo $authenticate_username; ?>" style="width:95%;"
                                        placeholder="SMTP Server Username">
                             </td>
                         </tr>
@@ -574,7 +574,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
                             <td class="colleft"><label for="authenticate_password">Authenticate Password</label></td>
                             <td class="colrite">
                                 <input type="password" name="authenticate_password" id="authenticate_password"
-                                       value="<?phpphp echo $authenticate_password; ?>" style="width:95%;"
+                                       value="<?php echo $authenticate_password; ?>" style="width:95%;"
                                        placeholder="SMTP Server Password">
                             </td>
                         </tr>
@@ -588,7 +588,7 @@ if (isset($_POST["submit"]) && $_POST["submit"] == "Submit") {
             <div style="margin-bottom: 1em; ">
                 <input type="submit" value="Submit" name="submit">
             </div>
-            <?phpphp echo 'Current PHP version: ' . phpversion(); ?>
+            <?php echo 'Current PHP version: ' . phpversion(); ?>
         </div>
     </div>
 </form>

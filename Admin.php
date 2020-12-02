@@ -1,8 +1,8 @@
-<?phpphp require_once('Include/Sessions.php'); ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp ConfirmLogin(); ?>
-<?phpphp AdminGle(); ?>
-<?phpphp
+<?php require_once('Include/Sessions.php'); ?>
+<?php require_once('Include/functions.php') ?>
+<?php ConfirmLogin(); ?>
+<?php AdminGle(); ?>
+<?php
 if ( isset($_POST['submit'])) {
 	date_default_timezone_set('Europe/Paris');
 	$time = time();
@@ -101,8 +101,8 @@ if ( isset($_GET['del_admin'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Gérer les Admins</h1></div>
-				<?phpphp echo Message(); ?>
-				<?phpphp echo SuccessMessage(); ?>
+				<?php echo Message(); ?>
+				<?php echo SuccessMessage(); ?>
 				<div>
 					<div class="row">
 						<div class="col-md-12 ">
@@ -174,7 +174,7 @@ if ( isset($_GET['del_admin'])) {
 						</div>
 					</div>
 					<div id="cat_table">
-						<?phpphp echo deleteCategory(); ?>
+						<?php echo deleteCategory(); ?>
 						<h3>Liste des Administrateurs</h3>
 						<table class="table table-striped table-hover">
 							<tr>
@@ -186,7 +186,7 @@ if ( isset($_GET['del_admin'])) {
 								<th>Ajouter par</th>
 								<th>Action</th>
 							</tr>
-							<?phpphp
+							<?php
 								$num = 1;
 								$viewSql = "SELECT * FROM aquavelo_admin ORDER BY date_time DESC";
 								$exec = Query($viewSql);

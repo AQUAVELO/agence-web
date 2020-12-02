@@ -1,4 +1,4 @@
-<?phpphp include'_slider.php'; ?>
+<?php include'_slider.php'; ?>
  <section class="content-area bg1">
     <div class="container">
       <div class="row">
@@ -49,7 +49,7 @@ votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
       </header>
       <div class="flexslider carousel-slider" data-slideshow="false" data-speed="7000" data-animspeed="600" data-loop="true" data-min="1" data-max="3" data-move="1" data-controls="true" data-dircontrols="true">
         <ul class="slides">
-            <?phpphp foreach ($centers_last_d as $row_centers_last) {
+            <?php foreach ($centers_last_d as $row_centers_last) {
 		$department = $database->prepare('SELECT nom FROM departements WHERE id = ?');
 	$department->execute(array($row_centers_last['department']));
 	$row_department = $department->fetch();
@@ -62,7 +62,7 @@ votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
               <h4 class="entry-title"><a href="#"><?php= $row_centers_last['city'] ?>, <?php= $row_centers_last['TypeAQUAVELO'] ?></a></h4>
             </article>
           </li>
-          <?phpphp } ?>
+          <?php } ?>
           <li>
             <article class="portfolio-item animated" data-fx="fadeInDown">
               <div class="portfolio-thumbnail"> <a href="#"><img src="/images/content/works-02.jpg" alt=" "></a> <a href="#" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>

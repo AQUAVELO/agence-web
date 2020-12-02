@@ -1,4 +1,4 @@
-<?phpphp
+<?php
 /**
  * PHPMailer POP-Before-SMTP Authentication Class.
  * PHP Version 5.0.0

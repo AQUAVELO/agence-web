@@ -1,8 +1,8 @@
-<?phpphp require_once('Include/Sessions.php'); ?>
-<?phpphp require_once('Include/functions.php') ?>
-<?phpphp ConfirmLogin(); ?>
-<?phpphp AdminGle(); ?>
-<?phpphp
+<?php require_once('Include/Sessions.php'); ?>
+<?php require_once('Include/functions.php') ?>
+<?php ConfirmLogin(); ?>
+<?php AdminGle(); ?>
+<?php
 if ( isset( $_POST['post-update'])) {
 	date_default_timezone_set('Europe/Paris');
 	$time = time();
@@ -97,19 +97,19 @@ if ( isset( $_POST['post-update'])) {
 			</div>
 			<div class="col-xs-10">
 				<div class="page-title"><h1>Mettre à jour l'article</h1></div>
-					<?phpphp echo Message(); ?>
-					<?phpphp echo SuccessMessage(); ?>
+					<?php echo Message(); ?>
+					<?php echo SuccessMessage(); ?>
 					<form action="editpost.php" method="POST" enctype="multipart/form-data">
 						<fieldset>
 							<div class="form-group">
 								<labal for="post-title">Titre :</labal>
-								<input type="text" name="post-title" class="form-control" id="post-title" value="<?phpphp echo $post_title ?>">
+								<input type="text" name="post-title" class="form-control" id="post-title" value="<?php echo $post_title ?>">
 							</div>
 							<div class="form-group">
-								<label>Catégirie Actuelle : <?phpphp echo htmlentities($post_category); ?></label><br>
+								<label>Catégirie Actuelle : <?php echo htmlentities($post_category); ?></label><br>
 								<labal for="post-category">Modifier la Catégorie</labal>
-								<select class="form-control" name="post-category" id="post-category" value="<?phpphp echo $post_category ?>">
-									<?phpphp
+								<select class="form-control" name="post-category" id="post-category" value="<?php echo $post_category ?>">
+									<?php
 										$sql = "SELECT cat_name FROM aquavelo_category";
 										$exec = Query($sql);
 										$selected = "";
@@ -119,28 +119,28 @@ if ( isset( $_POST['post-update'])) {
 											// }
 											if($post_category === $row['cat_name']) {
 												?>
-												<option selected="selected" ><?phpphp echo htmlentities($row['cat_name']) ?></option>
-												<?phpphp
+												<option selected="selected" ><?php echo htmlentities($row['cat_name']) ?></option>
+												<?php
 											}else {
 												?>
-												<option><?phpphp echo htmlentities($row['cat_name']) ?></option>
-												<?phpphp
+												<option><?php echo htmlentities($row['cat_name']) ?></option>
+												<?php
 											}
 										}
 									?>
 								</select>
 							</div>
-							<label>Image Actuelle: <img src="Upload/Image/<?phpphp echo $post_image;  ?>" width='250' height='90'> </label>
+							<label>Image Actuelle: <img src="Upload/Image/<?php echo $post_image;  ?>" width='250' height='90'> </label>
 							<div class="form-group">
 								<labal for="post-image">Modifier l'Image</labal>
 								<input type="File" name="post-image" class="form-control">
 							</div>
 							<div class="form-group">
 								<labal for="post-content">Contenue Actuelle</labal>
-								<textarea rows="20" class="form-control" name="post-content" id="post-content"><?phpphp echo htmlentities($post_content);  mysqli_close($con); ?></textarea>
+								<textarea rows="20" class="form-control" name="post-content" id="post-content"><?php echo htmlentities($post_content);  mysqli_close($con); ?></textarea>
 							</div>
-							<input type="hidden" name="idFromUrl" value="<?phpphp echo $_GET['post_id']; ?>">
-							<input type="hidden" name="currentImage" value="<?phpphp echo $post_image; ?>">
+							<input type="hidden" name="idFromUrl" value="<?php echo $_GET['post_id']; ?>">
+							<input type="hidden" name="currentImage" value="<?php echo $post_image; ?>">
 							<div class="form-group">
 								<button name="post-update" class="btn btn-primary form-control">Mettre à jour</button>
 							</div>

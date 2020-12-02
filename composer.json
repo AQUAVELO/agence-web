@@ -1,0 +1,13 @@
+{
+  "name": "alesiaminceur/aquavelo",
+  "description": "test",
+  "require": {
+    "phpmailer/phpmailer": "~6.1"
+  },
+  "authors": [
+    {
+      "name": "me",
+      "email": "me@cc.com"
+    }
+  ]
+}

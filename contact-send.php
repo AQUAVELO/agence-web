@@ -2,9 +2,11 @@
 
 require'_settings.php';
 
-require'phpmailer/PHPMailerAutoload.php';
+require 'PHPMailer-6.2.0/src/Exception.php';
+require 'PHPMailer-6.2.0/src/PHPMailer.php';
+require 'PHPMailer-6.2.0/src/SMTP.php';
 
-$mail = new PHPmailer();
+$mail = new PHPMailer(true);
 $mail->IsSMTP();
 $mail->Host=$settings['mjhost'];
 $mail->ContentType = "text/html";
@@ -15,7 +17,7 @@ $mail->Port = 587;
 $mail->Username=$settings['mjusername'];
 $mail->Password=$settings['mjpassword'];
 
-$mail2 = new PHPmailer();
+$mail2 = new PHPMailer();
 $mail2->IsSMTP();
 $mail2->Host=$settings['mjhost'];
 $mail2->ContentType = "text/html";

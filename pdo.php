@@ -10,10 +10,4 @@ try {
 }
 var_dump($database);
 
-try {
-
-  $database = new PDO("mysql:host=" . $settings['dbhost'] . ";port=" . $settings['dbport'] . ";dbname=" . $settings['dbname'], $settings['dbusername'], $settings['dbpassword']);
-} catch (PDOException $e) {
-  echo $e->getMessage();
-}
 

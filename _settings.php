@@ -1,5 +1,6 @@
 <?php
 $settings = '';
+print_r(getenv("MYSQL_ADDON_HOST"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");

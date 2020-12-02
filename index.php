@@ -1,6 +1,5 @@
 <?php require'_settings.php'; ?>
 <?php
-echo getenv("MYSQL_ADDON_HOST");
 if(isset($_GET['p']) && is_file('_'.strip_tags($_GET['p']).'.php')) $page = strip_tags($_GET['p']); else $page = 'home'; 
 
 if($page == 'home') $title = 'Aquabiking collectif en piscine';

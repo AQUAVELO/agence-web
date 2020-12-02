@@ -29,8 +29,8 @@ $centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online
 $centers_free->execute(array(1, 1));
 while($free_d = $centers_free->fetch()) {
 ?>
-            <option <? if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?=$free_d['id']?>"><?=$free_d['city']?></option>
-            <? } ?>
+            <option <?php if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?=$free_d['id']?>"><?=$free_d['city']?></option>
+            <?php } ?>
             </select>
           </div>
           <div class="form-group">

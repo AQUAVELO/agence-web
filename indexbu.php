@@ -1,3 +1,4 @@
+<?php require'_settings.php'; ?>
 <?php
 
 if(isset($_GET['p']) && is_file('_'.strip_tags($_GET['p']).'.php')) $page = strip_tags($_GET['p']); else $page = 'home'; 
@@ -12,26 +13,22 @@ if($page == 'contact') $title = 'Contactez-nous';
 
 
 #nav
-/*
 $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
 $centers_list->execute(array(1, 1));
-*/
-$centers_list_d = [];
+$centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
 
 #home
 if($page == "home") {
-/*
+	
 $centers_last = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY id DESC');
 $centers_last->execute(array(1, 1));
 $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
-*/
-$centers_last_d = [];
+
 
 }
 
 
 #page
-/*
 if(isset($_GET['city'])) {
 	$city = strip_tags($_GET['city']);
 	$center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
@@ -52,8 +49,7 @@ if(isset($_GET['city'])) {
 	$title = "Aquavelo $city : Aquabiking en $department ";
 	} else {
 	header('location: ./');
-  }
-  */
+	}
 }
 
 ?>

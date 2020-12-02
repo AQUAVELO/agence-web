@@ -17,10 +17,9 @@ $settings['mjfrom'] = "info@aquavelo.com";
 
 try {
         $database = new PDO(
-                "mysql:host=" . $settings['dbhost'] . ";port=" . $settings['dbport'] . ";dbname=" . $settings['dbname'],
-                $settings['dbusername'],
-                $settings['dbpassword'],
-                //array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
+                'mysql:host=' . getenv("MYSQL_ADDON_HOST") . ';port=' . getenv('MYSQL_ADDON_PORT') . ';dbname=' . getenv("MYSQL_ADDON_DB"),
+                getenv("MYSQL_ADDON_USER"),
+                getenv("MYSQL_ADDON_PASSWORD"),
         );
 } catch (PDOException $e) {
         echo $e->getMessage();

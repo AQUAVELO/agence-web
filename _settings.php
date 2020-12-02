@@ -1,13 +1,13 @@
 <?
 $settings = '';
-$settings['dbhost'] = "localhost";
-$settings['dbname'] = "alesiaminceur";
-$settings['dbusername'] = "web_aquavelo";
-$settings['dbpassword'] = "Amh4d0%5";
+$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
+$settings['dbname'] = getenv("MYSQL_ADDON_DB");
+$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
+$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
 
 $settings['mjhost'] = "in.mailjet.com";
-$settings['mjusername'] = "af3d279995741286f01141125f990ec0";
-$settings['mjpassword'] = "cd92d1991f2e5e125abcfe94dcebf14a";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
 $settings['mjfrom'] = "info@aquavelo.com";
 ?>
 <?

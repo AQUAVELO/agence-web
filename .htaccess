@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+Options +FollowSymlinks
+
+# URL rewriting module activation
+RewriteEngine on
+RewriteBase /
+
+# URL rewriting rules
+
+RewriteRule ^sitemap$ /?p=sitemap [QSA,L]
+RewriteRule ^contact$ /?p=contact [QSA,L]
+RewriteRule ^centres$ /?p=centers [QSA,L]
+RewriteRule ^centres/([^/]+)$ /?p=page&city=$1 [QSA,L]
+RewriteRule ^seance-decouverte/([^/]+)$ /?p=free&city=$1 [QSA,L]
+
+RewriteRule ^concept-aquabiking$ /?p=concept [QSA,L]
+RewriteRule ^aquabiking$ /?p=aquabiking [QSA,L]
+RewriteRule ^aquabiking/velo-dans-l-eau$ /?p=velo [QSA,L]
+RewriteRule ^aquabiking/bienfaits-minceur$ /?p=bienfaits [QSA,L]
+RewriteRule ^blog/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)$ /?p=blog&name=$4 [QSA,L]
+
+RewriteRule ^cgv$ /?p=cgv [QSA,L]
+RewriteRule ^mentions-legales$ /?p=mentions [QSA,L]
+
+RewriteRule ^facebook$ http://www.facebook.com/pages/aquavelo/number?fref=ts [QSA,L]

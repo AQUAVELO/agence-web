@@ -36,7 +36,8 @@ if(isset($_GET['city'])) {
 	$city = strip_tags($_GET['city']);
 	$center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
 	$center->execute(array($city, 1, 1));
-	$secure = $center->rowCount();
+  $secure = $center->rowCount();
+  
 	if($secure != 0) {
 	$center = $database->prepare('SELECT * FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
 	$center->execute(array($city, 1, 1));
@@ -53,8 +54,8 @@ if(isset($_GET['city'])) {
 	} else {
 	header('location: ./');
   }
-  */
 }
+*/
 
 ?>
 <!DOCTYPE html>

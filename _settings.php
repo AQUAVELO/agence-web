@@ -1,5 +1,6 @@
 <?php
-$settings = [];
+
+$settings = '';
 
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
@@ -10,8 +11,10 @@ $settings['mjhost'] = "in.mailjet.com";
 $settings['mjusername'] = getenv("MAILJET_USERNAME");
 $settings['mjpassword'] = getenv("MAILJET_PASSWORD");
 $settings['mjfrom'] = "info@aquavelo.com";
-?>
-<?php
+
+var_dump($settings)
+/*
+
 try
 {
 	$database = new PDO("mysql:host=".$settings['dbhost'].";dbname=".$settings['dbname'].";charset=utf8", $settings['dbusername'], $settings['dbpassword'],
@@ -21,4 +24,5 @@ catch(Exception $error)
 {
         die('Error : '.$error->getMessage());
 }
+*/
 ?>

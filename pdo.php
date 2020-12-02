@@ -1,7 +1,7 @@
 <?php
 try {
   $database = new PDO(
-    'mysql:host=' . getenv("MYSQL_ADDON_HOST") . ';dbname=' . getenv("MYSQL_ADDON_DB"),
+    'mysql:host=' . getenv("MYSQL_ADDON_DIRECT_HOST") . ';port' . getenv('MYSQL_ADDON_DIRECT_PORT') . ';dbname=' . getenv("MYSQL_ADDON_DB"),
     getenv("MYSQL_ADDON_USER"),
     getenv("MYSQL_ADDON_PASSWORD")
   );

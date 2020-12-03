@@ -57,10 +57,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/1.jpg&w=800" alt=" ">
+      <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt=" ">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/2.jpg&w=800" alt=" "> </div>
-          <div class="col-md-6"> <img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?= $row_center['id']; ?>/3.jpg&w=800" alt=" "> </div>
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt=" "> </div>
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
         </div>
       </div>
       <div class="col-md-6">

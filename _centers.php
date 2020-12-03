@@ -24,7 +24,7 @@
       <div class="galleryItem france">
         <article class="portfolio-item">
           <div class="portfolio-thumbnail">
-            <a href="/centres/<?=strtolower($row_centers_list['city']);?>"><img src="/crop.php?src=https://www.alesiaminceur.com/cloud/center_<?=$row_centers_list['id'];?>/1.jpg&w=300" alt=" "></a>
+            <a href="/centres/<?=strtolower($row_centers_list['city']);?>"><img src="/cloud/thumbnail/center_<?=$row_centers_list['id'];?>/1.jpg" alt=" "></a>
             <a href="/centres/<?=strtolower($row_centers_list['city']);?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a>
 			 
 			  

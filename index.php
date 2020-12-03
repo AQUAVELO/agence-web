@@ -267,14 +267,13 @@ if (isset($_GET['city'])) {
     ga('create', 'UA-40045225-6', 'auto');
     ga('send', 'pageview');
 
-    (function() {
-      document.addEventListener("DOMContentLoaded", function(event) {
-        document.querySelectorAll('img').forEach(function(img) {
-          img.onerror = function() {
-            this.src = '/images/center_179/1.jpg';
-          };
-        })
-      });
+    document.addEventListener("DOMContentLoaded", function(event) {
+      document.querySelectorAll('img').forEach(function(img) {
+        img.onerror = function() {
+          this.src = '/images/center_179/1.jpg';
+        };
+      })
+
     })
   </script>
 </body>

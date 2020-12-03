@@ -3,10 +3,10 @@ Options +FollowSymlinks
 
 # URL rewriting module activation
 RewriteEngine on
-#RewriteBase /
+RewriteBase /
 
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+#RewriteCond %{HTTPS} off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
 
 # URL rewriting rules
 RewriteRule ^sitemap$ /?p=sitemap [QSA,L]

@@ -15,6 +15,7 @@ if ($page == 'contact') $title = 'Contactez-nous';
 
 #nav
 $centers_list_d = $redis->get('centers_list_d');
+var_dump($centers_list_d);
 if ($centers_list_d === null) {
   $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
@@ -26,9 +27,14 @@ if ($centers_list_d === null) {
 #home
 if ($page == "home") {
 
-  $centers_last = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY id DESC');
-  $centers_last->execute(array(1, 1));
-  $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
+  $centers_last_d = $redis->get('centers_last_d');
+  if ($centers_last_d === null) {
+    $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
+    $centers_last->execute(array(1, 1));
+    $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
+    $redis->set('centers_last_d', $centers_list_d);
+    $redis->expire('centers_last_d', 5);
+  }
 }
 
 
@@ -39,17 +45,12 @@ if (isset($_GET['city'])) {
   $center->execute(array($city, 1, 1));
   $secure = $center->rowCount();
   if ($secure != 0) {
-    $center = $database->prepare('SELECT * FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
+    $center = $database->prepare('SELECT c.*, d.nom AS department_nom, r.nom AS region_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department INNER JOIN regions r ON r.id = c.region WHERE c.city = ? AND c.online = ? AND c.aquavelo = ?');
     $center->execute(array($city, 1, 1));
     $row_center = $center->fetch();
-    $region = $database->prepare('SELECT nom FROM regions WHERE id = ?');
-    $region->execute(array($row_center['region']));
-    $row_region = $region->fetch();
-    $region = $row_region['nom'];
-    $department = $database->prepare('SELECT nom FROM departements WHERE id = ?');
-    $department->execute(array($row_center['department']));
-    $row_department = $department->fetch();
-    $department = $row_department['nom'];
+   
+    $region = $row_center['region_nom'];
+    $department = $row_center['department_nom'];
     $title = "Aquavelo $city : Aquabiking en $department ";
   } else {
     header('location: ./');

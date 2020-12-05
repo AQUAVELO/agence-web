@@ -1,4 +1,3 @@
-
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">Je réserve ma séance Gratuite et mon bilan</h1>
@@ -15,22 +14,22 @@
         <div class="row" style="margin-top:30px;">
           <div class="col-md-6"> <img src="/imageprocessor.php?src=http://aquavelo.com/images/center_179/2.jpg" alt=" "> </div>
           <div class="col-md-6"> <img src="/imageprocessor.php?src=http://aquavelo.com/images/center_179/3.jpg" alt=" "> </div>
-        
+
         </div>
       </div>
       <div class="col-md-6">
         <form role="form" class="contact-form" method="POST" action="?">
-         <div class="form-group">
+          <div class="form-group">
             <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
             <select class="form-control" id="center" name="center">
-            <?php
-			#nav
-$centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
-$centers_free->execute(array(1, 1));
-while($free_d = $centers_free->fetch()) {
-?>
-            <option <?php if(isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected';?> value="<?=$free_d['id']?>"><?=$free_d['city']?></option>
-            <?php } ?>
+              <?php
+              #nav
+              $centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
+              $centers_free->execute(array(1, 1));
+              while ($free_d = $centers_free->fetch()) {
+              ?>
+                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
+              <?php } ?>
             </select>
           </div>
           <div class="form-group">
@@ -45,57 +44,57 @@ while($free_d = $centers_free->fetch()) {
             <label for="phone">Téléphone</label>
             <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
           </div>
-          
+
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
         </form>
       </div>
-      </div>
-      <div class="row" style="margin-top:30px;">
+    </div>
+    <div class="row" style="margin-top:30px;">
       <div class="col-md-12">
-       <dl>
-            <dt>Adresse</dt>
-            <dd>
-              <?= $row_center['address']; ?>
-            </dd>
-            <dt>Téléphone</dt>
-            <dd>
-              <?= $row_center['phone']; ?>
-            </dd>
-            <dt>Horaires</dt>
-            <dd>
-              <?= $row_center['openhours']; ?>
-            </dd>
-            <dt>Web</dt>
-            <dd>
-              <?= $row_center['website']; ?>
-            </dd>
-            
-          </dl>
-          <p>
-            <?= $row_center['description']; ?>
-          </p>
-      </div>
+        <dl>
+          <dt>Adresse</dt>
+          <dd>
+            <?= $row_center['address']; ?>
+          </dd>
+          <dt>Téléphone</dt>
+          <dd>
+            <?= $row_center['phone']; ?>
+          </dd>
+          <dt>Horaires</dt>
+          <dd>
+            <?= $row_center['openhours']; ?>
+          </dd>
+          <dt>Web</dt>
+          <dd>
+            <?= $row_center['website']; ?>
+          </dd>
+
+        </dl>
+        <p>
+          <?= $row_center['description']; ?>
+        </p>
       </div>
     </div>
+  </div>
   </div>
 </section>
 <!-- Google Code for S&eacute;ance gratuite Conversion Page -->
 <script type="text/javascript">
-/* <![CDATA[ */
-var google_conversion_id = 966428486;
-var google_conversion_language = "fr";
-var google_conversion_format = "3";
-var google_conversion_color = "ffffff";
-var google_conversion_label = "tYZcCPLYqgkQxo7qzAM";
-var google_remarketing_only = false;
-/* ]]> */
+  /* <![CDATA[ */
+  var google_conversion_id = 966428486;
+  var google_conversion_language = "fr";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "tYZcCPLYqgkQxo7qzAM";
+  var google_remarketing_only = false;
+  /* ]]> */
 </script>
 <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
 </script>
 <noscript>
-<div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/966428486/?label=tYZcCPLYqgkQxo7qzAM&amp;guid=ON&amp;script=0"/>
-</div>
+  <div style="display:inline;">
+    <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/966428486/?label=tYZcCPLYqgkQxo7qzAM&amp;guid=ON&amp;script=0" />
+  </div>
 </noscript>
 <!--
 <section class="content-area bg2">
@@ -136,5 +135,5 @@ var google_remarketing_only = false;
     
   </div>
 </section>
---> 
-<!-- / section --> 
+-->
+<!-- / section -->

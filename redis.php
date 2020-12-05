@@ -26,12 +26,12 @@ try {
 }
 
 #nav
-$centers_list_d_cache = $redis->getItem('centers_list_d');
+$centers_list_d_cache = $redis->getItem('centers_list');
 if (!$centers_list_d_cache->isHit()) {
-  $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
+  $centers_list = $database->prepare('SELECT id, city FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
   $centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
-  $centers_list_d_cache->set($centers_list_d)->expiresAfter(getenv("REDIS_TTL"));
+  $centers_list_d_cache->set($centers_list_d)->expiresAfter(intval(getenv("REDIS_TTL")));
   $redis->save($centers_list_d_cache);
 } else {
   $centers_list_d = $centers_list_d_cache->get();

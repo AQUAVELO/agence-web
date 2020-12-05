@@ -28,13 +28,7 @@ try {
 }
 
 try {
-        $redis = new Predis\Client([
-                'scheme' => 'redis',
-                'host'   => getenv("REDIS_HOST"),
-                'port'   => getenv("REDIS_PORT"),
-                'username'   => "",
-                'password'   => getenv("REDIS_PASSWORD"),
-        ]);
+        $redis = new Predis\Client(getenv("REDIS_URL"));
 } catch (Exception $e) {
         echo "Couldn't connected to Redis";
         echo $e->getMessage();

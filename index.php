@@ -31,7 +31,7 @@ if ($page == "home") {
     $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
     $centers_last->execute(array(1, 1));
     $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
-    $redis->set('centers_last_d', $centers_list_d);
+    $redis->set('centers_last_d', $centers_last_d);
     $redis->expire('centers_last_d', 5);
   }
 }

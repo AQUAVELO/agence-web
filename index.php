@@ -14,9 +14,9 @@ if ($page == 'contact') $title = 'Contactez-nous';
 
 
 #nav
-$centers_list_d_cache = $redis->getItem('centers_list_d');
+$centers_list_d_cache = $redis->getItem('centers_list');
 if (!$centers_list_d_cache->isHit()) {
-  $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
+  $centers_list = $database->prepare('SELECT id, city, TypeAQUAVELO FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
   $centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
   $centers_list_d_cache->set($centers_list_d)->expiresAfter($settings['ttl']);
@@ -28,9 +28,9 @@ if (!$centers_list_d_cache->isHit()) {
 #home
 if ($page == "home") {
 
-  $centers_last_d_cache = $redis->getItem('centers_last_d');
+  $centers_last_d_cache = $redis->getItem('centers_last');
   if (!$centers_last_d_cache->isHit()) {
-    $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
+    $centers_last = $database->prepare('SELECT c.id, c.city, c.country, c.TypeAQUAVELO, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
     $centers_last->execute(array(1, 1));
     $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
     $centers_last_d_cache->set($centers_last_d)->expiresAfter($settings['ttl']);

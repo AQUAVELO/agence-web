@@ -6,7 +6,7 @@ use Phpfastcache\Drivers\Redis\Config;
 
 $settings = [];
 
-$settings['ttl'] = getenv("REDIS_TTL");
+$settings['ttl'] = intval(getenv("REDIS_TTL"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
 

@@ -6,7 +6,7 @@ use Phpfastcache\Drivers\Predis\Config;
 try {
   $redis = CacheManager::getInstance('predis', new Config([
           'host' => getenv("REDIS_HOST"),
-          'port' => getenv("REDIS_PORT"),
+          'port' => intval(getenv("REDIS_PORT")),
           'password' => getenv("REDIS_PASSWORD"),
   ]));
 } catch (Exception $e) {

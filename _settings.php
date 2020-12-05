@@ -29,7 +29,7 @@ try {
 
 try {
         $redis = new Predis\Client([
-                'scheme' => 'tcp',
+                'scheme' => 'redis',
                 'host'   => getenv("REDIS_HOST"),
                 'port'   => getenv("REDIS_PORT"),
                 'username'   => getenv("REDIS_TOKEN"),

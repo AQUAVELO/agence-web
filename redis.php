@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Predis\Config;
 try {
-  $redis = CacheManager::getInstance('redis', new Config([
+  $redis = CacheManager::getInstance('predis', new Config([
           'host' => getenv("REDIS_HOST"),
           'port' => getenv("REDIS_PORT"),
           'password' => getenv("REDIS_PASSWORD"),

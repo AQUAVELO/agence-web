@@ -15,7 +15,7 @@ if ($page == 'contact') $title = 'Contactez-nous';
 
 #nav
 $centers_list_d = $redis->get('centers_list_d');
-$centers_list_d = json_decode($centers_list_d);
+$centers_list_d = json_decode($centers_list_d, true);
 if (!$centers_list_d) {
   $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
@@ -28,7 +28,7 @@ if (!$centers_list_d) {
 if ($page == "home") {
 
   $centers_last_d = $redis->get('centers_last_d');
-  $centers_last_d = json_decode($centers_last_d);
+  $centers_last_d = json_decode($centers_last_d, true);
   if (!$centers_last_d) {
     $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
     $centers_last->execute(array(1, 1));
@@ -44,7 +44,7 @@ if (isset($_GET['city'])) {
   $city = strip_tags($_GET['city']);
 
   $row_center = $redis->get($city);
-  $row_center = json_decode($row_center);
+  $row_center = json_decode($row_center, true);
   var_dump($row_center);
   if (!$row_center) {
     $center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');

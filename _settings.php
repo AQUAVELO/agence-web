@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 
 $settings = [];
 
@@ -25,7 +26,7 @@ try {
         echo $e->getMessage();
 }
 
-$client = new Predis\Client([
+$redis = new Predis\Client([
         'scheme' => 'tcp',
         'host'   => getenv("REDIS_HOST"),
         'port'   => getenv("REDIS_PORT"),

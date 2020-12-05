@@ -10,10 +10,10 @@
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/imageprocessor.php?src=http://aquavelo.com/images/center_179/1.jpg" alt=" ">
+      <div class="col-md-6"> <img src="/images/center_179/1.jpg" alt=" ">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/imageprocessor.php?src=http://aquavelo.com/images/center_179/2.jpg" alt=" "> </div>
-          <div class="col-md-6"> <img src="/imageprocessor.php?src=http://aquavelo.com/images/center_179/3.jpg" alt=" "> </div>
+          <div class="col-md-6"> <img src="/images/center_179/2.jpg" alt=" "> </div>
+          <div class="col-md-6"> <img src="/images/center_179/3.jpg" alt=" "> </div>
 
         </div>
       </div>

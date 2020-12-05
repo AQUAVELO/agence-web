@@ -22,12 +22,7 @@
           <div class="form-group">
             <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
             <select class="form-control" id="center" name="center">
-              <?php
-              #nav
-              $centers_free = $database->prepare('SELECT id, city FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
-              $centers_free->execute(array(1, 1));
-              while ($free_d = $centers_free->fetch()) {
-              ?>
+              <?php foreach ($free_d as &$row_centers_list) { ?>
                 <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
               <?php } ?>
             </select>

@@ -22,7 +22,7 @@
           <div class="form-group">
             <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
             <select class="form-control" id="center" name="center">
-              <?php foreach ($free_d as &$row_centers_list) { ?>
+              <?php foreach ($free_d as &$centers_list_d) { ?>
                 <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
               <?php } ?>
             </select>

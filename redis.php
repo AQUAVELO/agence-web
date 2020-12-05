@@ -2,15 +2,26 @@
 require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
-use Phpfastcache\Drivers\Predis\Config;
+use Phpfastcache\Drivers\Redis\Config;
 try {
-  $redis = CacheManager::getInstance('predis', new Config([
+  $redis = CacheManager::getInstance('redis', new Config([
           'host' => getenv("REDIS_HOST"),
           'port' => intval(getenv("REDIS_PORT")),
           'password' => getenv("REDIS_PASSWORD"),
   ]));
 } catch (Exception $e) {
   echo "Couldn't connected to Redis";
+  echo $e->getMessage();
+}
+
+try {
+  $database = new PDO(
+          'mysql:host=' . getenv("MYSQL_ADDON_HOST") . ';port=' . getenv('MYSQL_ADDON_PORT') . ';dbname=' . getenv("MYSQL_ADDON_DB"),
+          getenv("MYSQL_ADDON_USER"),
+          getenv("MYSQL_ADDON_PASSWORD"),
+  );
+} catch (PDOException $e) {
+  echo "Couldn't connected to MySQL";
   echo $e->getMessage();
 }
 

@@ -24,3 +24,11 @@ try {
 } catch (PDOException $e) {
         echo $e->getMessage();
 }
+
+$client = new Predis\Client([
+        'scheme' => 'tcp',
+        'host'   => getenv("REDIS_HOST"),
+        'port'   => getenv("REDIS_PORT"),
+        'username'   => getenv("REDIS_TOKEN"),
+        'password'   => getenv("REDIS_PASSWORD"),
+]);

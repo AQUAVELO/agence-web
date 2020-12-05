@@ -34,7 +34,7 @@ try {
 try {
         $redis = CacheManager::getInstance('redis', new Config([
                 'host' => getenv("REDIS_HOST"),
-                'port' => getenv("REDIS_PORT"),
+                'port' => intval(getenv("REDIS_PORT")),
                 'password' => getenv("REDIS_PASSWORD"),
         ]));
 } catch (Exception $e) {

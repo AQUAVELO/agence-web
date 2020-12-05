@@ -23,13 +23,19 @@ try {
                 getenv("MYSQL_ADDON_PASSWORD"),
         );
 } catch (PDOException $e) {
+        echo "Couldn't connected to MySQL";
         echo $e->getMessage();
 }
 
-$redis = new Predis\Client([
-        'scheme' => 'tcp',
-        'host'   => getenv("REDIS_HOST"),
-        'port'   => getenv("REDIS_PORT"),
-        'username'   => getenv("REDIS_TOKEN"),
-        'password'   => getenv("REDIS_PASSWORD"),
-]);
+try {
+        $redis = new Predis\Client([
+                'scheme' => 'tcp',
+                'host'   => getenv("REDIS_HOST"),
+                'port'   => getenv("REDIS_PORT"),
+                'username'   => getenv("REDIS_TOKEN"),
+                'password'   => getenv("REDIS_PASSWORD"),
+        ]);
+} catch (Exception $e) {
+        echo "Couldn't connected to Redis";
+        echo $e->getMessage();
+}

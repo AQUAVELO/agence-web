@@ -45,6 +45,7 @@ if (isset($_GET['city'])) {
 
   $row_center = $redis->get($city);
   $row_center = json_decode($row_center);
+  var_dump($row_center);
   if (!$row_center) {
     $center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
     $center->execute(array($city, 1, 1));

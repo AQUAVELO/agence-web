@@ -21,7 +21,7 @@ if (!$centers_list_d) {
   $centers_list->execute(array(1, 1));
   $centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
   $redis->set('centers_list_d', json_encode($centers_list_d));
-  $redis->expire('centers_list_d', 5);
+  $redis->expire('centers_list_d', $settings['ttl']);
 }
 
 #home
@@ -34,7 +34,7 @@ if ($page == "home") {
     $centers_last->execute(array(1, 1));
     $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
     $redis->set('centers_last_d', json_encode($centers_last_d));
-    $redis->expire('centers_last_d', 5);
+    $redis->expire('centers_last_d', $settings['ttl']);
   }
 }
 
@@ -45,7 +45,6 @@ if (isset($_GET['city'])) {
 
   $row_center = $redis->get($city);
   $row_center = json_decode($row_center, true);
-  var_dump($row_center);
   if (!$row_center) {
     $center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
     $center->execute(array($city, 1, 1));
@@ -55,7 +54,7 @@ if (isset($_GET['city'])) {
       $center->execute(array($city, 1, 1));
       $row_center = $center->fetch();
       $redis->set($city, json_encode($row_center));
-      $redis->expire($city, 5);
+      $redis->expire($city, $settings['ttl']);
     } else {
       return header('location: ./');
     }

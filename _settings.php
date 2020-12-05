@@ -32,7 +32,7 @@ try {
                 'scheme' => 'redis',
                 'host'   => getenv("REDIS_HOST"),
                 'port'   => getenv("REDIS_PORT"),
-                'username'   => getenv("REDIS_TOKEN"),
+                'username'   => "",
                 'password'   => getenv("REDIS_PASSWORD"),
         ]);
 } catch (Exception $e) {

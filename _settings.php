@@ -1,6 +1,9 @@
 <?php
 require 'vendor/autoload.php';
 
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Redis\Config;
+
 $settings = [];
 
 $settings['ttl'] = getenv("REDIS_TTL");
@@ -29,7 +32,11 @@ try {
 }
 
 try {
-        $redis = new Predis\Client(getenv("REDIS_URL"));
+        $redis = CacheManager::getInstance('redis', new Config([
+                'host' => getenv("REDIS_HOST"),
+                'port' => getenv("REDIS_PORT"),
+                'password' => getenv("REDIS_PASSWORD"),
+        ]));
 } catch (Exception $e) {
         echo "Couldn't connected to Redis";
         echo $e->getMessage();

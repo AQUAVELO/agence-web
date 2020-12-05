@@ -14,27 +14,28 @@ if ($page == 'contact') $title = 'Contactez-nous';
 
 
 #nav
-$centers_list_d = $redis->get('centers_list_d');
-$centers_list_d = json_decode($centers_list_d, true);
-if (!$centers_list_d) {
+$centers_list_d_cache = $redis->getItem('centers_list_d');
+if (!$centers_list_d_cache->isHit()) {
   $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
   $centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
-  $redis->set('centers_list_d', json_encode($centers_list_d));
-  $redis->expire('centers_list_d', $settings['ttl']);
+  $centers_list_d_cache->set($centers_list_d)->expiresAfter($settings['ttl']);
+  $redis->save($centers_list_d_cache);
+} else {
+  $centers_list_d = $centers_list_d_cache->get();
 }
 
 #home
 if ($page == "home") {
 
-  $centers_last_d = $redis->get('centers_last_d');
-  $centers_last_d = json_decode($centers_last_d, true);
-  if (!$centers_last_d) {
+  $centers_last_d_cache = $redis->getItem('centers_last_d');
+  if (!$centers_last_d_cache->isHit()) {
     $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
     $centers_last->execute(array(1, 1));
     $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
-    $redis->set('centers_last_d', json_encode($centers_last_d));
-    $redis->expire('centers_last_d', $settings['ttl']);
+    $centers_last_d_cache->set($centers_last_d)->expiresAfter($settings['ttl']);
+  } else {
+    $centers_last_d = $centers_last_d_cache->get();
   }
 }
 
@@ -43,9 +44,8 @@ if ($page == "home") {
 if (isset($_GET['city'])) {
   $city = strip_tags($_GET['city']);
 
-  $row_center = $redis->get($city);
-  $row_center = json_decode($row_center, true);
-  if (!$row_center) {
+  $row_center_cache = $redis->getItem($city);
+  if (!$row_center_cache->isHit()) {
     $center = $database->prepare('SELECT id FROM am_centers WHERE city = ? AND online = ? AND aquavelo = ?');
     $center->execute(array($city, 1, 1));
     $secure = $center->rowCount();
@@ -53,11 +53,12 @@ if (isset($_GET['city'])) {
       $center = $database->prepare('SELECT c.*, d.nom AS department_nom, r.nom AS region_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department INNER JOIN regions r ON r.id = c.region WHERE c.city = ? AND c.online = ? AND c.aquavelo = ?');
       $center->execute(array($city, 1, 1));
       $row_center = $center->fetch();
-      $redis->set($city, json_encode($row_center));
-      $redis->expire($city, $settings['ttl']);
+      $row_center_cache->set($row_center)->expiresAfter($settings['ttl']);
     } else {
       return header('location: ./');
     }
+  } else {
+    $row_center = $row_center_cache->get();
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];

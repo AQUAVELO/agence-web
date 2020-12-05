@@ -14,27 +14,25 @@ if ($page == 'contact') $title = 'Contactez-nous';
 
 
 #nav
-$centers_list_d = $redis->get('centers_list_d');
-var_dump($centers_list_d);
-if ($centers_list_d === null) {
+#$centers_list_d = $redis->get('centers_list_d');
   $centers_list = $database->prepare('SELECT * FROM am_centers WHERE online = ? AND aquavelo = ? ORDER BY city ASC');
   $centers_list->execute(array(1, 1));
   $centers_list_d = $centers_list->fetchAll(PDO::FETCH_ASSOC);
-  $redis->set('centers_list_d', $centers_list_d);
-  $redis->expire('centers_list_d', 5);
-}
+  #$redis->set('centers_list_d', $centers_list_d);
+ # $redis->expire('centers_list_d', 5);
+
 
 #home
 if ($page == "home") {
 
-  $centers_last_d = $redis->get('centers_last_d');
-  if ($centers_last_d === null) {
+  #$centers_last_d = $redis->get('centers_last_d');
+  #if ($centers_last_d === null) {
     $centers_last = $database->prepare('SELECT c.*, d.nom AS department_nom FROM am_centers c INNER JOIN departements d ON d.id = c.department WHERE c.online = ? AND c.aquavelo = ? ORDER BY c.id DESC');
     $centers_last->execute(array(1, 1));
     $centers_last_d = $centers_last->fetchAll(PDO::FETCH_ASSOC);
-    $redis->set('centers_last_d', $centers_list_d);
-    $redis->expire('centers_last_d', 5);
-  }
+   # $redis->set('centers_last_d', $centers_list_d);
+   # $redis->expire('centers_last_d', 5);
+ # }
 }
 
 

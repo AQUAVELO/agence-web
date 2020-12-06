@@ -39,7 +39,8 @@
             <label for="phone">Téléphone</label>
             <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
           </div>
-
+          <input type="hidden" name="reason" id="reason">
+          <input type="hidden" name="segment" id="segment">
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
         </form>
       </div>

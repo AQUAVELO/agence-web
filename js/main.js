@@ -11,11 +11,18 @@
 		$form.prepend('<div id="response">');
 		var $response = $('#response');
 		
+		$("#segment").val(analytics.user().anonymousId());
 		// Do what we need to when form is submitted.
 		$form.on('click', 'button[type=submit]', function(e){
 
 			// Hide any previous response text and show loader
 			$response.hide().html( $loader ).show();
+
+			analytics.identify({
+				email: $("#email").val(),
+				phone: $("#phone").val(),
+				firstName: $("#nom").val()
+			});
 			
 			// Make AJAX request 
 			$.post('/contact-send.php', $form.serialize(), function( data ) {

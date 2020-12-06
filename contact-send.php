@@ -30,7 +30,7 @@ $mail2->Password = $settings['mjpassword'];
 
 
 // Ensures no one loads page and does simple spam check
-if (isset($_POST['nom']) && empty($_POST['spam-check'])) {
+if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 	// Declare our $errors variable we will be using later to store any errors
 	$error = '';
@@ -42,6 +42,7 @@ if (isset($_POST['nom']) && empty($_POST['spam-check'])) {
 	$input_email = strip_tags($_POST['email']);
 	$input_tel = strip_tags($_POST['phone']);
 	$center = strip_tags($_POST['center']);
+	$segment = strip_tags($_POST['segment']);
 
 	// We'll check and see if any of the required fields are empty
 	if (strlen($input_name) < 2) $error['name'] = 'Veuillez nous indiquer votre nom.';
@@ -80,8 +81,8 @@ if (isset($_POST['nom']) && empty($_POST['spam-check'])) {
 	// Now check to see if there are any errors 
 	if (!$error) {
 
-		$add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone) VALUES (?, ?, ?, ?, ?, ?)");
-		$add_free->execute(array('AQ' . date('dmhis'), $center, 3, $name, $email, $tel));
+		$add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$add_free->execute(array('AQ' . date('dmhis'), $center, 3, $name, $email, $tel, $segment));
 
 
 		setcookie('secure', 'true', (time() + 15));

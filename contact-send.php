@@ -6,6 +6,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+use Segment;
+Segment::init("41Dkd78Miiecgi2WBbNwV56HqWZ6I4x0");
+
+
 $mail = new PHPMailer(true);
 $mail->IsSMTP();
 $mail->Host = $settings['mjhost'];
@@ -80,11 +84,21 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 	// Now check to see if there are any errors 
 	if (!$error) {
-
+		$reference = 'AQ' . date('dmhis');
 		$add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-		$add_free->execute(array('AQ' . date('dmhis'), $center, 3, $name, $email, $tel, $segment));
+		$add_free->execute(array($reference, $center, 3, $name, $email, $tel, $segment));
 
-
+		Segment::track(array(
+			"userId" => $reference,
+			"anonymousId" => $segment,
+			"event" => "Demo Requested",
+			"properties" => array(
+				"center" => $center,
+				"firstname" => $name,
+				"email" => $email,
+				"phone" => $tel
+			)
+		));
 		setcookie('secure', 'true', (time() + 15));
 
 		//PHPMAILER

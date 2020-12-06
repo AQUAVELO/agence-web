@@ -89,7 +89,6 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		$add_free->execute(array($reference, $center, 3, $name, $email, $tel, $segment));
 
 		Segment::track(array(
-			"userId" => $reference,
 			"anonymousId" => $segment,
 			"event" => "Demo Requested",
 			"properties" => array(

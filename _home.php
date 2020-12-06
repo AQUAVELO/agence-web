@@ -54,7 +54,7 @@
         ?>
           <li>
             <article class="portfolio-item animated" data-fx="fadeInUp">
-              <div class="portfolio-thumbnail"> <a href="/centres/<?= $row_centers_last['city'] ?>"><img src="/cloud/thumbnail/center_<?= $row_centers_last['id']; ?>/01.jpg" alt="Aquavelo <?= $row_centers_last['city'] ?>"></a> <a href="/centres/<?= $row_centers_last['city'] ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
+              <div class="portfolio-thumbnail"> <a href="/centres/<?= $row_centers_last['city'] ?>"><img src="/cloud/thumbnail/center_<?= $row_centers_last['id']; ?>/1.jpg" alt="Aquavelo <?= $row_centers_last['city'] ?>"></a> <a href="/centres/<?= $row_centers_last['city'] ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
               <div class="entry-meta"> <span class="cat-links"><a href="#"><?= $department; ?></a>, <a href="#"><?= $row_centers_last['country'] ?></a></span> </div>
               <h4 class="entry-title"><a href="#"><?= $row_centers_last['city'] ?>, <?= $row_centers_last['TypeAQUAVELO'] ?></a></h4>
             </article>

@@ -92,18 +92,14 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 			"anonymousId" => $segment,
 			"event" => "Demo Requested",
 			"properties" => array(
+				"reference" => $reference,
 				"center" => $center,
 				"firstname" => $name,
 				"email" => $email,
 				"phone" => $tel
 			)
 		));
-		Segment::identify(array(
-			"anonymousId" => $segment,
-			"properties" => array(
-				"reference" => $reference
-			)
-		));
+	
 		setcookie('secure', 'true', (time() + 15));
 
 		//PHPMAILER

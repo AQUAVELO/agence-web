@@ -98,6 +98,12 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 				"phone" => $tel
 			)
 		));
+		Segment::identify(array(
+			"anonymousId" => $segment,
+			"properties" => array(
+				"reference" => $reference
+			)
+		));
 		setcookie('secure', 'true', (time() + 15));
 
 		//PHPMAILER

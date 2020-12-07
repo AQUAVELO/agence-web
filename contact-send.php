@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 use Segment;
-Segment::init("41Dkd78Miiecgi2WBbNwV56HqWZ6I4x0");
+Segment::init("CvtZvzpEIJ0UHZuZCwSqQuq5F6o2FGsB");
 
 
 $mail = new PHPMailer(true);

@@ -5,12 +5,11 @@ Options +FollowSymlinks
 RewriteEngine on
 RewriteBase /
 
-#RewriteCond %{HTTPS} off
-#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
-RewriteCond %{HTTP_HOST} ^aquavelo\.com [NC]
-RewriteRule ^(.*)$ https://www.aquavelo.com/$1 [L,R=301]
-RewriteCond %{HTTPS_HOST} ^aquavelo\.com [NC]
-RewriteRule ^(.*)$ https://www.aquavelo.com/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} !^www\.aquavelo\.com$
+RewriteRule (.*) https://www.aquavelo.com/$1 [L,R=301]
+
+RewriteCond %{HTTPS_HOST} !^www\.aquavelo\.com$
+RewriteRule (.*) https://www.aquavelo.com/$1 [L,R=301]
 
 # URL rewriting rules
 RewriteRule ^sitemap$ /?p=sitemap [QSA,L]

@@ -11,7 +11,9 @@
 		$form.prepend('<div id="response">');
 		var $response = $('#response');
 		
-		$("#segment").val(analytics.user().anonymousId());
+		analytics.ready(function() {
+			$("#segment").val(analytics.user().anonymousId());
+		});
 		// Do what we need to when form is submitted.
 		$form.on('click', 'button[type=submit]', function(e){
 

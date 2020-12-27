@@ -98,7 +98,7 @@ use PHPMailer\PHPMailer\Exception;
                 $mail->addReplyTo('contact@aquavelo.com', 'Aquavelo');
 
                 $destinataire = "Aquavelo <claude@alesiaminceur.com>";
-                $mail->addAddress('claude@alesiaminceur.com', 'Claude Rodriguez');
+                $mail->addAddress('franchise@alesiaminceur.com', 'Claude Rodriguez');
 
                 $object = "Contact sur le site Aquavelo";
                 $mail->Subject = $object;

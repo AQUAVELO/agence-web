@@ -78,11 +78,9 @@ use PHPMailer\PHPMailer\Exception;
               $mail->Port = 587;
               //$mail->Username = $settings['mjusername'];
               //$mail->Password = $settings['mjpassword'];
-              $mail->Username = "d876a5da2863648348c35d1bfa576ed2";
-              $mail->Password = "0637b82d2f51ebedd0b4b80069641135";
+              $mail->Username = getenv("MAILJET_USERNAME");
+              $mail->Password = getenv("MAILJET_PASSWORD");
               //Create a new PHPMailer instance
-
-
               $nom = $_POST['nom'];
               $email = $_POST['email'];
               $message = $_POST['message'];
@@ -96,8 +94,8 @@ use PHPMailer\PHPMailer\Exception;
 
               if ($err == 0) {
 
-                $mail->setFrom('contact@alesiaminceur.com', 'Aquavelo');
-                $mail->addReplyTo('contact@alesiaminceur.com', 'Aquavelo');
+                $mail->setFrom('contact@aquavelo.com', 'Aquavelo');
+                $mail->addReplyTo('contact@aquavelo.com', 'Aquavelo');
 
                 $destinataire = "Aquavelo <claude@alesiaminceur.com>";
                 $mail->addAddress('claude@alesiaminceur.com', 'Claude Rodriguez');

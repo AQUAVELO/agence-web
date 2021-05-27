@@ -5,16 +5,17 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center;"><a href="/seance-decouverte/Antibes">1 abonnement acheté =
-				<br />1 abonnement <span class="bigger" style="text-transform:uppercase;">offert</span>
-				<br /><span style="font-size:60%; line-height:1em;">Jusqu'à un mois offert*</span>
+                <h3 class="pa slidertext" style="float:left; text-align:center;"><a href="/seance-decouverte/Antibes">Ouverture des centres<br />
+                    le 9 juin 2021<span class="bigger" style="text-transform:uppercase;"></span>
+				<br />
+				<span style="font-size:60%; line-height:1em;"></span>
 				</a>
 				</h3>
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none;">
                   <p style="font-weight: 300;">ESSAYEZ<br> UNE SÉANCE<br>GRATUITE<br>d'AQUAVELO</p>
 				  </a> 
               </div>
-              </div>
+            </div>
             </div>
             </div>
           </div>

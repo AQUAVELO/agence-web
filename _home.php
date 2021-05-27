@@ -8,7 +8,7 @@
             <div class="media-body">
               <h4 class="media-heading"><a href="#">R&eacute;servation en ligne</a></h4>
               <p>Avec 70 cours par semaine à votre disposition, réservez en ligne où que vous soyez,
-                votre vélo vous attend selon votre emploi du temps. Pas de stress ! </p>
+                votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
             </div>
           </div>
         </div>

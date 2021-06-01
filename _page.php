@@ -97,7 +97,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd> <a href="https://www.dropbox.com/s/yvmr1e9os5znlnc/PLANNINGANTIBES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
            <?php } elseif ($row_center['id'] == 305) { ?>
 			 <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/ippgfpky29n0vqg/PLANNING%20CANNES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
+          <dd> <a href="https://www.dropbox.com/s/u584xqy1ptaay39/PLANNING%20CANNES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
            <?php } elseif ($row_center['id'] == 308) { ?>
 			 <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/lykwimvoey600r7/PLANNINGSTRAPHAEL.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>

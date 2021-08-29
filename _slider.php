@@ -5,8 +5,8 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center;"><a href="/seance-decouverte/Antibes">Jusqu'à 110 € de remise <br />
-                    en juillet !<br />
+                <h3 class="pa slidertext" style="float:left; text-align:center;"><a href="/seance-decouverte/Antibes">Jusqu'à 100 € de remise <br />
+                    en aout !<br />
 				<span style="font-size:60%; line-height:1em;"></span>
 				</a>
 				</h3>

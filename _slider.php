@@ -5,7 +5,7 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; text-transform: uppercase; color: #fff;text-shadow: -4px 4px 4px purple !important;"><a href="/seance-decouverte/Antibes"><span style="color:#000; font-size: 40px !important; line-height: 45px !important;">"</span>Une bonne <span style="color:f0b0fb;">santé</span>,
+                <h3 class="pa slidertext" style="float:left; text-align:center; text-transform: uppercase; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color:#000;">"</span>Une bonne <span style="color:f0b0fb;">santé</span>,
 				<br />une belle <span style="color:f0b0fb;">silhouette !<span style="color:#000;">"</span></span><br />
 				Jusqu'à <span style="font-size: 120%; line-height: 1em; color: #000; -webkit-text-stroke: 2px #fff;">125€</span> de remise
 				<br />sur votre formule				

@@ -5,10 +5,10 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; text-transform: uppercase; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color:#000;">"</span>Une bonne <span style="color:f0b0fb;">santé</span>,
-				<br />une belle <span style="color:f0b0fb;">silhouette !<span style="color:#000;">"</span></span><br />
-				Jusqu'à <span style="font-size: 120%; line-height: 1em; color: #000; -webkit-text-stroke: 2px #fff;">125€</span> de remise
-				<br />sur votre formule				
+                <h3 class="pa slidertext" style="float:left; text-align:center; text-transform: uppercase; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes" style="background-color: #ff6691; display: block; width: 50%; margin: 0 auto; padding: 5px 10px;"><span style="color: #563b3b;text-transform: none;text-shadow: none !important;">Pour le mois de la St Valentin</span>
+				<br><span style="color: #fff; font-size: 120%; text-shadow: 2px 2px 5px #000;">8 séances offertes</span>
+
+				<br><span style="font-size: 70%; text-transform: none; text-shadow: none; color: #563b3b; -webkit-text-stroke-width: 0;">en plus sur votre forfait*</span>
 				</a>
 				</h3>
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none;">

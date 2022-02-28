@@ -5,8 +5,8 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:400px; text-transform: uppercase; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #f6e732;text-transform: none;text-shadow: none !important;-webkit-text-stroke-color: #000; text-transform: uppercase;">Un mois offert !</span>
-				<br><span style="color: #fff; font-size: 80%; text-shadow: 2px 2px 5px #000; text-transform: lowercase; font-weight: normal; font-size: 120%;">ou -10% sur votre formule</span>
+                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:400px; text-transform: uppercase; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #f6e732;text-transform: none;text-shadow: none !important;-webkit-text-stroke-color: #000; text-transform: uppercase; font-size: 120%;">Un mois offert !</span>
+				<br><span style="color: #fff; font-size: 80%; text-shadow: 2px 2px 5px #000; text-transform: lowercase; font-weight: normal;">ou -10% sur votre formule</span>
 
 				<br><span style="font-size: 100%; text-transform: none; text-shadow: 2px 2px 3px #000; color: #fff; -webkit-text-stroke-width: 0; margin-top: 20px;">En MARS,
 				<br />je draine ma cellulite,

@@ -6,9 +6,9 @@
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
                 <h3 class="pa slidertext" style="float:right; text-align:center; max-width:500px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #1c4296;text-transform: uppercase;text-shadow: none !important;-webkit-text-stroke-color: #1c4296; font-size: 130%; line-height: 60px;">
-				Les <strong style="font-size:140%; color: #e54488; -webkit-text-stroke-color: #e54488;">5 premières</strong>
+				Les <strong style="font-size:130%; line-height: 65px !important; color: #e54488; -webkit-text-stroke-color: #e54488;">5 premières</strong>
 				<br />séances sont
-				<br /><strong style="font-size:140%; color: #e54488; -webkit-text-stroke-color: #e54488;">gratuites !</strong></span>
+				<br /><strong style="font-size:140%; line-height: 65px !important; color: #e54488; -webkit-text-stroke-color: #e54488;">gratuites !</strong></span>
 				
 				<!--<br /><span style="font-size: 33px; font-weight: normal; text-transform: none; text-shadow: 2px 2px 3px #000; display: block; color: #fff; -webkit-text-stroke-width: 0; margin-top: 20px;">
 				Jusqu'à <strong style="font-size:140%;">-100 €</strong>

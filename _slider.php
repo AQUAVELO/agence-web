@@ -5,11 +5,11 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:500px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #1c4296; text-shadow: none !important;-webkit-text-stroke-color: #1c4296; font-size: 65px; line-height: 70px;">
-				Happy<br />Summer !
-				<strong style="font-size:50px; line-height: 60px !important; color: #e54488; -webkit-text-stroke-color: #e54488;">1 abonnement acheté
-				<br />=1 abonnement</strong> <strong style="font-size:50px; line-height: 60px !important; color: #e54488; -webkit-text-stroke-color: #e54488; text-transform:uppercase;">offert</strong> !
-				<br /><br /><br /><span style="text-align:right; font-size:30px; line-height: 40px">Jusqu'à 10 séances<br />en plus sur votre formule</span>
+                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:600px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #1c4296; text-shadow: none !important;-webkit-text-stroke-color: #1c4296; font-size: 65px; line-height: 70px;">
+				Happy Summer !
+				<br /><strong style="font-size:50px; line-height: 60px !important; color: #e54488; -webkit-text-stroke-color: #e54488;">1 abonnement acheté
+				<br />=1 abonnement</strong> <strong style="font-size:50px; line-height: 60px !important; color: #1c4296; -webkit-text-stroke-color: #e54488; text-transform:uppercase;">offert</strong> !
+				<br /><br /><br /><p style="text-align:right; font-size:30px; line-height: 30px; color: #1c4296;">Jusqu'à 10 séances<br />en plus sur votre formule</p>
 				</a>
 				</h3>
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">

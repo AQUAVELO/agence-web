@@ -5,11 +5,11 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:600px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #fff; text-shadow: none !important;-webkit-text-stroke-color: orange; font-size: 65px; line-height: 70px;">
-				Crazy Summer !
-				<br /><strong style="font-size:50px; line-height: 60px !important; color: #fff; -webkit-text-stroke-color: #fff;">1 formule achetée
-				<br />= 1 <span style="text-decoration:underline;">formule offerte</span> !</strong>
-				<br /><br /><p style="text-align:left; font-size:30px; line-height: 30px; color: darkorange; -webkit-text-stroke-color: #fff;">Soit 10 % de séances en plus*</p>
+                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:600px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important;"><a href="/seance-decouverte/Antibes"><span style="color: #fff; text-shadow: 4px 4px 4px darkred !important; -webkit-text-stroke-color: orange; font-size: 65px; line-height: 70px;">
+				Crazy<br /><span style="font-size: 85px; line-height: 90px;">Summer</span>
+				<br /><strong style="font-size:45px; line-height: 55px !important; color: #fff; -webkit-text-stroke-color: #fff;">1 formule achetée
+				<br />= 1 <span style="text-decoration:underline; text-decoration-color: darkorange;">formule offerte</span> !</strong>
+				<br /><br /><p style="font-size:30px; line-height: 30px; color: brown; -webkit-text-stroke-color: darkorange;">Soit 10 % de séances en plus*</p>
 				</a>
 				</h3>
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">

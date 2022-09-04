@@ -1,7 +1,7 @@
   <section class="flexslider std-slider" data-height="740" data-loop="true" data-smooth="false" data-slideshow="true" data-speed="15000" data-animspeed="550" data-controls="true" data-dircontrols="true">
     <ul class="slides">
     <li data-bg="/images/content/home-v1-slider-03.jpg" style="background-position:top; min-height: 740px !important;">
-        <div class="container">
+        <div class="container" style="width: 1400px !important;">
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">

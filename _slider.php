@@ -5,14 +5,14 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="float:left; text-align:center; max-width:600px; color: #fff; text-shadow: -4px 4px 4px purple !important; font-size: 40px !important; line-height: 45px !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span style="color: orange; text-shadow: 4px 4px 4px black !important; -webkit-text-stroke-color: blue; font-size: 65px; line-height: 70px; font-family: 'Lucida Handwriting'; font-weight: 100; -webkit-text-stroke-width: 0px !important;">
+                <h3 class="pa slidertext" style="float:none; margin:0 auto; text-align:center; max-width:600px; color: orange; text-shadow: -4px 4px 4px black !important; font-size: 70px !important; line-height: 80px !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span style="-webkit-text-stroke-color: blue; font-family: 'Lucida Handwriting'; font-weight: 100; -webkit-text-stroke-width: 0px !important;">
 				L'Automne<br />sera sportif !</span>
-				<br /><br /><strong style="font-size:45px; line-height: 55px !important; color: #fff; -webkit-text-stroke-color: #fff;">En octobre, vos
-				<br /><span style="color: orange; font-size: 65px; -webkit-text-stroke:0;">5</span>
-				<span style="color: fff; font-size: 45px; -webkit-text-stroke:0;">premières</span>
-				<span style="color: orange; font-size: 65px; -webkit-text-stroke:0;">séances</span>
-				<span style="color: fff; font-size: 45px; -webkit-text-stroke:0;">sont</span>
-				<span style="color: #4dc3e7; font-size: 65px; -webkit-text-stroke:0;">offertes*</span></strong>
+				<br /><strong style="font-size:45px; line-height: 55px !important; color: #fff; -webkit-text-stroke-color: #fff;">En octobre, vos
+				<br /><span style="color: orange; font-size: 85px; top: 20px; position: relative;">5</span>
+				<span style="color: #fff; font-size: 35px;">premières</span>
+				<span style="color: orange; font-size: 65px;">séances</span>
+				<br /><span style="color: #fff; font-size: 35px;">sont</span>
+				<span style="color: orange; font-size: 65px;">Offertes !*</span></strong>
 				</a>
 				</h3>
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">

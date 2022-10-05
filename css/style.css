@@ -4120,8 +4120,8 @@ font-weight: 900;
 
 .flexslider .inner { padding-top: 30px; }
 .flexslider .inner .slidertext { width: 100%; color: #17317e; letter-spacing:-2px; text-shadow: 1px 1px 1px #000 !important; font-size: 50px; line-height: 60px !important; text-align:left; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color:#fff; text-transform:none; text-align:left; }
-.flexslider .inner .slidertext span.bigger { font-size: 60px; line-height:70px; }
-.flexslider .inner .slidertext span.smaller { font-size: 40px; line-height:50px; }
+.flexslider .inner .slidertext span.bigger { font-size: 60px; line-height:70px !important; }
+.flexslider .inner .slidertext span.smaller { font-size: 40px; line-height:50px; !important; }
 .flexslider .inner .slidertext span.bigger em { font-family:"Courgette"; -webkit-text-stroke-width: 1px !important; font-style: normal; }
 
 

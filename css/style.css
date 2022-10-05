@@ -4120,23 +4120,23 @@ font-weight: 900;
 
 .flexslider .inner { padding-top: 30px; }
 .flexslider .inner .slidertext { width: 100%; color: #17317e; letter-spacing:-2px; text-shadow: 1px 1px 1px #000 !important; font-size: 45px; line-height: 65px !important; text-align:left; -webkit-text-stroke-width: 1px; -webkit-text-stroke-color:#fff; text-transform:none; text-align:left; }
-.flexslider .inner .slidertext span.bigger { font-size: 55px; -webkit-text-stroke-width: 3px; text-transform:none; }
-.flexslider .inner .slidertext span.smaller { font-size: 45px; -webkit-text-stroke-width: 2px; text-transform:none; }
+.flexslider .inner .slidertext span.bigger { font-size: 120% !important; }
+.flexslider .inner .slidertext span.smaller { font-size: 80% !important; }
 .flexslider .inner .slidertext span.bigger em { font-family:"Courgette"; -webkit-text-stroke-width: 1px !important; font-style: normal; }
 
 
-.flexslider .inner .slidertext a:hover, .flexslider .inner .slidertext a:active { color:darkblue; }
+.flexslider .inner .slidertext a:hover, .flexslider .inner .slidertext a:active { }
 
 @media only screen and (max-width: 994px) {
-.flexslider .inner .slidertext { font-size: 35px !important; line-height: 45px !important; }
-.flexslider .inner .slidertext span.bigger { font-size: 40px !important; line-height: 35px; -webkit-text-stroke-width: 1px; }
-.flexslider .inner .slidertext span.smaller { font-size: 30px !important; line-height: 35px; }
+.flexslider .inner .slidertext { }
+.flexslider .inner .slidertext span.bigger { }
+.flexslider .inner .slidertext span.smaller { }
 #sticker-text { margin-top: 200px; }
 }
 
 @media only screen and (max-width: 636px) {
-	.flexslider .inner .slidertext { font-size: 40px !important; line-height: 40px !important; }
-	.flexslider .inner .slidertext span.bigger { font-size:40px; line-height: 40px; -webkit-text-stroke-width: 1px !important; }
-	.flexslider .inner .slidertext span.smaller { font-size: 30px; line-height: 30px; -webkit-text-stroke-width: 1px !important; }
+	.flexslider .inner .slidertext { margin:0; font-size: 60% !important; line-height: 60% !important; }
+	.flexslider .inner .slidertext span.bigger { font-size: 120% !important; }
+	.flexslider .inner .slidertext span.smaller { font-size: 80% !important; }
 	
 }

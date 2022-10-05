@@ -5,7 +5,7 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="text-align:center; max-width:600px; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span style="-webkit-text-stroke-color: blue; font-family: 'Lucida Handwriting'; font-weight: 100; -webkit-text-stroke-width: 0px !important;">
+                <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span style="-webkit-text-stroke-color: blue; font-family: 'Lucida Handwriting'; font-weight: 100; -webkit-text-stroke-width: 0px !important;">
 				L'Automne<br />sera sportif !</span>
 				<br /><strong class="bigger" style="color: #fff; -webkit-text-stroke-color: #fff;">En octobre, vos</strong>
 				<br /><span class="bigger" style="color: orange; top: 20px; position: relative;">5</span>

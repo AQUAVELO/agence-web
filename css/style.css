@@ -4135,8 +4135,8 @@ font-weight: 900;
 }
 
 @media only screen and (max-width: 636px) {
-	.flexslider .inner .slidertext { margin:0; font-size: 30px !important; line-height:40px; }
-	.flexslider .inner .slidertext span.bigger { font-size: 40px !important; line-height:50px; }
-	.flexslider .inner .slidertext span.smaller { font-size: 20px !important; line-height:30px; }
+	.flexslider .inner .slidertext { margin:0; font-size: 30px !important; line-height:40px !important; }
+	.flexslider .inner .slidertext span.bigger { font-size: 40px !important; line-height:50px !important; }
+	.flexslider .inner .slidertext span.smaller { font-size: 20px !important; line-height:30px !important; }
 	
 }

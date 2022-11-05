@@ -5,16 +5,10 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-                <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span style="-webkit-text-stroke-color: blue; font-family: 'Lucida Handwriting'; font-weight: 100; -webkit-text-stroke-width: 0px !important;">
-				L'Automne<br />sera sportif !</span>
-				<br /><span class="bigger" style="color: #fff; -webkit-text-stroke-color: #fff;">En octobre, vos</strong>
-				<br /><span class="bigger" style="color: orange; top: 20px; position: relative;">5</span>
-				<span class="smaller" style="color: #fff;">premières</span>
-				<span class="bigger" style="color: orange;">séances</span>
-				<br /><span class="smaller" style="color: #fff;">sont</span>
-				<span class="bigger" style="color: orange;">Offertes !*</span>
-				</a>
+               <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span class="bigger" style="color: #fff;">ESSAYEZ</span><span style="font-family: 'Lucida Handwriting'; color:#ffe000;"><br>gratuitement</span><br><span class="bigger" style="color: #fff;">45 mn<br><span style="color: cyan;">d'Aquavelo</span></span></a>
 				</h3>
+				
+				
                   <a href="/seance-decouverte/Antibes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">
                   <p style="font-weight: 300;">ESSAYEZ<br> UNE SÉANCE<br>GRATUITE<br>d'AQUAVELO</p>
 			    </a> 

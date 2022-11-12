@@ -91,7 +91,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           
           <?php if($row_center['id'] == 179) { ?>
           <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/d4aioqoosov03em/PLANNING.pdf" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
+          <dd> <a https://www.dropbox.com/s/z2hus3pm88qtvsl/PLANNING.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
           <?php } elseif ($row_center['id'] == 253) { ?>
           <dt>Planning</dt>
           <dd> <a href="https://www.dropbox.com/s/yvmr1e9os5znlnc/PLANNINGANTIBES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>

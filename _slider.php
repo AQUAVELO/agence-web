@@ -5,7 +5,14 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-               <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes"><span class="bigger" style="color: #fff;">ESSAYEZ</span><span style="font-family: 'Lucida Handwriting'; color:#ffe000;"><br>gratuitement</span><br><span class="bigger" style="color: #fff;">45 mn<br><span style="color: cyan;">d'Aquavelo</span></span></a>
+               <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes">
+			   L'offre de <span class="bigger" style="color: #f2e4b3;">Noël</span>
+			   <br />Aquavélo est arrivée !
+			   <br /><br />Un abonnement acheté
+			   <br /><span class="bigger" style="color: #f2e4b3;">=</span>
+			   <br />un abonnement <span class="bigger" style="color: #f2e4b3;">offert*</span>
+			   <br /><br /><span class="smaller">Jusqu'à 10 séances offertes</span>
+			   </a>
 				</h3>
 				
 				

@@ -5,13 +5,13 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
-               <h3 class="pa slidertext" style="text-align:center; color: orange; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes">
-			   L'offre de <span class="bigger" style="color: #f2e4b3;">Noël</span>
+               <h3 class="pa slidertext" style="text-align:center; color: fff; line-height: 30px !important; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px;"><a href="/seance-decouverte/Antibes">
+			   L'offre de <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">Noël</span>
 			   <br />Aquavélo est arrivée !
 			   <br /><br />Un abonnement acheté
-			   <br /><span class="bigger" style="color: #f2e4b3;">=</span>
-			   <br />un abonnement <span class="bigger" style="color: #f2e4b3;">offert*</span>
-			   <br /><br /><span class="smaller">Jusqu'à 10 séances offertes</span>
+			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">=</span>
+			   <br />un abonnement <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">offert*</span>
+			   <br /><br /><span class="smaller" style="font-size: 50% !important;">Jusqu'à 10 séances offertes</span>
 			   </a>
 				</h3>
 				

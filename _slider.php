@@ -7,7 +7,7 @@
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
                <h3 class="pa slidertext" style="text-align:center; color: #fff; line-height: 40px !important; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px; max-width: 625px;"><a href="/seance-decouverte/Antibes">
 			   L'offre de <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">Noël</span>
-			   <br />Aquavélo est arrivée !
+			   <br />est arrivée !
 			   <br /><br />Un abonnement acheté
 			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">=</span>
 			   <br />un abonnement <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">offert*</span>

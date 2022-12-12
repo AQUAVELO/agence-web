@@ -10,7 +10,7 @@
 		           <br />
 			   <br />est arrivée !
 			   <br /><br />
-			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">Venez vite en profiter !</span>
+			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Venez vite en profiter !</span>
 			   <br /> <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;"></span>
 			   <br /><br /><span class="smaller" style="font-size: 20% !important;"></span>
 			   </a>

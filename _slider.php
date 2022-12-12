@@ -11,7 +11,7 @@
 			   <br /><br />Un abonnement acheté
 			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">=</span>
 			   <br />un abonnement <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">offert*</span>
-			   <br /><br /><span class="smaller" style="font-size: 50% !important;">Jusqu'à 10 séances offertes</span>
+			   <br /><br /><span class="smaller" style="font-size: 20% !important;">Jusqu'à 10 séances offertes</span>
 			   </a>
 				</h3>
 				

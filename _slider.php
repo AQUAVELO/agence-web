@@ -8,6 +8,7 @@
                <h3 class="pa slidertext" style="text-align:center; color: #fff; line-height: 40px !important; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px; max-width: 625px;"><a href="/seance-decouverte/Antibes">
 			   L'offre de <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">Noël</span>
 		           <br />
+		      	   <br />
 			   <br />est arrivée !
 			   <br /><br />
 			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Venez vite en profiter !</span>

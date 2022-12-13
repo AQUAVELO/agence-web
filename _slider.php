@@ -33,7 +33,7 @@
           <div class="inner">
             <div class="row">
               <div class="col-md-6 animated" data-fx="fadeIn">
-                <h2>Détruire la cellulite</h2>
+                <h2>Atténuer la cellulite</h2>
                 <p>Saviez-vous qu'une 1/2 heure d'aquabiking équivaut à une heure de fitness avec 3 fois plus de calories brûlées ?</p>
                 <a href="/aquabiking" class="btn btn-default btn-lg">Les bienfaits</a> </div>
               <div class="col-md-6"></div>

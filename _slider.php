@@ -6,13 +6,14 @@
             <div class="row">
               <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
                <h3 class="pa slidertext" style="text-align:center; color: #fff; line-height: 40px !important; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px; max-width: 625px;"><a href="/seance-decouverte/Antibes">
-			   Objectif 2023 :<span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;"></span>
+			   <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;"></span>
 		           <br />
 		      	   <br />
 			   <br />
-			   <br /><br />
-			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Ma plus belle silhouette !</span>
-			   <br /> <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;"></span>
+			  
+			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Objectif 2023 :</span>
+		       	  <br /><br />
+			   <br /> <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;">Ma plus belle silhouette !</span>
 			   <br /><br /><span class="smaller" style="font-size: 20% !important;"></span>
 			   </a>
 				</h3>

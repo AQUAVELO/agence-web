@@ -147,6 +147,8 @@ use PHPMailer\PHPMailer\Exception;
 	  <dd>06150 Cannes</dd>
 	  <dd>Capital 15000 €</dd>	
 	  <dd>RCS 822 269 528</dd>
+	  <dd>TVA FR44822269528</dd>
+		
 
           <dt>Téléphone</dt>
           <dd>+33 (0)6 22 64 70 95</dd>

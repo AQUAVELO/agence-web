@@ -141,9 +141,11 @@ use PHPMailer\PHPMailer\Exception;
           <dd>Nous recherchons des maîtres nageurs pour notre développement national en France et international sur l'Espagne et le Maroc, envoyer CV + photo à claude@alesiaminceur.com </dd>
           <dd></dd>
           <dd></dd>
-          <dt>Service clients</dt>
-          <dd>1170 route de Nice</dd>
-          <dd>06600 ANTIBES</dd>
+          <dt>Gestionnaire du site internet</dt>
+          <dd>Aqua Cannes</dd>
+          <dd>60 avenue du Docteur Raymond Picaud</dd>
+	  <dd>06150 Cannes</dd>
+	  <dd>RCS 822 269 528</dd>
 
           <dt>Téléphone</dt>
           <dd>+33 (0)6 22 64 70 95</dd>

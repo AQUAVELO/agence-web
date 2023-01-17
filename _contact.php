@@ -145,6 +145,7 @@ use PHPMailer\PHPMailer\Exception;
           <dd>Aqua Cannes</dd>
           <dd>60 avenue du Docteur Raymond Picaud</dd>
 	  <dd>06150 Cannes</dd>
+	  <dd>Capital 15000 €</dd>	
 	  <dd>RCS 822 269 528</dd>
 
           <dt>Téléphone</dt>

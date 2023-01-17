@@ -46,7 +46,7 @@ use PHPMailer\PHPMailer\Exception;
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Nom, prénom et ville concernée </label>
-                <input type="text" class="form-control" placeholder="Nom, prénom et ville concernée" name="nom" value="<?php echo $_POST['nom']; ?>" />
+                <input type="text" class="form-control" placeholder="Nom, prénom et la ville concernée" name="nom" value="<?php echo $_POST['nom']; ?>" />
               </div>
               <div class="form-group">
                 <label for="exampleInputFile">Message</label>

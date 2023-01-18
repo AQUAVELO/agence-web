@@ -13,8 +13,8 @@
 			  <br />
 		       	  <br />
 			   <br /><span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Objectif 2023 :</span>
-		      
-			   <br /> <span class="bigger" style="color: #f2e4b3; font-size: 100%; line-height: 40px !important;">Ma plus belle silhouette !</span>
+		      	   <br>
+			   <br /> <span class="bigger" style="color: #f2e4b3; font-size: 125%; line-height: 40px !important;">Ma plus belle silhouette !</span>
 			   <br /><br /><span class="smaller" style="font-size: 20% !important;"></span>
 			   </a>
 				</h3>

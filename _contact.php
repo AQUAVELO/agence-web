@@ -157,7 +157,22 @@ use PHPMailer\PHPMailer\Exception;
           <dd><a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a></dd>
         </dl>
         <dl>
-
+	<button type="button" data-toggle="modal" data-target="#infos" class="btn btn-primary">Informations</button>
+<div class="modal" id="infos">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Plus d'informations</h4>
+      </div>
+      <div class="modal-body">
+        Le Tigre (Panthera tigris) est un mammifère carnivore de la famille des félidés...
+      </div>
+      <div class="modal-footer">
+        <em>Informations sous réserve</em>
+      </div>
+    </div>
+  </div>
+</div>
 
         </dl>
 

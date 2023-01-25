@@ -177,7 +177,7 @@ if (isset($_GET['city'])) {
                 </div>
                 <div class="table-cell">
                   <ul class="socialIcons bigIcons">
-                    <li><a href="http://www.facebook.com/aquavelonice" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://www.facebook.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="http://twitter.com/AquaveloNice" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="http://plus.google.com/108184119422520190690" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus"></i></a></li>
                     <li><a href="#" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>

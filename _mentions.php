@@ -1,0 +1,194 @@
+<section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="70" data-btmspace="50">
+  <div class="container">
+    <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true" data-controls="true">
+      <ul class="slides">
+        <li>
+          <blockquote class="huge text-center">
+            <p> Piscine municipale complète ?<br>
+              Notre concept d'aquabiking collectif propose une solution alternative en plein coeur de votre ville. </p>
+          </blockquote>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="content-area bg1">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Aquavélo : l’expert de votre silhouette</h1>
+      <h2>L’activité de fitness idéale pour perdre du poids, éliminer la cellulite et drainer les toxines tout en trouvant du plaisir.</h2>
+    </header>
+    <div class="row">
+      <div class="col-md-4 col-md-push-2">
+        <p> A qui s’adresse l’aquabiking ? L’un des points forts de l’aquabiking, c’est qu’il se pratique quelque soit son niveau de forme :<br>
+          En effet, même les personnes avec des capacités de mouvements réduits (surpoids, âge, les femmes enceintes, les accidents articulaires ou opérations , problèmes de dos…) peuvent pratiquer sans danger avec un effet garanti. </p>
+        <p> D’une part, par rapport à l’exercice physique pratiqué sur terre, l’exercice de l’hydrobike évite les stress musculaires et diminue la production d’acide lactique. Vous pouvez oublier les si désagréables courbatures!<br>
+          D’autre part, le milieu aquatique évite de brusquer les articulations tout en bénéficiant de la résistance de l’eau qui assure un massage et un drainage naturels.<br>
+          L'aquabiking permet donc aux personnes ne pouvant pas, pour de multiples raisons, reprendre une activité sportive de s’y remettre en douceur grâce à une activité très efficace. Le sport idéal pour lutter contre la cellulite, affiner ses cuisses et perdre sa culotte de cheval. </p>
+        <p> Sachez que, contrairement à l'aquagym simple, l'aquabiking permet de tonifier et de remodeler rapidement sa silhouette. En effet, dans l’eau, votre corps est plus léger… mais vos muscles travaillent pourtant bien plus pour repousser le poids de l’eau! Votre corps en immersion ne pèse qu’un dixième de son poids grâce au principe d'Archimède : nous avons donc beaucoup plus de facilité à réaliser un entrainement sous l'eau qu'en salle. <br>
+          Articulations préservées, effets optimisés et plus de courbatures avec le vélo aquatique! </p>
+        
+      </div>
+      <div class="col-md-4 col-md-push-2">
+      <p> Ce sport développe également votre endurance et vos capacités cardio-vasculaires en douceur. La résistance de l’eau a pour conséquence un effort différent, un massage aux multiples vertus: le coeur bat 10% moins vite que dans l’air et les graisses sont brûlées en priorité.<br>
+          Par contre, l'avantage du travail musculaire effectué sous l'eau est que vous devez lutter contre l'eau, qui exerce une résistance, ce qui provoque un effet de massage continu très efficace sur la peau des jambes, du bassin et de la ceinture abdominale. C'est la raison pour laquelle le vélo aquatique est un ennemi redoutable de la peau d’orange en favorisant progressivement la destruction de la cellulite.<br>
+          Pratiqué régulièrement, il permet de prévenir et d’éviter la rétention d’eau et les oedèmes. </p>
+        <p> Donc, en terme d’effet, c’est comme si on faisait du vélo avec une séance de drainage lymphatique et du palper rouler. On cumule 3 effets sur le plan vasculaire, ce qui n’est pas négligeable!</p>
+        <p> Aquavelo, le centre minceur par excellence pour un régime express, un bon plan anti-kilos …
+          Combien brûle-t-on de calories en une séance d' Aquabiking? Près de 300 à 500 pour une séance de 45 minutes, pour un sport sans traumatismes et qui est facile à pratiquer même si vous êtes en surpoids ou en convalescence ! <br>
+          Une bonne alternative pour la régularité à la pratique du sport! Certaines séances incluent l'usage de poids et d'haltères pour muscler également le haut du corps pendant que vos cuisses et vos mollets s'affinent comme par magie... <br>
+          L'effet anti-cellulite est vraiment palpable rapidement. Alors, imaginez les bénéfices au bout de 12 mois. Bien entendu, vous pouvez compléter ce massage naturel anti-cellulite en profitant de nos produits minceur efficaces, tant avec les crèmes, que les compléments alimentaires. Vous retrouverez à coup sûr des jambes et des fesses bien galbées, une sangle abdominale tonique en un minimum de temps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="content-area bg2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <header class="page-header text-left">
+          <h1 class="page-title">Le groupe Alésia Minceur</h1>
+          <h2>Quels sont nos avantages?</h2>
+          <p> Une présence internationale, le groupe est déjà présent en Algérie, Russie et Maroc. </p>
+        </header>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="iconBox type4">
+          <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-star"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Communication</a></h4>
+              <p> Un marketing très poussé : Aquavelo maîtrise parfaitement la communication (télémarke- ting, prospectus, publipostage, emailing, etc) afin de vous générer le trafic souhaité dans votre magasin pour le moins cher possible dans le but d'optimiser votre rentabilité. </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox --> 
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="iconBox type4">
+          <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-cog"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Partenariats</a></h4>
+              <p> Des partenariats gratuits durant toute l'année avec des grandes marques (Forté Pharma, shampoing Garnier, Télé2, Bouygues Télécom, etc) afin de générer du trafic gratuitement dans votre magasin, et d'être associé à leur image nationale. </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox --> 
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="iconBox type4">
+          <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-thumbs-up"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Accompagnement</a></h4>
+              <p> L'emplacement est trouvé par Aquavelo et sera un emplacement un bis (une rue avec du passage piéton et voiture) dans une ville d’au minimum 15 000 habitants. Vous avez la possibilité d’ouvrir en zone commerciale ou en centre ville. </p>
+            </div>
+          </div>
+        </div>
+        <!-- / iconBox --> 
+      </div>
+    </div>
+    <!-- / row --> 
+    
+  </div>
+</section>
+<section class="content-area bg1" id="ouvrir">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Notre force de réseau</h1>
+      <h2>Ouvrir un AQUAVELO</h2>
+    </header>
+    <div class="row">
+    <div class="col-md-6">
+   <p> <a href="https://www.dropbox.com/s/wow02pk0jncaolr/8p%20Aquavelo%20Piscine.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger la brochure de présentation du concept AQUAVELO</a></p>
+   <p>La communication AQUAVELO permet d'attirer la clientéle attirée par la thalassothérapie, l'amincissement corporel, l'activité physique en douceur, soit un ciblage clientéle entre 15 à 85 ans à 90 % constituée de femmes.</p>
+<p>Les cours d'AQUAVELO ont lieu 7 jours sur 7 de 9 h à 21 h, et sont réalisés par des maitres nageurs, l'avantage est que les clientes réservent directement leurs cours sur notre application selon leur disponibilité.</p>
+<p>
+Avec AQUAVELO vous bénéficierez d'une formation technique, commerciale et marketing opérationnel de 15 jours minimum, d'un marketing commercial intense ( internet, fidélisation, prospectus..etc), d'une plateforme collaborative ( docs, vidéos commerciale et technique etc), de réunions réguliéres, d'un coach pour vous assister, de campagnes marketing intenses, et autres, pour seulement 490 € de redevances fixes mensuelles.</p>
+<p>Les centres AQUAVELO Piscine encaissent entre 300 à 600 000 € de chiffres d'affaires annuel avec une excellente rentabilité pour un centre de 200 à 350 m2.</p>
+    </div>
+    <div class="col-md-6"><p>
+    Pour créer votre centre, peu importe que vous soyez un homme, une femme, vous devez avoir un profil commercial et être motivé par le contact humain.
+</p>
+<p>L’emplacement sera un emplacement un bis (une rue avec du passage piéton et voiture) dans une ville d’au minimum 40 000 habitants.
+Vous pouvez ouvrir votre centre avec 6 à 20 vélos en fonction de l'apport que vous souhaitez investir dans votre AQUAVELO.</p>
+<p>
+  <strong>Combien coûte un AQUAVELO :</strong>
+<ul class="">
+<li>à partir de 6000 € de droit d’entrée,</li>
+<li>Travaux et aménagements 800 à 1000 € du métre carré ( bassin, climatisation, deshum., vélos, vestaires, carrelage..etc)</li>
+<li>Enseigne et Vitrophanie, 2000 €,</li></ul>
+Soit un investissement inférieur à 160 000 € pour 200 m2 que vous pouvez ouvrir avec un apport de 40 000 € seulement !</p>
+    </div>
+    </div>
+    <a class="btn btn-default" href="mailto:directionalesiaminceur@gmail.com">Pour plus d’informations veuillez téléphoner à Claude RODRIGUEZ au 06 22 64 70 95 ou par email à directionalesiaminceur@gmail.com</a>
+  </div>
+  </section>
+<!-- 
+<section class="content-area bg1">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Notre force de réseau</h1>
+      <h2>Le développement de notre groupe</h2>
+    </header>
+  </div>
+  <div id="timeline-embed"></div>
+</section>
+<section class="content-area bg1">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Notre équipe</h1>
+      <h2>Nous vous accompagnons tout au long de votre projet</h2>
+    </header>
+    <div class="row">
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-1.jpg" alt="" class="img-circle">
+          <h4>Robert Judd <span>CEO</span> </h4>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-2.jpg" alt="" class="img-circle">
+          <h4>Eva Barnes <span>Designer</span> </h4>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-3.jpg" alt="" class="img-circle">
+          <h4>Eugene Fletcher <span>Developer</span> </h4>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-4.jpg" alt="" class="img-circle">
+          <h4>Janet McKenzie <span>Support</span> </h4>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-5.jpg" alt="" class="img-circle">
+          <h4>Michelle Edson <span>Support</span> </h4>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-4 col-xs-6">
+        <div class="personBox text-center"> <img src="images/content/about-v2-team-hiring.png" alt="">
+          <h4><a href="09-pluto-jobs.html">See the details</a></h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<section class="content-area bg2">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="98" data-speed="4000" data-refresh-interval="50"></span> <sup>%</sup> <span class="timerDesc">Taux de satisfaction client</span> </div>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="90" data-speed="4000" data-refresh-interval="50"></span> <sup>jours</sup> <span class="timerDesc">Temps moyen d'ouverture</span> </div>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="12" data-speed="4000" data-refresh-interval="50"></span> <span class="timerDesc">Centres en cours d'ouverture</span> </div>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="14" data-speed="4000" data-refresh-interval="50"></span> <sup>ans</sup> <span class="timerDesc">Expérience dans l'amincissement</span> </div>
+      </div>
+    </div> 
+    <!-- / row --> 
+    
+  </div>
+</section>

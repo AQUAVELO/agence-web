@@ -236,6 +236,9 @@ Chemin des Pardiaux, 63000 Clermont-Ferrand, France</p>
       <div class="modal-footer">
         <em>Informations legales</em>
       </div>
+	    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+      </div>
     </div>
   </div>
 </div>

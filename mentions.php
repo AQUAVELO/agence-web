@@ -1,68 +1,16 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Mentions Légales</title>
-   
-</head>
+<header class="main-header clearfix">
+  <div class="container">
+    <h1 class="page-title pull-left">Aquabiking</h1>
+
+    <ol class="breadcrumb pull-right">
+      <li><a href="./">Accueil</a></li>
+      <li class="active">Aquabiking</li>
+    </ol>
+  </div>
+</header>
 
 <body>
-   <!-- navbar -->
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-          <a class="navbar-brand" href="http://aquavelo.com/"><img src="/images/content/logo.png" alt="Aquabiking collectif"></a> </div>
-        <div class="navbar-collapse collapse">
-          <form class="pull-right header-search" role="form" style="display:none;">
-            <fieldset>
-              <div class="container">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Type to search...">
-                </div>
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </div>
-            </fieldset>
-          </form>
-          <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
-          <ul class="nav navbar-nav navbar-right">
-            <li<?php if ($p == 'home') echo ' class="active"'; ?>> <a href="http://aquavelo.com/">Accueil</a> </li>
-              <li class="dropdown<?php if ($p == 'aquabiking') echo ' active'; ?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
-                  <li><a href="/aquabiking">Les bienfaits</a></li>
-                </ul>
-              </li>
-              <li class="dropdown<?php if ($p == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
-                <ul class="dropdown-menu">
-
-                  <?php foreach ($centers_list_d as &$row_centers_list) { ?>
-                    <li><a href="/centres/<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
-                  <?php } ?>
-
-                </ul>
-              </li>
-              <li class="dropdown<?php if ($p == 'concept') echo ' active'; ?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
-                </ul>
-              </li>
-              <li><a target="_blank" href="https://minceurprod.com">Minceur</a></li>
-              <li <?php if ($p == 'contact') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'contact') echo ' active'; ?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/contact">Emploi</a></li>
-                  <li><a href="/contact">Contactez-nous</a></li>
-
-                </ul>
-              </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!-- / navbar -->
-<div>
-  <div></div>
-</div>
+   
 <p><strong>Mentions Légales</strong> </p>
 <p> </p>
 <h3>1. Présentation du site.</h3>

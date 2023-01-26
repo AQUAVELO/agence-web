@@ -151,7 +151,7 @@ if (isset($_GET['city'])) {
                   <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
                 </ul>
               </li>
-              <li><a target="_blank" href="https://minceurprod.com">Minceur</a></li>
+              <li><a target="_blank" href="https://dietsuccess.fr">Conseils minceurs</a></li>
               <li <?php if ($p == 'contact') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'contact') echo ' active'; ?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
                 <ul class="dropdown-menu">
                   <li><a href="/contact">Emploi</a></li>

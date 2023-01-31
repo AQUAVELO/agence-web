@@ -16,7 +16,7 @@
 		      	   <br>
 			   <br /> <span class="bigger" style="color: #e51cb3; font-size: 125%; line-height: 40px !important;">à deux</span>
 			   <br/>
-		       	   <br/><span class="smaller" style="font-size: 20% !important;">c'est encore mieux !</span>
+		       	   <br/><span class="bigger" style="color: #e51cb3; style="font-size:125%; line-height: 40px !important; ">c'est encore mieux !</span>
 			   </a>
 				</h3>
 				

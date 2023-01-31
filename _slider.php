@@ -12,10 +12,11 @@
 			   <br />
 			  <br />
 		       	  <br />
-			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;">Objectif 2023 :</span>
+			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;">L'AQUAVELO</span>
 		      	   <br>
-			   <br /> <span class="bigger" style="color: #e51cb3; font-size: 125%; line-height: 40px !important;">Ma plus belle silhouette !</span>
-			   <br /><br /><span class="smaller" style="font-size: 20% !important;"></span>
+			   <br /> <span class="bigger" style="color: #e51cb3; font-size: 125%; line-height: 40px !important;">à deux</span>
+			   <br/>
+		       	   <br/><span class="smaller" style="font-size: 20% !important;">c'est encore mieux !</span>
 			   </a>
 				</h3>
 				

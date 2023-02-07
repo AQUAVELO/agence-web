@@ -61,8 +61,12 @@
             <?= $row_center['openhours']; ?>
           </dd>
           <dt>Web</dt>
-          <dd>
-            <?= $row_center['website']; ?>
+          <dd>            
+          <?= $row_center['website']; ?>
+            
+            
+            <a href=‘$row_center['website']’ target=‘_blank’ >$row_center['website']</a>
+            
           </dd>
 
         </dl>

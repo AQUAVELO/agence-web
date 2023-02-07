@@ -60,10 +60,8 @@
           <dd>
             <?= $row_center['openhours']; ?>
           </dd>
-          <dt>Web</dt>
-          <dd>            
-          <?= $row_center['website']; ?>    
-          </dd>
+          <dt>Facebook</dt>
+         
           
           <dd> <a href="https://www.facebook.com/aquavelo<?= $row_center['city']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 

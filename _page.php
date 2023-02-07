@@ -79,9 +79,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
             <?= $row_center['openhours']; ?>
           </dd>
-          <dt>Web</dt>
+          <dt>Facebook</dt>
           <dd>
-            <?= $row_center['website']; ?>
+           <dd> <a href="https://www.facebook.com/aquavelo<?= $row_center['city']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+
 	 
           <dd>	
 	   </dd>

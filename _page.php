@@ -82,6 +82,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dt>Web</dt>
           <dd>
             <?= $row_center['website']; ?>
+	  <dt>Facebook</dt>
+          <dd>	
+	    <a href=‘$facebook’ target=‘_blank’ >$facebook</a>
+		  
           </dd>
           <?php if($row_center['book_link']) { ?>
           <dt>Agenda</dt>

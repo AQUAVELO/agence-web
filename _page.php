@@ -87,7 +87,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	   </dd>
           <?php if($row_center['facebook']) { ?>
           <dt>Facebook</dt>
-          <dd> <a href="http://<?=$row_center['facebook'];?>/" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+          <dd> <a href="http://<?=$row_center['facebook'];?>" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
           <?php } ?>
 		  
           </dd>

@@ -64,6 +64,8 @@
           <dd>            
           <?= $row_center['website']; ?>    
           </dd>
+          
+          <dd> <a href="https://www.facebook.com/<?= $row_center['city']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 
         </dl>
         <p>

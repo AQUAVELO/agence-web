@@ -82,14 +82,18 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dt>Web</dt>
           <dd>
             <?= $row_center['website']; ?>
-	  <dt>Facebook</dt>
+	 
           <dd>	
-	    <a href=$row_center['facebook'] target=‘_blank’ >Facebook</a>
+	   </dd>
+          <?php if($row_center['facebook']) { ?>
+          <dt>Facebook</dt>
+          <dd> <a href="http://<?=$row_center['facebook'];?>/" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+          <?php } ?>
 		  
           </dd>
           <?php if($row_center['book_link']) { ?>
           <dt>Agenda</dt>
-          <dd> <a href="http://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
+          <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
           <?php } ?>
           
           

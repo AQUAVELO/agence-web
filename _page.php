@@ -81,7 +81,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           </dd>
           <dt>Facebook</dt>
           <dd>
-           <dd> <a href="https://www.facebook.com/aquavelo<?= $row_center['city']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+           <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 
 	 
           <dd>	

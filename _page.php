@@ -67,19 +67,19 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
          <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
 
          <dl style="margin-top:30px;">
-          <dt>Adresse</dt>
+          <dt>Adresse </dt>
           <dd>
             <?= $row_center['address']; ?>
           </dd>
-          <dt>Téléphone</dt>
+          <dt>Téléphone </dt>
           <dd>
             <?= $row_center['phone']; ?>
           </dd>
-          <dt>Horaires</dt>
+          <dt>Horaires </dt>
           <dd>
             <?= $row_center['openhours']; ?>
           </dd>
-          <dt>Découvrez la vie de votre centre :</dt>
+          <dt>Découvrez la vie de votre centre </dt>
           <dd>
            <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 

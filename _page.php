@@ -79,7 +79,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
             <?= $row_center['openhours']; ?>
           </dd>
-          <dt>Facebook</dt>
+          <dt>Découvrez la vie de votre centre :</dt>
           <dd>
            <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 

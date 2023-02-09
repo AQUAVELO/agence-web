@@ -60,6 +60,13 @@
           <dd>
             <?= $row_center['openhours']; ?>
           </dd>
+          
+           
+           <?php if($row_center['book_link']) { ?>
+          <dt>Agenda</dt>
+          <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
+          <?php } ?>
+
           <dt>Facebook</dt>
          
           

@@ -1,6 +1,6 @@
   <section class="flexslider std-slider" data-height="740" data-loop="true" data-smooth="false" data-slideshow="true" data-speed="15000" data-animspeed="550" data-controls="true" data-dircontrols="true">
     <ul class="slides">
-    <li data-bg="/images/content/home-v1-slider-03.jpg" class="img-fluid" style="background-position:top; min-height: 740px !important;">
+    <li data-bg="/images/content/home-v1-slider-03.jpg" class="img-fluid" style="background-position:top; background-size:cover; min-height: 740px !important;">
         <div class="container">
           <div class="inner">
             <div class="row">

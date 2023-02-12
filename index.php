@@ -220,6 +220,18 @@ if (isset($_GET['city'])) {
     <!-- section -->
 
     <footer>
+      <script>
+window.axeptioSettings = {
+  clientId: "63e92a4787869ce5703ea490",
+};
+ 
+(function(d, s) {
+  var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+  e.async = true; e.src = "//static.axept.io/sdk.js";
+  t.parentNode.insertBefore(e, t);
+})(document, "script");
+</script>
+
       <div class="container mainfooter">
         <div class="row">
           <aside class="col-md-3 widget"> <img src="/images/content/logo-footer.png" alt=" "> <br>

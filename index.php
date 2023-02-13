@@ -101,6 +101,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-58JPX2R');</script>
 <!-- End Google Tag Manager -->
   
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-26LRGBE9X2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-26LRGBE9X2');
+  
+</script>
+  
   <script src="/js/modernizr.custom.js"></script>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

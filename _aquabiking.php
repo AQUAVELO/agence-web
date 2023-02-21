@@ -18,7 +18,7 @@
 			<source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov">
 		</video>
 	  
-        <?php /*<iframe width=580" height="360" src="https://www.youtube.com/embed/0e-ztRbqNhA?list=PLPohPdVnIO0YaRRepsFSE-9qhxHF3Fxwh&amp;ecver=1" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> */ ?>
+        <?php /*<iframe width="70%" src="https://www.youtube.com/embed/0e-ztRbqNhA?list=PLPohPdVnIO0YaRRepsFSE-9qhxHF3Fxwh&amp;ecver=1" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe> */ ?>
       <a href="/seance-decouverte/Antibes" class="btn btn-default" style="margin-top: 30px; color: #0f38be;">j'essaie une séance Gratuite</a></div>
       <div class="col-md-6">
         <h4>Des centres dédiés à l'Aquavélo</h4>

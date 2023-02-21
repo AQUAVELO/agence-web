@@ -14,7 +14,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-		<video controls="controls" width="80%" preload="auto" autoplay name="Video AQUAVELO de Antibes">
+		<video controls="controls" autoplay loop preload="auto" width="80%" name="Video AQUAVELO de Antibes">
 			<source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov">
 		</video>
 	  

@@ -123,7 +123,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 		$msg = '
 	
-	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p> <p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coaché</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
+	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p> <p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coach&eacute;</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
 	
 	<p>Prenez vite rendez vous pour effectuer le bilan avec le centre <strong>Aquavelo de ' . $city . '</strong> en appelant au <strong>' . $phone . '</strong>.</p>
 	<p>

@@ -125,13 +125,13 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 	
 	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p> <p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coach&eacute;</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
 	
-	<p>Prenez vite rendez vous pour effectuer le bilan avec le centre <strong>Aquavelo de ' . $city . '</strong> en appelant au <strong>' . $phone . '</strong>.</p>
+	<p>Prenez vite rendez vous avec le centre <strong>Aquavelo de ' . $city . '</strong> en appelant au <strong>' . $phone . '</strong>.</p>
 	<p>
 	Horaires d\'ouverture: <strong> ' . $hours . ' </strong><br>
 	Adresse: <strong> ' . $address . ' </strong><br>
 	
 	
-	<p><em>*Offre non cumulable, une fois le bilan effectu&eacute; nous prendrons rdv au centre pour effectuer le cours d Aquabiking.</em></p>
+	<p><em>*Offre non cumulable.</em></p>
 	<p>Cordialement,<br>L\'&eacute;quipe Aquavelo<br>http://aquavelo.com/</p>';
 		//PHPMAILER
 		$mail2->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');

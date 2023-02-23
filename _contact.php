@@ -138,7 +138,7 @@ use PHPMailer\PHPMailer\Exception;
 
         <dl>
           <dt>Recrutement</dt>
-          <dd>Nous recherchons des maîtres nageurs pour notre développement national sur toute la France envoyer CV + photo à claude@alesiaminceur.com </dd>
+          <dd>Nous recherchons des maîtres nageurs pour notre développement national sur toute la France envoyer CV + photo à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </dd>
           <dd></dd>
           <dd></dd>
           <dt>Gestionnaire du site internet</dt>

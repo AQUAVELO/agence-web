@@ -70,40 +70,7 @@
           
           
           
-          <section class="resultats">
-        <h2>Les résultats Minceurs</h2>
-        <a href="#openModal">Cliquez pour voir les Résultats obtenus rapidement avec une pratique réguliére</a>
-    </section>
-    <div id="openModal" class="modalDialog">
-        <div>
-            <a href="#close" title="Close" class="close">X</a>
-            <h2>Résultats Minceur</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">Voici quelques résultats obtenus avec une pratique réguliére</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><img src="resultats/christine.jpeg" alt="Christine a minci" width=60% /></td>
-                        <td><img src="resultats/martine.jpeg" alt="Christine a minci" width=60% /></td>
-                    </tr>
-                    <tr>
-                        <td><img src="resultats/sylvie.jpeg" alt="Christine a minci" width=60% /></td>
-                        <td><img src="resultats/laure.jpeg" alt="Christine a minci" width=60% /></td>
-                    </tr>
-                    <tr>
-                        <td><img src="resultats/catherine.jpeg" alt="Christine a minci" width=60% /></td>
-                        <td><img src="resultats/gabriel.jpeg" alt="Christine a minci" width=60% /></td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
-        <a href="#close" title="Close" class="close">x</a>
-    </div>
+         
 
           
           

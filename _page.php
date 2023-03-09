@@ -63,6 +63,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
         </div>
       </div>
+	    <div> <h1> Des résultats Minceurs Rapides </h1>
+	    </div>
       <div class="col-md-6">
          <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
 

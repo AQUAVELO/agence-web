@@ -53,7 +53,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <?php } ?>
 	
 
-	
+https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css
 	
 </header>
 <section class="content-area bg1">
@@ -265,6 +265,9 @@ En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser l
 </div>
 
         </dl>
+
+		   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
 		   </section>
 		   
 -->

@@ -99,46 +99,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		   <dd>
 		
           <dt>Résultats Minceurs Rapides</dt>
-          <dd><!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        LES RÉSULTATS MINCEURS<br>Cliquez ici
-    </button>  </dd>
+          <dd> </dd>
 		   
 		    
 
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Les résultats sur la silhouette</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th colspan="2">Voici quelques résultats obtenus avec une pratique réguliére de
-                                    l'Aquavelo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="resultats/CHRISTINE.jpg" alt="Christine a minci" width=60% /></td>
-                                <td><img src="resultats/MEDE.jpg" alt="Christine a minci" width=60% /></td>
-                            </tr>
-                            <tr>
-                                <td><img src="resultats/SOPHIE.jpg" alt="Christine a minci" width=60% /></td>
-                                <td><img src="resultats/AURELIE.jpg" alt="Christine a minci" width=60% /></td>
-                            </tr>
-                            <tr>
-                                <td><img src="resultats/SANDRA.jpg" alt="Christine a minci" width=60% /></td>
-                                <td><img src="resultats/PATY.jpg" alt="Christine a minci" width=60% /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
          
 
 	   </dd>

@@ -63,8 +63,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
         </div>
       </div>
-	    <div class="col-md-6"> <h1> </h1>
-	    </div>
+	   
       <div class="col-md-6">
          <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>
 
@@ -91,6 +90,14 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dt>Agenda pour les adhérents</dt>
           <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
           <?php } ?>
+
+	   </dd>
+		   
+		   <dd>
+		
+          <dt>Résultats Minceurs Rapides</dt>
+          <dd>  </dd>
+         
 
 	   </dd>
          

@@ -98,7 +98,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	  <dd>
 		
           <dt>Résultats Minceurs Rapides</dt>
-          <dd> <A href="#" onClick="window.open('/resultat.html','Résultats Minceurs','toolbar=0, location=0, directories=0, status=0, scrollbars=0, resizable=0, copyhistory=0, menuBar=0, width=700, height=700');return(false)">Voir</A> </dd>
+          <dd>  </dd>
 		   
 		      		             
 

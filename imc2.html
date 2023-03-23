@@ -1,0 +1,61 @@
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="css/imc2.css">
+    <title>IMC</title>
+</head>
+
+
+<body>
+
+    <div id="interface">
+
+        <form id="formulario">
+            <fieldset>
+                <legend>
+                    <h3>CALCUL de votre IMC</h3>
+                </legend>
+                <div>
+
+                    <label for="kilos">Quel est votre poids ?</label>
+                    <input id="kilos" type="text" name="kilos" placeholder="kilos" required />
+                </div>
+
+                <div>
+                    <label for="centimetros">Quelle est votre taille ?</label>
+                    <input id="cm" type="text" name="centimetros" placeholder="taille en cm" required />
+                </div>
+                <div id="botao"><a href="#" onClick="calcularImc();">Calcul</a></div>
+                <br>
+                <div>
+
+                    <input id="imc" type="text" name="imc" disabled="disabled" placeholder="Résultat" />
+                </div>
+                <div>
+                    <label for="messageImc"></label>
+                    <input id="messageImc" type="hidden" name="messageImc" disabled="disabled" placeholder="Message" />
+
+                    <div><span id="messageImc"></span></div>
+                </div>
+                <div>
+                    <h5>
+                        <span id="input"></span>
+                    </h5>
+                </div>
+            </fieldset>
+        </form>
+
+
+
+    </div>
+
+    <script type="text/javascript" src="js/imc2.js"></script>
+</body>
+
+
+
+</html>

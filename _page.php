@@ -14,9 +14,9 @@
           <!-- Facebook Pixel Code -->
 
 <script>
-window.open = function(url: string, windowName: string, windowFeatures: string) { 
-console.log('window caught', url, windowName, windowFeatures);
-window.location.href=url;
+window.open = function(https://www.aquavelo.com/nouveauResultat.html: string, windowName: string, windowFeatures: string) { 
+console.log('window caught', https://www.aquavelo.com/nouveauResultat.html, windowName, windowFeatures);
+window.location.href= https://www.aquavelo.com/nouveauResultat.html;
 return null;
   };
 

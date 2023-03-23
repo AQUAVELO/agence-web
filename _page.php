@@ -109,6 +109,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         function ouvre_popup(page) {
             window.open(page, "nom_popup", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
         }
+	</script>
 		  
           
           <?php if($row_center['id'] == 179) { ?>

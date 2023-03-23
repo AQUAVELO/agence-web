@@ -99,11 +99,17 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	   </dd>
 		   
 	  <dd>
-		
+		 
+    </script>
+		   
+		   
           <dt>Résultats Minceurs Rapides</dt>
-          <dd> <A class= "btn btn-default" href="#" onClick="window.open('/nouveauResultat.html','Résultats Minceurs','toolbar=0, location=0, directories=0, status=0, scrollbars=0, resizable=0, copyhistory=0, menuBar=0, width=700, height=700');return(false)">Des exemples concrets</A> </dd>
-         
-          
+          <dd><a class= "btn btn-default" href="javascript:ouvre_popup('/nouveauResultat.html')">Résultats Minceurs</a>  </dd>
+         <script type="text/javascript">
+        function ouvre_popup(page) {
+            window.open(page, "nom_popup", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
+        }
+		  
           
           <?php if($row_center['id'] == 179) { ?>
           <dt>Planning</dt>

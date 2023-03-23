@@ -34,11 +34,7 @@ s.parentNode.insertBefore(t,s)}(window,document,'script',
  fbq('init', '259009481449831'); 
 
 fbq('track', 'PageView');
-	
-var windowReference = window.open();
 
-myService.getUrl().then(function(url) {
-     windowReference.location = url;
 });
 
 </script>

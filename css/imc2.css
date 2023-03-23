@@ -1,0 +1,128 @@
+legend {
+    padding-bottom: 10px;
+}
+
+
+label {
+
+    width: 50%;
+    text-align: center;
+}
+
+span {
+    margin-top: 2px;
+}
+
+input {
+    text-align: center;
+
+
+}
+
+div {
+    text-align: center;
+}
+
+h5 {
+    margin-top: 0px;
+    padding-top: 0px;
+    text-align: justify;
+}
+
+
+#interface {
+    background-color: rgb(246, 162, 245);
+    width: 300px;
+    height: 500px;
+    margin: auto;
+    margin-top: 120px;
+    border: 1px solid #999;
+}
+
+#formulario {
+    width: 240px;
+    padding-top: 10px;
+    padding-left: 32px;
+    height: 300px;
+
+
+
+}
+
+#tabelaIMC {
+    padding-left: 52px;
+    width: 220px;
+    margin-top: 20px;
+}
+
+h3 {
+    text-align: center;
+
+}
+
+
+
+
+
+invalid {
+    border: 2px dashed red;
+}
+
+valid {
+    border: 1px solid rgb(21, 220, 107);
+}
+
+
+label {
+
+    padding-left: 20px;
+    text-align: center;
+}
+
+
+
+#botao {
+    background-color: #D4D4D4;
+    padding: 7px;
+    margin-top: 5px;
+    width: 50px;
+    margin-left: 35%;
+    border: 1px solid #666;
+    cursor: pointer;
+    padding-bottom: 1px;
+}
+
+
+
+#botao a {
+    text-decoration: none;
+    color: #666;
+    padding-bottom: 3px;
+
+}
+
+#botao:hover {
+    background-color: #09f;
+    color: #fff;
+}
+
+#botao:hover a {
+    color: #fff;
+}
+
+.infoImc {
+    padding-top: 10px;
+}
+
+
+
+.messageImc {
+    text-align: center;
+    font-size: 8px;
+
+
+}
+
+#imc {
+    font-family: bold;
+}

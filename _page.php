@@ -14,6 +14,11 @@
           <!-- Facebook Pixel Code -->
 
 <script>
+window.open = function(url: string, windowName: string, windowFeatures: string) { 
+console.log('window caught', url, windowName, windowFeatures);
+window.location.href=url;
+return null;
+  };
 
 !function(f,b,e,v,n,t,s)
 
@@ -34,6 +39,7 @@ s.parentNode.insertBefore(t,s)}(window,document,'script',
  fbq('init', '259009481449831'); 
 
 fbq('track', 'PageView');
+	
 
 });
 

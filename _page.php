@@ -14,11 +14,7 @@
           <!-- Facebook Pixel Code -->
 
 <script>
-window.open = function(https://www.aquavelo.com/nouveauResultat.html: string, windowName: string, windowFeatures: string) { 
-console.log('window caught', https://www.aquavelo.com/nouveauResultat.html, windowName, windowFeatures);
-window.location.href= https://www.aquavelo.com/nouveauResultat.html;
-return null;
-  };
+
 
 !function(f,b,e,v,n,t,s)
 

@@ -1,3 +1,11 @@
+
+ function fermerFenetreCourante() {
+ window.close();
+ }
+
+
+
+
 function calcularImc() {
     var formulario = document.getElementById("formulario");
 

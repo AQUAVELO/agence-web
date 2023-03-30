@@ -1,3 +1,43 @@
+:root {
+    --taux: 140;
+    --width: 0%;
+}
+
+body {
+    max-width: 25vw;
+    margin: 0 auto;
+}
+
+.container {
+    margin: 2rem 0;
+    background-color: hsl(0, 0%, 90%);
+    height: 30px;
+    width: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 1px;
+
+
+}
+
+.jauge {
+    width: var(--width);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 8px;
+    background-color: hsl(var(--taux), 100%, 50%);
+    transition: all 0.4s ease;
+}
+
+
+
+
+
+
 legend {
     padding-bottom: 10px;
 }
@@ -7,17 +47,25 @@ label {
 
     width: 50%;
     text-align: center;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
 }
 
 span {
     margin-top: 2px;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+
 }
 
 input {
     text-align: center;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
 
 
 }
+
 
 div {
     text-align: center;
@@ -31,9 +79,9 @@ h5 {
 
 
 #interface {
-    background-color: rgb(246, 162, 245);
+    background-color: f69af6;
     width: 300px;
-    height: 500px;
+    height: 700px;
     margin: auto;
     margin-top: 120px;
     border: 1px solid #999;
@@ -60,7 +108,11 @@ h3 {
 
 }
 
-
+.rectangle {
+    background-color: rgb(217, 203, 203);
+    height: 80px;
+    width: 200px;
+}
 
 
 
@@ -119,10 +171,15 @@ label {
 .messageImc {
     text-align: center;
     font-size: 8px;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+
 
 
 }
 
 #imc {
     font-family: bold;
+    margin-bottom: 1px;
+    padding-bottom: 1px;
 }

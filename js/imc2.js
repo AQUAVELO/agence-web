@@ -83,6 +83,8 @@ function calcularImc() {
 
 
 }
-
+function fermerFenetreCourante() {
+            window.close();
+        }
 
 

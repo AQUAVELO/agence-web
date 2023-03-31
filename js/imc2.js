@@ -36,7 +36,7 @@ function calcularImc() {
 
         });
     } else if (imc <= 25) {
-        var messageImc = ('Vous n\'êtes ni en surpoids ni trop maigre, vous êtes sur le bon poids. Il faut vous maintenir en continuant avec une alimentation équilibrée et variée et en pratiquant une activité physique régulière comme l\'Aquavelo.')
+        var messageImc = ('Vous n\'êtes ni en surpoids ni trop maigre, vous êtes sur le bon poids. Il faut vous maintenir en continuant avec une alimentation équilibrée et variée et en pratiquant une activité physique régulière comme l\'Aquavelo afin de renforcer votre cardio et votre système musculaire.')
         document.getElementById('interface').style.backgroundColor = "eb8ceb";
         Array.from(document.querySelectorAll('.jauge')).forEach(function (e) {
             width = e.dataset.width;

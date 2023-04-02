@@ -14,9 +14,9 @@
 		       	  <br />
 			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;"></span>
 		      	   <br>
-			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Une Jolie Silhouette</span>
+			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Une silhouette</span>
 			   <br/>
-		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">pour l'été !</span>
+		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">estivale irresistible !</span>
 			   </a>
 				</h3>
 				

@@ -16,7 +16,7 @@
 		      	   <br>
 			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Une jolie silhouette</span>
 			   <br/>
-		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">pour cet été !</span>
+		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">toute l'année !</span>
 			   </a>
 				</h3>
 				

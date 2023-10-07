@@ -84,6 +84,7 @@ if (isset($_GET['city'])) {
   <link rel="stylesheet" type="text/css" href="/css/animate.css">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link rel="icon" href="images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
   <style type="text/css">
     body,

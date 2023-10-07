@@ -48,6 +48,7 @@ p.larger {
 }
 p.darker {
   color: #555258;
+  font-size: 18px;
 }
 a.larger {
   display: inline-block;

@@ -208,6 +208,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="table-cell">
                   <ul class="socialIcons bigIcons">
                     <li><a href="https://www.facebook.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://www.instagram.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Instagram"><i class="fa fa-Instagram"></i></a></li>
+    
                     <li><a href="http://twitter.com/AquaveloNice" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                    </ul>
                 </div>

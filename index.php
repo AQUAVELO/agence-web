@@ -203,15 +203,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <article class="table-content animated" data-fx="flipInY">
               <section class="table-row">
                 <div class="table-cell">
-                  <h1 class="widget-title">Suivez-nous</h1>
+                  <h2 class="widget-title">Suivez-nous</h2>
                 </div>
                 <div class="table-cell">
                   <ul class="socialIcons bigIcons">
                     <li><a href="https://www.facebook.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="http://twitter.com/AquaveloNice" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="http://plus.google.com/108184119422520190690" data-toggle="tooltip" title="Google+"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#" data-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-                  </ul>
+                   </ul>
                 </div>
               </section>
             </article>
@@ -229,7 +227,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <article class="table-content animated" data-fx="flipInY">
                     <section class="table-row">
                       <div class="table-cell">
-                        <h1 class="widget-title">Recevoir la newsletter</h1>
+                        <h2 class="widget-title">Recevoir la newsletter</h2>
                       </div>
                       <div class="table-cell">
                         <label class="sr-only">Adresse e-mail</label>
@@ -270,17 +268,17 @@ window.axeptioSettings = {
             <p class="darker">&copy; 2014</p>
           </aside>
           <aside class="col-md-3 widget">
-            <h1 class="widget-title">Contactez-nous</h1>
+            <h2 class="widget-title">Contactez-nous</h2>
             <a href="mailto:claude@alesiaminceur.com" class="larger">claude@alesiaminceur.com</a>
             <p> 60 avenue du Docteur Picaud<br>
               06150 Cannes</p>
             <p> T&eacute;l.: +33 (0)4 93 93 05 65</p>
           </aside>
           <aside class="col-md-3 widget">
-            <h1 class="widget-title">&nbsp;</h1>
+            <h2 class="widget-title">&nbsp;</h2>
           </aside>
           <aside class="col-md-3 widget">
-            <h1 class="widget-title">Flux de photo</h1>
+            <h3 class="widget-title">Flux de photo</h3>
             <div class="flickr_badge">
               <div class="flickr_badge_image"> <a href="https://www.flickr.com/photos/124590983@N08/14199424047/" title="IMG_1877 de aquavelo, sur Flickr"><img src="https://farm3.staticflickr.com/2913/14199424047_ace3ffa999.jpg" width="80" alt="IMG_1877"></a></div>
               <div class="flickr_badge_image"> <a href="https://www.flickr.com/photos/124590983@N08/14384877104/" title="IMG_1896 de aquavelo, sur Flickr"><img src="https://farm4.staticflickr.com/3894/14384877104_6f08cfe0d0.jpg" width="80" alt="IMG_1896"></a>

@@ -264,7 +264,7 @@ window.axeptioSettings = {
         <div class="row">
           <aside class="col-md-3 widget"> <img src="/images/content/logo-footer.png" alt=" "> <br>
             <br>
-            <h1 class="darkerLast">Aquabiking collectif en piscine</h1>
+            <h1 style="font-size: 12px;>Aquabiking collectif en piscine</h1>
             <h1 class="darker">Éliminez votre cellulite et affinez votre silhouette</h1>
             <p class="darker">&copy; 2014</p>
           </aside>

@@ -179,7 +179,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             <div id="panel1" class="panel-collapse collapse in">
               <div class="panel-body">
                 <p>Dans l’eau, votre corps est plus léger… mais vos muscles travaillent pourtant bien plus pour repousser le poids de l’eau !  La résistance de l’eau a pour conséquence un effort différent, un massage aux multiples vertus : le cœur bat 10% moins vite que dans l’air et les graisses sont brûlées en priorité.</p> 
-<p>Par rapport à l’exercice physique pratiqué à terre, l’exercice de l'hybrobike évite les stress musculaires et diminue la production d’acide lactique : la séance d'aquavélo même intensive, n’est pas suivie par les si désagréables douleurs musculaires et courbatures !</p>
+<p>Par rapport à l’exercice physique pratiqué à terre, l’exercice de l'aquavelo évite les stress musculaires et diminue la production d’acide lactique : la séance d'aquavélo même intensive, n’est pas suivie par les si désagréables douleurs musculaires et courbatures !</p>
 
               </div>
             </div>

@@ -70,7 +70,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         </div>
 	    
       </div>
-	    <div class="animated activate fadeInLeft"> <img src="images/content/promoOctobre.jpg" alt=" "> </div>
+	    
 	   
       <div class="col-md-6">
          <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default">J'essaie un cours Gratuit</a>

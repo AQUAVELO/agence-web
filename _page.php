@@ -66,6 +66,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         <div class="row" style="margin-top:30px;">
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt=" "> </div>
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
+	<div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
         </div>
       </div>
 	   

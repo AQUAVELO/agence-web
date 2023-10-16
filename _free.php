@@ -10,10 +10,10 @@
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/images/center_179/1.jpg" alt=" ">
+      <div class="col-md-6"> <img src="/images/center_179/1.jpg" alt="Aquavélo intérieur">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/images/center_179/2.jpg" alt=" "> </div>
-          <div class="col-md-6"> <img src="/images/center_179/3.jpg" alt=" "> </div>
+          <div class="col-md-6"> <img src="/images/center_179/2.jpg" alt="Aquavélo"> </div>
+          <div class="col-md-6"> <img src="/images/center_179/3.jpg" alt="Aquavélo"> </div>
 
         </div>
       </div>
@@ -113,7 +113,7 @@
 </script>
 <noscript>
   <div style="display:inline;">
-    <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/966428486/?label=tYZcCPLYqgkQxo7qzAM&amp;guid=ON&amp;script=0" />
+    <img height="1" width="1" style="border-style:none;" alt="image" src="//www.googleadservices.com/pagead/conversion/966428486/?label=tYZcCPLYqgkQxo7qzAM&amp;guid=ON&amp;script=0" />
   </div>
 </noscript>
 <!--

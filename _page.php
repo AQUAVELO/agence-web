@@ -62,13 +62,13 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt=" ">
+      <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt="Aquavélo">
         <div class="row" style="margin-top:30px;">
-          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt=" "> </div>
-          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt=" "> </div>
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo"> </div>
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
 	
         </div>
-	    <div class="animated activate fadeInLeft"> <img src="/images/promoOctobre.jpg" alt=" "> </div>
+	    <div class="animated activate fadeInLeft"> <img src="/images/promoOctobre.jpg" alt="Promotion Aquavelo"> </div>
 	    
       </div>
 	    

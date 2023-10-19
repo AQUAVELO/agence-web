@@ -1,7 +1,7 @@
 
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Aquabiking</h1>
+    <h1 class="page-title pull-left">Les bienfaits de l'Aquabiking</h1>
 
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>

@@ -49,7 +49,8 @@
         <header class="page-header text-left">
           <h1 class="page-title">Le groupe Alésia Minceur</h1>
           <h2>Quels sont nos avantages?</h2>
-          <p> Une présence internationale, le groupe est déjà présent en Algérie, Russie et Maroc. </p>
+          <p> Le réseau existe depuis 9 ans, certains de nos dirigeants ont 2 centres ou ont acheté les murs. </p>
+
         </header>
       </div>
       <div class="col-md-3 col-sm-6">

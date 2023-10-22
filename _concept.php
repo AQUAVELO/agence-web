@@ -30,14 +30,14 @@
         
       </div>
       <div class="col-md-4 col-md-push-2">
-      <p> Ce sport développe également votre endurance et vos capacités cardio-vasculaires en douceur. La résistance de l’eau a pour conséquence un effort différent, un massage aux multiples vertus: le coeur bat 10% moins vite que dans l’air et les graisses sont brûlées en priorité.<br>
-          Par contre, l'avantage du travail musculaire effectué sous l'eau est que vous devez lutter contre l'eau, qui exerce une résistance, ce qui provoque un effet de massage continu très efficace sur la peau des jambes, du bassin et de la ceinture abdominale. C'est la raison pour laquelle le vélo aquatique est un ennemi redoutable de la peau d’orange en favorisant progressivement la destruction de la cellulite.<br>
+     <p> Ce sport développe également votre endurance et vos capacités cardio-vasculaires en douceur. La résistance de l’eau a pour conséquence un effort différent, un massage aux multiples vertus: le coeur bat 10% moins vite que dans l’air et les graisses sont brûlées en priorité.<br>
+          L'avantage du travail musculaire effectué sous l'eau provoque un effet de massage continu très efficace pour drainer les jambes lourdes. C'est la raison pour laquelle la pratique du vélo aquatique est un ennemi redoutable de la peau d’orange.<br>
           Pratiqué régulièrement, il permet de prévenir et d’éviter la rétention d’eau et les oedèmes. </p>
         <p> Donc, en terme d’effet, c’est comme si on faisait du vélo avec une séance de drainage lymphatique et du palper rouler. On cumule 3 effets sur le plan vasculaire, ce qui n’est pas négligeable!</p>
         <p> Aquavelo, le centre minceur par excellence pour un régime express, un bon plan anti-kilos …
-          Combien brûle-t-on de calories en une séance d' Aquabiking? Près de 300 à 500 pour une séance de 45 minutes, pour un sport sans traumatismes et qui est facile à pratiquer même si vous êtes en surpoids ou en convalescence ! <br>
-          Une bonne alternative pour la régularité à la pratique du sport! Certaines séances incluent l'usage de poids et d'haltères pour muscler également le haut du corps pendant que vos cuisses et vos mollets s'affinent comme par magie... <br>
-          L'effet anti-cellulite est vraiment palpable rapidement. Alors, imaginez les bénéfices au bout de 12 mois. Bien entendu, vous pouvez compléter ce massage naturel anti-cellulite en profitant de nos produits minceur efficaces, tant avec les crèmes, que les compléments alimentaires. Vous retrouverez à coup sûr des jambes et des fesses bien galbées, une sangle abdominale tonique en un minimum de temps.</p>
+          Combien brûle-t-on de calories en une séance d' Aquabiking? Près de 400 à 500 pour une séance de 45 minutes, pour un sport sans traumatisme et qui est facile à pratiquer même si vous êtes en surpoids ou en convalescence ! <br>
+          Une bonne alternative pour la régularité à la pratique du sport! Certaines séances incluent l'usage de poids, d'haltères et élastiques pour muscler également le haut du corps pendant que vos cuisses et vos mollets s'affinent comme par magie... <br>
+          L'effet anti-cellulite est vraiment visible rapidement avec une pratique de 2 séances par semaine. Alors, imaginez les bénéfices au bout de 12 mois. Vous retrouverez à coup sûr des jambes et des fesses bien galbées, une sangle abdominale tonique en un minimum de temps.</p>
       </div>
     </div>
   </div>

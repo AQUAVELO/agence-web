@@ -20,11 +20,11 @@
        </header>
     <div class="row">
       <div class="col-md-4 col-md-push-2">
-        <p> A qui s’adresse l’aquabiking ? L’un des points forts de l’aquabiking, c’est qu’il se pratique quelque soit son niveau de forme :<br>
+        <p> A qui s’adresse l’aquavélo ? L’un des points forts de l’aquabiking, c’est qu’il se pratique quel que soit son niveau de forme :<br>
           En effet, même les personnes avec des capacités de mouvements réduits (surpoids, âge, les femmes enceintes, les accidents articulaires ou opérations , problèmes de dos…) peuvent pratiquer sans danger avec un effet garanti. </p>
         <p> D’une part, par rapport à l’exercice physique pratiqué sur terre, l’exercice de l’hydrobike évite les stress musculaires et diminue la production d’acide lactique. Vous pouvez oublier les si désagréables courbatures!<br>
-          D’autre part, le milieu aquatique évite de brusquer les articulations tout en bénéficiant de la résistance de l’eau qui assure un massage et un drainage naturels.<br>
-          L'aquabiking permet donc aux personnes ne pouvant pas, pour de multiples raisons, reprendre une activité sportive de s’y remettre en douceur grâce à une activité très efficace. Le sport idéal pour lutter contre la cellulite, affiner ses cuisses et perdre sa culotte de cheval. </p>
+          D’autre part, le milieu aquatique évite de brusquer les articulations tout en bénéficiant de la résistance de l’eau qui assure un massage et un drainage naturel.<br>
+          L'aquabiking permet aux personnes agées, aux femmes enceintes, ou aux convalescents, de reprendre une activité sportive en douceur. C'est aussi le sport idéal pour lutter contre la cellulite, affiner ses cuisses et perdre sa culotte de cheval. </p>
         <p> Sachez que, contrairement à l'aquagym simple, l'aquabiking permet de tonifier et de remodeler rapidement sa silhouette. En effet, dans l’eau, votre corps est plus léger… mais vos muscles travaillent pourtant bien plus pour repousser le poids de l’eau! Votre corps en immersion ne pèse qu’un dixième de son poids grâce au principe d'Archimède : nous avons donc beaucoup plus de facilité à réaliser un entrainement sous l'eau qu'en salle. <br>
           Articulations préservées, effets optimisés et plus de courbatures avec le vélo aquatique! </p>
         

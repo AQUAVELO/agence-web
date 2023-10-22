@@ -15,9 +15,9 @@
 <section class="content-area bg1">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Aquavélo : l’expert de votre silhouette</h1>
-      <h2>L’activité de fitness idéale pour perdre du poids, éliminer la cellulite et drainer les toxines tout en trouvant du plaisir.</h2>
-    </header>
+      <h1 class="page-title">Aquavélo : mon sport minceur</h1>
+      <h2>L’activité de fitness idéale pour perdre du poids, éliminer la cellulite et drainer les toxines tout en trouvant du plaisir et en douceur pour les articulations, l'aquavélo est addictif.</h2>
+       </header>
     <div class="row">
       <div class="col-md-4 col-md-push-2">
         <p> A qui s’adresse l’aquabiking ? L’un des points forts de l’aquabiking, c’est qu’il se pratique quelque soit son niveau de forme :<br>

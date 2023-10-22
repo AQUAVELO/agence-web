@@ -67,8 +67,8 @@
         <div class="iconBox type4">
           <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-cog"></i> </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Partenariats</a></h4>
-              <p> Des partenariats gratuits durant toute l'année avec des grandes marques (Forté Pharma, shampoing Garnier, Télé2, Bouygues Télécom, etc) afin de générer du trafic gratuitement dans votre magasin, et d'être associé à leur image nationale. </p>
+              <h4 class="media-heading"><a href="#">Fidélisation</a></h4>
+              <p> Nos animations et ambiances de centre nous permettent d'avoir un taux de renouvellement de plus de 40 % ! </p>
             </div>
           </div>
         </div>

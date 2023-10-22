@@ -57,7 +57,8 @@
           <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-star"></i> </a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Communication</a></h4>
-              <p> Un marketing très poussé : Aquavelo maîtrise parfaitement la communication (télémarke- ting, prospectus, publipostage, emailing, etc) afin de vous générer le trafic souhaité dans votre magasin pour le moins cher possible dans le but d'optimiser votre rentabilité. </p>
+              <p> Nous bénéficions d'un marketing très poussé : Aquavelo maîtrise parfaitement la communication (marketing digital c'est à dire les réseaux sociaux et le web en général, l'affichage traditionnel, le publipostage, l'emailing, etc) afin de vous générer le trafic souhaité dans votre centre pour le moins cher possible dans le but d'optimiser votre rentabilité. 
+                Nous avons nos propres manequins pour nos campagnes promotionnelles. </p>
             </div>
           </div>
         </div>

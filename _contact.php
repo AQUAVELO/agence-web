@@ -18,9 +18,9 @@ use PHPMailer\PHPMailer\Exception;
 <section class="content-area bg1">
   <div class="container">
 
-    <header class="page-header text-center">
+    <header class="page-header text-center" id="contact">
       <h1 class="page-title">Besoin d'aide </h1>
-      <p class="larger">Vous avez une question ? Utilisez le formulaire ci-dessous ou envoyez-nous un e-mail à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </p>
+      <p class="larger">Vous avez une question ? Utilisez le formulaire ci-dessous en indiquant la ville concernée ou envoyez-nous un e-mail à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </p>
       <p class="larger">ou contactez nous au 06 22 64 70 95.</p>
     </header>
 
@@ -134,7 +134,7 @@ use PHPMailer\PHPMailer\Exception;
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4" id="emploi">
 
         <dl>
           <dt>Recrutement</dt>

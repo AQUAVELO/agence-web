@@ -276,11 +276,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Naissance</a></h4>
+              <h4 class="media-heading"><a href="#">Combien coûte une séance d'Aquavélo ?</a></h4>
 
               <p>
-                Inventé en Italie par des kinésithérapeutes depuis un peu moins d’une dizaine d'années, l'aquabiking fait déjà un tabac en Allemagne et en Belgique et son succès commence à se faire sentir en France.
-              </p>
+                Les prix démarre à partir de 8 € la séance en fonction du nombre de séances souscrites. Nous proposons des formules illimitées mensualisées pour ceux veulent pratiquer quotidiennement cette activité.              </p>
             </div>
           </div>
         </div>
@@ -291,11 +290,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Accessible à tous</a></h4>
+              <h4 class="media-heading"><a href="#">Que faut- il comme tenue pour pratiquer l'Aquavélo ?</a></h4>
 
               <p>
-               Ce sport est accessible à toute personne soit de haut niveau sportif ou débutant. Même les personnes avec des capacités de mouvements réduites (surpoids, âge, problèmes d'articulation) peuvent pratiquer avec un effet garanti.
-              </p>
+               Il faut un maillot (une piéce ou 2 piéces pour les dames), short de bain ou maillot classique pour les messieurs, une serviette de bain, un gel douche, une bouteille d'eau car il faut s'hydrater durant le cours, un cadenas pour les vestiaires et des chaussures d'aquabiking. Le bonnet de bain n'est pas insdispensable car vous ne mettez pas la tête sous l'eau.              </p>
             </div>
           </div>
         </div>
@@ -309,11 +307,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Déroulé</a></h4>
+              <h4 class="media-heading"><a href="#">Est ce que je peux pratiquer l'Aquavélo étant enceinte ?</a></h4>
 
               <p>
-                Les cours se déroulent toutes les heures ex: 8h, 9h, ..., 20h, 7 jours sur 7. Vous devrez vous présenter 10 minutes avant le début de votre séance, des vestiaires avec casiers cadenas sont à votre disposition.
-              </p>
+               Oui bien sûr, l'Aquavélo est fortement conseillé aux femmmes enceintes. Il leur permettra de soulager les jambes lourdes, d'éviter de prendre beaucoup de poids durant cette période tout en pratiquant une activité physique. Certaines de nos adhérentes pratiquent quasiment jusqu'au terme.              </p>
             </div>
           </div>
         </div>
@@ -324,11 +321,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Cours</a></h4>
+              <h4 class="media-heading"><a href="#">À partir et jusqu'à quel âge puis-je pratiquer l'Aquavélo ?</a></h4>
 
               <p>
-                Dans votre centre Aquavélo, les cours se pratiquent en petit groupe, sur un vélo immergé dans un bassin.
-              </p>
+                Vous pouvez pratiquer à partir de 12 ans car cela fusèle la silhouette, et jusqu'à 90 ans car cela vous permet d'entretenir votre potentiel musculaire, de renforcer vos articulations, et étant aquatique cela est bénéfique globalement pour le corps.              </p>
             </div>
           </div>
         </div>
@@ -341,11 +337,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Bien-être</a></h4>
+              <h4 class="media-heading"><a href="#">J'ai de l'arthrose, puis-je en faire ?</a></h4>
 
               <p>
-                Un véritable exutoire avec une sensation de détente, l'aquabiking est une activité ludique et dynamisante qui diminue la fatigue.
-              </p>
+                Oui vous pouvez pratiquer car le mouvement des articulations se fera en douceur. Il faudra pédaler en douceur et adapter selon vos possibilités sur les conseils du coach.              </p>
             </div>
           </div>
         </div>
@@ -356,11 +351,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
             </a>
 
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Coaching</a></h4>
+              <h4 class="media-heading"><a href="#">Je ne sais pas nager, puis-je faire de l'Aquavélo ?</a></h4>
 
               <p>
-                Nos coachs sélectionnés avec le plus grand soin (diplômé BPJEPS AAN) sauront vous guider à travers des musiques rythmées. Les cours se décomposent en plusieurs phases : échauffements, cardio et étirements à la fin.
-              </p>
+                Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement.              </p>
             </div>
           </div>
         </div>

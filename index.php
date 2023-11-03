@@ -164,8 +164,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <li class="dropdown<?php if ($p == 'aquabiking') echo ' active'; ?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
                 <ul class="dropdown-menu">
                   <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
-                  <li><a href="/aquabiking">Les bienfaits</a></li>
-                  <li><a href="/aquabiking">Vos questions</a></li>
+                  <li><a href="/aquabiking#bienfaits">Les bienfaits</a></li>
+                  <li><a href="/aquabiking#questions">Vos questions</a></li>
                 </ul>
               </li>
               <li class="dropdown<?php if ($p == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>

@@ -190,7 +190,7 @@ Soit un investissement inférieur à 160 000 € pour 200 m2 que vous pouvez ouv
         <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="17" data-speed="4000" data-refresh-interval="50"></span> <span class="timerDesc">Centres ouverts</span> </div>
       </div>
       <div class="col-md-3 col-sm-3 col-xs-6 text-center">
-        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="14" data-speed="4000" data-refresh-interval="50"></span> <sup>ans</sup> <span class="timerDesc">Expérience dans l'amincissement</span> </div>
+        <div class="timerCounter"> <span class="timerVal" data-from="0" data-to="25" data-speed="4000" data-refresh-interval="50"></span> <sup>ans</sup> <span class="timerDesc">Expérience dans l'amincissement</span> </div>
       </div>
     </div> 
     <!-- / row --> 

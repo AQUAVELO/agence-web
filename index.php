@@ -138,6 +138,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <meta property="og:image" content="https://www.aquavelo.com/images/content/logo@2x.png" />
 <meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 
+<meta name=”twitter:card” content=”summary_large_image” />
+<meta name=”twitter:site” content=”@ALESIAMINCEUR” />
+<meta name=”twitter:title” content=”aquavelo.com – Aquabiking collectif en piscine” />
+<meta name=”twitter:description” content=”Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps.” />
+<meta name=”twitter:image” content=”https://www.aquavelo.com/images/content/logo@2x.png” />
+
+  
 </head>
 
 <body class="withAnimation">

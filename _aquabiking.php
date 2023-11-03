@@ -257,6 +257,122 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 <!-- / section -->
 
 
+<section class="content-area bg2" id="questions">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Vos questions</h1>
+
+      <h2>Vos interrogations pour pratiquer l'Aquavélo</h2>
+
+      <p class="larger">À partir de quel âge et jusqu'à quel âge, enceinte puis-je pratiquer, est ce que c'est bon pour les articulations et autres</p>
+    </header>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-star"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Naissance</a></h4>
+
+              <p>
+                Inventé en Italie par des kinésithérapeutes depuis un peu moins d’une dizaine d'années, l'aquabiking fait déjà un tabac en Allemagne et en Belgique et son succès commence à se faire sentir en France.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-cog"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Accessible à tous</a></h4>
+
+              <p>
+               Ce sport est accessible à toute personne soit de haut niveau sportif ou débutant. Même les personnes avec des capacités de mouvements réduites (surpoids, âge, problèmes d'articulation) peuvent pratiquer avec un effet garanti.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-4">
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-asterisk"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Déroulé</a></h4>
+
+              <p>
+                Les cours se déroulent toutes les heures ex: 8h, 9h, ..., 20h, 7 jours sur 7. Vous devrez vous présenter 10 minutes avant le début de votre séance, des vestiaires avec casiers cadenas sont à votre disposition.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-thumbs-up"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Cours</a></h4>
+
+              <p>
+                Dans votre centre Aquavélo, les cours se pratiquent en petit groupe, sur un vélo immergé dans un bassin.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-trophy"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Bien-être</a></h4>
+
+              <p>
+                Un véritable exutoire avec une sensation de détente, l'aquabiking est une activité ludique et dynamisante qui diminue la fatigue.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-file-text"></i>
+            </a>
+
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Coaching</a></h4>
+
+              <p>
+                Nos coachs sélectionnés avec le plus grand soin (diplômé BPJEPS AAN) sauront vous guider à travers des musiques rythmées. Les cours se décomposent en plusieurs phases : échauffements, cardio et étirements à la fin.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- / section -->
+
+
+
+
 <section class="content-area brightText" data-bg="images/content/testimonials-bg.jpg" data-btmspace="75">
   <div class="container">
 

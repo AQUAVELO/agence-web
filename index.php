@@ -132,7 +132,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   
-  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="aquavelo.com – Aquabiking collectif en piscine" />
+<meta property="og:url" content="https://www.aquavelo.com" />
+<meta property="og:image" content="https://www.aquavelo.com/images/content/logo@2x.png" />
+<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 
 </head>
 

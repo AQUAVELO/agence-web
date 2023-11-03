@@ -165,6 +165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="dropdown-menu">
                   <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
                   <li><a href="/aquabiking">Les bienfaits</a></li>
+                  <li><a href="/aquabiking">Vos questions</a></li>
                 </ul>
               </li>
               <li class="dropdown<?php if ($p == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>

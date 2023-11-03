@@ -159,7 +159,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 <section class="content-area bg1" id="bienfaits">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Les bienfaits</h1>
+      <h1 class="page-title">Les bienfaits de l'aquabiking</h1>
 
       <h2>Une activité sportive bénéfique</h2>
     </header>
@@ -260,7 +260,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 <section class="content-area bg2" id="questions">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Vos questions</h1>
+      <h1 class="page-title">Vos questions sur l'aquabiking</h1>
 
       <h2>Vos interrogations pour pratiquer l'Aquavélo</h2>
 

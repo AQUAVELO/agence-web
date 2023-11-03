@@ -15,7 +15,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-		<video controls="controls" autoplay loop preload="auto" width="80%" name="Video AQUAVELO de Antibes">
+		<video controls="controls" autoplay loop preload="auto" width="80%" name="Video AQUAVELO">
 			<source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov">
 		</video>
 	  
@@ -156,7 +156,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 </section>
 <!-- / section -->
 
-<section class="content-area bg1">
+<section class="content-area bg1" id="bienfaits">
   <div class="container">
     <header class="page-header text-center">
       <h1 class="page-title">Les bienfaits</h1>

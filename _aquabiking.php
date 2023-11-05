@@ -359,7 +359,8 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 	  </div>
         </div>
 	</div>
-     
+        </div>
+	    
       <div class="col-md-4">
 	 <div class="iconBox type3">
           <div class="media">

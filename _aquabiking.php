@@ -362,7 +362,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 	 <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">
-              <i class="fa fa-file-text"></i>
+              <i class="fa fa-star"></i>
                 </a>
 		  <div class="media-body">
               <h4 class="media-heading"><a href="#">Je ne suis pas sportive, est-ce que c'est difficile ?</a></h4>
@@ -377,7 +377,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 	      <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">
-              <i class="fa fa-file-text"></i>
+              <i class="fa fa-asterisk"></i>
                 </a>
 		  <div class="media-body">
               <h4 class="media-heading"><a href="#">je suis un homme, quel serait mon interêt physique ?</a></h4>
@@ -393,7 +393,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 	       <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">
-              <i class="fa fa-file-text"></i>
+              <i class="fa fa-cog"></i>
                 </a>
 		  <div class="media-body">
               <h4 class="media-heading"><a href="#">Pour perdre des kg il faut pratiquer combien de fois par semaine ?</a></h4>

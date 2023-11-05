@@ -360,8 +360,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
         </div>
       </div>
     </div>
-  </div>
-<img src="../images/content/hautpage.jpg" width="345" height="146" alt=""/><a href="#velo">haut de page</a>	
+  </div>	
 </section>
 <!-- / section -->
 

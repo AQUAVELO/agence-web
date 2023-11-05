@@ -117,9 +117,9 @@ Vous pouvez ouvrir votre centre avec 6 à 20 vélos en fonction de l'apport que 
   <strong>Combien coûte un AQUAVELO :</strong>
 <ul class="">
 <li>à partir de 6000 € de droit d’entrée,</li>
-<li>Travaux et aménagements 800 à 1000 € du métre carré ( bassin, climatisation, deshum., vélos, vestaires, carrelage..etc)</li>
+<li>Travaux et aménagements 1000 à 1500 € du métre carré ( bassin, climatisation, deshum., vélos, vestaires, carrelage..etc)</li>
 <li>Enseigne et Vitrophanie, 2000 €,</li></ul>
-Soit un investissement inférieur à 160 000 € pour 200 m2 que vous pouvez ouvrir avec un apport de 40 000 € seulement !</p>
+Soit un investissement inférieur à 200 000 € pour 200 m2 que vous pouvez ouvrir avec un apport de 50 000 €.</p>
     </div>
     </div>
     <a class="btn btn-default" href="mailto:directionalesiaminceur@gmail.com">Pour plus d’informations veuillez téléphoner à Claude RODRIGUEZ au 06 22 64 70 95 ou par email à directionalesiaminceur@gmail.com</a>

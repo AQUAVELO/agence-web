@@ -296,10 +296,10 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
                Il faut un maillot (une piéce ou 2 piéces pour les dames), short de bain ou maillot classique pour les messieurs, une serviette de bain, un gel douche, une bouteille d'eau car il faut s'hydrater durant le cours, un cadenas pour les vestiaires et des chaussures d'aquabiking. Le bonnet de bain n'est pas insdispensable car vous ne mettez pas la tête sous l'eau.              </p>
             </div>
           </div>
-        </div>
+        
 
       </div>
-      <div class="col-md-4">
+   
         <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">
@@ -313,7 +313,9 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
                Oui bien sûr, l'Aquavélo est fortement conseillé aux femmmes enceintes. Il leur permettra de soulager les jambes lourdes, d'éviter de prendre beaucoup de poids durant cette période tout en pratiquant une activité physique. Certaines de nos adhérentes pratiquent quasiment jusqu'au terme.              </p>
             </div>
           </div>
+		</div>
         </div>
+	   <div class="col-md-4">
         <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">

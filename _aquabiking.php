@@ -356,7 +356,8 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
               <p>
                 Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement.              </p>
             </div>
-
+	  </div>
+        </div>
 
 	 <div class="iconBox type3">
           <div class="media">

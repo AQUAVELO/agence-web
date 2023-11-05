@@ -380,10 +380,26 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
               <i class="fa fa-file-text"></i>
                 </a>
 		  <div class="media-body">
-              <h4 class="media-heading"><a href="#">je suis un homme, quel serait mon interêt physique ? ?</a></h4>
+              <h4 class="media-heading"><a href="#">je suis un homme, quel serait mon interêt physique ?</a></h4>
 
               <p>
                 C'est excellent pour tonifier la silhouette et notamment pour perdre du ventre. Un cours dure 45 mn, nous travaillons toutes les parties du corps, c'est ludique et cela vide la tête.
+	      </p>
+            </div>
+          </div>
+        </div>
+
+
+	       <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-file-text"></i>
+                </a>
+		  <div class="media-body">
+              <h4 class="media-heading"><a href="#">Pour perdre des kg il faut pratiquer combien de fois par semaine ?</a></h4>
+
+              <p>
+                Les résultats minceurs apparaissent dès le premier mois en pratiquant réguliérement un minimum 2 fois par semaine.
 	      </p>
             </div>
           </div>

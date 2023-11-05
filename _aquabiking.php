@@ -356,6 +356,23 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
               <p>
                 Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement.              </p>
             </div>
+
+		  <div class="media-body">
+              <h4 class="media-heading"><a href="#">Je ne suis pas sportive, est-ce que c'est difficile ?</a></h4>
+
+              <p>
+                C'est une activité physique progressive adaptée à tous les niveaux.
+	      </p>
+            </div>
+          </div>
+        </div>
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#">
+              <i class="fa fa-file-text"></i>
+            </a>
+
+		  
           </div>
         </div>
       </div>

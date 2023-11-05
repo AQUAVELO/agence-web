@@ -329,9 +329,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
                 Vous pouvez pratiquer à partir de 12 ans car cela fusèle la silhouette, et jusqu'à 90 ans car cela vous permet d'entretenir votre potentiel musculaire, de renforcer vos articulations, et étant aquatique cela est bénéfique globalement pour le corps.              </p>
             </div>
           </div>
-        </div>
-     
-      <div class="col-md-4">
+        
         <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#">

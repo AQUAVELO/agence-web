@@ -106,7 +106,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		$mail->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
 		$mail->addAddress($email_center, 'Aquavelo ' . $city);
 		//$mail->addBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
-		$mail->addAddress('aqua.cannes@gmail.com', 'Claude');
+	
 
 		$mail->addReplyTo($email, $name);
 		$mail->Subject = 'Aquavelo, Un contact pour votre centre de ' . $city . ' !';

@@ -106,6 +106,8 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		$mail->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
 		$mail->addAddress($email_center, 'Aquavelo ' . $city);
 		//$mail->addBCC('contact@aquavelo.com', 'Rodriguez Alexandre');
+		$mail->addAddress('aqua.cannes@gmail.com', 'Claude');
+
 		$mail->addReplyTo($email, $name);
 		$mail->Subject = 'Aquavelo, Un contact pour votre centre de ' . $city . ' !';
 		$mail->Body = '<p>Bonjour, </p><p>' . $name . ' <br/> Adresse &eacute;lectronique : <strong>' . $email . ' </strong> <br/> T&eacute;l&eacute;phone : <strong> ' . $tel . '</strong></p><p>La personne ci-dessus a command&eacute;e une s&eacute;ance d&eacute;couverte gratuite ainsi qu\'un bilan minceur dans votre centre. <br/><em>Nous vous invitons &agrave; la contacter pour prendre rendez-vous.</em></p><p>Cordialement,<br/>L\'&eacute;quipe Aquavelo</p><p><em>(Demande effectu&eacute;e &agrave; partir du site aquavelo.com, le ' . date("d-m-Y   H:i:s") . ')</em></p>';

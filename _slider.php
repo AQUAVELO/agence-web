@@ -22,7 +22,7 @@
 				
 				
                   <a href="/seance-decouverte/Cannes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">
-                  <p style="font-weight: 250;">ESSAYEZ<br> UNE SÉANCE<br>GRATUITE<br>DE 45 MN</p>
+                  <p style="font-weight: 250;bold;">ESSAYEZ<br> UNE SÉANCE<br>GRATUITE<br>DE 45 MN</p>
 			    </a> 
               </div>
             </div>

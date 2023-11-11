@@ -12,11 +12,11 @@
 			   <br />
 			  <br />
 		       	  <br />
-			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;">Vitalité,</span>
+			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;"></span>
 		      	   <br>
-			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Minceur,</span>
+			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Vitalité, Minceur,</span>
 			   <br/>
-		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">Bien-être</span>
+		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">et Bien-être</span>
 			   </a>
 				</h3>
 				

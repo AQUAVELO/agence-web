@@ -12,11 +12,11 @@
 			   <br />
 			  <br />
 		       	  <br />
-			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;"></span>
+			   <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;">Vitalité,</span>
 		      	   <br>
-			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Une jolie silhouette</span>
+			   <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Minceur,</span>
 			   <br/>
-		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">toute l'année !</span>
+		       	   <br/><span class="bigger" style="color: #ffffff; font-size:80%; line-height: 40px !important; ">Bien-être</span>
 			   </a>
 				</h3>
 				

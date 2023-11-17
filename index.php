@@ -137,7 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <meta name="twitter:site" content="@ALESIAMINCEUR" />
 <meta name="twitter:creator" content="@ALESIAMINCEUR" />
 <meta property="og:url" content="https://www.aquavelo.com" />
-<meta property="og:title" content="Un Twitter pour ma sœur" />
+<meta property="og:title" content="AQUAVELO" />
 <meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 <meta property="og:image" content="https://www.aquavelo.com/images/content/logo@2x.png" />
   

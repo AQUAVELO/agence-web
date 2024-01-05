@@ -12,11 +12,11 @@
     <div class="row">
 
       <?php if($row_center['id'] == 305)  { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
+		<div class="col-md-6"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
 		 <?php } elseif ($row_center['id'] == 253) { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
+		<div class="col-md-6"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
 		<?php } elseif ($row_center['id'] == 347) { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;					    
+		<div class="col-md-6"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;					    
 		<?php } else {?>    
       		<div class="col-md-6"> <img src="/images/center_179/1.jpg" alt="Aquavélo intérieur">
 		<?php } ?> 

@@ -11,7 +11,13 @@
   <div class="container">
     <div class="row">
 
-     <div class="col-md-6"> <img src="/images/center_179/1.jpg" alt="Aquavélo intérieur">
+       <?php if($row_center['id'] == 305)  { ?>
+		<div class="col-md-6"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
+		 <?php } else { ?>
+		<div class="col-md-6"><img src="/images/center_179/1.jpg" alt="Promotion Aquavelo"> </div>;
+		<?php } ?>
+
+     
         <div class="row" style="margin-top:30px;">
           <div class="col-md-6"> <img src="/images/center_179/2.jpg" alt="Aquavélo"> </div>
           <div class="col-md-6"> <img src="/images/center_179/3.jpg" alt="Aquavélo"> </div>

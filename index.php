@@ -136,7 +136,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="https://www.aquavelo.com" />
 <meta property="og:title" content="AQUAVELO" />
 <meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
-<meta property="og:image" content="https://www.aquavelo.com/centres/Cannes />
+<meta property="og:image" content="https://www.aquavelo.com/centres/Cannes"/>
 
 </head>
 

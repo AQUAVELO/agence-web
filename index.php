@@ -140,7 +140,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <!-- Open Graph meta pour Facebook -->
 <meta property="og:title" content="AQUAVELO" />
 <meta property="og:url" content="https://www.aquavelo.com" />
-<meta property="og:image" content="https://www.aquavelo.com/centres/Cannes"/>
+<meta property="og:image" content="/images/aquavelo.webp"/>
 <meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 <meta property="og:site_name" content="AQUAVELO" />
 <meta property="og:type" content="Site internet" />

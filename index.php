@@ -128,16 +128,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
   
 
-  
-
+ <!-- Card meta pour Twitter -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@ALESIAMINCEUR" />
-<meta name="twitter:creator" content="@ALESIAMINCEUR" />
-<meta property="og:url" content="https://www.aquavelo.com" />
-<meta property="og:title" content="AQUAVELO" />
-<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
-<meta property="og:image" content="https://www.aquavelo.com/centres/Cannes"/>
+<meta name="twitter:site" content="https://www.aquavelo.com">
+<meta name="twitter:title" content="accueil Aquavelo" />
+<meta name="twitter:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
+<!-- Twitter summary card avec image large de 280x150px -->
+<meta name="twitter:image:src" content="https://www.aquavelo.com/centres/Cannes" /> 
 
+
+  <!-- Open Graph meta pour Facebook -->
+<meta property="og:title" content="AQUAVELO" />
+<meta property="og:url" content="https://www.aquavelo.com" />
+<meta property="og:image" content="https://www.aquavelo.com/centres/Cannes"/>
+<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
+<meta property="og:site_name" content="AQUAVELO" />
+<meta property="og:type" content="Site internet" />
+
+  <!-- Epingle Pinterest -->
+<meta property="og:type" content="Site internet" />
+<meta property="og:title" content="accueil Aquavelo" />
+<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
+<meta property="og:url" content="https://www.aquavelo.com" />
+<meta property="og:site_name" content="Aquavélo" />
 </head>
 
 <body class="withAnimation">

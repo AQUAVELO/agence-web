@@ -134,7 +134,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:title" content="accueil Aquavelo" />
 <meta name="twitter:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 <!-- Twitter summary card avec image large de 280x150px -->
-<meta name="twitter:image:src" content="https://www.aquavelo.com/centres/Cannes" /> 
+<meta name="twitter:image:src" content="/images/aquavelo.webp"/> 
 
 
   <!-- Open Graph meta pour Facebook -->

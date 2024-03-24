@@ -77,6 +77,45 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		<?php } ?>
       </div>
 
+
+
+
+			
+
+			<div class="col-md-6">
+        <form role="form" class="contact-form" method="POST" action="?">
+          <div class="form-group">
+            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+            <select class="form-control" id="center" name="center">
+              <?php foreach ($centers_list_d as &$free_d) { ?>
+                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom et prénom</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+          </div>
+          <input type="hidden" name="reason" id="reason">
+          <input type="hidden" name="segment" id="segment">
+          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+        </form>
+      </div>
+    </div>
+
+
+
+			
+			
+
 	   <div class="col-md-6">
           <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default" style="margin-top: 30px; color: #0f38be;">J'essaie un cours Gratuit de 45 mn</a>
 	    

@@ -84,6 +84,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 			<div class="col-md-6">
         <form role="form" class="contact-form" method="POST" action="?">
+
+		<!-- <p>Ceci est un paragraphe en commentaire</p> 
           <div class="form-group">
             <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
             <select class="form-control" id="center" name="center">
@@ -92,6 +94,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
               <?php } ?>
             </select>
           </div>
+	-->
           <div class="form-group">
             <label for="nom">Nom et prénom</label>
             <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">

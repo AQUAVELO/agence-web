@@ -120,8 +120,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 			
 
 	   <div class="col-md-6">
-          <a href="/seance-decouverte/<?= $row_center['city']; ?>" class="btn btn-default" style="margin-top: 30px; color: #0f38be;">J'essaie un cours Gratuit de 45 mn</a>
-	    
+
+            
 	
 
 			

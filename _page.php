@@ -81,7 +81,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 
 			
-        <h1> Essayez une séance gratuite de 45 mn </h1>
+        <h2> Essayez une séance gratuite de 45 mn </h2>
 			<div class="col-md-6">
         <form role="form" class="contact-form" method="POST" action="?">
 

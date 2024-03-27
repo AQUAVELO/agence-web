@@ -4,7 +4,9 @@
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-      <li class="active"><?= $city; ?>, <?= $department; ?></li>
+	<li class="active">"jusqu'à -20 % de remise"</li>
+	    
+       <! -- <li class="active"><?= $city; ?>, <?= $department; ?></li>  -->
     </ol>
   </div>
 	

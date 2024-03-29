@@ -22,9 +22,12 @@
                   <br/><span class="bigger" style="color: #ffffff; font-size:100%; line-height: 40px !important; ">et Bien-être</span>
                 </a>
               </h3>
+
+              <!-- commentaire 
               <a href="/seance-decouverte/Cannes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">
                 <p class="media-heading">CLIQUEZ POUR<br>ESSAYER<br> UNE SÉANCE<br>GRATUITE<br>DE 45 MN</p>
               </a> 
+              -->
             </div>
           </div>
         </div>

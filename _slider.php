@@ -59,7 +59,7 @@
   <!-- / flexslider -->
 
 
-<div class="col-md-6">
+<div class="col-md-4">
         <form role="form" class="contact-form" method="POST" action="?">
         
           <div class="form-group">

@@ -59,7 +59,7 @@
   <!-- / flexslider -->
 
 
-<h2 class="form-group"  style="text-align: center;"> Essayez une séance de 45 mn </h2>
+<h2 class="form-group"  style="text-align: center;"> Essayez une séance gratuite de 45 mn </h2>
 			<div class="col-md-6">
         <form role="form" class="contact-form" method="POST" action="_page.php">
 

@@ -59,6 +59,7 @@
     </li>
   </ul>
 </section>
+   <br />
 
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">Essayez une séance gratuite de 45 mn</h2>

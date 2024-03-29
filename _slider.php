@@ -57,3 +57,30 @@
     </ul>
   </section>
   <!-- / flexslider -->
+
+
+<div class="col-md-6">
+        <form role="form" class="contact-form" method="POST" action="?">
+        
+          <div class="form-group">
+            <label for="nom">Nom et prénom</label>
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+          </div>
+          <div class="form-group">
+            <label for="nom">Jour et heure du rdv souhaité (facultatif)</label>
+            <input type="text" class="form-control" id="rdv" name="rdv" placeholder="Jour et heure du rdv souhaité (facultatif)">
+          </div>
+          <input type="hidden" name="reason" id="reason">
+          <input type="hidden" name="segment" id="segment">
+          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+        </form>
+      </div>
+    </div>

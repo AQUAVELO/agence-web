@@ -59,9 +59,20 @@
   <!-- / flexslider -->
 
 
-<div class="col-md-4">
-        <form role="form" class="contact-form" method="POST" action="?">
-        
+<h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
+			<div class="col-md-6">
+        <form role="form" class="contact-form" method="POST" action="_page.php">
+
+		
+          <div class="form-group">
+            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+            <select class="form-control" id="center" name="center">
+              <?php foreach ($centers_list_d as &$free_d) { ?>
+                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
+              <?php } ?>
+            </select>
+          </div>
+
           <div class="form-group">
             <label for="nom">Nom et prénom</label>
             <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
@@ -73,10 +84,6 @@
           <div class="form-group">
             <label for="phone">Téléphone</label>
             <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
-          </div>
-          <div class="form-group">
-            <label for="nom">Jour et heure du rdv souhaité (facultatif)</label>
-            <input type="text" class="form-control" id="rdv" name="rdv" placeholder="Jour et heure du rdv souhaité (facultatif)">
           </div>
           <input type="hidden" name="reason" id="reason">
           <input type="hidden" name="segment" id="segment">

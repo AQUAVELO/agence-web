@@ -122,9 +122,31 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 			
 
 	   <div class="col-md-6">
+		  
+       <?    // ID du repas que vous souhaitez sélectionner
+$id_repas = 1;
 
+// Requête pour sélectionner le repas avec l'ID spécifié
+$requete= "SELECT * FROM menus WHERE id = $id_repas";
+
+// Exécuter la requête
+$resultat = query($requete);
+
+// Vérifier s'il y a des résultats
+if ($resultat->num_rows > 0) {
+    // Boucler à travers les résultats
+    while ($row = $resultat->fetch_assoc()) {
+        echo "ID: " . $row["id"] . "<br>";
+        echo "Date: " . $row["date"] . "<br>";
+        echo "Repas: " . $row["mealtime"] . "<br>";
+        echo "Plat: " . $row["plat"] . "<br>";
+        // Ajoutez d'autres champs si nécessaire
+    }
+} else {
+    echo "Aucun repas trouvé avec l'ID spécifié.";
+}
             
-	
+	 ?>
 
 			
          <dl style="margin-top:30px;">

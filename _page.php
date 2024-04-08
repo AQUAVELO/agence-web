@@ -128,10 +128,6 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 			
          <dl style="margin-top:30px;">
-		<dt>Repas du midi</dt>
-          <dd>
-            <?= $menus['plat']; ?>
-          </dd>
           <dt>Adresse </dt>
           <dd>
             <?= $row_center['address']; ?>

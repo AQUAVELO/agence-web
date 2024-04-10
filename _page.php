@@ -128,6 +128,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
          <dl style="margin-top:30px;">
           <dt>Adresse </dt>
           <dd>
+
+		<?=  SELECT * FROM `menus`where id=1;?>
+		<?= $menus['plat']; ?>	
+		  
             <?= $row_center['address']; ?>
           </dd>
           <dt>Téléphone </dt>

@@ -60,7 +60,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	
 </header>
-<section class="content-area bg1">
+
 	      
 <section class="content-area bg1">
   <div class="container">

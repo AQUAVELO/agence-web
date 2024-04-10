@@ -146,7 +146,7 @@ $menus = mysqli_fetch_assoc($resultat);
 // Maintenant, vous pouvez afficher la valeur de la colonne 'plat'
 echo $menus['plat'];
 ?>	
-
+  <?= $menus['plat']; ?>
 		  
             <?= $row_center['address']; ?>
           </dd>

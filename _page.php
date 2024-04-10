@@ -60,22 +60,16 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	
 </header>
-
-	      
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-
-	         <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt="Aquavélo">
-         <div class="row" style="margin-top:30px;">
-           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo"> </div>   
-           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
-	    
+      <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt="Aquavélo">
+        <div class="row" style="margin-top:30px;">
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo"> </div>
+          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
 	
-
-
-
-	      
+        </div>
+	
             <?php if($row_center['id'] == 305)  { ?>
 		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
 		 <?php } elseif ($row_center['id'] == 253) { ?>
@@ -84,8 +78,6 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;					    
 		<?php } ?>
       </div>
-
-
 
 
 

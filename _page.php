@@ -129,8 +129,24 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dt>Adresse </dt>
           <dd>
 
-		<?=  SELECT * FROM `menus`where id=1;?>
-		<?= $menus['plat']; ?>	
+
+		  
+		<?php
+// Supposons que vous ayez déjà établi une connexion à votre base de données
+// et récupéré les données dans le tableau $menus
+
+// Votre requête SQL pour récupérer les données de la table `menus` où id=1
+$requete = "SELECT * FROM menus WHERE id=1";
+
+// Exécutez la requête et récupérez le résultat dans le tableau $menus
+// En supposant que vous utilisez l'extension MySQLi pour les opérations de base de données
+$resultat = mysqli_query($connexion, $requete);
+$menus = mysqli_fetch_assoc($resultat);
+
+// Maintenant, vous pouvez afficher la valeur de la colonne 'plat'
+echo $menus['plat'];
+?>	
+
 		  
             <?= $row_center['address']; ?>
           </dd>

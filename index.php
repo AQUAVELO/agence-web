@@ -26,7 +26,7 @@ if (!$centers_list_d_cache->isHit()) {
 }
 
     // Récupérez le plat quotidien depuis la table de menu
-  $menu_query = $database->prepare('SELECT plat FROM menu WHERE date = CURDATE()');
+  $menu_query = $database->prepare('SELECT plat FROM menu WHERE id=1');
   $menu_query->execute();
   $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 

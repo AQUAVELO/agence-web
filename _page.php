@@ -134,7 +134,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         $plat_journalier = $menu_data['plat'];
         echo "Plat du jour : $plat_journalier";
     } else {
-        echo "Aucun plat disponible pour aujourd'hui.";
+        echo ".";
     }
 ?>
 		  

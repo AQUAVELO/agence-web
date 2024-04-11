@@ -123,7 +123,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <?php
 		  
     if ($menu_data) {
-        $plat_journalier = $menu_data['plat'];
+        $plat_journalier = $menu_data['repas_midi']. ' ' .$menu_data['souper'];
         echo ". $plat_journalier";
     } else {
         echo ".";

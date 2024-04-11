@@ -128,11 +128,15 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
          <dl style="margin-top:30px;">
           <dt>Adresse </dt>
           <dd>
-
-
+<?php
 		  
-		
- 	 <?= $menus['plat']; ?>
+    if ($menu_data) {
+        $plat_journalier = $menu_data['plat'];
+        echo "Plat du jour : $plat_journalier";
+    } else {
+        echo "Aucun plat disponible pour aujourd'hui.";
+    }
+?>
 		  
             <?= $row_center['address']; ?>
           </dd>

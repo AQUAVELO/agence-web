@@ -141,7 +141,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	  <dt>Venez lire tous les jours votre alimentation réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
-          <table  class="col-md-6">
+          <table>
 	<tr>
         <th>Petit déjeuner</th>
         <th>Repas du midi</th>

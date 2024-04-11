@@ -164,7 +164,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		   
 	  <dd>
 		 
-    </script>
+
 		   
 		   
           <dt>Résultats Minceurs Rapides</dt>

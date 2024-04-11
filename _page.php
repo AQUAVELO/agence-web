@@ -143,14 +143,14 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>			  
           <table>
 	<tr>
-        <th>Petit déjeuner</th>
-        <th>Repas du midi</th>
-	<th>Repas du soir</th>
+        <th style="padding: 5px;">Petit déjeuner</th>
+        <th style="padding: 5px;">Repas du midi</th>
+	<th style="padding: 5px;">Repas du soir</th>
    	 </tr>
    	 <tr>
-		<td><?php echo $menu_data['petit_dejeuner']; ?></td>
-        	<td><?php echo $menu_data['repas_midi']; ?></td>
-        	<td><?php echo $menu_data['souper']; ?></td>
+		<td style="padding: 5px;"><?php echo $menu_data['petit_dejeuner']; ?></td>
+        	<td style="padding: 5px;"><?php echo $menu_data['repas_midi']; ?></td>
+        	<td style="padding: 5px;"><?php echo $menu_data['souper']; ?></td>
    	 </tr>
 	 </table>
 	 </dd>

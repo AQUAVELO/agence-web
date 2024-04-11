@@ -113,30 +113,9 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <input type="hidden" name="segment" id="segment">
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
         </form>	
-      </div>
-			
-      <br><br> 		
-      <div class="col-md-6">
-      <?php	  
-    if ($menu_data) {
-        $plat_journalier = $menu_data['plat'];
-        echo "Menu du jour : $plat_journalier";
-    } else {
-        echo ".";
-    }
-    ?>
+      </div>		
     </div>
-			
-    </div>
-
-
-
-			
-			
-
-	   <div class="col-md-6">
-		
-
+  <div class="col-md-6">
 			
          <dl style="margin-top:30px;">
           <dt>Adresse </dt>
@@ -168,6 +147,20 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 
           <dd>
 		    <?php if($row_center['book_link']) { ?>
+
+	  <dt>Prochainement votre suivi alimentaire quotidien</dt>
+          <dd>		
+     	 <?php	  
+    	if ($menu_data) {
+        $plat_journalier = $menu_data['plat'];
+        echo "Menu du jour : $plat_journalier";
+   	 } else {
+        echo ".";
+    	}
+    	?>
+	 </dd>
+
+		  
           <dt>Agenda pour les adhérents</dt>
           <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
           <?php } ?>

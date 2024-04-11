@@ -141,16 +141,13 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	  <dt>Prochainement votre suivi alimentaire quotidien</dt>
           <dd>		
-          <?php
 		  
-    if ($menu_data) {
-        $plat_journalier = $menu_data['souper'];
-        echo ". $plat_journalier";
-    } else {
-        echo ".";
-    }
-?>
-
+          <table>
+   	 <tr>
+        	<td><?php echo $row['repas_midi']; ?></td>
+        	<td><?php echo $row['souper']; ?></td>
+   	 </tr>
+	 </table>
 	 </dd>
 
 		  

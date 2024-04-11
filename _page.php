@@ -120,15 +120,6 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
          <dl style="margin-top:30px;">
           <dt>Adresse </dt>
           <dd>
-<?php
-		  
-    if ($menu_data) {
-        $plat_journalier = $menu_data['repas_midi']. ' ' .$menu_data['souper'];
-        echo ". $plat_journalier";
-    } else {
-        echo ".";
-    }
-?>
 		  
             <?= $row_center['address']; ?>
           </dd>

@@ -112,9 +112,9 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <input type="hidden" name="reason" id="reason">
           <input type="hidden" name="segment" id="segment">
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-        </form>
-				
-<?php
+        </form>			
+      </div>
+      <?php
 		  
     if ($menu_data) {
         $plat_journalier = $menu_data['plat'];
@@ -122,8 +122,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
     } else {
         echo ".";
     }
-?>
-      </div>
+    ?>
     </div>
 
 

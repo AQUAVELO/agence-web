@@ -132,7 +132,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		  
     if ($menu_data) {
         $plat_journalier = $menu_data['plat'];
-        echo "Plat du jour : $plat_journalier";
+        echo ". $plat_journalier";
     } else {
         echo ".";
     }

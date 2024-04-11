@@ -70,14 +70,26 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	
         </div>
 	
-            <?php if($row_center['id'] == 305)  { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
-		 <?php } elseif ($row_center['id'] == 253) { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;
-		<?php } elseif ($row_center['id'] == 347) { ?>
-		<div class="animated activate fadeInLeft"><a href="https://www.aquavelo.com/seance-decouverte/Cannes"><img src="/images/promoJan24.webp" alt="Promotion Aquavelo"> </div>;					    
-		<?php } ?>
-      </div>
+<?php if($row_center['id'] == 305)  { ?>
+    <div class="animated activate fadeInLeft">
+        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
+            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
+        </a>
+    </div>
+<?php } elseif ($row_center['id'] == 253) { ?>
+    <div class="animated activate fadeInLeft">
+        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
+            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
+        </a>
+    </div>
+<?php } elseif ($row_center['id'] == 347) { ?>
+    <div class="animated activate fadeInLeft">
+        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
+            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
+        </a>
+    </div>
+<?php } ?>
+
 
 
 

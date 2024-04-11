@@ -144,7 +144,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		  
           <table>
    	 <tr>
-        	<td><?php echo $menu_data['repas_midi']; ?></td> 
+		<td><?php echo $menu_data['petit_dejeuner']; ?></td>
+        	<td><?php echo $menu_data['repas_midi']; ?></td>
         	<td><?php echo $menu_data['souper']; ?></td>
    	 </tr>
 	 </table>

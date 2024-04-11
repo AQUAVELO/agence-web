@@ -113,6 +113,16 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <input type="hidden" name="segment" id="segment">
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
         </form>
+				
+<?php
+		  
+    if ($menu_data) {
+        $plat_journalier = $menu_data['plat'];
+        echo "Menu du jour : $plat_journalier";
+    } else {
+        echo ".";
+    }
+?>
       </div>
     </div>
 

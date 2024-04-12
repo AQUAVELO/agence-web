@@ -161,23 +161,22 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	  <dt>Venez lire tous les jours votre alimentation réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
           <table>
-	<tr>
-        <th style="width: 200px; padding: 10px;">Petit déjeuner</th>
-        <th style="width: 200px; padding: 10px;">Repas du midi</th>
-	<th style="width: 200px; padding: 10px;">Repas du soir</th>
-   	 </tr>
-   	 <tr>
-		<td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>
-        	<td style="width: 200px; padding: 10px;"><?php echo $menu_data['repas_midi']; ?></td>
-        	<td style="width: 200px; padding: 10px;"><?php echo $menu_data['souper']; ?></td>
-   	 </tr>
-	 </table>
-	 </dd>
+            <tr>
+              <th style="width: 200px; padding: 10px;">Petit déjeuner</th>
+              <th style="width: 200px; padding: 10px;">Repas du midi</th>
+              <th style="width: 200px; padding: 10px;">Repas du soir</th>
+            </tr>
+            <tr>
+              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>
+              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['repas_midi']; ?></td>
+              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['souper']; ?></td>
+            </tr>
+          </table>
+          </dd>
 
-		  
           <dt>Agenda pour les adhérents</dt>
           <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
-          <?php } ?>
+		 <?php } ?>
 
 	   </dd>
 		   

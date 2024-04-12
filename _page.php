@@ -67,7 +67,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         <div class="row" style="margin-top:30px;">
 		
           <?php if ($row_center['id'] != 305) { ?>
-    <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo">
+    <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo">   </div>
 <?php } else { ?>
     <div class="col-md-6"> <img src="/images/Cannes1.jpg" alt="Aquavélo">
     </div>
@@ -75,7 +75,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
 	
-        </div>
+      
 	
 <?php if($row_center['id'] == 305)  { ?>
     <div class="animated activate fadeInLeft">

@@ -156,7 +156,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	 
           <dd>
-	<?php if($row_center['book_link']) { ?>
+	
 
 	  <dt>Venez lire tous les jours votre alimentation réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
@@ -173,7 +173,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
             </tr>
           </table>
           </dd>
-
+	 <?php if($row_center['book_link']) { ?>
           <dt>Agenda pour les adhérents</dt>
           <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
 		 <?php } ?>

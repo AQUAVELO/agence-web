@@ -118,15 +118,15 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
           <div class="form-group">
             <label for="nom">Nom et prénom</label>
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" style="width: 100%;">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email" style="width: 100%;">
           </div>
           <div class="form-group">
             <label for="phone">Téléphone</label>
-            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone" style="width: 100%;">
           </div>
           <input type="hidden" name="reason" id="reason">
           <input type="hidden" name="segment" id="segment">

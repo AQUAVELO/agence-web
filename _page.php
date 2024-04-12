@@ -74,7 +74,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <?php } ?>
 
           <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
-	
+</div>	
       
 	
 <?php if($row_center['id'] == 305)  { ?>

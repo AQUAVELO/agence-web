@@ -67,16 +67,9 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         <div class="row" style="margin-top:30px;">
 		
           <?php if ($row_center['id'] != 305) { ?>
-    <div class="animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
-            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
-        </a>
-    </div>
+    <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo">
 <?php } else { ?>
-    <div class="animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
-            <img src="/images/Cannes1.jpg" alt="Promotion Aquavelo">
-        </a>
+    <div class="col-md-6"> <img src="/images/Cannes1.jpg" alt="Aquavélo">
     </div>
 <?php } ?>
 

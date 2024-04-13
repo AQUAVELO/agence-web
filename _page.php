@@ -172,6 +172,11 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
               <td style="width: 200px; padding: 10px;"><?php echo $menu_data['souper']; ?></td>
             </tr>
           </table>
+		  
+	 <div>
+ 	 Collation: <?php echo $menu_data['collation']; ?>
+	 </div>
+
           </dd>
 	 <?php if($row_center['book_link']) { ?>
           <dt>Agenda pour les adhérents</dt>

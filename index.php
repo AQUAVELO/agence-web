@@ -25,11 +25,14 @@ if (!$centers_list_d_cache->isHit()) {
   $centers_list_d = $centers_list_d_cache->get();
 }
 
-    // Récupérez le plat quotidien depuis la table de menu
-  $menu_query = $database->prepare('SELECT petit_dejeuner, repas_midi, souper FROM menus WHERE id=1');
-  $menu_query->execute();
-  $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
+ // Récupérer le jour du mois actuel
+$jour_du_mois = date("d");
 
+// Préparer la requête pour récupérer les champs petit_dejeuner et repas_midi en fonction du jour du mois
+$menu_query = $database->prepare('SELECT petit_dejeuner, repas_midi FROM menus WHERE jour_du_mois = :jour_du_mois');
+$menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
+$menu_query->execute();
+$menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
 #home
 if ($page == "home") {

@@ -175,7 +175,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		  
 	 <div>
  	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
-	  <strong>Calories des repas du jour:</strong> <?php echo $menu_data['calories']; ?>
+	  <strong>Calories:</strong> <?php echo $menu_data['calories']; ?>
 	 </div>
 
           </dd>

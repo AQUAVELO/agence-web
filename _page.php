@@ -174,7 +174,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           </table>
 		  
 	 <div>
- 	 Collation: <?php echo $menu_data['collation']; ?>
+ 	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
 	 </div>
 
           </dd>

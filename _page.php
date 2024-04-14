@@ -154,7 +154,17 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
            <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 
-	 
+	  <?php
+	 // Préparer la requête pour récupérer les photos en fonction du repas
+	$repas = ['d', 'm', 's']; // Liste des repas
+	foreach ($repas as $repas_item) {
+        $photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
+        $photo_query->execute([$repas_item]);
+        $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
+        }
+	?>
+	
+
           <dd>
 	
 
@@ -163,8 +173,14 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <table>
             <tr>
               <th style="width: 200px; padding: 10px;">Petit déjeuner</th>
+		    <!-- Photo du petit déjeuner -->
+	<img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner">
               <th style="width: 200px; padding: 10px;">Repas du midi</th>
+		    <!-- Photo du repas du midi -->
+	<img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi">
               <th style="width: 200px; padding: 10px;">Repas du soir</th>
+		    <!-- Photo du repas du soir -->
+	<img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir">
             </tr>
             <tr>
               <td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>
@@ -179,24 +195,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 </div>
 
 	 <div>
-	<?php
-	 // Préparer la requête pour récupérer les photos en fonction du repas
-	$repas = ['d', 'm', 's']; // Liste des repas
-	foreach ($repas as $repas_item) {
-        $photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
-        $photo_query->execute([$repas_item]);
-        $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
-        }
-	?>
-	<!-- Photo du petit déjeuner -->
-	<img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner">
-
-	<!-- Photo du repas du midi -->
-	<img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi">
-
-	<!-- Photo du repas du soir -->
-	<img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir">
-
+	
 
  	
  	

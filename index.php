@@ -35,9 +35,9 @@ $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
 // Préparer la requête pour récupérer les photos
-$menu_query = $database->prepare('SELECT photo_plat FROM photos');
-$menu_query->execute();
-$menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
+$menu_envoi = $database->prepare('SELECT photo_plat FROM photos');
+$menu_envoi->execute();
+$menu_envoye = $menu_envoi->fetch(PDO::FETCH_ASSOC);
 
 #home
 if ($page == "home") {

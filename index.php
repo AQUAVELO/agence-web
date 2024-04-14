@@ -34,10 +34,14 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
-// Préparer la requête pour récupérer les photos
-$menu_envoi = $database->prepare('SELECT photo_plat FROM photos WHERE jour = 14');
-$menu_envoi->execute();
+// Récupérer le jour du mois actuel
+$jour_actuel = date('j');
+
+// Préparer la requête pour récupérer les photos en fonction du jour du mois
+$menu_envoi = $database->prepare('SELECT photo_plat FROM photos WHERE jour = :jour_actuel');
+$menu_envoi->execute([':jour_actuel' => $jour_actuel]);
 $menu_envoye = $menu_envoi->fetch(PDO::FETCH_ASSOC);
+
 
 #home
 if ($page == "home") {

@@ -179,6 +179,15 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 </div>
 
 	 <div>
+
+	 // Préparer la requête pour récupérer les photos en fonction du repas
+	$repas = ['d', 'm', 's']; // Liste des repas
+	foreach ($repas as $repas_item) {
+        $photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
+        $photo_query->execute([$repas_item]);
+        $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
+        }
+
  	
  	
 	<!-- Photo du plat: <?php echo '<img src="' . $menu_envoye['photo_plat'] . '" alt="Photo du plat">'; ?>-->

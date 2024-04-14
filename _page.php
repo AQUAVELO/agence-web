@@ -194,6 +194,9 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 <div>
  	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
 	  <strong>Calories totales:</strong> <?php echo $menu_data['calories']; ?>
+	  <p>Moyenne consommation calories journalières d’une femme = 1500 calories,</p>
+	<p>si déficit calorique quotidien alors perte de poids 👍</p>
+		 
 	 </div>
 
 	 <div>

@@ -168,7 +168,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
 	
 
-	  <dt>Venez lire tous les jours votre alimentation réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
+	  <dt><strong>Venez lire tous les jours votre alimentation</strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
           <table>
             <tr>

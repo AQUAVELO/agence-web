@@ -179,7 +179,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 </div>
 
 	 <div>
- 	Photo du plat: <?php echo $photos['photo_plat']; ?>
+ 	Photo du plat: <?php echo $menu_envoye['photo_plat']; ?>
 	 </div>
 
           </dd>

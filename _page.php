@@ -179,7 +179,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 </div>
 
 	 <div>
-
+	<?php
 	 // Préparer la requête pour récupérer les photos en fonction du repas
 	$repas = ['d', 'm', 's']; // Liste des repas
 	foreach ($repas as $repas_item) {
@@ -187,6 +187,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         $photo_query->execute([$repas_item]);
         $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
         }
+	?>
 	<!-- Photo du petit déjeuner -->
 	<img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner">
 

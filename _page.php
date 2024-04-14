@@ -174,13 +174,13 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
             <tr>
               <th style="width: 200px; padding: 10px;">Petit déjeuner</th>
 		    <!-- Photo du petit déjeuner -->
-	<img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner">
+	<td style="width: 50px; padding: 10px;"><img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner"></td>
               <th style="width: 200px; padding: 10px;">Repas du midi</th>
 		    <!-- Photo du repas du midi -->
-	<img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi">
+	<td style="width: 50px; padding: 10px;"><img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi"></td>
               <th style="width: 200px; padding: 10px;">Repas du soir</th>
 		    <!-- Photo du repas du soir -->
-	<img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir">
+	<td style="width: 50px; padding: 10px;"><img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir"></td>
             </tr>
             <tr>
               <td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>

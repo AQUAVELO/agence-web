@@ -181,7 +181,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	 <div>
  	
  	Photo du plat: <?php echo $menu_envoye['photo_plat']; ?>
-	echo '<img src="' . $menu_envoye['photo_plat'] . '" alt="Photo du plat">';
+	Photo du plat: <?php echo '<img src="' . $menu_envoye['photo_plat'] . '" alt="Photo du plat">'; ?>
 
 	 </div>
 

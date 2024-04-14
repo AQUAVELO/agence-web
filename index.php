@@ -34,6 +34,11 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
+// Préparer la requête pour récupérer les photos
+$menu_query = $database->prepare('SELECT photo_plat FROM photos');
+$menu_query->execute();
+$menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
+
 #home
 if ($page == "home") {
 

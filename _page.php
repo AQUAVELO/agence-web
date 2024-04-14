@@ -178,6 +178,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	  <strong>Calories:</strong> <?php echo $menu_data['calories']; ?>
 	 </div>
 
+	 <div>
+ 	Photo du plat: <?php echo $photos['photo_plat']; ?>
+	 </div>
+
           </dd>
 	 <?php if($row_center['book_link']) { ?>
           <dt>Agenda pour les adhérents</dt>

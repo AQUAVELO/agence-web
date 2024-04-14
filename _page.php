@@ -187,6 +187,15 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         $photo_query->execute([$repas_item]);
         $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
         }
+	<!-- Photo du petit déjeuner -->
+	<img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner">
+
+	<!-- Photo du repas du midi -->
+	<img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi">
+
+	<!-- Photo du repas du soir -->
+	<img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir">
+
 
  	
  	

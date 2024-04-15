@@ -180,11 +180,11 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	  </tr>
 	    <tr>
                 <!-- Photo du petit déjeuner -->
-		<td style="width: 200px; padding: 10px;"><img src="<?php echo $photo_data['d']['photo_plat']; ?>" alt="Photo du petit déjeuner" style="max-width: 100px;"></td>
+		<td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_pd'];  ?>" alt="Photo du petit déjeuner" style="max-width: 100px;"></td>
 		<!-- Photo du repas du midi -->
-        	<td style="width: 200px; padding: 10px;"><img src="<?php echo $photo_data['m']['photo_plat']; ?>" alt="Photo du repas du midi" style="max-width: 100px;"></td>
+        	<td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_s'];  ?>" alt="Photo du repas du midi" style="max-width: 100px;"></td>
        		 <!-- Photo du repas du soir -->
-		 <td style="width: 200px; padding: 10px;"><img src="<?php echo $photo_data['s']['photo_plat']; ?>" alt="Photo du repas du soir" style="max-width: 100px;"></td>
+		 <td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_s']; ?>" alt="Photo du repas du soir" style="max-width: 100px;"></td>
             </tr>
             <tr>
               <td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>

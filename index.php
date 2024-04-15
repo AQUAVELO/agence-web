@@ -35,7 +35,7 @@ $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
 // Récupérer le jour actuel du mois
-$jour_actuel = date('j');
+$jour_actuel = 15;
 
 // Préparer la requête pour récupérer les photos en fonction du jour du mois
 $menu_envoi = $database->prepare('SELECT photo_plat FROM photos WHERE jour = :jour_actuel');

@@ -34,11 +34,10 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
-// Récupérer le jour actuel du mois
 
+// Définir le jour du mois actuel
+$jour_actuel = date('d');
 
-
- $jour_actuel = 15;
 // Préparer la requête pour récupérer les photos en fonction du jour du mois actuel
 $photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE jour = :jour_actuel');
 $photo_query->execute([':jour_actuel' => $jour_actuel]);
@@ -46,8 +45,7 @@ $photo_query->execute([':jour_actuel' => $jour_actuel]);
 // Récupérer les données pour chaque repas
 $photo_data = [];
 while ($row = $photo_query->fetch(PDO::FETCH_ASSOC)) {
-    // Stocker la photo dans le tableau associatif avec la clé 'd' pour le petit déjeuner
-    $photo_data['d'] = $row;
+    $photo_data[] = $row['photo_plat'];
 }
 
 

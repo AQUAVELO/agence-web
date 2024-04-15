@@ -25,7 +25,7 @@ if (!$centers_list_d_cache->isHit()) {
   $centers_list_d = $centers_list_d_cache->get();
 }
 
- // Récupérer le jour du mois actuel
+// Récupérer le jour du mois actuel
 $jour_du_mois = date("d");
 
 // Préparer la requête pour récupérer les champs petit_dejeuner et repas_midi en fonction du jour du mois
@@ -34,13 +34,11 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
-// Récupérer le jour du mois actuel
-$jour_actuel = date('j');
-
-// Préparer la requête pour récupérer les photos en fonction du jour du mois
-$menu_envoi = $database->prepare('SELECT photo_plat FROM photos WHERE jour = :jour_actuel');
-$menu_envoi->execute([':jour_actuel' => $jour_actuel]);
+// Préparer la requête pour récupérer les photos en fonction du jour du mois actuel
+$menu_envoi = $database->prepare('SELECT photo_plat FROM photos WHERE jour = :jour_du_mois');
+$menu_envoi->execute([':jour_du_mois' => $jour_du_mois]);
 $menu_envoye = $menu_envoi->fetch(PDO::FETCH_ASSOC);
+
 
 
 #home

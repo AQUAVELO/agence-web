@@ -51,13 +51,6 @@ while ($row = $photo_query->fetch(PDO::FETCH_ASSOC)) {
 
 
 
-
-
-
-
-
-
-
 #home
 if ($page == "home") {
 

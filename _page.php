@@ -154,15 +154,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <dd>
            <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
 
-	  <?php
-	 // Préparer la requête pour récupérer les photos en fonction du repas
-	$repas = ['d', 'm', 's']; // Liste des repas
-	foreach ($repas as $repas_item) {
-        	$photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
-        	$photo_query->execute([$repas_item]);
-       		$photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
-         }
-	?>
+	
 
 
 	

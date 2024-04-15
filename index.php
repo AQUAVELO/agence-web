@@ -45,7 +45,8 @@ $photo_query->execute([':jour_actuel' => $jour_actuel]);
 // Récupérer les données pour chaque repas
 $photo_data = [];
 while ($row = $photo_query->fetch(PDO::FETCH_ASSOC)) {
-    $photo_data[] = $row['photo_plat'];
+    // Stocker la photo dans le tableau associatif avec la clé 'd' pour le petit déjeuner
+    $photo_data['d'] = $row;
 }
 
 

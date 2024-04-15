@@ -49,11 +49,7 @@ while ($row = $photo_query->fetch(PDO::FETCH_ASSOC)) {
     $photo_data[$row['repas']] = $row['photo_plat'];
 }
 
-// Afficher le contenu de la variable $photo_data
-var_dump($photo_data);
 
-// Inclure la page _page.php
-include '_page.php';
 
 
 

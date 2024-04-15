@@ -156,12 +156,19 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	  <?php
 	 // Préparer la requête pour récupérer les photos en fonction du repas
-	$repas = ['d', 'm', 's']; // Liste des repas
-	foreach ($repas as $repas_item) {
-        $photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
-        $photo_query->execute([$repas_item]);
-        $photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
-        }
+	//$repas = ['d', 'm', 's']; // Liste des repas
+	//foreach ($repas as $repas_item) {
+        //$photo_query = $database->prepare('SELECT photo_plat FROM photos WHERE repas = ?');
+        //$photo_query->execute([$repas_item]);
+        //$photo_data[$repas_item] = $photo_query->fetch(PDO::FETCH_ASSOC);
+        //}
+	?>
+
+	  <?php
+	// Afficher les photos pour chaque repas
+foreach ($photo_data as $repas => $photo) {
+    echo $photo; // Afficher le texte de la photo
+	}
 	?>
 	
 

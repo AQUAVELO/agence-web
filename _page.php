@@ -132,7 +132,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
           <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
         </form>	
       </div>		
-    </div>
+
   <div class="col-md-6">
 			
          <dl style="margin-top:30px;">

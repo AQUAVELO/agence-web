@@ -165,7 +165,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		$date = date('d/m/Y');
             ?>
 
-	 <dt><strong>Repas hypercalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
+	 <dt><strong>Repas hypocalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
           <table>
             <tr>

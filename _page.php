@@ -160,9 +160,12 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	
 
           <dd>
-	
+	   <?php	  
+	   // Définition de la variable $date
+		$date = date('d/m/Y');
+            ?>
 
-	  <dt><strong>Venez lire tous les jours votre alimentation</strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
+	 <dt><strong>Repas hypercalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement</dt>
           <dd>			  
           <table>
             <tr>

@@ -250,7 +250,7 @@ En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser l
     </div>
   </div>
 </div>
-
+<br>
 		
     <!-- Bouton pour afficher la politique de confidentialité -->
     <button type="button" data-toggle="modal" data-target="#politique" class="btn btn-primary">Politique de confidentialité</button>

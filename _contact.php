@@ -166,14 +166,7 @@ use PHPMailer\PHPMailer\Exception;
       </div>
       <div class="modal-body">
 	      
-	      <button type="button" data-toggle="modal" data-target="#infos" class="btn btn-primary">Politique de confidentialité</button>
-<div class="modal" id="infos">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Plus d'informations</h4>
-      </div>
-      <div class="modal-body">
+	
 	      
 
 	      

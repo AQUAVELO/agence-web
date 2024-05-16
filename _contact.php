@@ -255,25 +255,69 @@ En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser l
 		
     <!-- Bouton pour afficher la politique de confidentialité -->
     <button type="button" data-toggle="modal" data-target="#politique" class="btn btn-primary">Politique de confidentialité</button>
+		
     <!-- Modal pour afficher la politique de confidentialité -->
     <div class="modal" id="politique">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Politique de confidentialité</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- Insérez ici le contenu de votre politique de confidentialité -->
-                    <!-- Vous pouvez utiliser du texte brut ou du HTML pour formater votre contenu -->
-                    <!-- Par exemple : -->
-                    <p>Votre politique de confidentialité ici...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Politique de Confidentialité</h4>
+            </div>
+            <div class="modal-body">
+                <h5>Politique de confidentialité</h5>
+                <p>Devant le développement des nouveaux outils de communication, il est nécessaire de porter une attention particulière à la protection de la vie privée. C’est pourquoi, nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.</p>
+                <h5>Collecte des renseignements personnels</h5>
+                <p>Nous collectons les renseignements suivants :</p>
+                <ul>
+                    <li>Nom – Prénom – Numéro de téléphone – Adresse email</li>
+                </ul>
+                <p>Les renseignements personnels que nous collectons sont recueillis au travers de formulaires et grâce à l’interactivité établie entre vous et le site Web. Nous utilisons également, comme indiqué dans la section suivante, des cookies pour réunir des informations vous concernant.</p>
+                <h5>Formulaires et interactivité</h5>
+                <p>Vos renseignements personnels sont collectés par le biais de formulaire, à savoir : Nom, Prénom, téléphone, adresse mail.</p>
+                <p>Nous utilisons les renseignements ainsi collectés pour les finalités suivantes :</p>
+                <ul>
+                    <li>Prise de contact</li>
+                    <li>Envoie d’emailings marketing</li>
+                </ul>
+                <h5>Cookies</h5>
+                <p>Nous recueillons certaines informations par le biais de cookies. Il s’agit principalement des informations suivantes :</p>
+                <ul>
+                    <li>Adresse IP</li>
+                    <li>Système d’exploitation</li>
+                    <li>Pages visitées et requêtes</li>
+                    <li>Heure et jour de connexion</li>
+                </ul>
+                <p>Le recours à de tels fichiers me permet :</p>
+                <ul>
+                    <li>D’assurer un accueil personnalisé</li>
+                    <li>De proposer des offres adaptées à vos besoins</li>
+                    <li>Statistiques</li>
+                </ul>
+                <h5>Droit d’opposition et de retrait</h5>
+                <p>Nous nous engageons à vous offrir un droit d’opposition et de retrait quant à vos renseignements personnels.</p>
+                <p>Le droit d’opposition s’entend comme étant la possibilité offerte aux internautes de refuser que leurs renseignements personnels soient utilisées à certaines fins mentionnées lors de la collecte.</p>
+                <p>Le droit de retrait s’entend comme étant la possibilité offerte aux internautes de demander à ce que leurs renseignements personnels ne figurent plus, par exemple, dans une liste de diffusion.</p>
+                <p>Pour pouvoir exercer ces droits, vous pouvez m’écrire : claude@alesiaminceur.com</p>
+                <h5>Sécurité</h5>
+                <p>Les renseignements personnels que nous collectons sont conservés dans un environnement sécurisé. Les personnes travaillant pour moi sont tenues de respecter la confidentialité de vos informations.</p>
+                <p>Pour assurer la sécurité de vos renseignements personnels, nous avons recours aux mesures suivantes :</p>
+                <ul>
+                    <li>Protocole SSL (Secure Sockets Layer)</li>
+                    <li>Protocole SET (Secure Electronic Transaction)</li>
+                    <li>Sauvegarde informatique</li>
+                    <li>Pare-feu (Firewalls)</li>
+                </ul>
+                <p>Nous nous engageons à maintenir un haut degré de confidentialité en intégrant les dernières innovations technologiques permettant d’assurer la confidentialité de vos transactions. Toutefois, comme aucun mécanisme n’offre une sécurité maximale, une part de risque est toujours présente lorsque l’on utilise Internet pour transmettre des renseignements personnels.</p>
+                <h5>Législation</h5>
+                <p>Nous nous engageons à respecter les dispositions législatives énoncées dans : <a href="https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees">https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
             </div>
         </div>
     </div>
+</div>
+
 
         </dl>
 

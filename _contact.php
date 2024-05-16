@@ -251,6 +251,29 @@ En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser l
   </div>
 </div>
 
+		
+    <!-- Bouton pour afficher la politique de confidentialité -->
+    <button type="button" data-toggle="modal" data-target="#politique" class="btn btn-primary">Politique de confidentialité</button>
+    <!-- Modal pour afficher la politique de confidentialité -->
+    <div class="modal" id="politique">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Politique de confidentialité</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Insérez ici le contenu de votre politique de confidentialité -->
+                    <!-- Vous pouvez utiliser du texte brut ou du HTML pour formater votre contenu -->
+                    <!-- Par exemple : -->
+                    <p>Votre politique de confidentialité ici...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
         </dl>
 
 

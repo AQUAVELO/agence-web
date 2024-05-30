@@ -190,15 +190,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 		  <?php
 		  
-		  // Afficher les résultats
-		if ($user_data) {
-		    echo 'Nom: ' . $user_data['Nom'] . '<br>';
-		    echo 'Prenom: ' . $user_data['Prenom'] . '<br>';
-		} else {
-		    echo '.';
-		}
-		?>
-
+		 
 	 <div>
  	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
 	<br>

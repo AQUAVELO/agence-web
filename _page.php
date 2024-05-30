@@ -195,7 +195,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 		    echo 'Nom: ' . $user_data['Nom'] . '<br>';
 		    echo 'Prenom: ' . $user_data['Prenom'] . '<br>';
 		} else {
-		    echo 'Aucun utilisateur trouvé pour cet email.';
+		    echo '.';
 		}
 		?>
 

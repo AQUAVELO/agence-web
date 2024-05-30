@@ -35,7 +35,11 @@ $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
 
-
+// Préparer la requête pour récupérer les champs Nom et Prenom en fonction de l'email
+$user_query = $database->prepare('SELECT Nom, Prenom FROM mensurations WHERE email = :email');
+$user_query->bindParam(':email', $email, PDO::PARAM_STR);
+$user_query->execute();
+$user_data = $user_query->fetch(PDO::FETCH_ASSOC);
 
 
 #home

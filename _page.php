@@ -187,7 +187,18 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
               <td style="width: 200px; padding: 10px;"><?php echo $menu_data['souper']; ?></td>
             </tr>
           </table>
+
+		  <?php
 		  
+		  // Afficher les résultats
+		if ($user_data) {
+		    echo 'Nom: ' . $user_data['Nom'] . '<br>';
+		    echo 'Prenom: ' . $user_data['Prenom'] . '<br>';
+		} else {
+		    echo 'Aucun utilisateur trouvé pour cet email.';
+		}
+		?>
+
 	 <div>
  	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
 	<br>

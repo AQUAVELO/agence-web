@@ -188,7 +188,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
             </tr>
           </table>
 
-		  <?php
+		  
 		  
 		 
 	 <div>

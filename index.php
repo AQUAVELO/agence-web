@@ -35,11 +35,54 @@ $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
 
+
+// NOUVEAU
+
+// Fonction pour inscrire un nouvel utilisateur
+function registerUser($conn, $email, $password) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+    $stmt->bindParam(1, $email);
+    $stmt->bindParam(2, $hashed_password);
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        if ($stmt->errorCode() == 23000) {
+            return "Email déjà utilisé.";
+        } else {
+            return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
+        }
+    }
+}
+
+$error_message = "";
+$success_message = "";
+
+// Gestion de l'inscription
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $password = $_POST["password"];
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $registration_result = registerUser($database, $email, $password);
+        if ($registration_result === true) {
+            $success_message = "Inscription réussie. Vous pouvez maintenant vous connecter.";
+        } else {
+            $error_message = $registration_result;
+        }
+    } else {
+        $error_message = "Email invalide.";
+    }
+}
+// stop
+
 // Préparer la requête pour récupérer les champs Nom et Prenom en fonction de l'email
 $user_query = $database->prepare('SELECT Nom, Prenom FROM mensurations WHERE email = :email');
 $user_query->bindParam(':email', $email, PDO::PARAM_STR);
 $user_query->execute();
 $user_data = $user_query->fetch(PDO::FETCH_ASSOC);
+
+
+
 
 
 #home

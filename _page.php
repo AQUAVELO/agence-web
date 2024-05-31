@@ -288,40 +288,6 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
   </div>
 	
 
-	<div class="container">
-    <?php
-    if (!empty($error_message)) {
-        echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-    }
-    ?>
-    <h2>1) Inscrivez vous en écrivant votre email <br>et créez un mot de passe</h2>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="register">S'inscrire</button>
-    </form>
-
-    <h2>2) Une fois que l'inscription est faite,</h2>
-    <h3> re-notez ci dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="login_btn">Se connecter</button>
-    </form>
-</div>
-
 	
 
 </section>

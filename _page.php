@@ -56,27 +56,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
           <?php } ?>
 	
-<style>
-        .container {
-            text-align: center;
-            padding: 50px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label, input {
-            display: block;
-            margin: auto;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .error {
-            color: red;
-        }
-    </style>
+
 
 	
 </header>

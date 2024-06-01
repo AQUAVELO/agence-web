@@ -73,6 +73,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         $error_message = "Email invalide.";
     }
 }
+
+
+
+// Gestion de la connexion
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
+    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $password = $_POST["password"];
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (checkLogin($conn, $email, $password)) {
+            $_SESSION["loggedin"] = true;
+            $_SESSION["email"] = $email;
+            header("Location: menu.php");
+            exit;
+        } else {
+            $error_message = "Identifiants incorrects.";
+        }
+    } else {
+        $error_message = "Email invalide.";
+    }
+}
+
+
+
+
 // stop
 
 // Préparer la requête pour récupérer les champs Nom et Prenom en fonction de l'email

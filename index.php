@@ -63,9 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($database, $email, $password);
+        $registration_result = registerUser($conn, $email, $password); // correction ici $database -> $conn
         if ($registration_result === true) {
-            $success_message = "Inscription réussie. Vous pouvez maintenant vous connecter.";
+            // Inscription réussie, rediriger vers menu.php
+            header("Location: menu.php");
+            exit;
         } else {
             $error_message = $registration_result;
         }
@@ -74,7 +76,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     }
 }
 
-
+// Fonction pour vérifier les informations de connexion
+function checkLogin($conn, $email, $password) {
+    $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
+    $stmt->bindParam(1, $email);
+    $stmt->execute();
+    if ($stmt->rowCount() == 1) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($password, $row['password'])) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // Gestion de la connexion
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
@@ -84,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         if (checkLogin($conn, $email, $password)) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $email;
+            // Connexion réussie, rediriger vers menu.php
             header("Location: menu.php");
             exit;
         } else {

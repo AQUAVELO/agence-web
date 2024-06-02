@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-// Configuration de la base de données
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Mensurations";
+
 
 // Créer une connexion
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -46,8 +46,11 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
     if (!empty($error_message)) {
         echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
     }
+    if (!empty($success_message)) {
+        echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
+    }
     ?>
-    <h3>1) Inscrivez vous en écrivant votre email <br>et créez un mot de passe</h3>
+    <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
     <form method="post" action="">
         <div class="form-group">
             <label for="email">Email:</label>
@@ -61,7 +64,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
     </form>
 
     <h3>2) Une fois que l'inscription est faite,</h3>
-    <h3> re-notez ci dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
+    <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
     <form method="post" action="">
         <div class="form-group">
             <label for="email">Email:</label>
@@ -74,6 +77,7 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
         <button type="submit" name="login_btn">Se connecter</button>
     </form>
 </div>
+
 
 
 	

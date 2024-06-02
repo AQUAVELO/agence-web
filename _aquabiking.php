@@ -43,6 +43,9 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 	
 	<div class="container">
     <?php
+
+     session_start();
+
     if (!empty($error_message)) {
         echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
     }

@@ -9,7 +9,7 @@ if ($page == 'aquabiking') $title = 'Aquabiking : les bienfaits du vélo dans l\
 if ($page == 'centers') $title = 'Centres d\'aquabiking';
 if ($page == 'concept') $title = 'Concept Aquavelo';
 if ($page == 'free') $title = 'Séance découverte';
-if ($page == '_blog.php') $title = 'Blog';
+if ($page == 'blog') $title = 'Blog';
 if ($page == 'contact') $title = 'Contactez-nous';
 
 

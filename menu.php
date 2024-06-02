@@ -11,52 +11,59 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $email = $_SESSION["email"];
 
 // Configuration de la base de données
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Mensurations";
+require 'vendor/autoload.php';
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Redis\Config;
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Paramètres de configuration
+$settings = [];
+
+$settings['ttl'] = intval(getenv("REDIS_TTL"));
+$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
+$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
+
+$settings['dbname'] = getenv("MYSQL_ADDON_DB");
+$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
+$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
+
+$settings['mjhost'] = "in.mailjet.com";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjfrom'] = "info@aquavelo.com";
+
+// Connexion à la base de données
+try {
+    $conn = new PDO(
+        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
 // Fonction pour obtenir l'historique de suivi des mensurations pour un utilisateur donné
 function getUserSuivi($conn, $email) {
     $sql = "SELECT * FROM Suivie WHERE email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $suivi = array();
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $row['Date'] = date("d/m/Y", strtotime($row['Date'])); // Formater la date
-            $suivi[] = $row;
-        }
+    $stmt->execute([$email]);
+    $suivi = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($suivi as &$row) {
+        $row['Date'] = date("d/m/Y", strtotime($row['Date'])); // Formater la date
     }
-    $stmt->close();
     return $suivi;
 }
 
 // Rechercher les informations de base de l'utilisateur
 $sql = "SELECT * FROM mensurations WHERE email = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-if ($result->num_rows > 0) {
-    $userInfo = $result->fetch_assoc();
-} else {
-    echo "Aucun utilisateur trouvé avec cet email.";
-}
-$stmt->close();
+$stmt->execute([$email]);
+$userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Calculer l'IMC
-if (isset($userInfo)) {
+if ($userInfo) {
     $poids = $userInfo["Poids"];
     $taille = $userInfo["Taille"];
     if ($poids > 0 && $taille > 0) {
@@ -75,18 +82,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
     $delete_id = $_POST["delete_id"];
     $delete_sql = "DELETE FROM Suivie WHERE id = ?";
     $delete_stmt = $conn->prepare($delete_sql);
-    $delete_stmt->bind_param("i", $delete_id);
-    if ($delete_stmt->execute()) {
+    if ($delete_stmt->execute([$delete_id])) {
         // Rafraîchir la page après suppression
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } else {
         echo "Erreur lors de la suppression de l'enregistrement.";
     }
-    $delete_stmt->close();
 }
 
-$conn->close();
+$conn = null;
 ?>
 
 <!DOCTYPE html>
@@ -149,7 +154,7 @@ $conn->close();
 </div>
 
 <div class="container">
-    <?php if(isset($userInfo)): ?>
+    <?php if ($userInfo): ?>
         <h2>Informations Utilisateur</h2>
         <table>
             <tr>
@@ -166,22 +171,22 @@ $conn->close();
                 <th>IMC</th>
             </tr>
             <tr>
-                <td><?php echo $userInfo["Nom"]; ?></td>
-                <td><?php echo $userInfo["Prenom"]; ?></td>
-                <td><?php echo $userInfo["email"]; ?></td>
-                <td><?php echo $userInfo["Phone"]; ?></td>
-                <td><?php echo $userInfo["Age"]; ?></td>
-                <td><?php echo $userInfo["Poids"]; ?></td>
-                <td><?php echo $userInfo["Taille"]; ?></td>
-                <td><?php echo $userInfo["Trtaille"]; ?></td>
-                <td><?php echo $userInfo["Trhanches"]; ?></td>
-                <td><?php echo $userInfo["Trfesses"]; ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Nom"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Prenom"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["email"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Phone"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Age"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Poids"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Taille"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trtaille"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trhanches"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trfesses"]); ?></td>
                 <td><?php echo $imc; ?></td>
             </tr>
         </table>
     <?php endif; ?>
 
-    <?php if(isset($userSuivi) && !empty($userSuivi)): ?>
+    <?php if ($userSuivi && !empty($userSuivi)): ?>
         <h2>Historique de Suivi</h2>
         <table>
             <tr>
@@ -193,17 +198,17 @@ $conn->close();
                 <th>IMC</th>
                 <th>Action</th>
             </tr>
-            <?php foreach($userSuivi as $suivi): ?>
+            <?php foreach ($userSuivi as $suivi): ?>
             <tr>
-                <td><?php echo $suivi["Date"]; ?></td>
-                <td><?php echo $suivi["Poids"]; ?></td>
-                <td><?php echo $suivi["Trtaille"]; ?></td>
-                <td><?php echo $suivi["Trhanches"]; ?></td>
-                <td><?php echo $suivi["Trfesses"]; ?></td>
+                <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
                 <td><?php echo round($suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100)), 2); ?></td>
                 <td>
                     <form method="post" style="display:inline;">
-                        <input type="hidden" name="delete_id" value="<?php echo $suivi['id']; ?>">
+                        <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
                         <button type="submit" class="delete-button">Supprimer</button>
                     </form>
                 </td>
@@ -286,5 +291,6 @@ $conn->close();
 
 </body>
 </html>
+
 
 

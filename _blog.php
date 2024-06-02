@@ -3,14 +3,6 @@ session_start();
 
 
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 // Fonction pour vérifier les identifiants
 function checkLogin($conn, $email, $password) {
     $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");

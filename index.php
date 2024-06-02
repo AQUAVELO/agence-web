@@ -309,11 +309,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="dropdown-menu">
                   <li><a href="/contact#emploi">Emploi</a></li>
                   <li><a href="/contact#contact">Contactez-nous</a></li>
+                  <li><a href="/blog">Blog</a></li>
 
                 </ul>
               </li>
           </ul>
-        </div>
+        </div
       </div>
     </nav>
     <!-- / navbar -->

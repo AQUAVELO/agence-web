@@ -9,6 +9,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 // Lire l'email depuis la session
 $email = $_SESSION["email"];
+echo $email ;
 
 // Configuration de la base de données
 require 'vendor/autoload.php';

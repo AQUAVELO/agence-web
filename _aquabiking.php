@@ -39,51 +39,6 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
   </div>
 
 
-
-	
-	<div class="container">
-    <?php
-
-     session_start();
-
-    if (!empty($error_message)) {
-        echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-    }
-    if (!empty($success_message)) {
-        echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
-    }
-    ?>
-    <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="register">S'inscrire</button>
-    </form>
-
-    <h3>2) Une fois que l'inscription est faite,</h3>
-    <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="login_btn">Se connecter</button>
-    </form>
-</div>
-
-
-
-	
 	
 </section>
 	

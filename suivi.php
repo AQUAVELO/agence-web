@@ -62,7 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insérer les données dans la table suivie
         $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
         if ($stmt->execute([$email, $dateSuivi, $poids, $trtaille, $trhanches, $trfesses])) {
-            echo "Enregistrement réussi dans la table suivie.";
+            // Rediriger vers menu.php après la mise à jour réussie
+            header("Location: menu.php");
+            exit;
         } else {
             echo "Erreur lors de l'enregistrement dans la table suivie: " . $stmt->errorInfo()[2];
         }

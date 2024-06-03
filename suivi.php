@@ -58,8 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($poids && $trtaille && $trhanches && $trfesses) {
         // Utiliser la date actuelle
         $dateSuivi = date("Y-m-d H:i:s");
-        
-    echo "Email: $email, Date: $dateSuivi, Poids: $poids, Trtaille: $trtaille, Trhanches: $trhanches, Trfesses: $trfesses";
 
         // Insérer les données dans la table suivie
         $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
@@ -157,6 +155,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

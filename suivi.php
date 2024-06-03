@@ -7,10 +7,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-// Lire l'email, le nom et le prénom depuis la session
+// Lire l'email depuis la session
 $email = $_SESSION["email"];
-$nom = $_SESSION["Nom"];
-$prenom = $_SESSION["Prenom"];
 
 // Configuration de la base de données
 require 'vendor/autoload.php';
@@ -46,6 +44,21 @@ try {
     die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
+// Récupérer les informations de l'utilisateur depuis la table mensurations
+try {
+    $stmt = $conn->prepare("SELECT Nom, Prenom FROM mensurations WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($user) {
+        $nom = $user['Nom'];
+        $prenom = $user['Prenom'];
+    } else {
+        die("Utilisateur non trouvé dans la table mensurations.");
+    }
+} catch (PDOException $e) {
+    die("Erreur lors de la récupération des informations de l'utilisateur: " . $e->getMessage());
+}
+
 // Vérifier si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupérer les données du formulaire
@@ -58,9 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($poids && $trtaille && $trhanches && $trfesses) {
         // Utiliser la date actuelle
         $dateSuivi = date("Y-m-d H:i:s");
-
-
-        echo "Email: $email, Date: $dateSuivi, Poids: $poids, Trtaille: $trtaille, Trhanches: $trhanches, Trfesses: $trfesses";
 
         // Insérer les données dans la table suivie
         $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");

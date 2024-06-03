@@ -9,8 +9,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 // Lire l'email, le nom et le prénom depuis la session
 $email = $_SESSION["email"];
-$nom = $_SESSION["nom"];
-$prenom = $_SESSION["prenom"];
+$nom = $_SESSION["Nom"];
+$prenom = $_SESSION["Prenom"];
 
 // Configuration de la base de données
 require 'vendor/autoload.php';

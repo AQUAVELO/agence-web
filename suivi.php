@@ -60,8 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dateSuivi = date("Y-m-d H:i:s");
 
         // Insérer les données dans la table suivie
-        $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
-        if ($stmt->execute([$email, $dateSuivi, $poids, $trtaille, $trhanches, $trfesses])) {
+        $stmt = $conn->prepare("INSERT INTO suivie ( Date, Poids, Trtaille, Trhanches, Trfesses) VALUES ( ?, ?, ?, ?, ?)");
+        if ($stmt->execute([$dateSuivi, $poids, $trtaille, $trhanches, $trfesses])) {
             // Rediriger vers menu.php après la mise à jour réussie
             header("Location: menu.php");
             exit;

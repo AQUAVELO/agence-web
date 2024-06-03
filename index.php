@@ -216,6 +216,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
                   <li><a href="/aquabiking#bienfaits">Les bienfaits</a></li>
                   <li><a href="/aquabiking#questions">Vos questions</a></li>
+                   <li><a href="/_analyse.php">Analyse des mensurations</a></li>
                 </ul>
               </li>
               <li class="dropdown<?php if ($p == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
@@ -237,7 +238,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <ul class="dropdown-menu">
                   <li><a href="/contact#emploi">Emploi</a></li>
                   <li><a href="/contact#contact">Contactez-nous</a></li>
-                  <li><a href="/_blog.php">blog</a></li>
+                 
 
                 </ul>
               </li>

@@ -47,7 +47,7 @@ try {
 
 // Fonction pour obtenir l'historique de suivi des mensurations pour un utilisateur donné
 function getUserSuivi($conn, $email) {
-    $sql = "SELECT * FROM Suivie WHERE email = ?";
+    $sql = "SELECT * FROM suivie WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$email]);
     $suivi = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -81,7 +81,7 @@ $userSuivi = getUserSuivi($conn, $email);
 // Si une demande de suppression est effectuée
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
     $delete_id = $_POST["delete_id"];
-    $delete_sql = "DELETE FROM Suivie WHERE id = ?";
+    $delete_sql = "DELETE FROM suivie WHERE id = ?";
     $delete_stmt = $conn->prepare($delete_sql);
     if ($delete_stmt->execute([$delete_id])) {
         // Rafraîchir la page après suppression

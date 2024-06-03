@@ -11,6 +11,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $email = $_SESSION["email"];
 $nom = $_SESSION["Nom"];
 $prenom = $_SESSION["Prenom"];
+echo $email, $nom;
 
 // Configuration de la base de données
 require 'vendor/autoload.php';

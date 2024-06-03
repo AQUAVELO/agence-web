@@ -13,37 +13,17 @@ $nom = $_SESSION["nom"];
 $prenom = $_SESSION["prenom"];
 
 // Configuration de la base de données
-require 'vendor/autoload.php';
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "Mensurations";
 
-use Phpfastcache\CacheManager;
-use Phpfastcache\Drivers\Redis\Config;
+// Créer une connexion
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Paramètres de configuration
-$settings = [];
-
-$settings['ttl'] = intval(getenv("REDIS_TTL"));
-$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
-$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
-
-$settings['dbname'] = getenv("MYSQL_ADDON_DB");
-$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
-$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
-
-$settings['mjhost'] = "in.mailjet.com";
-$settings['mjusername'] = getenv("MAILJET_USERNAME");
-$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
-$settings['mjfrom'] = "info@aquavelo.com";
-
-// Connexion à la base de données
-try {
-    $conn = new PDO(
-        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
-        $settings['dbusername'],
-        $settings['dbpassword']
-    );
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Couldn't connect to MySQL: " . $e->getMessage());
+// Vérifier la connexion
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Vérifier si le formulaire a été soumis
@@ -60,21 +40,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dateSuivi = date("Y-m-d H:i:s");
 
         // Insérer les données dans la table suivie
-        $stmt = $conn->prepare("INSERT INTO suivie ( Date, Poids, Trtaille, Trhanches, Trfesses) VALUES ( ?, ?, ?, ?, ?)");
-        if ($stmt->execute([$dateSuivi, $poids, $trtaille, $trhanches, $trfesses])) {
+        $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssiiii", $email, $dateSuivi, $poids, $trtaille, $trhanches, $trfesses);
+        if ($stmt->execute()) {
             // Rediriger vers menu.php après la mise à jour réussie
+            $stmt->close();
+            $conn->close();
             header("Location: menu.php");
             exit;
         } else {
-            echo "Erreur lors de l'enregistrement dans la table suivie: " . $stmt->errorInfo()[2];
+            echo "Erreur lors de l'enregistrement dans la table suivie: " . $stmt->error;
         }
-        $stmt->closeCursor();
+        $stmt->close();
     } else {
         echo "Veuillez remplir tous les champs.";
     }
 }
 
-$conn = null;
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -155,6 +138,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

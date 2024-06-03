@@ -13,17 +13,37 @@ $nom = $_SESSION["nom"];
 $prenom = $_SESSION["prenom"];
 
 // Configuration de la base de données
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Mensurations";
+require 'vendor/autoload.php';
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Redis\Config;
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Paramètres de configuration
+$settings = [];
+
+$settings['ttl'] = intval(getenv("REDIS_TTL"));
+$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
+$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
+
+$settings['dbname'] = getenv("MYSQL_ADDON_DB");
+$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
+$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
+
+$settings['mjhost'] = "in.mailjet.com";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjfrom'] = "info@aquavelo.com";
+
+// Connexion à la base de données
+try {
+    $conn = new PDO(
+        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
 // Vérifier si le formulaire a été soumis
@@ -41,23 +61,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insérer les données dans la table suivie
         $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssiiii", $email, $dateSuivi, $poids, $trtaille, $trhanches, $trfesses);
-        if ($stmt->execute()) {
+        if ($stmt->execute([$email, $dateSuivi, $poids, $trtaille, $trhanches, $trfesses])) {
             // Rediriger vers menu.php après la mise à jour réussie
-            $stmt->close();
-            $conn->close();
             header("Location: menu.php");
             exit;
         } else {
-            echo "Erreur lors de l'enregistrement dans la table suivie: " . $stmt->error;
+            echo "Erreur lors de l'enregistrement dans la table suivie: " . implode(", ", $stmt->errorInfo());
         }
-        $stmt->close();
+        $stmt->closeCursor();
     } else {
         echo "Veuillez remplir tous les champs.";
     }
 }
 
-$conn->close();
+$conn = null;
 ?>
 
 <!DOCTYPE html>
@@ -138,6 +155,7 @@ $conn->close();
 
 </body>
 </html>
+
 
 
 

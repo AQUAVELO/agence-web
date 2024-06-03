@@ -11,17 +11,37 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 $email = $_SESSION["email"];
 
 // Configuration de la base de données
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Mensurations";
+require 'vendor/autoload.php';
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Redis\Config;
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Paramètres de configuration
+$settings = [];
+
+$settings['ttl'] = intval(getenv("REDIS_TTL"));
+$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
+$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
+
+$settings['dbname'] = getenv("MYSQL_ADDON_DB");
+$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
+$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
+
+$settings['mjhost'] = "in.mailjet.com";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjfrom'] = "info@aquavelo.com";
+
+// Connexion à la base de données
+try {
+    $conn = new PDO(
+        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
 // Vérifier si le formulaire a été soumis
@@ -39,18 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Mettre à jour les autres champs pour cet email
     $stmt = $conn->prepare("UPDATE mensurations SET Nom = ?, Prenom = ?, Phone = ?, Age = ?, Poids = ?, Taille = ?, Trtaille = ?, Trhanches = ?, Trfesses = ? WHERE email = ?");
-    $stmt->bind_param("ssssiiiiis", $nom, $prenom, $phone, $age, $poids, $taille, $trtaille, $hanches, $fesses, $email);
-    if ($stmt->execute()) {
+    if ($stmt->execute([$nom, $prenom, $phone, $age, $poids, $taille, $trtaille, $hanches, $fesses, $email])) {
         // Rediriger vers menu.php après la mise à jour réussie
         header("Location: menu.php");
         exit;
     } else {
-        echo "Erreur lors de la mise à jour: " . $stmt->error;
+        echo "Erreur lors de la mise à jour: " . $stmt->errorInfo()[2];
     }
-
-    $stmt->close();
-    $conn->close();
+    $stmt->closeCursor();
 }
+
+$conn = null;
 ?>
 
 <!DOCTYPE html>
@@ -146,3 +165,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </body>
 </html>
+

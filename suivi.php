@@ -9,9 +9,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 // Lire l'email, le nom et le prénom depuis la session
 $email = $_SESSION["email"];
-$nom = $_SESSION["Nom"];
-$prenom = $_SESSION["Prenom"];
-echo $email, $nom;
+$nom = $_SESSION["nom"];
+$prenom = $_SESSION["prenom"];
 
 // Configuration de la base de données
 require 'vendor/autoload.php';
@@ -59,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($poids && $trtaille && $trhanches && $trfesses) {
         // Utiliser la date actuelle
         $dateSuivi = date("Y-m-d H:i:s");
+        
+    echo "Email: $email, Date: $dateSuivi, Poids: $poids, Trtaille: $trtaille, Trhanches: $trhanches, Trfesses: $trfesses";
 
         // Insérer les données dans la table suivie
         $stmt = $conn->prepare("INSERT INTO suivie (email, Date, Poids, Trtaille, Trhanches, Trfesses) VALUES (?, ?, ?, ?, ?, ?)");
@@ -156,6 +157,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

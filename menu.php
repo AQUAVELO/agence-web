@@ -288,6 +288,9 @@ $conn = null;
             });
         </script>
     <?php endif; ?>
+<!-- Ajouter le logo AQUAVELO sous le formulaire -->
+    <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+
 </div>
 
 </body>

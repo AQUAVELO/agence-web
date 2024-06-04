@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
@@ -51,15 +50,24 @@ try {
 
 // Fonction pour inscrire un nouvel utilisateur
 function registerUser($conn, $email, $password) {
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+    // Vérifier si l'email existe déjà
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
     $stmt->bindParam(1, $email);
-    $stmt->bindParam(2, $hashed_password);
-    if ($stmt->execute()) {
-        return true;
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+
+    if ($count > 0) {
+        // Rediriger vers menu.php si l'email existe déjà
+        header("Location: menu.php");
+        exit(); // Assurez-vous de sortir après la redirection
     } else {
-        if ($stmt->errorCode() == 23000) {
-            return "Email déjà utilisé.";
+        // Insérer un nouvel utilisateur
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+        $stmt->bindParam(1, $email);
+        $stmt->bindParam(2, $hashed_password);
+        if ($stmt->execute()) {
+            return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
         }
@@ -187,6 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

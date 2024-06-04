@@ -124,11 +124,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
     <style>
         .error { color: red; }
         .success { color: green; }
-         .container {
+        .container {
             text-align: center;
             padding: 50px;
         }
-         .form-group {
+        .form-group {
             margin-bottom: 15px;
         }
         label, input {
@@ -181,6 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

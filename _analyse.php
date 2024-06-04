@@ -4,52 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// début
 
-// Inclure les fichiers nécessaires (si vous en avez)
-include 'config.php'; // Par exemple, pour les configurations de base de données
-
-// Fonction pour vérifier et enregistrer un utilisateur
-function registerUser($pdo, $email, $name) {
-    // Vérifier si l'email existe déjà
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM mensurations WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $count = $stmt->fetchColumn();
-
-    if ($count > 0) {
-        // Rediriger vers menu.php si l'email existe déjà
-        header("Location: menu.php");
-        exit(); // Assurez-vous de sortir après la redirection
-    } else {
-        // Insérer un nouvel utilisateur
-        $stmt = $pdo->prepare("INSERT INTO mensurations (email, name) VALUES (:email, :name)");
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':name', $name);
-        if ($stmt->execute()) {
-            echo "Inscription réussie!";
-        } else {
-            echo "Erreur: L'inscription a échoué.";
-        }
-    }
-}
-
-try {
-    // Connexion à la base de données
-    $pdo = new PDO('mysql:host=your_host;dbname=your_db', 'your_username', 'your_password');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Obtenir les données (email et nom) à partir de la requête ou d'une autre source
-    $email = 'albiiit@gmail.com'; // Par exemple, à remplacer par $_POST['email'] si les données viennent d'un formulaire
-    $name = 'Claude'; // Par exemple, à remplacer par $_POST['name']
-
-    // Appeler la fonction pour vérifier et enregistrer l'utilisateur
-    registerUser($pdo, $email, $name);
-} catch (PDOException $e) {
-    echo 'Échec de la connexion : ' . $e->getMessage();
-}
-
-// fin
 require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;

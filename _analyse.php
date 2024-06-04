@@ -192,6 +192,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         </div>
         <button type="submit" name="login_btn">Se connecter</button>
     </form>
+    <!-- Ajouter le logo AQUAVELO sous le formulaire -->
+    <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px;">
+
 </div>
 </body>
 </html>

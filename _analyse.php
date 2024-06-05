@@ -8,6 +8,7 @@ require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
+use \Mailjet\Resources;
 
 // Paramètres de configuration
 $settings = [];
@@ -48,9 +49,6 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
-
-
-// nouveau 
 // Fonction pour inscrire un nouvel utilisateur et envoyer un email de remerciement
 function registerUser($conn, $email, $password, $firstName) {
     // Vérifier si l'email existe déjà
@@ -105,7 +103,6 @@ function sendThankYouEmail($email, $firstName) {
     $response = $mj->post(Resources::$Email, ['body' => $body]);
     return $response->success() && $response->getData();
 }
-//fin
 
 // Fonction pour vérifier les informations de connexion
 function checkLogin($conn, $email, $password) {
@@ -130,8 +127,9 @@ $success_message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
+    $firstName = filter_var($_POST["first_name"], FILTER_SANITIZE_STRING);
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($conn, $email, $password);
+        $registration_result = registerUser($conn, $email, $password, $firstName);
         if ($registration_result === true) {
             // Inscription réussie, rediriger vers menu.php
             header("Location: menu.php");
@@ -225,11 +223,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
         }
         ?>
-        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
+        <h3>1) Inscrivez-vous en écrivant votre email, <br>votre prénom et créez un mot de passe</h3>
         <form method="post" action="">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="first_name">Prénom:</label>
+                <input type="text" id="first_name" name="first_name" required>
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe:</label>
@@ -238,36 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             <button type="submit" name="register">S'inscrire</button>
         </form>
 
-        <h3>2) Une fois que l'inscription est faite,</h3>
-        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" name="login_btn">Se connecter</button>
-        </form>
-        <div class="logo-container">
-            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
-            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
-        </div>
-    </div>
-    <div class="info-container">
-        <div class="info-box">
-            <h3>Suivi des Mensurations</h3>
-            <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-            <p>Ensuite valider avec email et mot de passe.</p>
-            <p>Vous pouvez faire le suivi dans votre centre Aquavélo et profiter des conseils, et venir lire les résultats.</p>
-            <p>Ou prendre vos mensurations (le poids (le matin à jeun), la taille au niveau du nombril, les hanches au niveau des iliaques, le tour de fesses sur la pointe des fesses).</p>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+        <h3>2) Une fois que l'inscription est faite,</h3
 
 
 

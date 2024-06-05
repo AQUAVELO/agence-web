@@ -139,8 +139,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         .error { color: red; }
         .success { color: green; }
         .container {
-            text-align: center;
+            display: flex;
+            justify-content: center;
             padding: 50px;
+        }
+        .form-container, .info-container {
+            width: 45%;
+            margin: 10px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -154,50 +159,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             font-size: 16px;
             cursor: pointer;
         }
+        .info-box {
+            border: 1px solid #000;
+            padding: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <?php
-    if (!empty($error_message)) {
-        echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-    }
-    if (!empty($success_message)) {
-        echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
-    }
-    ?>
-    <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="register">S'inscrire</button>
-    </form>
+    <div class="form-container">
+        <?php
+        if (!empty($error_message)) {
+            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
+        }
+        if (!empty($success_message)) {
+            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
+        }
+        ?>
+        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="register">S'inscrire</button>
+        </form>
 
-    <h3>2) Une fois que l'inscription est faite,</h3>
-    <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <h3>2) Une fois que l'inscription est faite,</h3>
+        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="login_btn">Se connecter</button>
+        </form>
+        <!-- Ajouter le logo AQUAVELO sous le formulaire -->
+        <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+    </div>
+    <div class="info-container">
+        <div class="info-box">
+            <h3>Saisir vos mensurations</h3>
+            <p>Veuillez entrer vos mensurations pour bénéficier de conseils personnalisés.</p>
         </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="login_btn">Se connecter</button>
-    </form>
-    <!-- Ajouter le logo AQUAVELO sous le formulaire -->
-    <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
-
+    </div>
 </div>
 </body>
 </html>
+
 
 
 

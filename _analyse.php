@@ -225,14 +225,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
     </div>
     <div class="info-container">
         <div class="info-box">
-            <h3>Vos mensurations</h3>
-            <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
-            <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-            <p>Ensuite valider avec email et mot de passe.</p>
-    
-            <p>Vous pouvez faire le suivi dans votre centre Aquavélo et profiter des conseils, et venir lire les résultats.</p>
-            <p>Ou prendre vos mensurations vous-même (le poids (le matin à jeun), la taille au niveau du nombril, les hanches au niveau des iliaques, le tour de fesses sur la pointe des fesses), et les noter.</p>
 
+            
+            <h2>Vos mensurations</h2>
+    <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
+
+    <h3>Inscription</h3>
+    <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
+    <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
+
+    <h3>Suivi</h3>
+    <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
+    <p>Vous pouvez également prendre vos mensurations vous-même :</p>
+    <ul>
+        <li><strong>Poids</strong> : Le matin à jeun.</li>
+        <li><strong>Taille</strong> : Au niveau du nombril.</li>
+        <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
+        <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
+    </ul>
+    <p>Notez ces mensurations pour un suivi régulier.</p>
 
         </div>
     </div>

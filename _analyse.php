@@ -164,6 +164,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             padding: 20px;
             text-align: center;
         }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .logo-container img {
+            width: 250px;
+        }
+        .logo-container button {
+            margin-left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -203,8 +218,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             </div>
             <button type="submit" name="login_btn">Se connecter</button>
         </form>
-        <!-- Ajouter le logo AQUAVELO sous le formulaire -->
-        <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+        <div class="logo-container">
+            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
+            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
+        </div>
     </div>
     <div class="info-container">
         <div class="info-box">
@@ -212,13 +229,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
             <p>Ensuite valider avec email et mot de passe.</p>
             <p>Vous pouvez faire le suivi dans votre centre Aquavélo et profiter des conseils, et venir lire les résultats.</p>
-            <p>Ou prendre vos mensurations ( le poids ( le matin à jeun), la taille au niveau du nombril, les hanches au niveau des iliaques, le tour de fesses sur la pointe des fesses.</p>
+            <p>Ou prendre vos mensurations (le poids (le matin à jeun), la taille au niveau du nombril, les hanches au niveau des iliaques, le tour de fesses sur la pointe des fesses).</p>
         </div>
     </div>
 </div>
 </body>
 </html>
-
 
 
 

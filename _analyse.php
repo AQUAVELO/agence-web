@@ -208,8 +208,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
     </div>
     <div class="info-container">
         <div class="info-box">
-            <h3>Saisir vos mensurations</h3>
-            <p>Veuillez entrer vos mensurations pour bénéficier de conseils personnalisés.</p>
+            <h3>Suivi des Mensurations</h3>
+            <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
+            <p>Ensuite valider avec email et mot de passe.</p>
+            <p>Vous pouvez faire le suivi dans votre centre Aquavélo et profiter des conseils, et venir lire les résultats.</p>
+            <p>Ou prendre vos mensurations ( le poids ( le matin à jeun), la taille au niveau du nombril, les hanches au niveau des iliaques, le tour de fesses sur la pointe des fesses.</p>
         </div>
     </div>
 </div>

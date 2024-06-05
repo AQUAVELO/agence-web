@@ -8,7 +8,6 @@ require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
-use \Mailjet\Resources;
 
 // Paramètres de configuration
 $settings = [];
@@ -75,7 +74,6 @@ function registerUser($conn, $email, $password) {
     }
 }
 
-
 // Fonction pour vérifier les informations de connexion
 function checkLogin($conn, $email, $password) {
     $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
@@ -99,9 +97,8 @@ $success_message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
-    $firstName = filter_var($_POST["first_name"], FILTER_SANITIZE_STRING);
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($conn, $email, $password, $firstName);
+        $registration_result = registerUser($conn, $email, $password);
         if ($registration_result === true) {
             // Inscription réussie, rediriger vers menu.php
             header("Location: menu.php");

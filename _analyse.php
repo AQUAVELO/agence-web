@@ -48,8 +48,11 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
-// Fonction pour inscrire un nouvel utilisateur
-function registerUser($conn, $email, $password) {
+
+
+// nouveau 
+// Fonction pour inscrire un nouvel utilisateur et envoyer un email de remerciement
+function registerUser($conn, $email, $password, $firstName) {
     // Vérifier si l'email existe déjà
     $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
     $stmt->bindParam(1, $email);
@@ -63,16 +66,46 @@ function registerUser($conn, $email, $password) {
     } else {
         // Insérer un nouvel utilisateur
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO mensurations (email, password, first_name) VALUES (?, ?, ?)");
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
+        $stmt->bindParam(3, $firstName);
         if ($stmt->execute()) {
+            sendThankYouEmail($email, $firstName);
             return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
         }
     }
 }
+
+// Fonction pour envoyer un email de remerciement
+function sendThankYouEmail($email, $firstName) {
+    global $settings;
+    $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
+    $body = [
+        'Messages' => [
+            [
+                'From' => [
+                    'Email' => $settings['mjfrom'],
+                    'Name' => "Aquavelo"
+                ],
+                'To' => [
+                    [
+                        'Email' => $email,
+                        'Name' => $firstName
+                    ]
+                ],
+                'Subject' => "Merci pour votre inscription",
+                'TextPart' => "Merci $firstName pour votre inscription",
+                'HTMLPart' => "<h3>Merci $firstName pour votre inscription</h3>"
+            ]
+        ]
+    ];
+    $response = $mj->post(Resources::$Email, ['body' => $body]);
+    return $response->success() && $response->getData();
+}
+//fin
 
 // Fonction pour vérifier les informations de connexion
 function checkLogin($conn, $email, $password) {

@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-require 'vendor/autoload.php'; // Charger autoload pour PHPMailer
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 // Configuration de la base de données
 $servername = "localhost";
 $username = "root";
@@ -39,7 +34,6 @@ function registerUser($conn, $email, $password) {
     $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
     $stmt->bind_param("ss", $email, $hashed_password);
     if ($stmt->execute()) {
-        sendThankYouEmail($email);
         return true;
     } else {
         if ($stmt->errno == 1062) {
@@ -47,35 +41,6 @@ function registerUser($conn, $email, $password) {
         } else {
             return "Erreur lors de l'inscription: " . $stmt->error;
         }
-    }
-}
-
-// Fonction pour envoyer un email de remerciement
-function sendThankYouEmail($email) {
-    $mail = new PHPMailer(true);
-    try {
-        // Paramètres du serveur
-        $mail->isSMTP();
-        $mail->Host = 'smtp.example.com'; // Remplacez par votre serveur SMTP
-        $mail->SMTPAuth = true;
-        $mail->Username = 'your_email@example.com'; // Remplacez par votre email SMTP
-        $mail->Password = 'your_email_password'; // Remplacez par votre mot de passe SMTP
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-
-        // Destinataires
-        $mail->setFrom('info@aquavelo.com', 'Aquavelo');
-        $mail->addAddress($email);
-
-        // Contenu de l'email
-        $mail->isHTML(true);
-        $mail->Subject = 'Merci pour votre inscription !';
-        $mail->Body    = '<p>Merci pour votre inscription !</p>';
-        $mail->AltBody = 'Merci pour votre inscription !';
-
-        $mail->send();
-    } catch (Exception $e) {
-        error_log("Erreur lors de l'envoi de l'email : {$mail->ErrorInfo}");
     }
 }
 
@@ -182,6 +147,8 @@ $conn->close();
 </div>
 </body>
 </html>
+
+
 
 
 

@@ -1,50 +1,97 @@
 <?php
-session_start();
 
-// Configuration de la base de données
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "Mensurations";
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Créer une connexion
-$conn = new mysqli($servername, $username, $password, $dbname);
+require 'vendor/autoload.php';
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+use Phpfastcache\CacheManager;
+use Phpfastcache\Drivers\Redis\Config;
+
+// Paramètres de configuration
+$settings = [];
+
+$settings['ttl'] = intval(getenv("REDIS_TTL"));
+$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
+$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
+
+$settings['dbname'] = getenv("MYSQL_ADDON_DB");
+$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
+$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
+
+$settings['mjhost'] = "in.mailjet.com";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjfrom'] = "info@aquavelo.com";
+
+// Connexion à la base de données
+try {
+    $conn = new PDO(
+        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
-// Fonction pour vérifier les identifiants
-function checkLogin($conn, $email, $password) {
-    $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        return password_verify($password, $row['password']);
-    }
-    return false;
+// Connexion à Redis
+try {
+    $redis = CacheManager::getInstance('redis', new Config([
+        'host' => getenv("REDIS_HOST"),
+        'port' => intval(getenv("REDIS_PORT")),
+        'password' => getenv("REDIS_PASSWORD"),
+    ]));
+} catch (Exception $e) {
+    die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
 // Fonction pour inscrire un nouvel utilisateur
 function registerUser($conn, $email, $password) {
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashed_password);
-    if ($stmt->execute()) {
-        return true;
+    // Vérifier si l'email existe déjà
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
+    $stmt->bindParam(1, $email);
+    $stmt->execute();
+    $count = $stmt->fetchColumn();
+
+    if ($count > 0) {
+        // Rediriger vers menu.php si l'email existe déjà
+        header("Location: menu.php");
+        exit(); // Assurez-vous de sortir après la redirection
     } else {
-        if ($stmt->errno == 1062) {
-            return "Email déjà utilisé.";
+        // Insérer un nouvel utilisateur
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+        $stmt->bindParam(1, $email);
+        $stmt->bindParam(2, $hashed_password);
+        if ($stmt->execute()) {
+            return true;
         } else {
-            return "Erreur lors de l'inscription: " . $stmt->error;
+            return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
         }
     }
 }
 
+// Fonction pour vérifier les informations de connexion
+function checkLogin($conn, $email, $password) {
+    $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
+    $stmt->bindParam(1, $email);
+    $stmt->execute();
+    if ($stmt->rowCount() == 1) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (password_verify($password, $row['password'])) {
+            return true;
+        }
+    }
+    return false;
+}
+
+session_start();
+
 $error_message = "";
+$success_message = "";
 
 // Gestion de l'inscription
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
@@ -53,7 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $registration_result = registerUser($conn, $email, $password);
         if ($registration_result === true) {
-            $error_message = "Inscription réussie. Vous pouvez maintenant vous connecter.";
+            // Inscription réussie, rediriger vers menu.php
+            header("Location: menu.php");
+            exit;
         } else {
             $error_message = $registration_result;
         }
@@ -70,6 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         if (checkLogin($conn, $email, $password)) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $email;
+            // Connexion réussie, rediriger vers menu.php
             header("Location: menu.php");
             exit;
         } else {
@@ -79,20 +129,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         $error_message = "Email invalide.";
     }
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription et Connexion</title>
+    <title>Inscription / Connexion</title>
     <style>
+        .error { color: red; }
+        .success { color: green; }
         .container {
-            text-align: center;
+            display: flex;
+            justify-content: center;
             padding: 50px;
+        }
+        .form-container, .info-container {
+            width: 45%;
+            margin: 10px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -106,48 +159,97 @@ $conn->close();
             font-size: 16px;
             cursor: pointer;
         }
-        .error {
-            color: red;
+        .info-box {
+            border: 1px solid #000;
+            padding: 20px;
+            text-align: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .logo-container img {
+            width: 250px;
+        }
+        .logo-container button {
+            margin-left: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <?php
-    if (!empty($error_message)) {
-        echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-    }
-    ?>
-    <h2>1) Inscrivez vous en écrivant votre email <br>et créez un mot de passe</h2>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit" name="register">S'inscrire</button>
-    </form>
+    <div class="form-container">
+        <?php
+        if (!empty($error_message)) {
+            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
+        }
+        if (!empty($success_message)) {
+            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
+        }
+        ?>
+        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="register">S'inscrire</button>
+        </form>
 
-    <h2>2) Une fois que l'inscription est faite,</h2>
-    <h3> re-notez ci dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <h3>2) Une fois que l'inscription est faite,</h3>
+        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="login_btn">Se connecter</button>
+        </form>
+        <div class="logo-container">
+            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
+            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
         </div>
-        <div class="form-group">
-            <label for="password">Mot de passe:</label>
-            <input type="password" id="password" name="password" required>
+    </div>
+    <div class="info-container">
+        <div class="info-box">
+
+            
+            <h2>Vos mensurations</h2>
+    <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
+
+    <h3>Inscription</h3>
+    <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
+    <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
+
+    <h3>Suivi</h3>
+    <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
+    <p>Vous pouvez également prendre vos mensurations vous-même :</p>
+    <ul>
+        <li><strong>Poids</strong> : Le matin à jeun.</li>
+        <li><strong>Taille</strong> : Au niveau du nombril.</li>
+        <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
+        <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
+    </ul>
+    <p>Notez ces mensurations pour un suivi régulier.</p>
+
         </div>
-        <button type="submit" name="login_btn">Se connecter</button>
-    </form>
+    </div>
 </div>
 </body>
 </html>
-
 
 
 

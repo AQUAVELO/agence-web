@@ -192,15 +192,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
         }
         ?>
-        <h3>1) Inscrivez-vous en écrivant votre email, <br>votre prénom et créez un mot de passe</h3>
+        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
         <form method="post" action="">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="first_name">Prénom:</label>
-                <input type="text" id="first_name" name="first_name" required>
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe:</label>
@@ -209,7 +205,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             <button type="submit" name="register">S'inscrire</button>
         </form>
 
-        <h3>2) Une fois que l'inscription est faite,</h3
+        <h3>2) Une fois que l'inscription est faite,</h3>
+        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" name="login_btn">Se connecter</button>
+        </form>
+        <div class="logo-container">
+            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
+            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
+        </div>
+    </div>
+    <div class="info-container">
+        <div class="info-box">
+            <h3>Saisir vos mensurations</h3>
+            <p>Veuillez entrer vos mensurations pour bénéficier de conseils personnalisés.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
 
 
 

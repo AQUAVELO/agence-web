@@ -1,97 +1,85 @@
 <?php
+session_start();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require 'vendor/autoload.php'; // Charger autoload pour PHPMailer
 
-require 'vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-use Phpfastcache\CacheManager;
-use Phpfastcache\Drivers\Redis\Config;
+// Configuration de la base de données
+$servername = "localhost";
+$username = "root";
+$password = "root";
+$dbname = "Mensurations";
 
-// Paramètres de configuration
-$settings = [];
+// Créer une connexion
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-$settings['ttl'] = intval(getenv("REDIS_TTL"));
-$settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
-$settings['dbport'] = getenv("MYSQL_ADDON_PORT");
-
-$settings['dbname'] = getenv("MYSQL_ADDON_DB");
-$settings['dbusername'] = getenv("MYSQL_ADDON_USER");
-$settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
-
-$settings['mjhost'] = "in.mailjet.com";
-$settings['mjusername'] = getenv("MAILJET_USERNAME");
-$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
-$settings['mjfrom'] = "info@aquavelo.com";
-
-// Connexion à la base de données
-try {
-    $conn = new PDO(
-        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
-        $settings['dbusername'],
-        $settings['dbpassword']
-    );
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Couldn't connect to MySQL: " . $e->getMessage());
+// Vérifier la connexion
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Connexion à Redis
-try {
-    $redis = CacheManager::getInstance('redis', new Config([
-        'host' => getenv("REDIS_HOST"),
-        'port' => intval(getenv("REDIS_PORT")),
-        'password' => getenv("REDIS_PASSWORD"),
-    ]));
-} catch (Exception $e) {
-    die("Couldn't connect to Redis: " . $e->getMessage());
-}
-
-// Fonction pour inscrire un nouvel utilisateur
-function registerUser($conn, $email, $password) {
-    // Vérifier si l'email existe déjà
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
-    $stmt->bindParam(1, $email);
-    $stmt->execute();
-    $count = $stmt->fetchColumn();
-
-    if ($count > 0) {
-        // Rediriger vers menu.php si l'email existe déjà
-        header("Location: menu.php");
-        exit(); // Assurez-vous de sortir après la redirection
-    } else {
-        // Insérer un nouvel utilisateur
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
-        $stmt->bindParam(1, $email);
-        $stmt->bindParam(2, $hashed_password);
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
-        }
-    }
-}
-
-// Fonction pour vérifier les informations de connexion
+// Fonction pour vérifier les identifiants
 function checkLogin($conn, $email, $password) {
     $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
-    $stmt->bindParam(1, $email);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
-    if ($stmt->rowCount() == 1) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (password_verify($password, $row['password'])) {
-            return true;
-        }
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return password_verify($password, $row['password']);
     }
     return false;
 }
 
-session_start();
+// Fonction pour inscrire un nouvel utilisateur
+function registerUser($conn, $email, $password) {
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+    $stmt->bind_param("ss", $email, $hashed_password);
+    if ($stmt->execute()) {
+        sendThankYouEmail($email);
+        return true;
+    } else {
+        if ($stmt->errno == 1062) {
+            return "Email déjà utilisé.";
+        } else {
+            return "Erreur lors de l'inscription: " . $stmt->error;
+        }
+    }
+}
+
+// Fonction pour envoyer un email de remerciement
+function sendThankYouEmail($email) {
+    $mail = new PHPMailer(true);
+    try {
+        // Paramètres du serveur
+        $mail->isSMTP();
+        $mail->Host = 'smtp.example.com'; // Remplacez par votre serveur SMTP
+        $mail->SMTPAuth = true;
+        $mail->Username = 'your_email@example.com'; // Remplacez par votre email SMTP
+        $mail->Password = 'your_email_password'; // Remplacez par votre mot de passe SMTP
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Destinataires
+        $mail->setFrom('info@aquavelo.com', 'Aquavelo');
+        $mail->addAddress($email);
+
+        // Contenu de l'email
+        $mail->isHTML(true);
+        $mail->Subject = 'Merci pour votre inscription !';
+        $mail->Body    = '<p>Merci pour votre inscription !</p>';
+        $mail->AltBody = 'Merci pour votre inscription !';
+
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Erreur lors de l'envoi de l'email : {$mail->ErrorInfo}");
+    }
+}
 
 $error_message = "";
-$success_message = "";
 
 // Gestion de l'inscription
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
@@ -100,9 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $registration_result = registerUser($conn, $email, $password);
         if ($registration_result === true) {
-            // Inscription réussie, rediriger vers menu.php
-            header("Location: menu.php");
-            exit;
+            $error_message = "Inscription réussie. Vous pouvez maintenant vous connecter.";
         } else {
             $error_message = $registration_result;
         }
@@ -119,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         if (checkLogin($conn, $email, $password)) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $email;
-            // Connexion réussie, rediriger vers menu.php
             header("Location: menu.php");
             exit;
         } else {
@@ -129,23 +114,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         $error_message = "Email invalide.";
     }
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Inscription / Connexion</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription et Connexion</title>
     <style>
-        .error { color: red; }
-        .success { color: green; }
         .container {
-            display: flex;
-            justify-content: center;
+            text-align: center;
             padding: 50px;
-        }
-        .form-container, .info-container {
-            width: 45%;
-            margin: 10px;
         }
         .form-group {
             margin-bottom: 15px;
@@ -159,97 +141,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             font-size: 16px;
             cursor: pointer;
         }
-        .info-box {
-            border: 1px solid #000;
-            padding: 20px;
-            text-align: center;
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .logo-container img {
-            width: 250px;
-        }
-        .logo-container button {
-            margin-left: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="form-container">
-        <?php
-        if (!empty($error_message)) {
-            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-        }
-        if (!empty($success_message)) {
-            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
-        }
-        ?>
-        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" name="register">S'inscrire</button>
-        </form>
-
-        <h3>2) Une fois que l'inscription est faite,</h3>
-        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" name="login_btn">Se connecter</button>
-        </form>
-        <div class="logo-container">
-            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
-            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
+    <?php
+    if (!empty($error_message)) {
+        echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
+    }
+    ?>
+    <h2>1) Inscrivez vous en écrivant votre email <br>et créez un mot de passe</h2>
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
         </div>
-    </div>
-    <div class="info-container">
-        <div class="info-box">
-
-            
-            <h2>Vos mensurations</h2>
-    <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
-
-    <h3>Inscription</h3>
-    <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-    <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
-
-    <h3>Suivi</h3>
-    <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
-    <p>Vous pouvez également prendre vos mensurations vous-même :</p>
-    <ul>
-        <li><strong>Poids</strong> : Le matin à jeun.</li>
-        <li><strong>Taille</strong> : Au niveau du nombril.</li>
-        <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
-        <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
-    </ul>
-    <p>Notez ces mensurations pour un suivi régulier.</p>
-
+        <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
         </div>
-    </div>
+        <button type="submit" name="register">S'inscrire</button>
+    </form>
+
+    <h2>2) Une fois que l'inscription est faite,</h2>
+    <h3> re-notez ci dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" name="login_btn">Se connecter</button>
+    </form>
 </div>
 </body>
 </html>
+
 
 
 

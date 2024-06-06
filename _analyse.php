@@ -50,7 +50,7 @@ try {
 }
 
 // Fonction pour envoyer un email de remerciement
-echo $email;
+
 function sendThankYouEmail($email, $settings) {
     $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
     $body = [
@@ -100,6 +100,7 @@ function registerUser($conn, $email, $password, $settings) {
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
             // Envoyer l'email de remerciement
+            echo $email;
             $email_result = sendThankYouEmail($email, $settings);
             if ($email_result === true) {
                 return true;

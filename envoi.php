@@ -1,32 +1,32 @@
 <?php
+require '_settings.php';
 
-require '_settings.php';  // Charger les paramètres de configuration
+require 'vendor/autoload.php';  // Assurez-vous que Composer autoload est inclus
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-use Segment;
-Segment::init("CvtZvzpEIJ0UHZuZCwSqQuq5F6o2FGsB");
+// Paramètres de configuration Mailjet
+$settings = [
+    'mjhost' => 'in-v3.mailjet.com',
+    'mjusername' => 'adf33e0c77039ed69396e3a8a07400cb',  // Remplacez par votre API Key Mailjet
+    'mjpassword' => '05906e966c8e2933b1dc8b0f8bb1e18b'
+    'mjfrom' => 'aqua.cannes@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
+];
 
 // Fonction pour envoyer un email simple "Merci de votre confiance"
 function sendThankYouEmail($toEmail, $toName, $settings) {
     $mail = new PHPMailer(true);
     try {
-        
         // Configuration du serveur SMTP de Mailjet
-  
-        $mail->IsSMTP();
+        $mail->isSMTP();
         $mail->Host = $settings['mjhost'];
-        $mail->isHTML(true);                                  // Set email format to HTML
-        
         $mail->SMTPAuth = true;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-        $mail->Port = 587;
         $mail->Username = $settings['mjusername'];
         $mail->Password = $settings['mjpassword'];
-
-        
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
 
         // Configuration de l'email
         $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');
@@ -50,12 +50,6 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 // Envoi d'email à claude@alesiaminceur.com
 $toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
-$settings = [
-    'mjhost' => 'in-v3.mailjet.com',  // Adresse du serveur SMTP de Mailjet
-    'mjusername' => 'your-mailjet-username',  // Remplacez par votre nom d'utilisateur Mailjet
-    'mjpassword' => 'your-mailjet-password',  // Remplacez par votre mot de passe Mailjet
-    'mjfrom' => 'your-email@example.com'  // Remplacez par l'adresse email de l'expéditeur
-];
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);
 if ($result === true) {
@@ -64,3 +58,4 @@ if ($result === true) {
     echo $result;
 }
 ?>
+

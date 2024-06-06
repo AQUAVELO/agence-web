@@ -101,7 +101,7 @@ function registerUser($conn, $email, $password, $settings) {
         if ($stmt->execute()) {
             // Envoyer l'email de remerciement
             echo $email;
-            $email_result = sendThankYouEmail($email, $settings);
+            $email_result = sendThankYouEmail("claude@alesiaminceur.com", $settings);
             if ($email_result === true) {
                 return true;
             } else {

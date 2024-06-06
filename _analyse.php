@@ -8,6 +8,7 @@ require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
+use \Mailjet\Resources;
 
 // Paramètres de configuration
 $settings = [];
@@ -48,8 +49,38 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
+// Fonction pour envoyer un email de remerciement
+function sendThankYouEmail($email, $settings) {
+    $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
+    $body = [
+        'Messages' => [
+            [
+                'From' => [
+                    'Email' => $settings['mjfrom'],
+                    'Name' => "Aquavelo"
+                ],
+                'To' => [
+                    [
+                        'Email' => $email,
+                        'Name' => "Nouveau Utilisateur"
+                    ]
+                ],
+                'Subject' => "Merci pour votre inscription",
+                'TextPart' => "Merci pour votre inscription chez Aquavelo.",
+                'HTMLPart' => "<h3>Merci pour votre inscription chez Aquavelo.</h3>"
+            ]
+        ]
+    ];
+    $response = $mj->post(Resources::$Email, ['body' => $body]);
+    if ($response->success()) {
+        return true;
+    } else {
+        return "Erreur lors de l'envoi de l'email: " . $response->getReasonPhrase();
+    }
+}
+
 // Fonction pour inscrire un nouvel utilisateur
-function registerUser($conn, $email, $password) {
+function registerUser($conn, $email, $password, $settings) {
     // Vérifier si l'email existe déjà
     $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
     $stmt->bindParam(1, $email);
@@ -67,7 +98,13 @@ function registerUser($conn, $email, $password) {
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
-            return true;
+            // Envoyer l'email de remerciement
+            $email_result = sendThankYouEmail($email, $settings);
+            if ($email_result === true) {
+                return true;
+            } else {
+                return $email_result;
+            }
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
         }
@@ -98,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($conn, $email, $password);
+        $registration_result = registerUser($conn, $email, $password, $settings);
         if ($registration_result === true) {
             // Inscription réussie, rediriger vers menu.php
             header("Location: menu.php");

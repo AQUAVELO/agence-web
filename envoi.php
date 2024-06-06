@@ -13,14 +13,20 @@ Segment::init("CvtZvzpEIJ0UHZuZCwSqQuq5F6o2FGsB");
 function sendThankYouEmail($toEmail, $toName, $settings) {
     $mail = new PHPMailer(true);
     try {
+        
         // Configuration du serveur SMTP de Mailjet
-        $mail->isSMTP();
+  
+        $mail->IsSMTP();
         $mail->Host = $settings['mjhost'];
+        $mail->isHTML(true);                                  // Set email format to HTML
+        
         $mail->SMTPAuth = true;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+        $mail->Port = 587;
         $mail->Username = $settings['mjusername'];
         $mail->Password = $settings['mjpassword'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+
+        
 
         // Configuration de l'email
         $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');

@@ -100,8 +100,8 @@ function registerUser($conn, $email, $password, $settings) {
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
             // Envoyer l'email de remerciement
-            echo "claude@alesiaminceur.com";
-            $email_result = sendThankYouEmail("claude@alesiaminceur.com", $settings);
+            echo $email;
+            $email_result = sendThankYouEmail("$email", $settings);
             if ($email_result === true) {
                 return true;
             } else {

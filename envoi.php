@@ -1,5 +1,5 @@
 <?php
-require '_settings.php'; // Assurez-vous que ce fichier contient les paramètres nécessaires
+
 
 require 'vendor/autoload.php';  // Assurez-vous que Composer autoload est inclus
 

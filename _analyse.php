@@ -50,36 +50,52 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
+// debut
 // Fonction pour envoyer un email de remerciement
 
-function sendThankYouEmail($email, $settings) {
-    $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
-    $body = [
-        'Messages' => [
-            [
-                'From' => [
-                    'Email' => $settings['mjfrom'],
-                    'Name' => "Aquavelo"
-                ],
-                'To' => [
-                    [
-                        'Email' => $email,
-                        'Name' => "Nouveau Utilisateur"
-                    ]
-                ],
-                'Subject' => "Merci pour votre inscription",
-                'TextPart' => "Merci pour votre inscription chez Aquavelo.",
-                'HTMLPart' => "<h3>Merci pour votre inscription chez Aquavelo.</h3>"
-            ]
-        ]
-    ];
-    $response = $mj->post(Resources::$Email, ['body' => $body]);
-    if ($response->success()) {
+function sendThankYouEmail($toEmail, $toName, $settings) {
+    $mail = new PHPMailer(true);
+    try {
+        // Configuration du serveur SMTP de Mailjet
+        $mail->isSMTP();
+        $mail->Host = $settings['mjhost'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $settings['mjusername'];
+        $mail->Password = $settings['mjpassword'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Configuration de l'email
+        $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');
+        $mail->addAddress($toEmail, $toName);
+        $mail->addReplyTo($settings['mjfrom'], 'Service clients Aquavelo');
+
+        // Contenu de l'email
+        $mail->isHTML(true);
+        $mail->Subject = 'Merci de votre confiance';
+        $mail->Body    = '<p>Merci de votre confiance.</p>';
+        $mail->AltBody = 'Merci de votre confiance.';
+
+        // Envoyer l'email
+        $mail->send();
         return true;
-    } else {
-        return "Erreur lors de l'envoi de l'email: " . $response->getReasonPhrase();
+    } catch (Exception $e) {
+        return "Erreur lors de l'envoi de l'email: {$mail->ErrorInfo}";
     }
 }
+
+// Envoi d'email à claude@alesiaminceur.com
+$toEmail = "claude@alesiaminceur.com";
+$toName = "Claude Alesiaminceur";
+
+$result = sendThankYouEmail($toEmail, $toName, $settings);
+if ($result === true) {
+    echo "Email envoyé avec succès.";
+} else {
+    echo $result;
+}
+
+// fin
 
 // Fonction pour inscrire un nouvel utilisateur
 function registerUser($conn, $email, $password, $settings) {
@@ -103,7 +119,9 @@ function registerUser($conn, $email, $password, $settings) {
         if ($stmt->execute()) {
             // Envoyer l'email de remerciement
             echo $email;
-            $email_result = sendThankYouEmail("$email", $settings);
+            // ajout ligne 123 et ajout $toName ligne 124
+            $toName="Claude";
+            $email_result = sendThankYouEmail("$email", $toName, $settings);
             if ($email_result === true) {
                 return true;
             } else {

@@ -8,8 +8,6 @@ require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 use \Mailjet\Resources;
 
 // Paramètres de configuration
@@ -52,49 +50,6 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
-// Fonction pour envoyer un email de remerciement
-function sendThankYouEmail($toEmail, $toName, $settings) {
-    $mail = new PHPMailer(true);
-    try {
-        // Configuration du serveur SMTP de Mailjet
-        $mail->isSMTP();
-        $mail->Host = $settings['mjhost'];
-        $mail->SMTPAuth = true;
-        $mail->Username = $settings['mjusername'];
-        $mail->Password = $settings['mjpassword'];
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-
-        // Configuration de l'email
-        $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');
-        $mail->addAddress($toEmail, $toName);
-        $mail->addReplyTo($settings['mjfrom'], 'Service clients Aquavelo');
-
-        // Contenu de l'email
-        $mail->isHTML(true);
-        $mail->Subject = 'Merci de votre confiance';
-        $mail->Body    = '<p>Merci de votre confiance.</p>';
-        $mail->AltBody = 'Merci de votre confiance.';
-
-        // Envoyer l'email
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        return "Erreur lors de l'envoi de l'email: {$mail->ErrorInfo}";
-    }
-}
-
-// Envoi d'email à claude@alesiaminceur.com
-$toEmail = "claude@alesiaminceur.com";
-$toName = "Claude Alesiaminceur";
-
-$result = sendThankYouEmail($toEmail, $toName, $settings);
-if ($result === true) {
-    echo "Email envoyé avec succès.";
-} else {
-    echo $result;
-}
-
 // Fonction pour inscrire un nouvel utilisateur
 function registerUser($conn, $email, $password, $settings) {
     // Vérifier si l'email existe déjà
@@ -115,17 +70,7 @@ function registerUser($conn, $email, $password, $settings) {
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
-            // Envoyer l'email de remerciement
-            echo $email;
-   
-
-            $toName = "Claude";
-            $email_result = sendThankYouEmail($email, $toName, $settings);
-            if ($email_result === true) {
-                return true;
-            } else {
-                return $email_result;
-            }
+            return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
         }
@@ -305,6 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

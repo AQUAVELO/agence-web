@@ -36,7 +36,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 
         // Contenu de l'email
         $mail->isHTML(true);
-        $mail->Subject = 'Merci de votre confiance';
+        $mail->Subject = 'Suivi de vos mensurations';
         
         $mail->Body = '
 <!DOCTYPE html>
@@ -80,7 +80,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 <body>
     <div class="container">
         <p>Bonjour,</p>
-        <br>
+    
         <p>Je vous remercie de votre confiance. À présent vous devez cliquer sur <a href="https://www.aquavelo.com/menu.php" target="_blank">ce lien</a> pour rentrer vos coordonnées et mensurations.</p>
         <p class="signature">Cordialement, Claude</p>
     </div>

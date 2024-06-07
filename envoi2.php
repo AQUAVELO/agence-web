@@ -9,7 +9,7 @@ $settings = [
     'mjhost' => 'in-v3.mailjet.com',
     'mjusername' => '3fa4567226e2b0b497f13a566724f340',  // Remplacez par votre API Key Mailjet
     'mjpassword' => '2b43a31333dfa67f915940b19ae219a9',  // Remplacez par votre Secret Key Mailjet
-    'mjfrom' => 'aqua.cannes@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
+    'mjfrom' => 'claude@alesiaminceur.com'  // Remplacez par l'adresse email de l'expéditeur
 ];
 
 // Fonction pour envoyer un email simple
@@ -45,7 +45,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 }
 
 // Envoi d'email à claude@alesiaminceur.com
-$toEmail = "claude@alesiaminceur.com";
+$toEmail = "aqua.cannes@gmail.com";
 $toName = "Claude Alesiaminceur";
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);

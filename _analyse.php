@@ -8,6 +8,8 @@ require 'vendor/autoload.php';
 
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use \Mailjet\Resources;
 
 // Paramètres de configuration
@@ -50,9 +52,7 @@ try {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
 
-// debut
 // Fonction pour envoyer un email de remerciement
-
 function sendThankYouEmail($toEmail, $toName, $settings) {
     $mail = new PHPMailer(true);
     try {
@@ -95,8 +95,6 @@ if ($result === true) {
     echo $result;
 }
 
-// fin
-
 // Fonction pour inscrire un nouvel utilisateur
 function registerUser($conn, $email, $password, $settings) {
     // Vérifier si l'email existe déjà
@@ -119,9 +117,8 @@ function registerUser($conn, $email, $password, $settings) {
         if ($stmt->execute()) {
             // Envoyer l'email de remerciement
             echo $email;
-            // ajout ligne 123 et ajout $toName ligne 124
-            $toName="Claude";
-            $email_result = sendThankYouEmail("$email", $toName, $settings);
+            $toName = "Claude";
+            $email_result = sendThankYouEmail($email, $toName, $settings);
             if ($email_result === true) {
                 return true;
             } else {
@@ -284,31 +281,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
     </div>
     <div class="info-container">
         <div class="info-box">
-
-            
             <h2>Vos mensurations</h2>
-    <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
+            <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
 
-    <h3>Inscription</h3>
-    <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-    <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
+            <h3>Inscription</h3>
+            <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
+            <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
 
-    <h3>Suivi</h3>
-    <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
-    <p>Vous pouvez également prendre vos mensurations vous-même :</p>
-    <ul>
-        <li><strong>Poids</strong> : Le matin à jeun.</li>
-        <li><strong>Taille</strong> : Au niveau du nombril.</li>
-        <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
-        <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
-    </ul>
-    <p>Notez ces mensurations pour un suivi régulier.</p>
-
+            <h3>Suivi</h3>
+            <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
+            <p>Vous pouvez également prendre vos mensurations vous-même :</p>
+            <ul>
+                <li><strong>Poids</strong> : Le matin à jeun.</li>
+                <li><strong>Taille</strong> : Au niveau du nombril.</li>
+                <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
+                <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
+            </ul>
+            <p>Notez ces mensurations pour un suivi régulier.</p>
         </div>
     </div>
 </div>
 </body>
 </html>
+
 
 
 

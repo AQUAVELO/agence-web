@@ -59,8 +59,8 @@ function registerUser($conn, $email, $password, $settings) {
     $count = $stmt->fetchColumn();
 
     if ($count > 0) {
-        // Rediriger vers menu.php si l'email existe déjà
-        header("Location: menu.php");
+        // Rediriger vers _analyse.php si l'email existe déjà
+        header("Location: _analyse.php");
         echo $email;
         exit(); // Assurez-vous de sortir après la redirection
     } else {

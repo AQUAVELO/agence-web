@@ -1,5 +1,5 @@
 <?php
-
+require '_settings.php';
 
 require 'vendor/autoload.php';  // Assurez-vous que Composer autoload est inclus
 
@@ -10,9 +10,9 @@ use PHPMailer\PHPMailer\Exception;
 // Paramètres de configuration Mailjet
 $settings = [
     'mjhost' => 'in-v3.mailjet.com',
-    'mjusername' => 'd6839cb67554c8e242afd743e5491b99',  // Remplacez par votre API Key Mailjet
-    'mjpassword' => 'fa5af345e0004df1a4871ae1028e1b22',  // Remplacez par votre Secret Key Mailjet
-    'mjfrom' => 'claude@alesiaminceur.com'  // Remplacez par l'adresse email de l'expéditeur
+    'mjusername' => 'adf33e0c77039ed69396e3a8a07400cb',  // Remplacez par votre API Key Mailjet
+    'mjpassword' => '05906e966c8e2933b1dc8b0f8bb1e18b',
+    'mjfrom' => 'jacquesverdier4@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
 ];
 
 // Fonction pour envoyer un email simple "Merci de votre confiance"
@@ -48,12 +48,12 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 }
 
 // Envoi d'email à claude@alesiaminceur.com
-$toEmail = "directionalesiaminceur@gmail.com";
+$toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);
 if ($result === true) {
-    echo "Email envoyé avec Claude.";
+    echo "Email envoyé avec succès.";
 } else {
     echo $result;
 }

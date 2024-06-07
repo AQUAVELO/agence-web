@@ -1,19 +1,12 @@
 <?php
-require '_settings.php';
-
 require 'vendor/autoload.php';  // Assurez-vous que Composer autoload est inclus
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// Paramètres de configuration Mailjet
-$settings = [
-    'mjhost' => 'in-v3.mailjet.com',
-    'mjusername' => 'adf33e0c77039ed69396e3a8a07400cb',  // Remplacez par votre API Key Mailjet
-    'mjpassword' => '05906e966c8e2933b1dc8b0f8bb1e18b',
-    'mjfrom' => 'jacquesverdier4@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
-];
+if (!isset($toEmail) || !isset($toName) || !isset($settings)) {
+    die("Les variables nécessaires ne sont pas définies.");
+}
 
 // Fonction pour envoyer un email simple "Merci de votre confiance"
 function sendThankYouEmail($toEmail, $toName, $settings) {
@@ -36,8 +29,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 
         // Contenu de l'email
         $mail->isHTML(true);
-        $mail->Subject = 'Suivi de vos mensurations';
-        
+        $mail->Subject = 'Merci de votre confiance';
         $mail->Body = '
 <!DOCTYPE html>
 <html lang="fr">
@@ -80,14 +72,12 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 <body>
     <div class="container">
         <p>Bonjour,</p>
-    
         <p>Je vous remercie de votre confiance. À présent vous devez cliquer sur <a href="https://www.aquavelo.com/menu.php" target="_blank">ce lien</a> pour rentrer vos coordonnées et mensurations.</p>
         <p class="signature">Cordialement, Claude</p>
     </div>
 </body>
 </html>
 ';
-
         $mail->AltBody = 'Merci de votre confiance.';
 
         // Envoyer l'email
@@ -98,10 +88,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
     }
 }
 
-// Envoi d'email à claude@alesiaminceur.com
-$toEmail = "claude@alesiaminceur.com";
-$toName = "Claude Alesiaminceur";
-
+// Appel de la fonction pour envoyer l'email
 $result = sendThankYouEmail($toEmail, $toName, $settings);
 if ($result === true) {
     echo "Email envoyé avec succès.";
@@ -109,5 +96,6 @@ if ($result === true) {
     echo $result;
 }
 ?>
+
 
 

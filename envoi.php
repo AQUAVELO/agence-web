@@ -1,5 +1,5 @@
 <?php
-require '_settings.php';
+require '_settings.php'; // Assurez-vous que ce fichier contient les paramètres nécessaires
 
 require 'vendor/autoload.php';  // Assurez-vous que Composer autoload est inclus
 
@@ -11,7 +11,7 @@ use PHPMailer\PHPMailer\Exception;
 $settings = [
     'mjhost' => 'in-v3.mailjet.com',
     'mjusername' => '3fa4567226e2b0b497f13a566724f340',  // Remplacez par votre API Key Mailjet
-    'mjpassword' => '2b43a31333dfa67f915940b19ae219a9',
+    'mjpassword' => '2b43a31333dfa67f915940b19ae219a9',  // Remplacez par votre Secret Key Mailjet
     'mjfrom' => 'aqua.cannes@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
 ];
 
@@ -53,9 +53,10 @@ $toName = "Claude Alesiaminceur";
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);
 if ($result === true) {
-    echo "Email envoyé avec succès.";
+    echo "Email envoyé avec Claude.";
 } else {
     echo $result;
 }
 ?>
+
 

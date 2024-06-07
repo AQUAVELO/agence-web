@@ -60,7 +60,7 @@ function registerUser($conn, $email, $password, $settings) {
 
     if ($count > 0) {
         // Rediriger vers menu.php si l'email existe déjà
-        include 'envoi.php';
+        
         header("Location: menu.php");
         echo $email;
         exit(); // Assurez-vous de sortir après la redirection
@@ -71,6 +71,7 @@ function registerUser($conn, $email, $password, $settings) {
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
+            include 'envoi.php';
             return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
@@ -105,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
         $registration_result = registerUser($conn, $email, $password, $settings);
         if ($registration_result === true) {
             // Inscription réussie, rediriger vers menu.php
+            
             header("Location: menu.php");
             exit;
         } else {

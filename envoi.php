@@ -79,8 +79,10 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 </head>
 <body>
     <div class="container">
-        <p>Merci de votre confiance. À présent vous devez cliquer sur <a href="https://www.aquavelo.com/menu.php" target="_blank">ce lien</a> pour rentrer vos coordonnées et mensurations.</p>
-        <p class="signature">Cordialement,<br>Claude</p>
+        <p>Bonjour,</p>
+        <br>
+        <p>Je vous remercie de votre confiance. À présent vous devez cliquer sur <a href="https://www.aquavelo.com/menu.php" target="_blank">ce lien</a> pour rentrer vos coordonnées et mensurations.</p>
+        <p class="signature">Cordialement, Claude</p>
     </div>
 </body>
 </html>

@@ -12,7 +12,7 @@ $settings = [
     'mjhost' => 'in-v3.mailjet.com',
     'mjusername' => 'd6839cb67554c8e242afd743e5491b99',  // Remplacez par votre API Key Mailjet
     'mjpassword' => 'fa5af345e0004df1a4871ae1028e1b22',  // Remplacez par votre Secret Key Mailjet
-    'mjfrom' => 'aqua.cannes@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
+    'mjfrom' => 'claude@alesiaminceur.com'  // Remplacez par l'adresse email de l'expéditeur
 ];
 
 // Fonction pour envoyer un email simple "Merci de votre confiance"

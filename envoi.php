@@ -99,7 +99,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 }
 
 // Envoi d'email à claude@alesiaminceur.com
-$toEmail = "claude@alesiaminceur.com";
+//$toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);

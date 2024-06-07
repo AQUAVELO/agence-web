@@ -29,6 +29,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
         $mail->Port = 587;
 
         // Configuration de l'email
+        $mail->CharSet = 'UTF-8'; // Définir l'encodage UTF-8
         $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');
         $mail->addAddress($toEmail, $toName);
         $mail->addReplyTo($settings['mjfrom'], 'Service clients Aquavelo');

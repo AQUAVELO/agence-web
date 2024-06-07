@@ -22,9 +22,9 @@ $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
 
 // Paramètres de configuration Mailjet
-$settings['mjhost'] = "in.mailjet.com";
-$settings['mjusername'] = getenv("MAILJET_USERNAME");
-$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjhost'] = "in-v3.mailjet.com";
+$settings['mjusername'] = "3fa4567226e2b0b497f13a566724f340";
+$settings['mjpassword'] = "2b43a31333dfa67f915940b19ae219a9";
 $settings['mjfrom'] = "info@aquavelo.com";
 
 // Connexion à la base de données

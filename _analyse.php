@@ -92,6 +92,7 @@ function registerUser($conn, $email, $password, $settings) {
     if ($count > 0) {
         // Rediriger vers menu.php si l'email existe déjà
         header("Location: menu.php");
+        echo $email;
         exit(); // Assurez-vous de sortir après la redirection
     } else {
         // Insérer un nouvel utilisateur

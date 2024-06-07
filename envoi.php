@@ -10,8 +10,8 @@ use PHPMailer\PHPMailer\Exception;
 // Paramètres de configuration Mailjet
 $settings = [
     'mjhost' => 'in-v3.mailjet.com',
-    'mjusername' => '3fa4567226e2b0b497f13a566724f340',  // Remplacez par votre API Key Mailjet
-    'mjpassword' => '2b43a31333dfa67f915940b19ae219a9',  // Remplacez par votre Secret Key Mailjet
+    'mjusername' => 'd6839cb67554c8e242afd743e5491b99',  // Remplacez par votre API Key Mailjet
+    'mjpassword' => 'fa5af345e0004df1a4871ae1028e1b22',  // Remplacez par votre Secret Key Mailjet
     'mjfrom' => 'aqua.cannes@gmail.com'  // Remplacez par l'adresse email de l'expéditeur
 ];
 

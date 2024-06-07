@@ -36,7 +36,55 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
         // Contenu de l'email
         $mail->isHTML(true);
         $mail->Subject = 'Merci de votre confiance';
-        $mail->Body    = '<p>Merci de votre confiance.</p>';
+        
+        $mail->Body = '
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message de Remerciement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .signature {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Merci de votre confiance. À présent vous devez cliquer sur <a href="https://www.aquavelo.com/menu.php" target="_blank">ce lien</a> pour rentrer vos coordonnées et mensurations.</p>
+        <p class="signature">Cordialement,<br>Claude</p>
+    </div>
+</body>
+</html>
+';
+
         $mail->AltBody = 'Merci de votre confiance.';
 
         // Envoyer l'email

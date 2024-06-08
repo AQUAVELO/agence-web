@@ -200,6 +200,8 @@ $conn = null;
                 <th>Action</th>
             </tr>
             <?php foreach ($userSuivi as $suivi): ?>
+            // ajout ligne 204 et 212
+            <?php $IMC= round($suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100)), 2);  ?>
             <tr>
                 <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
@@ -207,6 +209,7 @@ $conn = null;
                 <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
                 <td><?php echo round($suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100)), 2); ?></td>
+                 <td><?php echo $IMC ?></td>
                 <td>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">

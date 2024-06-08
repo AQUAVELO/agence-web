@@ -59,8 +59,9 @@ function registerUser($conn, $email, $password, $settings) {
     $count = $stmt->fetchColumn();
 
     if ($count > 0) {
-         // Rediriger vers _analyse.php si l'email existe déjà
+        // Rediriger vers _analyse.php si l'email existe déjà
         header("Location: _analyse.php");
+        echo $email;
         exit(); // Assurez-vous de sortir après la redirection
     } else {
         // Insérer un nouvel utilisateur
@@ -69,7 +70,6 @@ function registerUser($conn, $email, $password, $settings) {
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
-            // envoi de l'email
             $toEmail = $email;
             $toName = "Claude Alesiaminceur";
             include 'envoi.php'; // Inclure le fichier qui envoie l'email

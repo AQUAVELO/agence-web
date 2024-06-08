@@ -208,7 +208,7 @@ $conn = null;
                 <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
-                <td><?php echo round($suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100)), 2); ?></td>
+            
                  <td><?php echo $IMC; ?></td>
                 <td>
                     <form method="post" style="display:inline;">

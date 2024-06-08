@@ -200,8 +200,7 @@ $conn = null;
                 <th>Action</th>
             </tr>
             <?php foreach ($userSuivi as $suivi): ?>
-            // ajout ligne 204 et 212
-            <?php $IMC= round($suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100)), 2);  ?>
+          
             <tr>
                 <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>

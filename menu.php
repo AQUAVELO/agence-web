@@ -219,6 +219,9 @@ $conn = null;
             </tr>
             <?php endforeach; ?>
         </table>
+        // ajout 223 et 224
+      <?php if $IMC>20{
+        echo "félicitations"; ?>
 
         <h2>Graphique de Suivi</h2>
         <canvas id="myChart" width="400" height="200"></canvas>

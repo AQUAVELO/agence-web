@@ -219,11 +219,7 @@ $conn = null;
             <?php endforeach; ?>
         </table>
 
-      <?php if ($imc > 20 && $imc < 25): ?>
-            <p>Félicitations, votre IMC est bon.</p>
-        <?php endif; ?>
-    <?php endif; ?>
-        
+   
 
         <h2>Graphique de Suivi</h2>
         <canvas id="myChart" width="400" height="200"></canvas>

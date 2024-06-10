@@ -62,13 +62,18 @@ $stmt = $conn->prepare($sql);
 $stmt->execute([$email]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Calculer l'IMC
+// Calculer l'IMC et déterminer le message à afficher
+$message = '';
 if ($userInfo) {
     $poids = $userInfo["Poids"];
     $taille = $userInfo["Taille"];
     if ($poids > 0 && $taille > 0) {
         $imc = $poids / (($taille / 100) * ($taille / 100));
         $imc = round($imc, 2);
+
+        if ($imc > 20 && $imc < 25) {
+            $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
+        }
     } else {
         $imc = 0;
     }
@@ -193,7 +198,14 @@ $conn = null;
     <?php endif; ?>
 
     <div class="imc-box">
-        <?php if (isset($imc)) echo "IMC = " . number_format($imc, 2); ?>
+        <?php
+        if (isset($imc)) {
+            echo "IMC = " . number_format($imc, 2);
+            if ($imc > 20 && $imc < 25) {
+                echo "<br>Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
+            }
+        }
+        ?>
     </div>
 
     <?php if ($userSuivi && !empty($userSuivi)): ?>
@@ -303,6 +315,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

@@ -10,7 +10,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 // Lire l'email depuis la session
 $email = $_SESSION["email"];
 
-
 // Configuration de la base de données
 require 'vendor/autoload.php';
 
@@ -138,6 +137,12 @@ $conn = null;
             padding: 5px 10px;
             cursor: pointer;
         }
+        .imc-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -187,6 +192,10 @@ $conn = null;
         </table>
     <?php endif; ?>
 
+    <div class="imc-box">
+        <?php if (isset($imc)) echo "IMC = " . number_format($imc, 2); ?>
+    </div>
+
     <?php if ($userSuivi && !empty($userSuivi)): ?>
         <h2>Historique de Suivi</h2>
         <table>
@@ -200,15 +209,13 @@ $conn = null;
                 <th>Action</th>
             </tr>
             <?php foreach ($userSuivi as $suivi): ?>
-          
             <tr>
                 <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
-            
-                 <td><?php echo $IMC; ?></td>
+                <td><?php echo $imc; ?></td>
                 <td>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
@@ -218,8 +225,6 @@ $conn = null;
             </tr>
             <?php endforeach; ?>
         </table>
-
-   
 
         <h2>Graphique de Suivi</h2>
         <canvas id="myChart" width="400" height="200"></canvas>
@@ -292,13 +297,13 @@ $conn = null;
             });
         </script>
     <?php endif; ?>
-<!-- Ajouter le logo AQUAVELO sous le formulaire -->
+    <!-- Ajouter le logo AQUAVELO sous le formulaire -->
     <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
-
 </div>
 
 </body>
 </html>
+
 
 
 

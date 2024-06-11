@@ -71,7 +71,11 @@ if ($userInfo) {
         $imc = $poids / (($taille / 100) * ($taille / 100));
         $imc = round($imc, 2);
 
-        if ($imc > 20 && $imc < 25) {
+        if ($imc < 20) {
+            $message = "Vous êtes trop maigre.";
+        } elseif ($imc > 25) {
+            $message = "Vous êtes en surcharge pondérale.";
+        } elseif ($imc >= 20 && $imc <= 25) {
             $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
         }
     } else {
@@ -200,10 +204,8 @@ $conn = null;
     <div class="imc-box">
         <?php
         if (isset($imc)) {
-            echo "IMC = " . number_format($imc, 2);
-            if ($imc > 20 && $imc < 25) {
-                echo "<br>Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
-            }
+            echo "IMC = " . number_format($imc, 2) . "<br>";
+            echo $message;
         }
         ?>
     </div>
@@ -315,6 +317,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

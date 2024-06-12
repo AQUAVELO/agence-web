@@ -1,7 +1,9 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Désactiver l'affichage des erreurs en production
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', '/path/to/error.log'); // Assurez-vous que ce chemin est correct et accessible par le serveur
 error_reporting(E_ALL);
 
 require 'vendor/autoload.php';
@@ -12,20 +14,16 @@ use \Mailjet\Resources;
 
 // Paramètres de configuration
 $settings = [];
-
 $settings['ttl'] = intval(getenv("REDIS_TTL"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
-
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
-
-// Paramètres de configuration Mailjet
 $settings['mjhost'] = "in-v3.mailjet.com";
-$settings['mjusername'] = "3fa4567226e2b0b497f13a566724f340";
-$settings['mjpassword'] = "2b43a31333dfa67f915940b19ae219a9";
-$settings['mjfrom'] = "claude@alesiaminceur.com";
+$settings['mjusername'] = getenv("MJ_USERNAME"); // Assurez-vous que ces variables sont définies dans votre fichier .env
+$settings['mjpassword'] = getenv("MJ_PASSWORD");
+$settings['mjfrom'] = getenv("MJ_FROM");
 
 // Connexion à la base de données
 try {
@@ -63,12 +61,18 @@ function registerUser($conn, $email, $password, $settings) {
         header("Location: _menu.php");
         exit(); // Assurez-vous de sortir après la redirection
     } else {
+        // Validation de mot de passe : longueur minimale de 8 caractères
+        if (strlen($password) < 8) {
+            return "Le mot de passe doit contenir au moins 8 caractères.";
+        }
+
         // Insérer un nouvel utilisateur
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
         if ($stmt->execute()) {
+            // Envoyer un email de confirmation
             $toEmail = $email;
             $toName = "Claude Alesiaminceur";
             include 'envoi.php'; // Inclure le fichier qui envoie l'email
@@ -95,43 +99,56 @@ function checkLogin($conn, $email, $password) {
 
 session_start();
 
+// Générer un jeton CSRF
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 $error_message = "";
 $success_message = "";
 
 // Gestion de l'inscription
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = $_POST["password"];
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($conn, $email, $password, $settings);
-        if ($registration_result === true) {
-            // Inscription réussie, rediriger vers _menu.php
-            header("Location: _menu.php");
-            exit;
+    if (hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+        $password = $_POST["password"];
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $registration_result = registerUser($conn, $email, $password, $settings);
+            if ($registration_result === true) {
+                // Inscription réussie, rediriger vers _menu.php
+                header("Location: _menu.php");
+                exit;
+            } else {
+                $error_message = $registration_result;
+            }
         } else {
-            $error_message = $registration_result;
+            $error_message = "Email invalide.";
         }
     } else {
-        $error_message = "Email invalide.";
+        $error_message = "Jeton CSRF invalide.";
     }
 }
 
 // Gestion de la connexion
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = $_POST["password"];
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        if (checkLogin($conn, $email, $password)) {
-            $_SESSION["loggedin"] = true;
-            $_SESSION["email"] = $email;
-            // Connexion réussie, rediriger vers _menu.php
-            header("Location: _menu.php");
-            exit;
+    if (hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+        $password = $_POST["password"];
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (checkLogin($conn, $email, $password)) {
+                $_SESSION["loggedin"] = true;
+                $_SESSION["email"] = $email;
+                // Connexion réussie, rediriger vers _menu.php
+                header("Location: _menu.php");
+                exit;
+            } else {
+                $error_message = "Identifiants incorrects.";
+            }
         } else {
-            $error_message = "Identifiants incorrects.";
+            $error_message = "Email invalide.";
         }
     } else {
-        $error_message = "Email invalide.";
+        $error_message = "Jeton CSRF invalide.";
     }
 }
 ?>
@@ -199,6 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         ?>
         <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
         <form method="post" action="">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
@@ -213,6 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         <h3>2) Une fois que l'inscription est faite,</h3>
         <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
         <form method="post" action="">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
@@ -252,6 +271,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

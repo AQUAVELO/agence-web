@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("UPDATE mensurations SET Nom = ?, Prenom = ?, Phone = ?, Age = ?, Poids = ?, Taille = ?, Trtaille = ?, Trhanches = ?, Trfesses = ? WHERE email = ?");
     if ($stmt->execute([$nom, $prenom, $phone, $age, $poids, $taille, $trtaille, $hanches, $fesses, $email])) {
         // Rediriger vers menu.php après la mise à jour réussie
-        header("Location: menu.php");
+        header("Location: _menu.php");
         exit;
     } else {
         echo "Erreur lors de la mise à jour: " . $stmt->errorInfo()[2];
@@ -118,7 +118,7 @@ $conn = null;
 <body>
 
 <div class="container">
-    <form class="menu-button" action="menu.php" method="get">
+    <form class="menu-button" action="_menu.php" method="get">
         <button type="submit">Retour vers le Menu</button>
     </form>
 

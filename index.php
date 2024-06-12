@@ -234,7 +234,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
                 </ul>
               </li>
-              <li><a target="_blank" href="https://www.dietsuccess.fr">Conseils minceurs</a></li>
+
 
                  <li <?php if ($p == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'Conseils minceurs') echo ' active'; ?>"> <a href="/Conseils minceurs" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">

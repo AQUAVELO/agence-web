@@ -85,9 +85,12 @@ if ($userInfo) {
             $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
         } elseif ($imc > 25 && $imc <= 30) {
             $message = "Ce stade augmente le risque de maladies cardiovasculaires, de diabète de type 2, d'hypertension et de certains cancers (comme le cancer du sein et du côlon). Les problèmes articulaires et les apnées du sommeil peuvent également commencer à apparaître. La solution : 1) Alimentation équilibrée, 2) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour. Hydratation : Boire au minimum 1,5l d'eau tout au long de la journée. 4) Réduction des sucres et des graisses saturées : Limitez la consommation d'aliments sucrés et gras.";
-        } elseif ($imc > 30) {
+        } elseif ($imc > 30 && $imc <= 35) {
             $message = "Ce stade augmente significativement le risque de maladies cardiovasculaires, de diabète de type 2, d'hypertension et de certains cancers. Les problèmes articulaires et les apnées du sommeil peuvent devenir plus graves. La solution : 1) Consultation médicale : Consulter un professionnel de santé pour un suivi et des conseils personnalisés. 2) Alimentation équilibrée et surveillée : Adopter une alimentation saine et contrôlée en calories. 3) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour. 4) Suivi régulier : Effectuer des bilans de santé réguliers pour surveiller les progrès et ajuster le plan de santé au besoin.";
+        } elseif ($imc > 35 ) {
+            $message = "Ce stade augmente le risque de maladies cardiovasculaires, de diabète de type 2, d'hypertension et de certains cancers (comme le cancer du sein et du côlon). Les problèmes articulaires et les apnées du sommeil peuvent également commencer à apparaître. La solution : 1) Alimentation équilibrée, 2) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour. Hydratation : Boire au minimum 1,5l d'eau tout au long de la journée. 4) Réduction des sucres et des graisses saturées : Limitez la consommation d'aliments sucrés et gras.";
         }
+        
     } else {
         $imc = 0;
     }

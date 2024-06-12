@@ -80,8 +80,7 @@ if ($userInfo) {
         $imc = round($imc, 2);
 
         if ($imc < 20) {
-            $message = "Vous êtes maigre, je vous conseille de prendre un peu de poids aussi il faudrait : 1) Alimentation calorique : Intégrer des aliments riches en calories et en nutriments dans votre alimentation, en privilégiant les glucides complexes, les lipides sains et les protéines maigres. comprenant des aliments tels que les noix, les graines, les avocats et les produits laitiers.
-2) Repas fréquents : Opter pour des repas plus fréquents tout au long de la journée afin d'augmenter l'apport calorique total.3) Suppléments nutritionnels : Si nécessaire, prendre des suppléments vitaminiques pour compenser les éventuelles carences.4)	Supervision : Évaluez la progression de la prise de poids et surveiller les éventuelles complications.5) Support psychologique : Envisager une thérapie si besoin pour traiter les problèmes émotionnels associés à l'insuffisance pondérale. 6) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo).";
+            $message = "Vous êtes maigre, ";
             
 } elseif ($imc >= 20 && $imc <= 25) {
             $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";

@@ -82,7 +82,8 @@ if ($userInfo) {
         if ($imc < 20) {
             $message = "Vous êtes trop maigre.";
         } elseif ($imc > 25) {
-            $message = "Vous êtes en surcharge pondérale.";
+            $message = "Ce stade augmente le risque de maladies cardiovasculaires, de diabète de type 2, d'hypertension et de certains cancers (comme le cancer du sein et du côlon). Les problèmes articulaires et les apnées du sommeil peuvent également commencer à apparaître. La solution : 1) Alimentation équilibrée,
+2) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour.Hydratation : Boire au minimum 1,5l d'eau tout au long de la journée.4)	Réduction des sucres et des graisses saturées : Limitez la consommation d'aliments sucrés et gras.";
         } elseif ($imc >= 20 && $imc <= 25) {
             $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
         }
@@ -170,7 +171,7 @@ $conn = null;
     $fields_filled = !empty($userInfo["Nom"]) && !empty($userInfo["Prenom"]) && !empty($userInfo["email"]) && !empty($userInfo["Age"]) && !empty($userInfo["Poids"]) && !empty($userInfo["Taille"]) && !empty($userInfo["Trtaille"]) && !empty($userInfo["Trhanches"]) && !empty($userInfo["Trfesses"]);
 
     if (!$fields_filled): ?>
-        <a href="saisieMensurations.php">Saisie de l'identité et des premières mensurations</a>
+        <a href="_saisieMensurations.php">Saisie de l'identité et des premières mensurations</a>
     <?php endif; ?>
     <a href="suivi.php">Saisie des nouvelles mensurations</a>
     <a href="index.php">Se déconnecter</a>

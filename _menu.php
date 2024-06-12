@@ -173,7 +173,7 @@ $conn = null;
     if (!$fields_filled): ?>
         <a href="_saisieMensurations.php">Saisie de l'identité et des premières mensurations</a>
     <?php endif; ?>
-    <a href="suivi.php">Saisie des nouvelles mensurations</a>
+    <a href="_suivi.php">Saisie des nouvelles mensurations</a>
     <a href="index.php">Se déconnecter</a>
 </div>
 

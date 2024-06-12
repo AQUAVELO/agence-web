@@ -80,12 +80,10 @@ if ($userInfo) {
         $imc = round($imc, 2);
 
         if ($imc < 20) {
-            $message = "Vous êtes maigre, je vous conseille de prendre un peu de poids aussi il faudrait : 1) Alimentation calorique : Intégrer des aliments riches en calories et en nutriments dans votre alimentation, en privilégiant les glucides complexes, les lipides sains et les protéines maigres. comprenant des aliments tels que les noix, les graines, les avocats et les produits laitiers.
-2) Repas fréquents : Opter pour des repas plus fréquents tout au long de la journée afin d'augmenter l'apport calorique total.3) Suppléments nutritionnels : Si nécessaire, prendre des suppléments vitaminiques pour compenser les éventuelles carences.4)	Supervision : Évaluez la progression de la prise de poids et surveiller les éventuelles complications.5) Support psychologique : Envisager une thérapie si besoin pour traiter les problèmes émotionnels associés à l'insuffisance pondérale. 6) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo).";
-
+            $message = "Vous êtes trop maigre.";
         } elseif ($imc > 25) {
             $message = "Ce stade augmente le risque de maladies cardiovasculaires, de diabète de type 2, d'hypertension et de certains cancers (comme le cancer du sein et du côlon). Les problèmes articulaires et les apnées du sommeil peuvent également commencer à apparaître. La solution : 1) Alimentation équilibrée,
-2) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour.Hydratation : Boire au minimum 1,5l d'eau tout au long de la journée.4)	Réduction des sucres et des graisses saturées : Limitez la consommation d'aliments sucrés et gras.";
+2) Activité physique : Pratiquez au moins 3h d'activité physique modérée par semaine (comme la marche rapide, le vélo ou l'Aquavélo), ou 30 minutes d'Aquavélo par jour.Hydratation : Boire au minimum 1,5l d'eau tout au long de la journée.4) Réduction des sucres et des graisses saturées : Limitez la consommation d'aliments sucrés et gras.";
         } elseif ($imc >= 20 && $imc <= 25) {
             $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
         }
@@ -231,14 +229,18 @@ $conn = null;
                 <th>IMC</th>
                 <th>Action</th>
             </tr>
-            <?php foreach ($userSuivi as $suivi): ?>
+            <?php 
+            foreach ($userSuivi as $suivi): 
+                // Calcul de l'IMC pour chaque entrée
+                $imc_suivi = ($suivi['Poids'] > 0 && $userInfo['Taille'] > 0) ? round($suivi['Poids'] / (($userInfo['Taille'] / 100) * ($userInfo['Taille'] / 100)), 2) : 0;
+            ?>
             <tr>
                 <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
                 <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
-                <td><?php echo $imc; ?></td>
+                <td><?php echo $imc_suivi; ?></td>
                 <td>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
@@ -326,6 +328,8 @@ $conn = null;
 
 </body>
 </html>
+
+
 
 
 

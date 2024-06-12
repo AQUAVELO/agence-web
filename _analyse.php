@@ -106,8 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $registration_result = registerUser($conn, $email, $password, $settings);
         if ($registration_result === true) {
-            // Inscription réussie, rediriger vers menu.php
-            header("Location: menu.php");
+            // Inscription réussie, rediriger vers_menu.php
+            header("Location:_menu.php");
             exit;
         } else {
             $error_message = $registration_result;
@@ -125,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         if (checkLogin($conn, $email, $password)) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $email;
-            // Connexion réussie, rediriger vers menu.php
-            header("Location: menu.php");
+            // Connexion réussie, rediriger vers _menu.php
+            header("Location:_menu.php");
             exit;
         } else {
             $error_message = "Identifiants incorrects.";

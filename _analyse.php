@@ -61,7 +61,6 @@ function registerUser($conn, $email, $password, $settings) {
     if ($count > 0) {
         // Rediriger vers _analyse.php si l'email existe déjà
         header("Location: _analyse.php");
-        echo $email;
         exit(); // Assurez-vous de sortir après la redirection
     } else {
         // Insérer un nouvel utilisateur
@@ -106,8 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $registration_result = registerUser($conn, $email, $password, $settings);
         if ($registration_result === true) {
-            // Inscription réussie, rediriger vers_menu.php
-            header("Location:_menu.php");
+            // Inscription réussie, rediriger vers _menu.php
+            header("Location: _menu.php");
             exit;
         } else {
             $error_message = $registration_result;
@@ -126,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             $_SESSION["loggedin"] = true;
             $_SESSION["email"] = $email;
             // Connexion réussie, rediriger vers _menu.php
-            header("Location:_menu.php");
+            header("Location: _menu.php");
             exit;
         } else {
             $error_message = "Identifiants incorrects.";

@@ -16,15 +16,16 @@ $settings = [];
 $settings['ttl'] = intval(getenv("REDIS_TTL"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
+
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
 
 // Paramètres de configuration Mailjet
 $settings['mjhost'] = "in-v3.mailjet.com";
-$settings['mjusername'] = getenv("MJ_USERNAME"); // Utilisez getenv pour les informations sensibles
-$settings['mjpassword'] = getenv("MJ_PASSWORD");
-$settings['mjfrom'] = getenv("MJ_FROM");
+$settings['mjusername'] = "3fa4567226e2b0b497f13a566724f340";
+$settings['mjpassword'] = "2b43a31333dfa67f915940b19ae219a9";
+$settings['mjfrom'] = "claude@alesiaminceur.com";
 
 // Connexion à la base de données
 try {
@@ -96,7 +97,6 @@ session_start();
 
 $error_message = "";
 $success_message = "";
-$registration_success = false;
 
 // Gestion de l'inscription
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
@@ -105,7 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $registration_result = registerUser($conn, $email, $password, $settings);
         if ($registration_result === true) {
-            $registration_success = true;
+            // Inscription réussie, rediriger vers _menu.php
+            header("Location: _menu.php");
+            exit;
         } else {
             $error_message = $registration_result;
         }
@@ -183,14 +185,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             cursor: pointer;
         }
     </style>
-    <script>
-        window.onload = function() {
-            // Si l'inscription a été réussie, mettre le focus sur le champ de saisie de l'email du formulaire de connexion
-            <?php if ($registration_success) : ?>
-            document.getElementById('login_email').focus();
-            <?php endif; ?>
-        };
-    </script>
 </head>
 <body>
 <div class="container">
@@ -220,12 +214,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
         <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
         <form method="post" action="">
             <div class="form-group">
-                <label for="login_email">Email:</label>
-                <input type="email" id="login_email" name="email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="login_password">Mot de passe:</label>
-                <input type="password" id="login_password" name="password" required>
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" name="login_btn">Se connecter</button>
         </form>
@@ -258,6 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

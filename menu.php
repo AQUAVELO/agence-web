@@ -62,13 +62,21 @@ $stmt = $conn->prepare($sql);
 $stmt->execute([$email]);
 $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// Rechercher le dernier poids inséré dans la table suivie
+$sql = "SELECT * FROM suivie WHERE email = ? ORDER BY Date DESC LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$email]);
+$lastSuivi = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Utiliser le dernier poids si disponible, sinon utiliser le poids de base
+$latestWeight = $lastSuivi ? $lastSuivi["Poids"] : $userInfo["Poids"];
+
 // Calculer l'IMC et déterminer le message à afficher
 $message = '';
 if ($userInfo) {
-    $poids = $userInfo["Poids"];
     $taille = $userInfo["Taille"];
-    if ($poids > 0 && $taille > 0) {
-        $imc = $poids / (($taille / 100) * ($taille / 100));
+    if ($latestWeight > 0 && $taille > 0) {
+        $imc = $latestWeight / (($taille / 100) * ($taille / 100));
         $imc = round($imc, 2);
 
         if ($imc < 20) {
@@ -170,13 +178,12 @@ $conn = null;
 
 <div class="container">
     <?php if ($userInfo): ?>
-        <h2>Informations Utilisateur</h2>
+        <h2>Informations de l'utilisateur</h2>
         <table>
             <tr>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Email</th>
-                <th>Téléphone</th>
                 <th>Age</th>
                 <th>Poids</th>
                 <th>Taille</th>
@@ -189,9 +196,8 @@ $conn = null;
                 <td><?php echo htmlspecialchars($userInfo["Nom"]); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["Prenom"]); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["email"]); ?></td>
-                <td><?php echo htmlspecialchars($userInfo["Phone"]); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["Age"]); ?></td>
-                <td><?php echo htmlspecialchars($userInfo["Poids"]); ?></td>
+                <td><?php echo htmlspecialchars($latestWeight); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["Taille"]); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["Trtaille"]); ?></td>
                 <td><?php echo htmlspecialchars($userInfo["Trhanches"]); ?></td>
@@ -317,6 +323,7 @@ $conn = null;
 
 </body>
 </html>
+
 
 
 

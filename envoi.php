@@ -156,7 +156,7 @@ if ($result === true) {
     echo "Email de remerciement envoyé avec succès.";
     
     // Envoi d'email de notification à l'admin
-    $adminEmail = "admin@aquavelo.com";  // Remplacez par l'email de l'admin
+    $adminEmail = "claude@alesiaminceur.com";  // Remplacez par l'email de l'admin
     $notificationResult = sendNotificationEmail($adminEmail, $newUserEmail, $settings);
     if ($notificationResult === true) {
         echo "Email de notification envoyé avec succès.";

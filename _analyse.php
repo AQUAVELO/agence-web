@@ -217,8 +217,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
         <div class="logo-container">
+            <a href="https://www.aquavelo.com">
             <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
-            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
+       
         </div>
     </div>
     <div class="info-container">

@@ -81,7 +81,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
     <div class='container'>
         <p>Bonjour,</p>
     
-        <p>Je vous remercie de votre inscription. Vous allez pouvoir à présent saisir votre identité et vos premières mensurations en cliquant sur <a href='https://www.aquavelo.com/__menu.php' target='_blank'>ce lien</a> pour suivre vos résultats.</p>
+        <p>Je vous remercie de votre inscription. Vous allez pouvoir à présent saisir votre identité et vos premières mensurations en cliquant sur <a href='https://www.aquavelo.com/_menu.php' target='_blank'>ce lien</a> pour suivre vos résultats.</p>
         <p class='signature'>Cordialement, Claude de l'équipe AQUAVELO</p>
         
     </div>

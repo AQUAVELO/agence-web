@@ -160,9 +160,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             margin: auto;
         }
         button {
+            background-color: #69d5ef;
+            border: none;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1rem;
             cursor: pointer;
+            text-decoration: none;
+            margin: 5px;
+            color: black;
         }
         .info-box {
             border: 1px solid #000;

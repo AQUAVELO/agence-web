@@ -226,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Vos mensurations</h2>
             <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
 
-            <h3>Inscription et connection</h3>
+            <h3>Inscription et connection :</h3>
             <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
             <p>Ensuite, entrez votre email et votre mot de passe pour vous connecter.</p>
 

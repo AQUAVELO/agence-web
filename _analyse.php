@@ -23,9 +23,9 @@ $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
 
 // Paramètres de configuration Mailjet
 $settings['mjhost'] = "in-v3.mailjet.com";
-$settings['mjusername'] = "3fa4567226e2b0b497f13a566724f340";
-$settings['mjpassword'] = "2b43a31333dfa67f915940b19ae219a9";
-$settings['mjfrom'] = "claude@alesiaminceur.com";
+$settings['mjusername'] = getenv("MJ_USERNAME");
+$settings['mjpassword'] = getenv("MJ_PASSWORD");
+$settings['mjfrom'] = getenv("MJ_FROM");
 
 // Connexion à la base de données
 try {
@@ -98,37 +98,32 @@ session_start();
 $error_message = "";
 $success_message = "";
 
-// Gestion de l'inscription
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+// Gestion de l'inscription ou de la connexion
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $registration_result = registerUser($conn, $email, $password, $settings);
-        if ($registration_result === true) {
-            // Inscription réussie, rediriger vers _menu.php
-            header("Location: _menu.php");
-            exit;
-        } else {
-            $error_message = $registration_result;
-        }
-    } else {
-        $error_message = "Email invalide.";
-    }
-}
+    $action = $_POST["action"];
 
-// Gestion de la connexion
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = $_POST["password"];
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        if (checkLogin($conn, $email, $password)) {
-            $_SESSION["loggedin"] = true;
-            $_SESSION["email"] = $email;
-            // Connexion réussie, rediriger vers _menu.php
-            header("Location: _menu.php");
-            exit;
-        } else {
-            $error_message = "Identifiants incorrects.";
+        if ($action == "register") {
+            $registration_result = registerUser($conn, $email, $password, $settings);
+            if ($registration_result === true) {
+                // Inscription réussie, rediriger vers _menu.php
+                header("Location: _menu.php");
+                exit;
+            } else {
+                $error_message = $registration_result;
+            }
+        } elseif ($action == "login") {
+            if (checkLogin($conn, $email, $password)) {
+                $_SESSION["loggedin"] = true;
+                $_SESSION["email"] = $email;
+                // Connexion réussie, rediriger vers _menu.php
+                header("Location: _menu.php");
+                exit;
+            } else {
+                $error_message = "Identifiants incorrects.";
+            }
         }
     } else {
         $error_message = "Email invalide.";
@@ -190,6 +185,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             cursor: pointer;
         }
     </style>
+    <script>
+        function setAction(action) {
+            document.getElementById('action').value = action;
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -202,8 +202,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
             echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
         }
         ?>
-        <h3>1) Inscrivez-vous en écrivant votre email <br>et créez un mot de passe</h3>
+        <h3>1) Inscrivez-vous ou connectez-vous en écrivant votre email et mot de passe</h3>
         <form method="post" action="">
+            <input type="hidden" id="action" name="action" value="register">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
@@ -212,21 +213,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
                 <label for="password">Mot de passe:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit" name="register">S'inscrire</button>
-        </form>
-
-        <h3>2) Une fois que l'inscription est faite,</h3>
-        <h3> re-notez ci-dessous votre email et mot de passe <br> pour rentrer dans l'application.</h3>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" name="login_btn">Se connecter</button>
+            <button type="submit" onclick="setAction('register')">S'inscrire</button>
+            <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
         <div class="logo-container">
             <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
@@ -257,6 +245,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_btn'])) {
 </div>
 </body>
 </html>
+
 
 
 

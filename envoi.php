@@ -99,17 +99,75 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
     }
 }
 
-// Envoi d'email à claude@alesiaminceur.com
+// Fonction pour envoyer un email de notification d'inscription
+function sendNotificationEmail($toEmail, $newUserEmail, $settings) {
+    $mail = new PHPMailer(true);
+    try {
+        // Configuration du serveur SMTP de Mailjet
+        $mail->isSMTP();
+        $mail->Host = $settings['mjhost'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $settings['mjusername'];
+        $mail->Password = $settings['mjpassword'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Configuration de l'email
+        $mail->CharSet = 'UTF-8'; // Définir l'encodage UTF-8
+        $mail->setFrom($settings['mjfrom'], 'Service clients Aquavelo');
+        $mail->addAddress($toEmail);
+        $mail->addReplyTo($settings['mjfrom'], 'Service clients Aquavelo');
+
+        // Contenu de l'email
+        $mail->isHTML(true);
+        $mail->Subject = 'Nouvelle Inscription';
+        
+        $mail->Body = "
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Notification d'Inscription</title>
+</head>
+<body>
+    <p>Un nouvel utilisateur s'est inscrit avec l'email : {$newUserEmail}</p>
+</body>
+</html>
+";
+
+        $mail->AltBody = "Un nouvel utilisateur s'est inscrit avec l'email : {$newUserEmail}";
+
+        // Envoyer l'email
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return "Erreur lors de l'envoi de l'email de notification: {$mail->ErrorInfo}";
+    }
+}
+
+// Envoi d'email de remerciement à l'utilisateur
 $toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
+$newUserEmail = "nouvelutilisateur@example.com";  // Remplacez par l'email réel de l'utilisateur nouvellement inscrit
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);
 if ($result === true) {
-    echo "Email envoyé avec succès.";
+    echo "Email de remerciement envoyé avec succès.";
+    
+    // Envoi d'email de notification à l'admin
+    $adminEmail = "admin@aquavelo.com";  // Remplacez par l'email de l'admin
+    $notificationResult = sendNotificationEmail($adminEmail, $newUserEmail, $settings);
+    if ($notificationResult === true) {
+        echo "Email de notification envoyé avec succès.";
+    } else {
+        echo $notificationResult;
+    }
 } else {
     echo $result;
 }
 ?>
+
 
 
 

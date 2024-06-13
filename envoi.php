@@ -38,12 +38,12 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
         $mail->isHTML(true);
         $mail->Subject = 'Suivi de vos mensurations';
         
-        $mail->Body = '
+        $mail->Body = "
 <!DOCTYPE html>
-<html lang="fr">
+<html lang='fr'>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Message de Remerciement</title>
     <style>
         body {
@@ -78,16 +78,16 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class='container'>
         <p>Bonjour,</p>
     
-        <p>Je vous remercie de votre inscription. Vous allez pouvoir à présent saisir votre identité et vos premiéres mensurations en cliquant sur <a href="https://www.aquavelo.com/__menu.php" target="_blank">ce lien</a> pour suivre vos résultats.</p>
-        <p class="signature">Cordialement, Claude de l'équipe AQUAVELO</p>
+        <p>Je vous remercie de votre inscription. Vous allez pouvoir à présent saisir votre identité et vos premières mensurations en cliquant sur <a href='https://www.aquavelo.com/__menu.php' target='_blank'>ce lien</a> pour suivre vos résultats.</p>
+        <p class='signature'>Cordialement, Claude de l'équipe AQUAVELO</p>
         
     </div>
 </body>
 </html>
-';
+";
 
         $mail->AltBody = 'Merci de votre confiance.';
 
@@ -100,7 +100,7 @@ function sendThankYouEmail($toEmail, $toName, $settings) {
 }
 
 // Envoi d'email à claude@alesiaminceur.com
-//$toEmail = "claude@alesiaminceur.com";
+$toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
 
 $result = sendThankYouEmail($toEmail, $toName, $settings);
@@ -110,6 +110,7 @@ if ($result === true) {
     echo $result;
 }
 ?>
+
 
 
 

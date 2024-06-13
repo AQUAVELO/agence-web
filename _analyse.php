@@ -218,8 +218,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
         <div class="logo-container">
             <a href="https://www.aquavelo.com">
-            <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
-       
+                <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
+            </a>
+            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
         </div>
     </div>
     <div class="info-container">
@@ -227,11 +228,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2>Vos mensurations</h2>
             <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
 
-            <h3>Inscription et connection :</h3>
+            <h3>Inscription</h3>
             <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-            <p>Ensuite, entrez votre email et votre mot de passe pour vous connecter.</p>
+            <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
 
-            <h3>Suivi :</h3>
+            <h3>Suivi</h3>
             <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
             <p>Vous pouvez également prendre vos mensurations vous-même :</p>
             <ul>
@@ -246,6 +247,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 
 

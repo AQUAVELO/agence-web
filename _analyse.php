@@ -220,7 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="https://www.aquavelo.com">
                 <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
             </a>
-            <button onclick="window.location.href='https://www.aquavelo.com'">Retour Aquavélo</button>
+            
         </div>
     </div>
     <div class="info-container">

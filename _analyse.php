@@ -231,7 +231,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
             <p>Ensuite, entrez votre email et votre mot de passe pour vous connecter.</p>
 
-            <h3>Suivi</h3>
+            <h3>Suivi :</h3>
             <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
             <p>Vous pouvez également prendre vos mensurations vous-même :</p>
             <ul>

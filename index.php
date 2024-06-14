@@ -236,7 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
 
 
-                 <li <?php if ($p == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'Conseils minceurs') echo ' active'; ?>"> <a href="/Conseils minceurs" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+                 <li <?php if ($p == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">
                   <li><a href="https://www.dietsuccess.fr">Conseils minceurs</a></li>
                   <li><a href="/_analyse.php">Analyse de vos mensurations</a></li>

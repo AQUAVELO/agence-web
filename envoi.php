@@ -147,7 +147,7 @@ function sendNotificationEmail($toEmail, $newUserEmail, $settings) {
 }
 
 // Envoi d'email de remerciement à l'utilisateur
-$toEmail = "claude@alesiaminceur.com";
+//$toEmail = "claude@alesiaminceur.com";
 $toName = "Claude Alesiaminceur";
 $newUserEmail = $toEmail;  // Remplacez par l'email réel de l'utilisateur nouvellement inscrit
 

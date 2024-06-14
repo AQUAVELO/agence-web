@@ -125,7 +125,7 @@ $conn = null;
             margin-top: 20px;
         }
         .menu-button button {
-            background-color: #add8e6;
+            background-color: #69d5ef;
             border: none;
             padding: 10px 20px;
             font-size: 1rem;

@@ -240,9 +240,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" onclick="setAction('register')">S'inscrire</button>
             <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
-        <div class="center-button">
-            <a href="reset_password.php">Ré-initialiser le mot de passe</a>
-        </div>
+        //<div class="center-button">
+         //   <a href="reset_password.php">Ré-initialiser le mot de passe</a>
+       // </div>
         <div class="logo-container">
             <a href="https://www.aquavelo.com">
                 <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">

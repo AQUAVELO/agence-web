@@ -317,18 +317,18 @@ $conn = null;
             });
         </script>
     <?php endif; ?>
-    <!-- Ajouter le logo AQUAVELO sous le formulaire -->
-    <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+    <!-- Ajouter le logo AQUAVELO avec un lien vers aquavelo.com sous le formulaire -->
+    <a href="https://www.aquavelo.com" target="_blank">
+        <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+    </a>
     <div class="center-button">
-        <a href="https://play.google.com/store/apps/details?id=com.resamania.resamaniav2&hl=fr" target="_blank">Resamania Androids</a>
-    </div>
-    <div class="center-button">
-        <a href="https://apps.apple.com/lu/app/resamania-v2/id1482410619" target="_blank">Resamania iphone</a>
+        <a href="https://play.google.com/store/apps/details?id=com.resamania.resamaniav2&hl=fr" target="_blank">Téléchargement Resamania</a>
     </div>
 </div>
 
 </body>
 </html>
+
 
 
 

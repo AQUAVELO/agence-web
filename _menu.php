@@ -135,7 +135,7 @@ $conn = null;
             margin-bottom: 20px;
         }
         .center-button button, .center-button a {
-            background-color: #add8e6;
+            background-color: #69d5ef;
             border: none;
             padding: 10px 20px;
             font-size: 1rem;

@@ -319,6 +319,9 @@ $conn = null;
     <?php endif; ?>
     <!-- Ajouter le logo AQUAVELO sous le formulaire -->
     <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+    <div class="center-button">
+        <a href="https://play.google.com/store/apps/details?id=com.resamania.resamaniav2&hl=fr" target="_blank">Téléchargement Resamania</a>
+    </div>
 </div>
 
 </body>

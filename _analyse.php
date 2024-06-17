@@ -195,6 +195,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 16px;
             cursor: pointer;
         }
+        .center-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .center-button a {
+            background-color: #69d5ef;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
     </style>
     <script>
         function setAction(action) {
@@ -227,6 +240,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" onclick="setAction('register')">S'inscrire</button>
             <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
+        <div class="center-button">
+            <a href="reset_password.php">Ré-initialiser le mot de passe</a>
+        </div>
         <div class="logo-container">
             <a href="https://www.aquavelo.com">
                 <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">

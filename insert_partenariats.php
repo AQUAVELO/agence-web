@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="file" id="photo" name="photo">
             </div>
             <button type="submit">Soumettre</button>
-            <button type="button" onclick="window.location.href='menu.php';">Retour au Menu</button>
+            <button type="button" onclick="window.location.href='menus.php';">Retour au Menu</button>
         </form>
     </div>
 </body>

@@ -178,5 +178,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 ?>
                 </select>
-        
+            </div>
+            <div class="form-group">
+                <label for="activite">Activité:</label>
+                <select id="activite" name="activite">
+                <?php
+                foreach ($activites as $activite) {
+                    echo "<option value=\"{$activite['id']}\">{$activite['Activity']}</option>";
+                }
+                ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="promotion">Promotion:</label>
+                <input type="text" id="promotion" name="promotion">
+            </div>
+            <div class="form-group">
+                <label for="detail">Détail:</label>
+                <textarea id="detail" name="detail"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="adresse_centre">Adresse du Centre:</label>
+                <input type="text" id="adresse_centre" name="adresse_centre">
+            </div>
+            <div class="form-group">
+                <label for="ville_centre">Ville du Centre:</label>
+                <input type="text" id="ville_centre" name="ville_centre">
+            </div>
+            <div class="form-group">
+                <label for="photo">Photo:</label>
+                <input type="file" id="photo" name="photo">
+            </div>
+            <button type="submit">Soumettre</button>
+            <button type="button" onclick="window.location.href='menu.php';">Retour au Menu</button>
+        </form>
+    </div>
+</body>
+</html>
+
 

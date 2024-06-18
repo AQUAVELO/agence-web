@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Exécute la requête
         if ($stmt->execute()) {
-            header("Location: menu.php"); // Redirige vers menu.php
+            header("Location: menus.php"); // Redirige vers menu.php
             echo "Enregistrement réussi.<br>";
             sendNotificationEmail($email);  // Envoie un email de notification
           

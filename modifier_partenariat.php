@@ -21,20 +21,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $adresse_centre = filter_var($_POST['adresse_centre'], FILTER_SANITIZE_STRING);
     $ville_centre = filter_var($_POST['ville_centre'], FILTER_SANITIZE_STRING);
 
-    $photoPath = $partenariat['Photo']; // Path to the existing photo
+    // Vérifier si le partenariat existe avant d'accéder à ses valeurs
+    $stmt = $conn->prepare("SELECT * FROM partenariats WHERE id = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $partenariat = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$partenariat) {
+        echo "Fiche non trouvée.";
+        exit;
+    }
+
+    $photoPath = $partenariat['Photo']; // Chemin de la photo existante
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
         $photo = $_FILES['photo'];
-        $uploadDir = 'images/'; // Directory to save the uploaded photos
+        $uploadDir = 'images/'; // Répertoire pour enregistrer les photos téléchargées
         $photoPath = $uploadDir . basename($photo['name']);
 
-        // Move uploaded file to the specified directory
+        // Déplacer le fichier téléchargé vers le répertoire spécifié
         if (!move_uploaded_file($photo['tmp_name'], $photoPath)) {
             echo "Erreur lors du téléchargement de la photo.";
             exit;
         }
     }
 
-    // Prépare la requête SQL de mise à jour
+    // Préparer la requête SQL de mise à jour
     $sql = "UPDATE partenariats SET email = :email, Nom = :nom, Prenom = :prenom, Phone = :phone, Enseigne = :enseigne, Ville = :ville, Activite = :activite, Promotion = :promotion, Detail = :detail, Photo = :photo, AdresseCentre = :adresse_centre, VilleCentre = :ville_centre WHERE id = :id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':email', $email);
@@ -184,6 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </body>
 </html>
+
 
 
 

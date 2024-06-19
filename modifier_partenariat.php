@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':id', $id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Fiche modifiée avec succès.'); window.location.href='affichage.php';</script>";
+        echo "<script>alert('Fiche modifiée avec succès.'); window.location.href='affichage_fiches_partenariats.php';</script>";
     } else {
         echo "Erreur lors de la modification de la fiche.";
     }
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $partenariat = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$partenariat) {
-            echo "fiche non trouvée.";
+            echo "Fiche non trouvée.";
             exit;
         }
     } catch (PDOException $e) {
@@ -176,14 +176,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label for="photo">Photo:</label>
             <input type="file" id="photo" name="photo">
-            <img src="<?= htmlspecialchars($partenariat['Photo']) ?>" alt="Photo actuelle" width="100">
+            <img src="images/<?= htmlspecialchars($partenariat['Photo']) ?>" alt="Photo actuelle" width="100">
 
             <input type="submit" value="Enregistrer les modifications">
         </form>
-        <button class="back-button" onclick="window.location.href='affichage.php';">Retour à la liste</button>
+        <button class="back-button" onclick="window.location.href='affichage_fiches_partenariats.php';">Retour à la liste</button>
     </div>
 </body>
 </html>
+
 
 
 

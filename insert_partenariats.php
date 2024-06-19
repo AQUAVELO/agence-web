@@ -40,12 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $phone = htmlspecialchars_decode(filter_var($_POST['phone'], FILTER_SANITIZE_STRING));
         $enseigne = htmlspecialchars_decode(filter_var($_POST['enseigne'], FILTER_SANITIZE_STRING));
         $ville_id = filter_var($_POST['ville'], FILTER_SANITIZE_NUMBER_INT);
-        $activite_id = filter_var($_POST['activite'], FILTER_SANITIZE_NUMBER_INT); // Correction
+        $activite_id = filter_var($_POST['activite'], FILTER_SANITIZE_NUMBER_INT);
         $promotion = htmlspecialchars_decode(filter_var($_POST['promotion'], FILTER_SANITIZE_STRING));
         $detail = htmlspecialchars_decode(filter_var($_POST['detail'], FILTER_SANITIZE_STRING));
         $adresse_centre = htmlspecialchars_decode(filter_var($_POST['adresse_centre'], FILTER_SANITIZE_STRING));
         $ville_centre = htmlspecialchars_decode(filter_var($_POST['ville_centre'], FILTER_SANITIZE_STRING));
 
+        // Téléchargement de la photo
         $photo = "";
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
             $uploadDir = 'partenaires/';
@@ -74,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':enseigne', $enseigne);
         $stmt->bindParam(':ville_id', $ville_id);
-        $stmt->bindParam(':activite_id', $activite_id); // Correction
+        $stmt->bindParam(':activite_id', $activite_id);
         $stmt->bindParam(':promotion', $promotion);
         $stmt->bindParam(':detail', $detail);
         $stmt->bindParam(':photo', $photo);
@@ -212,6 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+
 
 
 

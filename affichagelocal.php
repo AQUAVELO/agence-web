@@ -80,7 +80,7 @@ try {
     </style>
 </head>
 <body>
-    <a class="back-button" href="menu.php">Retour au Menu</a>
+    <a class="back-button" href="menus.php">Retour au Menu</a>
     <div class="container">
         <?php
         foreach ($partenariats as $partenariat) {

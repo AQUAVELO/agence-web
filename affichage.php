@@ -150,7 +150,7 @@ try {
                             <td>' . htmlspecialchars_decode($partenariat['Detail']) . '</td>
                             <td>' . htmlspecialchars_decode($partenariat['AdresseCentre']) . '</td>
                             <td>' . htmlspecialchars_decode($partenariat['VilleCentre']) . '</td>
-                            <td class="photo-column"><img src="' . htmlspecialchars($partenariat['Photo']) . '" alt="Photo"></td>
+                            <td class="photo-column"><img src="images/' . htmlspecialchars($partenariat['Photo']) . '" alt="Photo"></td>
                             <td class="button-container">
                                 <button class="edit-button" onclick="window.location.href=\'modifier_partenariat.php?id=' . $partenariat['id'] . '\'">Modifier</button>
                                 <form method="POST" action="supprimer_partenariat.php" style="display:inline;">
@@ -167,6 +167,7 @@ try {
     </div>
 </body>
 </html>
+
 
 
 

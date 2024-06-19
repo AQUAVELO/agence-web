@@ -56,7 +56,7 @@ try {
             background-color: #f8f8f8;
         }
         td img {
-            width: 100%;
+            width: 100px;
             height: auto;
         }
         .button-container {
@@ -116,28 +116,7 @@ try {
             </thead>
             <tbody>
                 <?php
-                $currentVille = '';
-                $currentActivite = '';
                 foreach ($partenariats as $partenariat) {
-                    if ($currentVille != $partenariat['Ville']) {
-                        if ($currentVille != '') {
-                            // Fermeture du tableau précédent
-                            echo '</tbody></table><table><tbody>';
-                        }
-                        // Nouvelle Ville
-                        $currentVille = $partenariat['Ville'];
-                        $currentActivite = '';
-                        echo '<h3>Ville: ' . htmlspecialchars($currentVille) . '</h3>';
-                    }
-                    if ($currentActivite != $partenariat['Activity']) {
-                        if ($currentActivite != '') {
-                            // Fermeture du tableau précédent
-                            echo '</tbody></table><table><tbody>';
-                        }
-                        // Nouvelle Activité
-                        $currentActivite = $partenariat['Activity'];
-                        echo '<h4>Activité: ' . htmlspecialchars($currentActivite) . '</h4>';
-                    }
                     echo '<tr>
                             <td>' . htmlspecialchars($partenariat['email']) . '</td>
                             <td>' . htmlspecialchars($partenariat['Nom']) . '</td>

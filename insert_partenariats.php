@@ -21,21 +21,6 @@ try {
     die();
 }
 
-// Fonction pour envoyer un email de notification
-function sendNotificationEmail($email) {
-    $to = $email;
-    $subject = "Merci de votre inscription";
-    $message = "Merci de votre inscription à notre programme de partenariats.";
-    $headers = "From: no-reply@aquavelo.com";
-
-    // Utilisation de la fonction mail pour envoyer l'email
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Email de notification envoyé à $email.<br>";
-    } else {
-        echo "Erreur lors de l'envoi de l'email de notification.<br>";
-    }
-}
-
 // Traitement du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -98,7 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Exécute la requête
         if ($stmt->execute()) {
-            sendNotificationEmail($email);  // Envoie un email de notification
             header("Location: menus.php"); // Redirige vers menu.php
             exit(); // Assure que le script s'arrête après la redirection
         } else {
@@ -228,6 +212,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+
 
 
 

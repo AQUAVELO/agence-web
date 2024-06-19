@@ -21,6 +21,21 @@ try {
     die();
 }
 
+// Fonction pour envoyer un email de notification
+function sendNotificationEmail($email) {
+    $to = $email;
+    $subject = "Merci de votre inscription";
+    $message = "Merci de votre inscription à notre programme de partenariats.";
+    $headers = "From: no-reply@aquavelo.com";
+
+    // Utilisation de la fonction mail pour envoyer l'email
+    if (mail($to, $subject, $message, $headers)) {
+        echo "Email de notification envoyé à $email.<br>";
+    } else {
+        echo "Erreur lors de l'envoi de l'email de notification.<br>";
+    }
+}
+
 // Traitement du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -40,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $phone = htmlspecialchars_decode(filter_var($_POST['phone'], FILTER_SANITIZE_STRING));
         $enseigne = htmlspecialchars_decode(filter_var($_POST['enseigne'], FILTER_SANITIZE_STRING));
         $ville_id = filter_var($_POST['ville'], FILTER_SANITIZE_NUMBER_INT);
-        $activite = htmlspecialchars_decode(filter_var($_POST['activite'], FILTER_SANITIZE_STRING));
+        $activite_id = filter_var($_POST['activite'], FILTER_SANITIZE_NUMBER_INT); // Correction
         $promotion = htmlspecialchars_decode(filter_var($_POST['promotion'], FILTER_SANITIZE_STRING));
         $detail = htmlspecialchars_decode(filter_var($_POST['detail'], FILTER_SANITIZE_STRING));
         $adresse_centre = htmlspecialchars_decode(filter_var($_POST['adresse_centre'], FILTER_SANITIZE_STRING));
@@ -64,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Prépare la requête SQL
         $sql = "INSERT INTO partenariats (email, password, Nom, Prenom, Phone, Enseigne, Ville, Activite, Promotion, Detail, Photo, AdresseCentre, VilleCentre) 
-                VALUES (:email, :password, :nom, :prenom, :phone, :enseigne, :ville_id, :activite, :promotion, :detail, :photo, :adresse_centre, :ville_centre)";
+                VALUES (:email, :password, :nom, :prenom, :phone, :enseigne, :ville_id, :activite_id, :promotion, :detail, :photo, :adresse_centre, :ville_centre)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':email', $email);
@@ -74,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':phone', $phone);
         $stmt->bindParam(':enseigne', $enseigne);
         $stmt->bindParam(':ville_id', $ville_id);
-        $stmt->bindParam(':activite', $activite);
+        $stmt->bindParam(':activite_id', $activite_id); // Correction
         $stmt->bindParam(':promotion', $promotion);
         $stmt->bindParam(':detail', $detail);
         $stmt->bindParam(':photo', $photo);
@@ -83,10 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Exécute la requête
         if ($stmt->execute()) {
-            header("Location: menus.php"); // Redirige vers menu.php
-            echo "Enregistrement réussi.<br>";
             sendNotificationEmail($email);  // Envoie un email de notification
-          
+            header("Location: menus.php"); // Redirige vers menu.php
             exit(); // Assure que le script s'arrête après la redirection
         } else {
             echo "Erreur lors de l'enregistrement.<br>";
@@ -215,6 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+
 
 
 

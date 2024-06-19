@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <input type="submit" value="Enregistrer les modifications">
         </form>
-        <button class="back-button" onclick="window.location.href='affichage_fiches_partenariats.php';">Retour à la liste</button>
+        <button class="back-button" onclick="window.location.href='menus.php';">Retour à la liste</button>
     </div>
 </body>
 </html>

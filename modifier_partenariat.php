@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $photoPath = $partenariat['Photo']; // Chemin de la photo existante
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
         $photo = $_FILES['photo'];
-        $uploadDir = 'images/'; // Répertoire pour enregistrer les photos téléchargées
+        $uploadDir = 'partenaires/'; // Répertoire pour enregistrer les photos téléchargées
         $photoPath = $uploadDir . basename($photo['name']);
 
         // Déplacer le fichier téléchargé vers le répertoire spécifié

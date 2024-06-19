@@ -25,12 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
         $photo = $_FILES['photo'];
         $uploadDir = 'images/'; // Directory to save the uploaded photos
-
-        // Check if the directory exists, if not, create it
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
         $photoPath = $uploadDir . basename($photo['name']);
 
         // Move uploaded file to the specified directory
@@ -182,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <label for="photo">Photo:</label>
             <input type="file" id="photo" name="photo">
-            <img src="images/<?= htmlspecialchars($partenariat['Photo']) ?>" alt="Photo actuelle" width="100">
+            <img src="<?= htmlspecialchars($partenariat['Photo']) ?>" alt="Photo actuelle" width="100">
 
             <input type="submit" value="Enregistrer les modifications">
         </form>
@@ -190,4 +184,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </body>
 </html>
+
 

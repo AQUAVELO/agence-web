@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
-            $photo = $uploadDir . basename($_FILES['photo']['name']);
+            $photo = "./partenaires/";
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $photo)) {
                 echo "Photo téléchargée avec succès.<br>";
             } else {

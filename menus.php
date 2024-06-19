@@ -44,7 +44,7 @@
         <a href="affichage.php">Afficher toutes les fiches de partenariats</a>
         <a href="affichagelocal.php">Site Internet</a>
         <a href="reset_password.php">Réinitialiser le mot de passe</a>
-        <a href="menus.php">Retour au Menu</a>
+    
     </div>
 </body>
 </html>

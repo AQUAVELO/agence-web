@@ -117,6 +117,8 @@ try {
             <tbody>
                 <?php
                 foreach ($partenariats as $partenariat) {
+                    // Ajouter un paramètre unique pour désactiver le cache du navigateur
+                    $photoSrc = htmlspecialchars($partenariat['Photo']) . '?v=' . time();
                     echo '<tr>
                             <td>' . htmlspecialchars($partenariat['email']) . '</td>
                             <td>' . htmlspecialchars($partenariat['Nom']) . '</td>
@@ -129,7 +131,7 @@ try {
                             <td>' . htmlspecialchars($partenariat['Detail']) . '</td>
                             <td>' . htmlspecialchars($partenariat['AdresseCentre']) . '</td>
                             <td>' . htmlspecialchars($partenariat['VilleCentre']) . '</td>
-                            <td class="photo-column"><img src="' . htmlspecialchars($partenariat['Photo']) . '" alt="Photo" width="100"></td>
+                            <td class="photo-column"><img src="' . $photoSrc . '" alt="Photo" width="100"></td>
                             <td class="button-container">
                                 <button class="edit-button" onclick="window.location.href=\'modifier_partenariat.php?id=' . $partenariat['id'] . '\'">Modifier</button>
                                 <form method="POST" action="supprimer_partenariat.php" style="display:inline;">
@@ -146,6 +148,7 @@ try {
     </div>
 </body>
 </html>
+
 
 
 

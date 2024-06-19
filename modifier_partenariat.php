@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':id', $id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Fiche modifiée avec succès.'); window.location.href='affichage_fiches_partenariats.php';</script>";
+        echo "<script>alert('Fiche modifiée avec succès.'); window.location.href='menus.php';</script>";
     } else {
         echo "Erreur lors de la modification de la fiche.";
     }

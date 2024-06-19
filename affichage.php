@@ -140,20 +140,17 @@ try {
                     }
                     echo '<tr>
                             <td>' . htmlspecialchars($partenariat['email']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Nom']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Prenom']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Phone']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Enseigne']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Ville']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Activity']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Promotion']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['Detail']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['AdresseCentre']) . '</td>
-                            <td>' . htmlspecialchars_decode($partenariat['VilleCentre']) . '</td>
-
-                            <td class="photo-column"><img src="<?= htmlspecialchars($partenariat['Photo']) ?>" alt="Photo" width="100"></td>
-
-                         
+                            <td>' . htmlspecialchars($partenariat['Nom']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Prenom']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Phone']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Enseigne']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Ville']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Activity']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Promotion']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['Detail']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['AdresseCentre']) . '</td>
+                            <td>' . htmlspecialchars($partenariat['VilleCentre']) . '</td>
+                            <td class="photo-column"><img src="' . htmlspecialchars($partenariat['Photo']) . '" alt="Photo" width="100"></td>
                             <td class="button-container">
                                 <button class="edit-button" onclick="window.location.href=\'modifier_partenariat.php?id=' . $partenariat['id'] . '\'">Modifier</button>
                                 <form method="POST" action="supprimer_partenariat.php" style="display:inline;">
@@ -170,6 +167,7 @@ try {
     </div>
 </body>
 </html>
+
 
 
 

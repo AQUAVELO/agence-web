@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
-            $photo = "./partenaires/";
+            $photo = $uploadDir . basename($_FILES['photo']['name']);
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $photo)) {
                 echo "Photo téléchargée avec succès.<br>";
             } else {
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-bottom: 5px;
         }
         input, select, textarea {
-            width: 100%; /* Réduit la largeur des champs à 100% du conteneur */
+            width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -213,6 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
+
 
 
 

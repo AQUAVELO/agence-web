@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Téléchargement de la photo
         $photo = "";
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
-            $uploadDir = './partenaires/';
+            $uploadDir = '/var/www/html/partenaires/'; // Chemin absolu du répertoire sur le serveur
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }

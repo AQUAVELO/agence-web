@@ -55,7 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $photo = $uploadDir . basename($_FILES['photo']['name']);
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $photo)) {
-                echo "Photo téléchargée avec succès.<br>";
+                if (file_exists($photo)) {
+                    echo "Photo téléchargée et vérifiée avec succès.<br>";
+                } else {
+                    echo "Erreur : la photo n'a pas été trouvée après le téléchargement.<br>";
+                }
             } else {
                 echo "Erreur lors du téléchargement de la photo.<br>";
             }
@@ -136,7 +140,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         button:hover {
             background-color: #218838;
         }
+        #imagePreview {
+            margin-top: 10px;
+            max-width: 100%;
+            max-height: 300px;
+        }
     </style>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -205,7 +224,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="form-group">
                 <label for="photo">Photo:</label>
-                <input type="file" id="photo" name="photo">
+                <input type="file" id="photo" name="photo" accept="image/*" onchange="previewImage(event)">
+                <img id="imagePreview" src="" alt="Aperçu de l'image">
             </div>
             <button type="submit">Soumettre</button>
             <button type="button" onclick="window.location.href='menus.php';">Retour au Menu</button>

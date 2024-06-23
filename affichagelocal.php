@@ -1,14 +1,27 @@
 <?php
 include 'settings.php';
 
+// Vérifier la connexion à la base de données
 try {
-    // Jointure pour obtenir le nom de la ville et l'activité à partir des tables ville et activite
+    $conn = new PDO(
+        'mysql:host=' . $settings['dbhost'] . ';port=' . $settings['dbport'] . ';dbname=' . $settings['dbname'],
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+} catch (PDOException $e) {
+    die("Erreur de connexion à la base de données : " . $e->getMessage());
+}
+
+// Récupérer les données de la table partenariats avec jointures pour obtenir les noms des villes et des activités
+try {
     $stmt = $conn->prepare("
-        SELECT p.*, v.Ville, a.Activity 
+        SELECT p.*, v.Ville as VilleNom, a.Activity as ActiviteNom
         FROM partenariats p
         JOIN ville v ON p.Ville = v.id
         JOIN activite a ON p.Activite = a.id
-        ORDER BY v.Ville, a.Activity
+        ORDER BY a.Activity
     ");
     $stmt->execute();
     $partenariats = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -80,27 +93,31 @@ try {
     </style>
 </head>
 <body>
-    <a class="back-button" href="menus.php">Retour au Menu</a>
+    <a class="back-button">Profitez des remises chez nos partenaires</a>
     <div class="container">
         <?php
         foreach ($partenariats as $partenariat) {
             echo '<div class="card">';
             echo '<img src="' . htmlspecialchars($partenariat['Photo']) . '" alt="Photo">';
-            
-            echo '<h3>' . htmlspecialchars_decode($partenariat['Enseigne']) . '</h4>';
+            echo '<h3>' . htmlspecialchars_decode($partenariat['Enseigne']) . '</h3>';
             echo '<p><strong>Adresse:</strong> ' . htmlspecialchars_decode($partenariat['AdresseCentre']) . '</p>';
             echo '<p><strong>Ville:</strong> ' . htmlspecialchars_decode($partenariat['VilleCentre']) . '</p>';
-            echo '<p><strong>Activité:</strong> ' . htmlspecialchars_decode($partenariat['Activity']) . '</p>';
-            echo '<p><strong>Email:</strong> ' . htmlspecialchars($partenariat['email']) . '</p>';
-            echo '<p><strong>Téléphone:</strong> ' . htmlspecialchars_decode($partenariat['Phone']) . '</p>';
+            echo '<p><strong>Activité:</strong> ' . htmlspecialchars_decode($partenariat['ActiviteNom']) . '</p>';
+            echo '<p><strong>Email:</strong> <a href="mailto:' . htmlspecialchars($partenariat['email']) . '">' . htmlspecialchars($partenariat['email']) . '</a></p>';
+            echo '<p><strong>Téléphone:</strong> <a href="tel:' . htmlspecialchars($partenariat['Phone']) . '">' . htmlspecialchars($partenariat['Phone']) . '</a></p>';
             echo '<p><strong>Promotion:</strong> ' . htmlspecialchars_decode($partenariat['Promotion']) . '</p>';
             echo '<p><strong>Détail:</strong> ' . htmlspecialchars_decode($partenariat['Detail']) . '</p>';
-            echo '<p><strong>contact:</strong> ' . htmlspecialchars_decode($partenariat['Nom']) . ' ' . htmlspecialchars_decode($partenariat['Prenom']) . '</p>';
-            echo '<p><strong>Centre Aquavelo de:</strong> ' . htmlspecialchars_decode($partenariat['Ville']) . '</p>';
-      
+            echo '<p><strong>Contact:</strong> ' . htmlspecialchars_decode($partenariat['Nom']) . ' ' . htmlspecialchars_decode($partenariat['Prenom']) . '</p>';
+            echo '<p><strong>Centre Aquavelo de:</strong> ' . htmlspecialchars_decode($partenariat['VilleNom']) . '</p>';
             echo '</div>';
         }
         ?>
     </div>
 </body>
 </html>
+
+
+
+
+
+

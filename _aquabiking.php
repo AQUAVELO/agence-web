@@ -424,11 +424,16 @@ Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute l
 
 <section class="content-area bg1" id="partenariats">
   <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Nos Partenariats</h1>
+    </header>
     <div class="row">
-      <div class="col-md-6">
-		<iframe src="http://partenaires.aquavelocannes.fr/affichagelocal.php" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
-         </div>
+      <div class="col-md-12">
+        <iframe src="http://partenaires.aquavelocannes.fr/affichagelocal.php" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
   </div>
+</section>
 
 
 

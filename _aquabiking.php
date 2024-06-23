@@ -1,4 +1,13 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil</title>
+    <link rel="stylesheet" href="path/to/your/styles.css">
+</head>
+<body>
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">Les bienfaits de l'Aquabiking</h1>
@@ -9,19 +18,19 @@
   </div>
 </header>
 
-<section class="content-area bg1" id="velo ">
+<section class="content-area bg1" id="velo">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
         <video controls="controls" autoplay loop preload="auto" width="80%" name="Video AQUAVELO">
           <source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov">
         </video>
-        <a href="/seance-decouverte/Antibes" class="btn btn-default" style="margin-top: 30px; color: #0f38be;">j'essaie une séance Gratuite</a>
+        <a href="/seance-decouverte/Antibes" class="btn btn-default" style="margin-top: 30px; color: #0f38be;">J'essaie une séance Gratuite</a>
       </div>
       <div class="col-md-6">
         <h4>Des centres dédiés à l'Aquavélo</h4>
         <p>L'aquavélo ou vélo dans l'eau est une nouvelle discipline de fitness intelligente pour brûler des calories et perdre du poids, chasser la cellulite et éliminer les toxines et par la même occasion tonifier son corps.</p>
-        <p>L’aquavélo est un sport mixte; même si on trouvera sans doute une majorité de femmes dans le bassin : tout simplement parce qu’elles sont les seules à souffrir de la cellulite, et que  l’aquavélo est un ennemi redoutable de la peau d’orange. Le pédalage aquatique favorise progressivement la destruction de la cellulite en produisant un massage continu sur les jambes, le bassin et la ceinture abdominale.</p>
+        <p>L’aquavélo est un sport mixte; même si on trouvera sans doute une majorité de femmes dans le bassin : tout simplement parce qu’elles sont les seules à souffrir de la cellulite, et que l’aquavélo est un ennemi redoutable de la peau d’orange. Le pédalage aquatique favorise progressivement la destruction de la cellulite en produisant un massage continu sur les jambes, le bassin et la ceinture abdominale.</p>
         <p>Pratiqué régulièrement, il permet de prévenir et d’éviter la rétention d’eau et les oedèmes. Ces messieurs ne seront pas en reste! La résistance de l’eau agit sur toute la musculature en garantissant la tonification et le remodelage du corps. Les bras sont également sollicités pour faire travailler les biceps et triceps.</p>
       </div>
     </div>
@@ -39,9 +48,7 @@
       <div class="col-md-4">
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-star"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-star"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Naissance</a></h4>
               <p>Inventé en Italie par des kinésithérapeutes depuis un peu moins d’une dizaine d'années, l'aquabiking fait déjà un tabac en Allemagne et en Belgique et son succès commence à se faire sentir en France.</p>
@@ -50,9 +57,7 @@
         </div>
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-cog"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-cog"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Accessible à tous</a></h4>
               <p>Ce sport est accessible à toute personne soit de haut niveau sportif ou débutant. Même les personnes avec des capacités de mouvements réduites (surpoids, âge, problèmes d'articulation) peuvent pratiquer avec un effet garanti.</p>
@@ -63,9 +68,7 @@
       <div class="col-md-4">
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-asterisk"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-asterisk"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Déroulé</a></h4>
               <p>Les cours se déroulent toutes les heures ex: 8h, 9h, ..., 20h, 7 jours sur 7. Vous devrez vous présenter 10 minutes avant le début de votre séance, des vestiaires avec casiers cadenas sont à votre disposition.</p>
@@ -74,9 +77,7 @@
         </div>
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-thumbs-up"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-thumbs-up"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Cours</a></h4>
               <p>Dans votre centre Aquavélo, les cours se pratiquent en petit groupe, sur un vélo immergé dans un bassin.</p>
@@ -87,9 +88,7 @@
       <div class="col-md-4">
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-trophy"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-trophy"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Bien-être</a></h4>
               <p>Un véritable exutoire avec une sensation de détente, l'aquabiking est une activité ludique et dynamisante qui diminue la fatigue.</p>
@@ -98,9 +97,7 @@
         </div>
         <div class="iconBox type3">
           <div class="media">
-            <a class="pull-left" href="#">
-              <i class="fa fa-file-text"></i>
-            </a>
+            <a class="pull-left" href="#"><i class="fa fa-file-text"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Coaching</a></h4>
               <p>Nos coachs sélectionnés avec le plus grand soin (diplômé BPJEPS AAN) sauront vous guider à travers des musiques rythmées. Les cours se décomposent en plusieurs phases : échauffements, cardio et étirements à la fin.</p>
@@ -123,9 +120,7 @@
         <div class="panel-group" id="accordion">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#panel1">Des efforts peu ressentis</a>
-              </h4>
+              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#panel1">Des efforts peu ressentis</a></h4>
             </div>
             <div id="panel1" class="panel-collapse collapse in">
               <div class="panel-body">
@@ -136,9 +131,7 @@
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel2">Des effets rapides</a>
-              </h4>
+              <h4 class="panel-title"><a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel2">Des effets rapides</a></h4>
             </div>
             <div id="panel2" class="panel-collapse collapse">
               <div class="panel-body">
@@ -149,13 +142,11 @@
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel3">Un corps respecté</a>
-              </h4>
+              <h4 class="panel-title"><a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel3">Un corps respecté</a></h4>
             </div>
             <div id="panel3" class="panel-collapse collapse">
               <div class="panel-body">
-                <p>Lors d’une séance d’Aquavélo, le corps ne subit aucun choc (comme c’est le cas lors de la course à pied). En effet, l’eau permet de préserver muscles et articulations : c’est pourquoi, l’Aquavélo est particulièrement recommandé aux personnes fragiles souffrant de rhumatismes, d’arthroses, tendinites et autres problèmes articulaires... L’ aquavélo rentre même parfois dans le cadre de la rééducation, après un accident ou une opération : demandez conseil à nos Coachs. L’état d’apesanteur et de flottaison soulage les articulations et la zone lombaire du poids du corps.</p>
+                Lors d’une séance d’Aquavélo, le corps ne subit aucun choc (comme c’est le cas lors de la course à pied). En effet, l’eau permet de préserver muscles et articulations : c’est pourquoi, l’Aquavélo est particulièrement recommandé aux personnes fragiles souffrant de rhumatismes, d’arthroses, tendinites et autres problèmes articulaires... L’ aquavélo rentre même parfois dans le cadre de la rééducation, après un accident ou une opération : demandez conseil à nos Coachs. L’état d’apesanteur et de flottaison soulage les articulations et la zone lombaire du poids du corps.
               </div>
             </div>
           </div>
@@ -225,14 +216,32 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
         <div class="iconBox type3">
           <div class="media">
             <a class="pull-left" href="#"><i class="fa fa-thumbs-up"></i></a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">À partir et jusqu'à quel âge puis-je pratiquer l'Aquavélo ?</a></h4>
               <p>Vous pouvez pratiquer à partir de 12 ans car cela fusèle la silhouette, et jusqu'à 90 ans car cela vous permet d'entretenir votre potentiel musculaire, de renforcer vos articulations, et étant aquatique cela est bénéfique globalement pour le corps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#"><i class="fa fa-trophy"></i></a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">J'ai de l'arthrose, puis-je en faire ?</a></h4>
+              <p>Oui vous pouvez pratiquer car le mouvement des articulations se fera en douceur. Il faudra pédaler en douceur et adapter selon vos possibilités sur les conseils du coach.</p>
+            </div>
+          </div>
+        </div>
+        <div class="iconBox type3">
+          <div class="media">
+            <a class="pull-left" href="#"><i class="fa fa-file-text"></i></a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Je ne sais pas nager, puis-je faire de l'Aquavélo ?</a></h4>
+              <p>Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement.</p>
             </div>
           </div>
         </div>
@@ -244,11 +253,11 @@
 <section class="content-area bg1" id="partenariats">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Nos Partenariats</h1>
+      <h1 class="page-title">Nos Partenaires</h1>
     </header>
     <div class="row">
       <div class="col-md-12">
-        <iframe src="http://partenaires.aquavelocannes.fr/affichagelocal.php" width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
+        <iframe src="http://partenaires.aquavelocannes.fr/affichagelocal.php" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -261,13 +270,15 @@
         <li>
           <blockquote class="huge text-center">
             <p>Après l'avoir essayé, l'Aquavelo est rapidement devenu mon sport favori.</p>
-            <span class="author">Evy Bringhurst</span> ( 24 ans )
+            <span class="author">Evy Bringhurst</span>
+            <p>(24 ans)</p>
           </blockquote>
         </li>
         <li>
           <blockquote class="huge text-center">
             <p>Ne vous forcez plus à aller dans une salle de sport, il y a l'Aquavelo, et j'y vais tous les jours !</p>
-            <span class="author">Corinne Dumas</span> ( 58 ans )
+            <span class="author">Corinne Dumas</span>
+            <p>(58 ans)</p>
           </blockquote>
         </li>
       </ul>
@@ -293,5 +304,10 @@
     </div>
   </div>
 </section>
+<!-- / section -->
+
+</body>
+</html>
+
 
 

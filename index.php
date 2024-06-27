@@ -245,15 +245,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                  
                 </ul>
 
-                <li <?php if ($p == 'partenaire') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'contact') echo ' active'; ?>"> <a href="/partenaires.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/partenaires.php">Partenaires</a></li>
-                  
-                 
 
-                </ul>
-              </li>
-            
               <li <?php if ($p == 'contact') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'contact') echo ' active'; ?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
                 <ul class="dropdown-menu">
                   <li><a href="/contact#emploi">Emploi</a></li>

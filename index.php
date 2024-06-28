@@ -241,9 +241,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                  <li <?php if ($p == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">
                   <li><a href="https://www.dietsuccess.fr">Conseils minceurs</a></li>
-                  
-                 
                 </ul>
+                    </li>
+
+                  <li <?php if ($p == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/partenaires">Partenaires</a></li>
+              
+
+                </ul>
+              </li>
+          
+    
 
              
 

@@ -210,8 +210,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </form>
           <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
           <ul class="nav navbar-nav navbar-right">
-            <li<?php if ($p == 'home') echo ' class="active"'; ?>> <a href="http://aquavelo.com/">Accueil</a> </li>
-              <li class="dropdown<?php if ($p == 'aquabiking') echo ' active'; ?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
+            <li<?php if ($page == 'home') echo ' class="active"'; ?>> <a href="http://aquavelo.com/">Accueil</a> </li>
+              <li class="dropdown<?php if ($page == 'aquabiking') echo ' active'; ?>"> <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
                 <ul class="dropdown-menu">
                   <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
                   <li><a href="/aquabiking#bienfaits">Les bienfaits</a></li>
@@ -221,7 +221,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   
                 </ul>
               </li>
-              <li class="dropdown<?php if ($p == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
+              <li class="dropdown<?php if ($page == 'centres') echo ' active'; ?>"> <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
                 <ul class="dropdown-menu">
 
                   <?php foreach ($centers_list_d as &$row_centers_list) { ?>
@@ -230,7 +230,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 </ul>
               </li>
-              <li class="dropdown<?php if ($p == 'concept') echo ' active'; ?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
+              <li class="dropdown<?php if ($page == 'concept') echo ' active'; ?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
                
                 <ul class="dropdown-menu">
                   <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
@@ -238,13 +238,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
 
 
-                 <li <?php if ($p == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+                 <li <?php if ($page == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">
                   <li><a href="https://www.dietsuccess.fr">Conseils minceurs</a></li>
                 </ul>
                     </li>
 
-                  <li <?php if ($p == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>
+                  <li <?php if ($page == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>
                 <ul class="dropdown-menu">
                   <li><a href="/partenaires">Partenaires</a></li>
               
@@ -258,7 +258,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-              <li <?php if ($p == 'contact') echo ' class="active"'; ?> class="dropdown<?php if ($p == 'contact') echo ' active'; ?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
+              <li <?php if ($page == 'contact') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'contact') echo ' active'; ?>"> <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
                 <ul class="dropdown-menu">
                   <li><a href="/contact#emploi">Emploi</a></li>
                   <li><a href="/contact#contact">Contactez-nous</a></li>

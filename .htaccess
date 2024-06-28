@@ -19,6 +19,7 @@ RewriteRule ^seance-decouverte/([^/]+)$ /?p=free&city=$1 [QSA,L]
 
 RewriteRule ^concept-aquabiking$ /?p=concept [QSA,L]
 RewriteRule ^aquabiking$ /?p=aquabiking [QSA,L]
+RewriteRule ^partenaires$ /?p=partenaires [QSA,L]
 RewriteRule ^aquabiking/velo-dans-l-eau$ /?p=velo [QSA,L]
 RewriteRule ^aquabiking/bienfaits-minceur$ /?p=bienfaits [QSA,L]
 RewriteRule ^blog/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)$ /?p=blog&name=$4 [QSA,L]

@@ -216,7 +216,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                   <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
                   <li><a href="/aquabiking#bienfaits">Les bienfaits</a></li>
                   <li><a href="/aquabiking#questions">Vos questions</a></li>
-                  <li><a href="/partenaires">Nos partenaires</a></li>
+                 
                
                   
                 </ul>

@@ -1,27 +1,30 @@
 <?php
+session_start();
 
+// Afficher les erreurs pour le débogage
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Charger les dépendances
 require 'vendor/autoload.php';
-
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
 use \Mailjet\Resources;
+use Dotenv\Dotenv;
+
+// Charger les variables d'environnement
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 // Paramètres de configuration
 $settings = [];
-
 $settings['ttl'] = intval(getenv("REDIS_TTL"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
-
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
-
-// Paramètres de configuration Mailjet
 $settings['mjhost'] = "in-v3.mailjet.com";
 $settings['mjusername'] = getenv("MJ_USERNAME");
 $settings['mjpassword'] = getenv("MJ_PASSWORD");
@@ -51,7 +54,7 @@ try {
 }
 
 // Fonction pour inscrire un nouvel utilisateur
-function registerUser($conn, $email, $password, $settings) {
+function registerUser($conn, $email, $password, $weight, $height, $settings) {
     // Vérifier si l'email existe déjà
     $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
     $stmt->bindParam(1, $email);
@@ -65,13 +68,16 @@ function registerUser($conn, $email, $password, $settings) {
     } else {
         // Insérer un nouvel utilisateur
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO mensurations (email, password) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO mensurations (email, password, Poids, Taille) VALUES (?, ?, ?, ?)");
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $hashed_password);
+        $stmt->bindParam(3, $weight);
+        $stmt->bindParam(4, $height);
         if ($stmt->execute()) {
+            // Envoyer un email de confirmation (inclure le fichier d'envoi)
             $toEmail = $email;
             $toName = "Claude Alesiaminceur";
-            include 'envoi.php'; // Inclure le fichier qui envoie l'email
+            include 'envoi.php';
             // Rediriger vers _analyse.php 
             header("Location: _analyse.php");
             return true;
@@ -95,8 +101,6 @@ function checkLogin($conn, $email, $password) {
     return false;
 }
 
-session_start();
-
 $error_message = "";
 $success_message = "";
 
@@ -104,11 +108,13 @@ $success_message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
     $password = $_POST["password"];
+    $weight = $_POST["weight"];
+    $height = $_POST["height"];
     $action = $_POST["action"];
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
         if ($action == "register") {
-            $registration_result = registerUser($conn, $email, $password, $settings);
+            $registration_result = registerUser($conn, $email, $password, $weight, $height, $settings);
             if ($registration_result === true) {
                 // Inscription réussie, rediriger vers _menu.php
                 header("Location: _menu.php");
@@ -237,22 +243,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="password">Mot de passe:</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="weight">Poids (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Taille (cm):</label>
+                <input type="number" id="height" name="height" required>
+            </div>
             <button type="submit" onclick="setAction('register')">S'inscrire</button>
             <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
-       
-        <div class="logo-container">
-            <a href="https://www.aquavelo.com">
-                <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
-            </a>
-            <div class="results-frame">
-                <p>Résultats de ce mois-ci : félicitations à Isabelle</p>
-                <p>- 5 kg</p>
-                <p>- 5 cm de tour de taille</p>
-                <p>- 6 cm de tour de hanches</p>
-                <p>- 8 cm de tour de fesses</p>
-            </div>
-        </div>
     </div>
     <div class="info-container">
         <div class="info-box">

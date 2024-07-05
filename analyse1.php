@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Charger les dépendances
+// Charger l'autoloader de Composer
 require 'vendor/autoload.php';
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
@@ -279,6 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 
 

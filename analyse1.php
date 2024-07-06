@@ -110,11 +110,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $imc = round($imc, 2);
 
             if ($imc < 20) {
-                $bmi_message = "votre IMC est de $imc, donc vous êtes trop maigre.";
+                $bmi_message = "Votre IMC est de $imc, donc vous êtes trop maigre.";
             } elseif ($imc > 25) {
-                $bmi_message = "votre IMC est de $imc, donc vous êtes en surcharge pondérale.";
+                $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale.";
             } elseif ($imc >= 20 && $imc <= 25) {
-                $bmi_message = "votre IMC est de $imc, donc félicitations, vous avez un IMC normal, continuez à vous entretenir.";
+                $bmi_message = "Votre IMC est de $imc, donc félicitations, vous avez un IMC normal, continuez à vous entretenir.";
             }
         } else {
             $bmi_message = "Veuillez entrer des valeurs valides pour le poids et la taille.";

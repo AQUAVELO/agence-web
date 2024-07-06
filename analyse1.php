@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 
 // Charger l'autoloader de Composer
 require 'vendor/autoload.php';
+
 use Phpfastcache\CacheManager;
 use Phpfastcache\Drivers\Redis\Config;
 use \Mailjet\Resources;
@@ -42,127 +43,119 @@ try {
     die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
-// Connexion à Redis
-try {
-    $redis = CacheManager::getInstance('redis', new Config([
-        'host' => getenv("REDIS_HOST"),
-        'port' => intval(getenv("REDIS_PORT")),
-        'password' => getenv("REDIS_PASSWORD"),
-    ]));
-} catch (Exception $e) {
-    die("Couldn't connect to Redis: " . $e->getMessage());
-}
-
-// Fonction pour inscrire un nouvel utilisateur
-function registerUser($conn, $email, $password, $weight, $height, $settings) {
-    // Vérifier si l'email existe déjà
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM mensurations WHERE email = ?");
-    $stmt->bindParam(1, $email);
-    $stmt->execute();
-    $count = $stmt->fetchColumn();
-
-    if ($count > 0) {
-        // Rediriger vers _menu.php si l'email existe déjà
-        header("Location: _menu.php");
-        exit(); // Assurez-vous de sortir après la redirection
-    } else {
-        // Insérer un nouvel utilisateur
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO mensurations (email, password, Poids, Taille) VALUES (?, ?, ?, ?)");
-        $stmt->bindParam(1, $email);
-        $stmt->bindParam(2, $hashed_password);
-        $stmt->bindParam(3, $weight);
-        $stmt->bindParam(4, $height);
-        if ($stmt->execute()) {
-            // Envoyer un email de confirmation (inclure le fichier d'envoi)
-            $toEmail = $email;
-            $toName = "Claude Alesiaminceur";
-            include 'envoi.php';
-            // Rediriger vers _analyse.php 
-            header("Location: _analyse.php");
-            return true;
-        } else {
-            return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
-        }
+// Fonction pour obtenir l'historique de suivi des mensurations pour un utilisateur donné
+function getUserSuivi($conn, $email) {
+    $sql = "SELECT * FROM suivie WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$email]);
+    $suivi = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($suivi as &$row) {
+        $row['Date'] = date("d/m/Y", strtotime($row['Date'])); // Formater la date
     }
+    return $suivi;
 }
 
-// Fonction pour vérifier les informations de connexion
-function checkLogin($conn, $email, $password) {
-    $stmt = $conn->prepare("SELECT password FROM mensurations WHERE email = ?");
-    $stmt->bindParam(1, $email);
-    $stmt->execute();
-    if ($stmt->rowCount() == 1) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (password_verify($password, $row['password'])) {
-            return true;
-        }
-    }
-    return false;
-}
+// Rechercher les informations de base de l'utilisateur
+$sql = "SELECT * FROM mensurations WHERE email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$email]);
+$userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$error_message = "";
-$success_message = "";
+// Rechercher le dernier poids inséré dans la table suivie
+$sql = "SELECT * FROM suivie WHERE email = ? ORDER BY Date DESC LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$email]);
+$lastSuivi = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Gestion de l'inscription ou de la connexion
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = $_POST["password"];
-    $weight = $_POST["weight"];
-    $height = $_POST["height"];
-    $action = $_POST["action"];
+// Utiliser le dernier poids si disponible, sinon utiliser le poids de base
+$latestWeight = $lastSuivi ? $lastSuivi["Poids"] : $userInfo["Poids"];
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        if ($action == "register") {
-            $registration_result = registerUser($conn, $email, $password, $weight, $height, $settings);
-            if ($registration_result === true) {
-                // Inscription réussie, rediriger vers _menu.php
-                header("Location: _menu.php");
-                exit;
-            } else {
-                $error_message = $registration_result;
-            }
-        } elseif ($action == "login") {
-            if (checkLogin($conn, $email, $password)) {
-                $_SESSION["loggedin"] = true;
-                $_SESSION["email"] = $email;
-                // Connexion réussie, rediriger vers _menu.php
-                header("Location: _menu.php");
-                exit;
-            } else {
-                $error_message = "Identifiants incorrects.";
-            }
+// Calculer l'IMC et déterminer le message à afficher
+$message = '';
+if ($userInfo) {
+    $taille = $userInfo["Taille"];
+    if ($latestWeight > 0 && $taille > 0) {
+        $imc = $latestWeight / (($taille / 100) * ($taille / 100));
+        $imc = round($imc, 2);
+
+        if ($imc < 20) {
+            $message = "Vous êtes trop maigre.";
+        } elseif ($imc > 25) {
+            $message = "Vous êtes en surcharge pondérale.";
+        } elseif ($imc >= 20 && $imc <= 25) {
+            $message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
         }
     } else {
-        $error_message = "Email invalide.";
+        $imc = 0;
     }
 }
+
+// Obtenir l'historique de suivi pour l'utilisateur
+$userSuivi = getUserSuivi($conn, $email);
+
+// Si une demande de suppression est effectuée
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
+    $delete_id = $_POST["delete_id"];
+    $delete_sql = "DELETE FROM suivie WHERE id = ?";
+    $delete_stmt = $conn->prepare($delete_sql);
+    if ($delete_stmt->execute([$delete_id])) {
+        // Rafraîchir la page après suppression
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } else {
+        echo "Erreur lors de la suppression de l'enregistrement.";
+    }
+}
+
+// Logic for independent BMI calculation
+$independent_bmi_message = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["calculate_bmi"])) {
+    $independent_weight = $_POST["independent_weight"];
+    $independent_height = $_POST["independent_height"];
+
+    if ($independent_weight > 0 && $independent_height > 0) {
+        $independent_bmi = $independent_weight / (($independent_height / 100) * ($independent_height / 100));
+        $independent_bmi = round($independent_bmi, 2);
+
+        if ($independent_bmi < 20) {
+            $independent_bmi_message = "Vous êtes trop maigre.";
+        } elseif ($independent_bmi > 25) {
+            $independent_bmi_message = "Vous êtes en surcharge pondérale.";
+        } elseif ($independent_bmi >= 20 && $independent_bmi <= 25) {
+            $independent_bmi_message = "Félicitations, vous avez un IMC normal, continuez à vous entretenir.";
+        }
+    } else {
+        $independent_bmi_message = "Veuillez entrer des valeurs valides pour le poids et la taille.";
+    }
+}
+
+$conn = null;
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Inscription / Connexion</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi des Mensurations</title>
     <style>
-        .error { color: red; }
-        .success { color: green; }
-        .container {
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        .center-button {
             display: flex;
             justify-content: center;
-            padding: 50px;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .form-container, .info-container {
-            width: 45%;
-            margin: 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label, input {
-            display: block;
-            margin: auto;
-        }
-        button {
+        .center-button button, .center-button a {
             background-color: #69d5ef;
             border: none;
             padding: 10px 20px;
@@ -172,116 +165,214 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 5px;
             color: black;
         }
-        .info-box {
-            border: 1px solid #000;
-            padding: 20px;
+        .container {
             text-align: center;
         }
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .logo-container img {
-            width: 250px;
-        }
-        .logo-container .results-frame {
-            margin-top: 20px;
-            padding: 10px;
-            border: 2px solid #000;
-            text-align: center;
-            background-color: #f0f0f0;
-            width: 100%;
-        }
-        .logo-container button {
-            margin-left: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .center-button {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .center-button a {
-            background-color: #69d5ef;
+        .delete-button {
+            background-color: #f44336;
+            color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 5px 10px;
             cursor: pointer;
-            text-decoration: none;
-            color: black;
+        }
+        .imc-box {
+            border: 1px solid #000;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #f0f0f0;
         }
     </style>
-    <script>
-        function setAction(action) {
-            document.getElementById('action').value = action;
-        }
-    </script>
 </head>
 <body>
+
 <div class="container">
-    <div class="form-container">
+    <h2>Calculateur d'IMC Indépendant</h2>
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="independent_weight">Poids (kg):</label>
+            <input type="number" id="independent_weight" name="independent_weight" required>
+        </div>
+        <div class="form-group">
+            <label for="independent_height">Taille (cm):</label>
+            <input type="number" id="independent_height" name="independent_height" required>
+        </div>
+        <button type="submit" name="calculate_bmi">Calculer l'IMC</button>
+    </form>
+    <div class="imc-box">
         <?php
-        if (!empty($error_message)) {
-            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-        }
-        if (!empty($success_message)) {
-            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
+        if (!empty($independent_bmi_message)) {
+            echo "IMC = " . number_format($independent_bmi, 2) . "<br>";
+            echo $independent_bmi_message;
         }
         ?>
-        <h3>1) Inscrivez-vous ou connectez-vous en écrivant votre email et mot de passe</h3>
-        <form method="post" action="">
-            <input type="hidden" id="action" name="action" value="register">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="weight">Poids (kg):</label>
-                <input type="number" id="weight" name="weight" required>
-            </div>
-            <div class="form-group">
-                <label for="height">Taille (cm):</label>
-                <input type="number" id="height" name="height" required>
-            </div>
-            <button type="submit" onclick="setAction('register')">S'inscrire</button>
-            <button type="submit" onclick="setAction('login')">Se connecter</button>
-        </form>
-    </div>
-    <div class="info-container">
-        <div class="info-box">
-            <h2>Vos mensurations</h2>
-            <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>
-
-            <h3>Inscription</h3>
-            <p>Veuillez entrer un email et un mot de passe pour vous inscrire.</p>
-            <p>Ensuite, validez votre inscription avec votre email et mot de passe.</p>
-
-            <h3>Suivi</h3>
-            <p>Vous pouvez faire le suivi de vos mensurations dans votre centre Aquavélo, profiter des conseils, et consulter vos résultats.</p>
-            <p>Vous pouvez également prendre vos mensurations vous-même :</p>
-            <ul>
-                <li><strong>Poids</strong> : Le matin à jeun.</li>
-                <li><strong>Taille</strong> : Au niveau du nombril.</li>
-                <li><strong>Hanches</strong> : Au niveau des iliaques.</li>
-                <li><strong>Tour de fesses</strong> : Sur la pointe des fesses.</li>
-            </ul>
-            <p>Notez ces mensurations pour un suivi régulier.</p>
-        </div>
     </div>
 </div>
+
+<div class="center-button">
+    <?php
+    // Vérifier si tous les champs sont remplis
+    $fields_filled = !empty($userInfo["Nom"]) && !empty($userInfo["Prenom"]) && !empty($userInfo["email"]) && !empty($userInfo["Age"]) && !empty($userInfo["Poids"]) && !empty($userInfo["Taille"]) && !empty($userInfo["Trtaille"]) && !empty($userInfo["Trhanches"]) && !empty($userInfo["Trfesses"]);
+
+    if (!$fields_filled): ?>
+        <a href="saisieMensurations.php">Saisie de l'identité et des premières mensurations</a>
+    <?php endif; ?>
+    <a href="suivi.php">Saisie des nouvelles mensurations</a>
+    <a href="index.php">Se déconnecter</a>
+</div>
+
+<div class="container">
+    <?php if ($userInfo): ?>
+        <h2>Informations de l'utilisateur</h2>
+        <table>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Poids</th>
+                <th>Taille</th>
+                <th>Tour de Taille</th>
+                <th>Tour de Hanches</th>
+                <th>Tour de Fesses</th>
+                <th>IMC</th>
+            </tr>
+            <tr>
+                <td><?php echo htmlspecialchars($userInfo["Nom"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Prenom"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["email"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Age"]); ?></td>
+                <td><?php echo htmlspecialchars($latestWeight); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Taille"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trtaille"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trhanches"]); ?></td>
+                <td><?php echo htmlspecialchars($userInfo["Trfesses"]); ?></td>
+                <td><?php echo $imc; ?></td>
+            </tr>
+        </table>
+    <?php endif; ?>
+
+    <div class="imc-box">
+        <?php
+        if (isset($imc)) {
+            echo "IMC = " . number_format($imc, 2) . "<br>";
+            echo $message;
+        }
+        ?>
+    </div>
+
+    <?php if ($userSuivi && !empty($userSuivi)): ?>
+        <h2>Historique de Suivi</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Poids</th>
+                <th>Tour de Taille</th>
+                <th>Tour de Hanches</th>
+                <th>Tour de Fesses</th>
+                <th>IMC</th>
+                <th>Action</th>
+            </tr>
+            <?php foreach ($userSuivi as $suivi): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($suivi["Date"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
+                <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
+                <td><?php echo $imc; ?></td>
+                <td>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
+                        <button type="submit" class="delete-button">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+
+        <h2>Graphique de Suivi</h2>
+        <canvas id="myChart" width="400" height="200"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            // Passer les données PHP à JavaScript
+            const labels = <?php echo json_encode(array_column($userSuivi, 'Date')); ?>;
+            const poids = <?php echo json_encode(array_column($userSuivi, 'Poids')); ?>;
+            const trtaille = <?php echo json_encode(array_column($userSuivi, 'Trtaille')); ?>;
+            const trhanches = <?php echo json_encode(array_column($userSuivi, 'Trhanches')); ?>;
+            const trfesses = <?php echo json_encode(array_column($userSuivi, 'Trfesses')); ?>;
+
+            // Configuration du graphique
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Poids',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        data: poids,
+                        fill: false
+                    },
+                    {
+                        label: 'Tour de Taille',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        data: trtaille,
+                        fill: false
+                    },
+                    {
+                        label: 'Tour de Hanches',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        data: trhanches,
+                        fill: false
+                    },
+                    {
+                        label: 'Tour de Fesses',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        data: trfesses,
+                        fill: false
+                    }
+                ]
+            };
+
+            // Initialiser et afficher le graphique
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valeurs'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    <?php endif; ?>
+    <!-- Ajouter le logo AQUAVELO avec un lien vers aquavelo.com sous le formulaire -->
+    <a href="https://www.aquavelo.com" target="_blank">
+        <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" style="margin-top: 20px; width: 250px;">
+    </a>
+    <div class="center-button">
+        <a href="https://play.google.com/store/apps/details?id=com.resamania.resamaniav2&hl=fr" target="_blank">Téléchargement Resamania Android</a>
+        <a href="https://apps.apple.com/lu/app/resamania-v2/id1482410619" target="_blank">Téléchargement Resamania Apple</a>
+    </div>
+</div>
+
 </body>
 </html>
-
-
-
 
 
 

@@ -14,9 +14,7 @@ use Phpfastcache\Drivers\Redis\Config;
 use \Mailjet\Resources;
 use Dotenv\Dotenv;
 
-// Charger les variables d'environnement
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+
 
 // Paramètres de configuration
 $settings = [];

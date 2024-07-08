@@ -110,9 +110,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $imc = round($imc, 2);
 
             if ($imc < 20) {
-                $bmi_message = "Votre IMC est de $imc, donc vous êtes trop maigre.";
+                $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique.";
             } elseif ($imc > 25) {
-                $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale. Je vous conseille une alimentation limitée en sucre et en matiéres grasses. Une activité physque comme l'Aquavélo serait parfaite pour affiner et tonifier votre silhouette";
+                $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale. Je vous conseille une alimentation limitée en sucre et en matiéres grasses. Une activité physique comme l'Aquavélo serait parfaite pour affiner et tonifier votre silhouette";
             } elseif ($imc >= 20 && $imc <= 25) {
                 $bmi_message = "Votre IMC est de $imc, donc félicitations, vous avez un IMC normal, continuez à vous entretenir.";
             }

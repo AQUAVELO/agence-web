@@ -72,8 +72,8 @@ function registerUser($conn, $email, $password, $settings) {
             $toEmail = $email;
             $toName = "Claude Alesiaminceur";
             include 'envoi.php'; // Inclure le fichier qui envoie l'email
-            // Rediriger vers _analyse.php 
-            header("Location: _analyse.php");
+            // Rediriger vers _analyse1.php 
+            header("Location: _analyse1.php");
             return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];
@@ -102,33 +102,52 @@ $success_message = "";
 
 // Gestion de l'inscription ou de la connexion
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
-    $password = $_POST["password"];
-    $action = $_POST["action"];
+    if (isset($_POST['calculate_bmi'])) {
+        $weight = $_POST["weight"];
+        $height = $_POST["height"];
+        if ($weight > 0 && $height > 0) {
+            $imc = $weight / (($height / 100) * ($height / 100));
+            $imc = round($imc, 2);
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        if ($action == "register") {
-            $registration_result = registerUser($conn, $email, $password, $settings);
-            if ($registration_result === true) {
-                // Inscription réussie, rediriger vers _menu.php
-                header("Location: _menu.php");
-                exit;
-            } else {
-                $error_message = $registration_result;
+            if ($imc < 20) {
+                $bmi_message = "Votre IMC est de $imc, donc vous êtes trop maigre.";
+            } elseif ($imc > 25) {
+                $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale.";
+            } elseif ($imc >= 20 && $imc <= 25) {
+                $bmi_message = "Votre IMC est de $imc, donc félicitations, vous avez un IMC normal, continuez à vous entretenir.";
             }
-        } elseif ($action == "login") {
-            if (checkLogin($conn, $email, $password)) {
-                $_SESSION["loggedin"] = true;
-                $_SESSION["email"] = $email;
-                // Connexion réussie, rediriger vers _menu.php
-                header("Location: _menu.php");
-                exit;
-            } else {
-                $error_message = "Identifiants incorrects.";
-            }
+        } else {
+            $bmi_message = "Veuillez entrer des valeurs valides pour le poids et la taille.";
         }
-    } else {
-        $error_message = "Email invalide.";
+    } elseif (isset($_POST['action'])) {
+        $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+        $password = $_POST["password"];
+        $action = $_POST["action"];
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if ($action == "register") {
+                $registration_result = registerUser($conn, $email, $password, $settings);
+                if ($registration_result === true) {
+                    // Inscription réussie, rediriger vers _menu.php
+                    header("Location: _menu.php");
+                    exit;
+                } else {
+                    $error_message = $registration_result;
+                }
+            } elseif ($action == "login") {
+                if (checkLogin($conn, $email, $password)) {
+                    $_SESSION["loggedin"] = true;
+                    $_SESSION["email"] = $email;
+                    // Connexion réussie, rediriger vers _menu.php
+                    header("Location: _menu.php");
+                    exit;
+                } else {
+                    $error_message = "Identifiants incorrects.";
+                }
+            }
+        } else {
+            $error_message = "Email invalide.";
+        }
     }
 }
 ?>
@@ -209,24 +228,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: black;
         }
     </style>
-    <script>
-        function setAction(action) {
-            document.getElementById('action').value = action;
-        }
-    </script>
 </head>
 <body>
 <div class="container">
     <div class="form-container">
-        <?php
-        if (!empty($error_message)) {
-            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-        }
-        if (!empty($success_message)) {
-            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
-        }
-        ?>
-        <h3>1) Inscrivez-vous ou connectez-vous en écrivant votre email et mot de passe</h3>
+        <h3>Calculez votre IMC</h3>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="weight">Poids (kg):</label>
+                <input type="number" id="weight" name="weight" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Taille (cm):</label>
+                <input type="number" id="height" name="height" required>
+            </div>
+            <button type="submit" name="calculate_bmi">Calculer l'IMC</button>
+        </form>
+        <?php if (isset($bmi_message)): ?>
+            <div class="info-box">
+                <p><?php echo htmlspecialchars($bmi_message); ?></p>
+            </div>
+        <?php endif; ?>
+
+        <h3>Inscrivez-vous ou connectez-vous</h3>
         <form method="post" action="">
             <input type="hidden" id="action" name="action" value="register">
             <div class="form-group">
@@ -240,7 +264,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" onclick="setAction('register')">S'inscrire</button>
             <button type="submit" onclick="setAction('login')">Se connecter</button>
         </form>
-       
+        <?php
+        if (!empty($error_message)) {
+            echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
+        }
+        if (!empty($success_message)) {
+            echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
+        }
+        ?>
+
         <div class="logo-container">
             <a href="https://www.aquavelo.com">
                 <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO">
@@ -278,6 +310,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

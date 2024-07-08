@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tour_taille = $_POST["tour_taille"];
         $tour_hanches = $_POST["tour_hanches"];
         $tour_fesses = $_POST["tour_fesses"];
-        $gender = $_POST["gender"];
+        $gender = isset($_POST["gender"]) ? $_POST["gender"] : null;
         $tour_message = "Vos mesures sont - Tour de Taille: $tour_taille cm, Tour de Hanches: $tour_hanches cm, Tour de Fesses: $tour_fesses cm.";
         $morphology = determineMorphology($tour_taille, $tour_hanches, $gender);
         if ($morphology !== null) {
@@ -190,4 +190,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 

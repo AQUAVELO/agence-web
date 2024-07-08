@@ -72,8 +72,8 @@ function registerUser($conn, $email, $password, $settings) {
             $toEmail = $email;
             $toName = "Claude Alesiaminceur";
             include 'envoi.php'; // Inclure le fichier qui envoie l'email
-            // Rediriger vers _analyse1.php 
-            header("Location: _analyse1.php");
+            // Rediriger vers _analyse.php 
+            header("Location: _analyse.php");
             return true;
         } else {
             return "Erreur lors de l'inscription: " . $stmt->errorInfo()[2];

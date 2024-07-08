@@ -289,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="info-container">
         <div class="info-box">
             <h2>Calcul de l'IMC</h2>
-            <p>Entrez votre poids et votre taille pour connaitre votre IMC (indice de masse corporelle) </p>
+            <p>Entrez votre poids et votre taille pour connaitre votre IMC (indice de masse corporelle).</p>
             
             <h2>Vos mensurations</h2>
             <p>Entrez vos mensurations pour bénéficier de conseils personnalisés.</p>

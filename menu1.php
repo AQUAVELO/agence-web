@@ -41,10 +41,24 @@ function calculateIMC($weight, $height) {
     return null;
 }
 
+// Fonction pour déterminer le type morphologique
+function determineMorphology($tour_taille, $tour_hanches, $gender) {
+    if ($tour_taille > 0 && $tour_hanches > 0) {
+        $ratio = $tour_taille / $tour_hanches;
+        if ($gender === 'female') {
+            return $ratio > 0.85 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
+        } elseif ($gender === 'male') {
+            return $ratio > 0.90 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
+        }
+    }
+    return null;
+}
+
 session_start();
 
 $bmi_message = "";
 $tour_message = "";
+$morphology_message = "";
 
 // Gestion de l'IMC et des mesures
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -67,7 +81,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tour_taille = $_POST["tour_taille"];
         $tour_hanches = $_POST["tour_hanches"];
         $tour_fesses = $_POST["tour_fesses"];
+        $gender = $_POST["gender"];
         $tour_message = "Vos mesures sont - Tour de Taille: $tour_taille cm, Tour de Hanches: $tour_hanches cm, Tour de Fesses: $tour_fesses cm.";
+        $morphology = determineMorphology($tour_taille, $tour_hanches, $gender);
+        if ($morphology !== null) {
+            $morphology_message = "Votre répartition corporelle est : $morphology.";
+        } else {
+            $morphology_message = "Veuillez entrer des valeurs valides pour les mesures.";
+        }
     }
 }
 ?>
@@ -150,14 +171,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="tour_fesses">Tour de Fesses (cm):</label>
                 <input type="number" id="tour_fesses" name="tour_fesses" required>
             </div>
+            <div class="form-group">
+                <label for="gender">Sexe:</label>
+                <select id="gender" name="gender" required>
+                    <option value="female">Femme</option>
+                    <option value="male">Homme</option>
+                </select>
+            </div>
             <button type="submit" name="submit_measures">Soumettre les mesures</button>
         </form>
-        <?php if (!empty($tour_message)): ?>
+        <?php if (!empty($tour_message) || !empty($morphology_message)): ?>
             <div class="info-box">
                 <p><?php echo htmlspecialchars($tour_message); ?></p>
+                <p><?php echo htmlspecialchars($morphology_message); ?></p>
             </div>
         <?php endif; ?>
     </div>
 </div>
 </body>
 </html>
+

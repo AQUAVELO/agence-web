@@ -46,9 +46,29 @@ function determineMorphology($tour_taille, $tour_hanches, $gender) {
     if ($tour_taille > 0 && $tour_hanches > 0) {
         $ratio = $tour_taille / $tour_hanches;
         if ($gender === 'female') {
-            return $ratio > 0.85 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
+            return $ratio > 0.85 ? " Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
+
+C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
+
+Ce profil androïde est associée à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies.
+
+Les personnes atteintes d'obésité viscérale présentent un risque accru de développer ces maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique.
+
+Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité.
+
+Ce profil gynoïde est principalement observée chez les femmes. Le traitement de cette forme d'obésité repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         } elseif ($gender === 'male') {
-            return $ratio > 0.90 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
+            return $ratio > 0.90 ? "Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
+
+C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
+
+Ce profil androïde est associée à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies.
+
+Les personnes atteintes d'obésité viscérale présentent un risque accru de développer des maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique.
+
+Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité.
+
+Le traitement de ce profil repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         }
     }
     return null;

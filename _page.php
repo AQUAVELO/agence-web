@@ -230,7 +230,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         }
 	</script>
 		    <dt>Mesurez vos résultats Minceurs </dt>
-          <dd><a class= "btn btn-default" href="javascript:ouvre_popup('/_analyse.php')">Mesurez vos résultats Minceurs</a>  </dd>
+          <dd><a class= "btn btn-default" href="javascript:ouvre_popup('/menu1.php')">Mesurez vos résultats Minceurs</a>  </dd>
          <script type="text/javascript">
         function ouvre_popup(page) {
             window.open(page, "nom_popup", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");

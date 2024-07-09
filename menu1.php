@@ -46,7 +46,9 @@ function determineMorphology($tour_taille, $tour_hanches, $gender) {
     if ($tour_taille > 0 && $tour_hanches > 0) {
         $ratio = $tour_taille / $tour_hanches;
         if ($gender === 'female') {
-            return $ratio > 0.85 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
+            return $ratio > 0.85 ? "androïde (forme de pomme)" : "L'obésité gynoïde est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Bien que cette forme d'obésité soit généralement moins associée à des risques graves pour la santé que l'obésité androïde, elle peut néanmoins causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité.
+
+L'obésité gynoïde est principalement observée chez les femmes. Le traitement de cette forme d'obésité repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         } elseif ($gender === 'male') {
             return $ratio > 0.90 ? "androïde (forme de pomme)" : "gynoïde (forme de poire)";
         }

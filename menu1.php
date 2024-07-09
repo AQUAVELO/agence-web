@@ -193,15 +193,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h3>Entrez vos mesures</h3>
         <form method="post" action="">
             <div class="form-group">
-                <label for="tour_taille">Tour de Taille (cm):</label>
+                <label for="tour_taille">Tour de Taille au niveau du nombril (cm):</label>
                 <input type="number" id="tour_taille" name="tour_taille" required>
             </div>
             <div class="form-group">
-                <label for="tour_hanches">Tour de Hanches (cm):</label>
+                <label for="tour_hanches">Tour de Hanches au niveau des iliaques (cm):</label>
                 <input type="number" id="tour_hanches" name="tour_hanches" required>
             </div>
             <div class="form-group">
-                <label for="tour_fesses">Tour de Fesses (cm):</label>
+                <label for="tour_fesses">Tour de Fesses au niveau de la pointe des fesses (cm):</label>
                 <input type="number" id="tour_fesses" name="tour_fesses" required>
             </div>
             <div class="form-group">

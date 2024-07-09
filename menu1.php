@@ -46,7 +46,7 @@ function determineMorphology($tour_taille, $tour_hanches, $gender) {
     if ($tour_taille > 0 && $tour_hanches > 0) {
         $ratio = $tour_taille / $tour_hanches;
         if ($gender === 'female') {
-            return $ratio > 0.85 ? " Androïde, également appelée type abdominale ou viscérale, se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
+            return $ratio > 0.85 ? " Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
 
 C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
 
@@ -58,7 +58,7 @@ Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la g
 
 Ce profil gynoïde est principalement observée chez les femmes. Le traitement de cette forme d'obésité repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         } elseif ($gender === 'male') {
-            return $ratio > 0.90 ? "Androïde, également appelée type abdominale ou viscérale, se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
+            return $ratio > 0.90 ? "Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
 
 C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
 

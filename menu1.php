@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imc = calculateIMC($weight, $height);
         if ($imc !== null) {
             if ($imc < 20) {
-                $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique.";
+                $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes peut être trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique pour tonifier votre silhouette.";
             } elseif ($imc > 25) {
                 $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale. Je vous conseille une alimentation limitée en sucre et en matiéres grasses. Une activité physique comme l'Aquavélo serait parfaite pour affiner et tonifier votre silhouette.";
             } elseif ($imc >= 20 && $imc <= 25) {
@@ -139,10 +139,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: #f9f9f9;
             margin-bottom: 20px;
         }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
     </style>
+    <script>
+        function closeWindow() {
+            window.close();
+        }
+    </script>
 </head>
 <body>
 <div class="container">
+    <button class="close-button" onclick="closeWindow()">Fermer la fenêtre</button>
     <div class="highlight-box">
         <h2>Calculez votre IMC et évaluer votre morphologique en fonction de vos mensurations</h2>
     </div>
@@ -200,6 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 
 

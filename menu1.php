@@ -132,10 +132,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 20px;
             text-align: center;
         }
+        .highlight-box {
+            border: 2px solid #000;
+            padding: 20px;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="highlight-box">
+        <h2>Calculez votre IMC et évaluer votre morphologique en fonction de vos mensurations</h2>
+    </div>
     <div class="form-container">
         <h3>Calculez votre IMC</h3>
         <form method="post" action="">
@@ -190,5 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 

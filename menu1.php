@@ -46,29 +46,9 @@ function determineMorphology($tour_taille, $tour_hanches, $gender) {
     if ($tour_taille > 0 && $tour_hanches > 0) {
         $ratio = $tour_taille / $tour_hanches;
         if ($gender === 'female') {
-            return $ratio > 0.85 ? " Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
-
-C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
-
-Ce profil androïde est associée à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies.
-
-Les personnes atteintes d'obésité viscérale présentent un risque accru de développer ces maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique.
-
-Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité.
-
-Ce profil gynoïde est principalement observée chez les femmes. Le traitement de cette forme d'obésité repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
+            return $ratio > 0.85 ? "Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse. C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée. Ce profil androïde est associé à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies. Les personnes atteintes d'obésité viscérale présentent un risque accru de développer ces maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique. Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité. Ce profil gynoïde est principalement observée chez les femmes. Le traitement de cette forme d'obésité repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         } elseif ($gender === 'male') {
-            return $ratio > 0.90 ? "Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse.
-
-C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée.
-
-Ce profil androïde est associée à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies.
-
-Les personnes atteintes d'obésité viscérale présentent un risque accru de développer des maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique.
-
-Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité.
-
-Le traitement de ce profil repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
+            return $ratio > 0.90 ? "Androïde, également appelée type abdominale ou viscérale, cela se caractérise par un excès de graisse accumulée autour des organes abdominaux. Il est important de noter que l'on peut avoir ce profil androïde sans forcément être en surpoids ou obèse. C'est souvent dû à un mode de vie sédentaire et à une alimentation déséquilibrée. Ce profil androïde est associé à de nombreux problèmes de santé, tels que les maladies cardiaques, le diabète et autres maladies. Les personnes atteintes d'obésité viscérale présentent un risque accru de développer des maladies, même si elles ne sont pas en surpoids ou obèses. De plus, la graisse viscérale est particulièrement difficile à éliminer, rendant ce profil particulièrement problématique. Toutefois, plusieurs modifications du mode de vie peuvent aider à réduire la graisse viscérale, notamment l'exercice régulier comme l'Aquavélo 2 fois par semaine et une alimentation saine. Ces changements peuvent améliorer l'état de santé général et diminuer le risque de problèmes de santé graves." : "Gynoïde, c'est un type d'obésité qui se manifeste par une accumulation excessive de graisse au niveau des hanches, des cuisses et des fesses. Cette forme morphologique peut causer des douleurs au dos, des douleurs articulaires et des problèmes de mobilité. Le traitement de ce profil repose souvent sur des modifications du mode de vie, telles qu'une alimentation équilibrée et la pratique régulière d'exercice physique comme l'Aquavélo.";
         }
     }
     return null;
@@ -88,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imc = calculateIMC($weight, $height);
         if ($imc !== null) {
             if ($imc < 20) {
-                $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique.";
+                $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes peut être trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique pour tonifier votre silhouette.";
             } elseif ($imc > 25) {
                 $bmi_message = "Votre IMC est de $imc, donc vous êtes en surcharge pondérale. Je vous conseille une alimentation limitée en sucre et en matiéres grasses. Une activité physique comme l'Aquavélo serait parfaite pour affiner et tonifier votre silhouette.";
             } elseif ($imc >= 20 && $imc <= 25) {
@@ -102,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tour_hanches = $_POST["tour_hanches"];
         $tour_fesses = $_POST["tour_fesses"];
         $gender = isset($_POST["gender"]) ? $_POST["gender"] : null;
-        $tour_message = "Vos mesures sont - Tour de Taille: $tour_taille cm, Tour de Hanches: $tour_hanches cm, Tour de Fesses: $tour_fesses cm.";
+        $tour_message = "Vos mesures sont : Tour de taille: $tour_taille cm, Tour de Hanches: $tour_hanches cm, Tour de Fesses: $tour_fesses cm.";
         $morphology = determineMorphology($tour_taille, $tour_hanches, $gender);
         if ($morphology !== null) {
             $morphology_message = "Votre répartition corporelle est : $morphology.";
@@ -125,6 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             justify-content: center;
             padding: 50px;
             flex-wrap: wrap;
+            width: 100%;
+            box-sizing: border-box;
         }
         .form-container, .info-container {
             width: 45%;
@@ -241,6 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 
 

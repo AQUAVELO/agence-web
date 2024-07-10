@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="number" id="tour_taille" name="tour_taille" required>
             </div>
             <div class="form-group">
-                <label for="tour_hanches">Tour de Hanches au niveau des iliaques (cm):</label>
+                <label for="tour_hanches">Tour de Hanches (cm):</label>
                 <input type="number" id="tour_hanches" name="tour_hanches" required>
             </div>
             <div class="form-group">

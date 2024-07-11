@@ -192,7 +192,7 @@ $imc_counter = getIMCCounter($conn);
     <button class="close-button" onclick="closeWindow()">Fermer la fenêtre</button>
     <div class="highlight-box">
         <h2>Calculez votre IMC et évaluer votre morphologique en fonction de vos mensurations</h2>
-        <p>Depuis ce matin il y a eu <?php echo $imc_counter; ?> personnes avec un IMC supérieur à 25.</p>
+        <p>Depuis ce matin il y a eu <?php echo $imc_counter; ?> personnes avec un IMC supérieur à 25 qui ont bénéficié d'une séance gratuite.</p>
     </div>
     <div class="form-container">
         <h3>Calculez votre IMC</h3>

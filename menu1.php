@@ -60,6 +60,26 @@ $bmi_message = "";
 $tour_message = "";
 $morphology_message = "";
 
+// Fonction pour incrémenter le compteur d'IMC
+function incrementIMCCounter($conn) {
+    $sql = "UPDATE mensurations SET imc_counter = imc_counter + 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+}
+
+// Fonction pour obtenir la valeur actuelle du compteur d'IMC
+function getIMCCounter($conn) {
+    $sql = "SELECT imc_counter FROM mensurations";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['imc_counter'];
+}
+
+// Initialiser le compteur d'IMC si ce n'est pas déjà fait
+$sql = "INSERT IGNORE INTO mensurations (id, imc_counter) VALUES (1, 0)";
+$conn->prepare($sql)->execute();
+
 // Gestion de l'IMC et des mesures
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['calculate_bmi'])) {
@@ -67,6 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $height = $_POST["height"];
         $imc = calculateIMC($weight, $height);
         if ($imc !== null) {
+            incrementIMCCounter($conn);  // Incrémenter le compteur d'IMC
             if ($imc < 20) {
                 $bmi_message = "D'aprés votre IMC, qui est de $imc, vous êtes peut être trop maigre. Pratiquez une activité physique cardio-tonique comme l'Aquavélo vous sera bénéfique pour tonifier votre silhouette.";
             } elseif ($imc > 25) {
@@ -91,6 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+$imc_counter = getIMCCounter($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -168,6 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <button class="close-button" onclick="closeWindow()">Fermer la fenêtre</button>
     <div class="highlight-box">
         <h2>Calculez votre IMC et évaluer votre morphologique en fonction de vos mensurations</h2>
+        <p>Nombre de personnes ayant utilisé le calcul de l'IMC : <?php echo $imc_counter; ?></p>
     </div>
     <div class="form-container">
         <h3>Calculez votre IMC</h3>
@@ -223,6 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 </body>
 </html>
+
 
 
 

@@ -1,7 +1,9 @@
 <header class="main-header clearfix">
   <div class="container">
 	  
-   <h1 class="page-title pull-left" align="center">AQUAVELO = AQUABIKING + AQUAGYM, excellent pour affiner la silhouette, la tonification et le bien-être.</h1>
+   <h1 class="page-title pull-left" align="center">AQUAVELO = AQUABIKING + AQUAGYM</h1>
+	  <h2 class="page-title pull-left" align="center">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
+   
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>

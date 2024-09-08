@@ -1,6 +1,7 @@
 <header class="main-header clearfix">
   <div class="container">
-   <h1 class="page-title pull-left" align="center">L'aquabiking est efficace pour l'affinement de la silhouette, la tonification et le bien-être.</h1>
+	  
+   <h1 class="page-title pull-left" align="center">AQUAVELO = AQUABIKING + AQUAGYM, excellent pour affiner la silhouette, la tonification et le bien-être.</h1>
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>

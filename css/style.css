@@ -167,6 +167,15 @@ h5 + p {
   letter-spacing: 0.1em;
   margin: 0 0 25px 0;
 }
+.centrer-title {
+  font-size: 13px;
+  line-height: 16px;
+  color: #999999;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 25px 0;
+  text-align: center; /* Centre le texte horizontalement */
+}
 .main-header {
   background: #3a4953;
   padding: 26px 0;

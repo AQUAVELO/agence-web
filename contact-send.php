@@ -126,6 +126,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		$msg = '
 	
 
+	
 	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p>
 	<p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coach&eacute;</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
 	
@@ -136,13 +137,14 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 	
 	<p><em>*Offre non cumulable.</em></p>
 	<p>Cordialement,<br>L\'&eacute;quipe Aquavelo<br>http://aquavelo.com/</p>
-	<p><img src="cid:pubemailing" alt="Image Promotionnelle"></p>'; // ajouter l'image
+	<p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>'; // Image ajoutée uniquement en bas
 	
 	$mail2->Body = $msg;
 	$mail2->AltBody = strip_tags($msg);
 	
 	// Ajouter l'image comme ressource intégrée
 	$mail2->AddEmbeddedImage('images/pubemailing.jpg', 'pubemailing', 'pubemailing.jpg');
+
 
 		//PHPMAILER
 		$mail2->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');

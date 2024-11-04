@@ -1,7 +1,7 @@
 <section class="content-area bg1" id="partenariats">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Nos Partenaires</h1>
+      <h1 class="page-title">Les Partenaires</h1>
     </header>
     <div class="row">
       <div class="col-md-12">

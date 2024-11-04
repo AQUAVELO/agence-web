@@ -48,8 +48,8 @@
       <div class="col-md-3 col-sm-6">
         <header class="page-header text-left">
           <h1 class="page-title">Le groupe Alésia Minceur</h1>
-          <h2>Quels sont nos avantages?</h2>
-          <p> Le réseau existe depuis 9 ans, certains de nos dirigeants ont 2 centres ou ont acheté les murs. </p>
+          <h2>Quels sont les avantages?</h2>
+          <p> Le réseau existe depuis 9 ans, certains dirigeants ont 2 centres ou ont acheté les murs. </p>
 
         </header>
       </div>
@@ -59,7 +59,7 @@
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Communication</a></h4>
               <p> Nous bénéficions d'un marketing très poussé : Aquavelo maîtrise parfaitement la communication (marketing digital c'est à dire les réseaux sociaux et le web en général, l'affichage traditionnel, le publipostage, l'emailing, etc) afin de vous générer le trafic souhaité dans votre centre pour le moins cher possible dans le but d'optimiser votre rentabilité. 
-                Nous avons nos propres manequins pour nos campagnes promotionnelles. </p>
+                Nous avons nos propres manequins pour les campagnes promotionnelles. </p>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-cog"></i> </a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Fidélisation</a></h4>
-              <p> Nos animations et ambiances de centre nous permettent d'avoir un taux de renouvellement de plus de 40 % ! </p>
+              <p> Les animations et ambiances de centre nous permettent d'avoir un taux de renouvellement de plus de 40 % ! </p>
             </div>
           </div>
         </div>

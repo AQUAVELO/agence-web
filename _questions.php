@@ -22,7 +22,7 @@
       <p>2) que faut- il comme tenue pour pratiquer l'Aquavélo ?</p>
       <p>Il faut un maillot (une piéce ou 2 piéces pour les dames), short de bain ou maillot classique pour les messieurs, une serviette de bain, un gel douche, une bouteille d'eau car il faut s'hydrater durant le cours, un cadenas pour les vestiaires. Le bonnet de bain n'est pas insdispensable car vous ne mettez pas la tête sous l'eau.</p>
       <p>3) Est ce que je peux pratiquer l'Aquavélo étant enceinte ?</p>
-      <p>Oui bien sûr l'Aquavélo est fortement conseillé étant enceinte car il vous permettra de soulager les jambes lourdes, et de vous éviter de prendre beaucoup de poids durant cette période. Certaines de nos adhérentes pratiquent quasiment jusqu'au terme.</p>
+      <p>Oui bien sûr l'Aquavélo est fortement conseillé étant enceinte car il vous permettra de soulager les jambes lourdes, et de vous éviter de prendre beaucoup de poids durant cette période. Certaines des adhérentes pratiquent quasiment jusqu'au terme.</p>
       <p>4) à partir et jusqu'à quel âge puis je pratiquer l'Aquavélo ?</p>
       <p>Vous pouvez pratiquer à partir de 12 ans car cela fuséle la silhouette, et jusqu'à 90 ans car cela vous permet d'entretenir votre potentiel musculaire, cela renforce vos articulations, et étant aquatique cela est bénéfique globalement pour le corps.</p>
       <p>5) J'ai de l'arthrose, puis en faire ?</p>
@@ -61,8 +61,8 @@
       <div class="col-md-3 col-sm-6">
         <header class="page-header text-left">
           <h1 class="page-title">Le groupe Alésia Minceur</h1>
-          <h2>Quels sont nos avantages?</h2>
-          <p> Le réseau existe depuis 9 ans, certains de nos dirigeants ont 2 centres ou ont acheté les murs. </p>
+          <h2>Quels sont les avantages?</h2>
+          <p> Le réseau existe depuis 9 ans, certains des dirigeants ont 2 centres ou ont acheté les murs. </p>
 
         </header>
       </div>
@@ -83,7 +83,7 @@
           <div class="media"> <a class="pull-left" href="#"> <i class="fa fa-cog"></i> </a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Fidélisation</a></h4>
-              <p> Nos animations et ambiances de centre nous permettent d'avoir un taux de renouvellement de plus de 40 % ! </p>
+              <p> Les animations et ambiances de centre nous permettent d'avoir un taux de renouvellement de plus de 40 % ! </p>
             </div>
           </div>
         </div>

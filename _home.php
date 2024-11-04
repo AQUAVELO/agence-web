@@ -19,7 +19,7 @@
           <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-male"></i> </span> </a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">Coach sportif</a></h4>
-              <p> Sélectionnés avec le plus grand soin, nos coachs diplômés vous motiveront à travers des chorégraphies rythmées pour atteindre rapidement vos objectifs.</p>
+              <p> Sélectionnés avec le plus grand soin, les coachs diplômés vous motiveront à travers des chorégraphies rythmées pour atteindre rapidement vos objectifs.</p>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
 <section class="content-area bg2">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Nos centres</h1>
+      <h1 class="page-title">Les centres</h1>
       <h2>Localisez le centre le plus proche de chez vous</h2>
     </header>
     <div class="flexslider carousel-slider" data-slideshow="false" data-speed="7000" data-animspeed="600" data-loop="true" data-min="1" data-max="3" data-move="1" data-controls="true" data-dircontrols="true">

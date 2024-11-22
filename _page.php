@@ -210,6 +210,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
         </p>
     </div>
 </div>
+<br>										   
 <?php } ?>
 
 

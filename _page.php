@@ -170,6 +170,49 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
             ?>
 
+
+		  <?php if (isset($row_center['id']) && $row_center['id'] == 350) { ?>
+<div class="col-md-12">
+    <div class="promotion-box" style="border: 1px solid #ccc; padding: 20px; margin-top: 30px; background-color: #f9f9f9;">
+        <h3 style="text-align: center;">Découvrez nos offres Black Friday 2024</h3>
+        <p style="text-align: center;">Avec des séances d’Aquavélo à prix mini ! 💦🚴‍♀️💦</p>
+        <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-top: 10px;">
+                🏊‍♂️ <strong>25 séances :</strong> 450€ 👉 <span style="color: red;">Black Friday : 399€</span><br>
+                <em>(soit 16 € par séance)</em><br>
+                💳 Paiement en 1, 2, 3, 4, ou 6 fois, soit 65,5€ par mois<br>
+                📅 Valable pendant 9 mois
+            </li>
+            <li style="margin-top: 10px;">
+                🏊‍♂️ <strong>40 séances :</strong> 650€ 👉 <span style="color: red;">Black Friday : 560€</span><br>
+                <em>(soit 14 € par séance)</em><br>
+                💳 Paiement en 1, 2, 5, ou 10 fois, soit 56€ par mois<br>
+                📅 Valable pendant 12 mois
+            </li>
+            <li style="margin-top: 10px;">
+                🏊‍♀️ <strong>80 séances :</strong> 990€ 👉 <span style="color: red;">Black Friday : 880€</span><br>
+                <em>(soit 11 € par séance)</em><br>
+                💳 Paiement en 1, 2, 5, ou 12 fois, soit 73,34€ par mois<br>
+                📅 Valable pendant 12 mois
+            </li>
+            <li style="margin-top: 10px;">
+                🏊‍♀️ <strong>104 séances :</strong> 1170€ 👉 <span style="color: red;">Black Friday : 1040€</span><br>
+                <em>(soit 10 € par séance)</em><br>
+                💳 Paiement en 1, 2, 5, ou 12 fois, soit 86,67€ par mois<br>
+                📅 Valable pendant 18 mois
+            </li>
+            <li style="margin-top: 10px;">
+                ✨ <strong>Formule illimitée sur 12 mois :</strong> 105€ / mois
+            </li>
+        </ul>
+        <p style="text-align: center; margin-top: 20px;">
+            Rejoignez-nous pour une expérience Aquavélo inoubliable et atteignez vos objectifs à prix réduits ! 💦🚴‍♀️💦
+        </p>
+    </div>
+</div>
+<?php } ?>
+
+
 	 <dt><strong>Repas hypocalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</dt>
           <dd>			  
           <table>

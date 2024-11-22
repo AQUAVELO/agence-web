@@ -202,7 +202,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
                 📅 Valable pendant 18 mois
             </li>
             <li style="margin-top: 10px;">
-                ✨ <strong>Formule illimitée sur 12 mois :</strong> 105€ / mois
+                ✨ <strong>Formule illimitée sur 12 mois :</strong> 99€ / mois
             </li>
         </ul>
         <p style="text-align: center; margin-top: 20px;">

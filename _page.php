@@ -171,7 +171,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
             ?>
 
 
-		  <?php if (isset($row_center['id']) && $row_center['id'] == 350) { ?>
+		  <?php if (isset($row_center['id']) && $row_center['id'] == 305) { ?>
 <div class="col-md-12">
     <div class="promotion-box" style="border: 1px solid #ccc; padding: 20px; margin-top: 30px; background-color: #f9f9f9;">
         <h3 style="text-align: center;">Découvrez nos offres Black Friday 2024</h3>

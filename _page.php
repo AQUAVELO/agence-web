@@ -212,7 +212,10 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 </div>
 										   
 <?php } ?>
-<br><br>
+
+<!-- Ajouter un espace entre les sections -->
+<div style="margin-top: 40px;"></div>
+
 
 	 <dt><strong>Repas hypocalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</dt>
           <dd>			  

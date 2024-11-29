@@ -106,7 +106,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 
 <?php if ($row_center['id'] == 305) { ?>
-	<form id="appointmentForm" method="POST" action="process_form.php">
+	<form id="appointmentForm" method="POST" action="_page.ph">
   <div class="form-group">
     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
     <select class="form-control" id="center" name="center" required>

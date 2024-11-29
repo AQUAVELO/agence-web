@@ -140,7 +140,14 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <div class="form-group">
   <label for="appointment_date">Date de rendez-vous</label>
   <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
-         min="2024-01-01" max="2025-12-31" onchange="updateFrenchDate()">
+         min="2024-01-01" max="2025-12-31" onchange="updateAvailableTimes()">
+</div>
+
+<div class="form-group">
+  <label for="appointment_time">Heure de rendez-vous</label>
+  <select class="form-control" id="appointment_time" name="appointment_time">
+    <option value="">Veuillez d'abord sélectionner une date</option>
+  </select>
 </div>
 
 <div class="form-group">
@@ -154,37 +161,51 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
 
 <script>
-  function updateFrenchDate() {
+  function updateAvailableTimes() {
     const dateInput = document.getElementById("appointment_date").value; // AAAA-MM-JJ
+    const timeSelect = document.getElementById("appointment_time");
     const formattedDateElement = document.getElementById("formatted_date");
 
+    // Heures disponibles
+    const weekdayTimes = [
+      "8h30", "9h45", "11h", "12h15", "13h30", "14h45", "16h", "17h15", "18h30", "19h45"
+    ];
+    const saturdayTimes = [
+      "8h30", "9h45", "11h", "12h15", "13h30", "14h45"
+    ];
+
+    // Réinitialiser les options du sélecteur d'heure
+    timeSelect.innerHTML = "<option value=''>Sélectionnez une heure</option>";
+
     if (dateInput) {
-      // Convertir la date
       const date = new Date(dateInput);
-      
-      // Jours en français
-      const days = [
-        "Dimanche", "Lundi", "Mardi", "Mercredi", 
-        "Jeudi", "Vendredi", "Samedi"
-      ];
-      
-      // Mois en français
-      const months = [
-        "janvier", "février", "mars", "avril", 
-        "mai", "juin", "juillet", "août", 
-        "septembre", "octobre", "novembre", "décembre"
-      ];
-      
-      // Obtenir les parties de la date
-      const dayName = days[date.getDay()];
+      const dayOfWeek = date.getDay(); // 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
+
+      // Déterminer les heures disponibles
+      const availableTimes = (dayOfWeek >= 1 && dayOfWeek <= 5) ? weekdayTimes : (dayOfWeek === 6 ? saturdayTimes : []);
+
+      // Ajouter les options au sélecteur
+      availableTimes.forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+      });
+
+      // Jours et mois en français
+      const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+      const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+
+      // Mise à jour de la date formatée
+      const dayName = days[dayOfWeek];
       const day = date.getDate().toString().padStart(2, '0');
       const month = months[date.getMonth()];
       const year = date.getFullYear();
 
-      // Mettre à jour le texte affiché
       formattedDateElement.textContent = `${dayName}, le ${day} ${month} ${year}`;
     } else {
       formattedDateElement.textContent = "Veuillez sélectionner une date.";
+      timeSelect.innerHTML = "<option value=''>Veuillez d'abord sélectionner une date</option>";
     }
   }
 </script>

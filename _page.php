@@ -197,8 +197,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	      const day = date.getDate().toString().padStart(2, '0');
 	      const month = months[date.getMonth()];
 	      const year = date.getFullYear();
-	
-	      formattedDateElement.textContent = ${dayName}, le ${day} ${month} ${year};
+	      formattedDateElement.textContent = `${dayName}, le ${day} ${month} ${year}`;
 	    } else {
 	      formattedDateElement.textContent = "Veuillez sélectionner une date.";
 	      timeSelect.innerHTML = "<option value=''>Veuillez d'abord sélectionner une date</option>";

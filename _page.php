@@ -103,63 +103,101 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 
 
-	<div class="col-md-6">
-        <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
-			
-        <form role="form" class="contact-form" method="POST" action="_page.php">
-
-		
-          <div class="form-group">
-            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-            <select class="form-control" id="center" name="center">
-              <?php foreach ($centers_list_d as &$free_d) { ?>
-                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
-              <?php } ?>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="nom">Nom et prénom</label>
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <label for="phone">Téléphone</label>
-            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
-          </div>
-          <input type="hidden" name="reason" id="reason">
-          <input type="hidden" name="segment" id="segment">
-          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-        </form>	
-      </div>
-     </div>
-
-  <div class="col-md-6">
-			
-         <dl style="margin-top:30px;">
-          <dt>Adresse </dt>
-          <dd>
-		  
-            <?= $row_center['address']; ?>
-          </dd>
-          <dt>Téléphone </dt>
-          <dd>
-            <?= $row_center['phone']; ?>
-          </dd>
-          <dt>Horaires </dt>
-          <dd>
-            <?= $row_center['openhours']; ?>
-          </dd>
-          <dt>Découvrez la vie de votre centre </dt>
-          <dd>
-           <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
-
-	
 
 
+
+
+
+	      
+
+	<div class="form-group">
+  <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+  <select class="form-control" id="center" name="center">
+    <?php foreach ($centers_list_d as &$free_d) { ?>
+      <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 
+              value="<?= $free_d['id'] ?>">
+        <?= $free_d['city'] ?>
+      </option>
+    <?php } ?>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="nom">Nom et prénom</label>
+  <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+</div>
+
+<div class="form-group">
+  <label for="email">Email</label>
+  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+</div>
+
+<div class="form-group">
+  <label for="phone">Téléphone</label>
+  <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+</div>
+
+<div class="form-group">
+  <label for="appointment_date">Date de rendez-vous</label>
+  <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
+         min="2024-01-01" max="2025-12-31" onchange="updateFrenchDate()">
+</div>
+
+<div class="form-group">
+  <label>Date sélectionnée :</label>
+  <p id="formatted_date">Veuillez sélectionner une date.</p>
+</div>
+
+<input type="hidden" name="reason" id="reason">
+<input type="hidden" name="segment" id="segment">
+
+<button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+
+<script>
+  function updateFrenchDate() {
+    const dateInput = document.getElementById("appointment_date").value; // AAAA-MM-JJ
+    const formattedDateElement = document.getElementById("formatted_date");
+
+    if (dateInput) {
+      // Convertir la date
+      const date = new Date(dateInput);
+      
+      // Jours en français
+      const days = [
+        "Dimanche", "Lundi", "Mardi", "Mercredi", 
+        "Jeudi", "Vendredi", "Samedi"
+      ];
+      
+      // Mois en français
+      const months = [
+        "janvier", "février", "mars", "avril", 
+        "mai", "juin", "juillet", "août", 
+        "septembre", "octobre", "novembre", "décembre"
+      ];
+      
+      // Obtenir les parties de la date
+      const dayName = days[date.getDay()];
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+
+      // Mettre à jour le texte affiché
+      formattedDateElement.textContent = `${dayName}, le ${day} ${month} ${year}`;
+    } else {
+      formattedDateElement.textContent = "Veuillez sélectionner une date.";
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+		 
 	
 
           <dd>

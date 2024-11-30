@@ -109,95 +109,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	      <form id="appointmentForm" method="POST" action="_page.ph">
   <div class="form-group">
-    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance à Cannes ?</label>
-    <select class="form-control" id="center" name="center" required>
-      <?php foreach ($centers_list_d as &$free_d) { ?>
-        <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 
-                value="<?= $free_d['id'] ?>">
-          <?= $free_d['city'] ?>
-        </option>
-      <?php } ?>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="nom">Nom et prénom</label>
-    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" required>
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-  </div>
-
-  <div class="form-group">
-    <label for="phone">Téléphone</label>
-    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" required>
-  </div>
-
-  <div class="form-group">
-    <label for="appointment_date">Date de rendez-vous</label>
-    <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
-           min="2024-01-01" max="2025-12-31" required onchange="updateAvailableTimes()">
-  </div>
-
-  <div class="form-group">
-    <label for="appointment_time">Heure de rendez-vous</label>
-    <select class="form-control" id="appointment_time" name="appointment_time" required>
-      <option value="">Veuillez d'abord sélectionner une date</option>
-    </select>
-  </div>
-
-  <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-</form>
-
-<form id="appointmentForm" method="POST" action="_page.ph">
-  <div class="form-group">
-    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-    <select class="form-control" id="center" name="center" required>
-      <?php foreach ($centers_list_d as &$free_d) { ?>
-        <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 
-                value="<?= $free_d['id'] ?>">
-          <?= $free_d['city'] ?>
-        </option>
-      <?php } ?>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label for="nom">Nom et prénom</label>
-    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" required>
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
-  </div>
-
-  <div class="form-group">
-    <label for="phone">Téléphone</label>
-    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" required>
-  </div>
-
-  <div class="form-group">
-    <label for="appointment_date">Date de rendez-vous</label>
-    <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
-           min="2024-01-01" max="2025-12-31" required onchange="updateAvailableTimes()">
-  </div>
-
-  <div class="form-group">
-    <label for="appointment_time">Heure de rendez-vous</label>
-    <select class="form-control" id="appointment_time" name="appointment_time" required>
-      <option value="">Veuillez d'abord sélectionner une date</option>
-    </select>
-  </div>
-
-  <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-</form>
-
-<form id="appointmentForm" method="POST" action="_page.ph">
-  <div class="form-group">
-    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance Cannes?</label>
     <select class="form-control" id="center" name="center" required>
       <?php foreach ($centers_list_d as &$free_d) { ?>
         <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 
@@ -288,6 +200,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	    }
 	  }
 	</script>
+
+
 
 
 	

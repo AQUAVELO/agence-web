@@ -107,9 +107,9 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 <?php if ($row_center['id'] == 305) { ?>
 
-	      <form id="appointmentForm" method="POST" action="_page.ph">
+	      <form id="appointmentForm" method="POST" action="_page.php">
   <div class="form-group">
-    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance Cannes?</label>
+    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance à Cannes?</label>
     <select class="form-control" id="center" name="center" required>
       <?php foreach ($centers_list_d as &$free_d) { ?>
         <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 

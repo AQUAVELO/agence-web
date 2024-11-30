@@ -195,6 +195,100 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
   <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
 </form>
 
+<form id="appointmentForm" method="POST" action="_page.ph">
+  <div class="form-group">
+    <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+    <select class="form-control" id="center" name="center" required>
+      <?php foreach ($centers_list_d as &$free_d) { ?>
+        <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> 
+                value="<?= $free_d['id'] ?>">
+          <?= $free_d['city'] ?>
+        </option>
+      <?php } ?>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="nom">Nom et prénom</label>
+    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" required>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Téléphone</label>
+    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" required>
+  </div>
+
+  <div class="form-group">
+    <label for="appointment_date">Date de rendez-vous</label>
+    <input type="date" class="form-control" id="appointment_date" name="appointment_date" 
+           min="2024-01-01" max="2025-12-31" required onchange="updateAvailableTimes()">
+  </div>
+
+  <div class="form-group">
+    <label for="appointment_time">Heure de rendez-vous</label>
+    <select class="form-control" id="appointment_time" name="appointment_time" required>
+      <option value="">Veuillez d'abord sélectionner une date</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+</form>
+
+
+	<script>
+	  function updateAvailableTimes() {
+	    const dateInput = document.getElementById("appointment_date").value; // AAAA-MM-JJ
+	    const timeSelect = document.getElementById("appointment_time");
+	    const formattedDateElement = document.getElementById("formatted_date");
+	
+	    // Heures disponibles
+	    const weekdayTimes = [
+	      "8h30", "9h45", "11h", "12h15", "13h30", "14h45", "16h", "17h15", "18h30", "19h45"
+	    ];
+	    const saturdayTimes = [
+	      "8h30", "9h45", "11h", "12h15", "13h30", "14h45"
+	    ];
+	
+	    // Réinitialiser les options du sélecteur d'heure
+	    timeSelect.innerHTML = "<option value=''>Sélectionnez une heure</option>";
+	
+	    if (dateInput) {
+	      const date = new Date(dateInput);
+	      const dayOfWeek = date.getDay(); // 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
+	
+	      // Déterminer les heures disponibles
+	      const availableTimes = (dayOfWeek >= 1 && dayOfWeek <= 5) ? weekdayTimes : (dayOfWeek === 6 ? saturdayTimes : []);
+	
+	      // Ajouter les options au sélecteur
+	      availableTimes.forEach(time => {
+	        const option = document.createElement("option");
+	        option.value = time;
+	        option.textContent = time;
+	        timeSelect.appendChild(option);
+	      });
+	
+	      // Jours et mois en français
+	      const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+	      const months = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+	
+	      // Mise à jour de la date formatée
+	      const dayName = days[dayOfWeek];
+	      const day = date.getDate().toString().padStart(2, '0');
+	      const month = months[date.getMonth()];
+	      const year = date.getFullYear();
+	      formattedDateElement.textContent = `${dayName}, le ${day} ${month} ${year}`;
+	    } else {
+	      formattedDateElement.textContent = "Veuillez sélectionner une date.";
+	      timeSelect.innerHTML = "<option value=''>Veuillez d'abord sélectionner une date</option>";
+	    }
+	  }
+	</script>
+
 
 	
 

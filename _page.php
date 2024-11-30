@@ -106,7 +106,8 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 
 <?php if ($row_center['id'] == 305) { ?>
-
+	<div class="col-md-6">
+	<h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
 	      <form id="appointmentForm" method="POST" action="_page.php">
   <div class="form-group">
     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance à Cannes?</label>

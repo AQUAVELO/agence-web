@@ -104,59 +104,105 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	      
 
-<div class="col-md-6">
-        <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
-			
+<?php if ($row_center['id'] != 305) { ?>
+    <!-- Nouveau programme avec menu déroulant et choix des cours -->
+    <div class="col-md-6">
+        <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
         <form role="form" class="contact-form" method="POST" action="_page.php">
+            <div class="form-group">
+                <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+                <select class="form-control" id="center" name="center">
+                    <?php foreach ($centers_list_d as &$free_d) { ?>
+                        <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
+                    <?php } ?>
+                </select>
+            </div>
 
-		
-          <div class="form-group">
-            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-            <select class="form-control" id="center" name="center">
-              <?php foreach ($centers_list_d as &$free_d) { ?>
-                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
-              <?php } ?>
-            </select>
-          </div>
+            <div class="form-group">
+                <label for="nom">Nom et prénom</label>
+                <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+            </div>
 
-          <div class="form-group">
-            <label for="nom">Nom et prénom</label>
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <label for="phone">Téléphone</label>
-            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
-          </div>
-          <input type="hidden" name="reason" id="reason">
-          <input type="hidden" name="segment" id="segment">
-          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-        </form>	
-      </div>
-     </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+            </div>
 
-  <div class="col-md-6">
-			
-         <dl style="margin-top:30px;">
-          <dt>Adresse </dt>
-          <dd>
-		  
-            <?= $row_center['address']; ?>
-          </dd>
-          <dt>Téléphone </dt>
-          <dd>
-            <?= $row_center['phone']; ?>
-          </dd>
-          <dt>Horaires </dt>
-          <dd>
-            <?= $row_center['openhours']; ?>
-          </dd>
-          <dt>Découvrez la vie de votre centre </dt>
-          <dd>
-           <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+            <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+            </div>
+
+            <!-- Sélection du jour -->
+            <div class="form-group">
+                <label for="day">Quel jour souhaitez-vous effectuer votre séance ?</label>
+                <select class="form-control" id="day" name="day">
+                    <option value="lundi">Lundi</option>
+                    <option value="mardi">Mardi</option>
+                    <option value="mercredi">Mercredi</option>
+                    <option value="jeudi">Jeudi</option>
+                    <option value="vendredi">Vendredi</option>
+                    <option value="samedi">Samedi</option>
+                </select>
+            </div>
+
+            <!-- Sélection de l'horaire -->
+            <div class="form-group">
+                <label for="schedule">À quelle heure souhaitez-vous effectuer votre séance ?</label>
+                <select class="form-control" id="schedule" name="schedule">
+                    <option value="8h30">8h30</option>
+                    <option value="9h45">9h45</option>
+                    <option value="11h">11h</option>
+                    <option value="12h15">12h15</option>
+                    <option value="13h30">13h30</option>
+                    <option value="14h45">14h45</option>
+                    <option value="16h">16h</option>
+                    <option value="17h15">17h15</option>
+                    <option value="18h30">18h30</option>
+                    <option value="19h45">19h45</option>
+                </select>
+            </div>
+
+            <input type="hidden" name="reason" id="reason">
+            <input type="hidden" name="segment" id="segment">
+            <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+        </form>    
+    </div>
+<?php } else { ?>
+    <!-- Ancien programme sans menu déroulant et choix des cours -->
+    <div class="col-md-6">
+        <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
+        <form role="form" class="contact-form" method="POST" action="_page.php">
+            <div class="form-group">
+                <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+                <select class="form-control" id="center" name="center">
+                    <?php foreach ($centers_list_d as &$free_d) { ?>
+                        <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nom">Nom et prénom</label>
+                <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Téléphone</label>
+                <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+            </div>
+
+            <input type="hidden" name="reason" id="reason">
+            <input type="hidden" name="segment" id="segment">
+            <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+        </form>
+    </div>
+<?php } ?>
 
 
 

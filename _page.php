@@ -104,7 +104,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 
 	      
 
-<?php if ($row_center['id'] != 305) { ?>
+<?php if ($row_center['id'] == 305) { ?>
     <!-- Nouveau programme avec menu déroulant et choix des cours -->
     <div class="col-md-6">
         <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>

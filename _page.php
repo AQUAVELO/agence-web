@@ -48,42 +48,55 @@ fbq('track', 'PageView');
 
 	
 </header>
+
+
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg" alt="Aquavélo">
-        <div class="row" style="margin-top:30px;">
-		
-          <?php if ($row_center['id'] != 305) { ?>
-    <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/2.jpg" alt="Aquavélo">   </div>
-<?php } else { ?>
-    <div class="col-md-6"> <img src="/images/Cannes1.jpg" alt="Aquavélo">
-    </div>
-<?php } ?>
+      <div class="col-md-6">
+        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
+             alt="Photo du centre Aquavélo" class="img-fluid">
 
-          <div class="col-md-6"> <img src="/cloud/thumbnail/center_<?= $row_center['id']; ?>/3.jpg" alt="Aquavélo"> </div>
-</div>	
-      
-	
-<?php if($row_center['id'] == 305)  { ?>
-    <div class="animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
-            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
-        </a>
+        <div class="row" style="margin-top:30px;">
+          <?php if ($row_center['id'] != 305) { ?>
+            <div class="col-md-6">
+              <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
+                   alt="Photo secondaire du centre Aquavélo" class="img-fluid">
+            </div>
+          <?php } else { ?>
+            <div class="col-md-6">
+              <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
+            </div>
+          <?php } ?>
+
+          <div class="col-md-6">
+            <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+                 alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloc Promotion -->
+      <?php 
+      $promotions = [
+          305 => "Cannes",
+          253 => "Antibes",
+          347 => "Nice"
+      ];
+
+      if (array_key_exists($row_center['id'], $promotions)) { ?>
+        <div class="animated activate fadeInLeft">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= $promotions[$row_center['id']]; ?>">
+            <img src="/images/promoJan24.webp" 
+                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="img-fluid">
+          </a>
+        </div>
+      <?php } ?>
     </div>
-<?php } elseif ($row_center['id'] == 253) { ?>
-    <div class="animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
-            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
-        </a>
-    </div>
-<?php } elseif ($row_center['id'] == 347) { ?>
-    <div class="animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/Cannes">
-            <img src="/images/promoJan24.webp" alt="Promotion Aquavelo">
-        </a>
-    </div>
-<?php } ?>
+  </div>
+</section>
+
 
 
 

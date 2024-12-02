@@ -242,23 +242,25 @@ fbq('track', 'PageView');
 	</script>
 		  
           
-          <?php if($row_center['id'] == 179) { ?>
-          <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/9ek3ipg53blseow/PLANNING.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-          <?php } elseif ($row_center['id'] == 253) { ?>
-          <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/yvmr1e9os5znlnc/PLANNINGANTIBES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 305) { ?>
-			 <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/u584xqy1ptaay39/PLANNING%20CANNES.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 308) { ?>
-			 <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/bp1og5armdvom7e/PLANNINGSTRAPHAEL.pdf?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
-           <?php } elseif ($row_center['id'] == 338) { ?>
-          <dt>Planning</dt>
-          <dd> <a href="https://www.dropbox.com/s/x82imnnohskzosx/PLANNINGPUGET?dl=0" title="Réservation Resamania" target="_blank" class="btn btn-default">Télécharger le planning des cours</a> </dd>
- 			<?php } ?>
-          
+         <?php 
+$plannings = [
+  179 => "PLANNING.pdf",
+  253 => "PLANNINGANTIBES.pdf",
+  305 => "PLANNING%20CANNES.pdf",
+  308 => "PLANNINGSTRAPHAEL.pdf",
+  338 => "PLANNINGPUGET?dl=0"
+];
+
+if (isset($plannings[$row_center['id']])) { ?>
+  <dt>Planning</dt>
+  <dd>
+    <a href="https://www.dropbox.com/s/<?= $plannings[$row_center['id']] ?>" 
+       title="Réservation Resamania" target="_blank" class="btn btn-default">
+      Télécharger le planning des cours
+    </a>
+  </dd>
+<?php } ?>
+
         </dl>
 		   
    

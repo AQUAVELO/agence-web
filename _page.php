@@ -51,58 +51,54 @@ fbq('track', 'PageView');
 
 
 
+
+
 <section class="content-area bg1">
   <div class="container">
-    <div class="row">
-      <!-- Première colonne avec la grande image -->
-      <div class="col-md-6">
+    <div class="row mt-3">
+      <!-- Image principale -->
+      <div class="col-md-3 col-6">
         <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
              alt="Photo principale du centre Aquavélo" class="img-fluid">
       </div>
 
-      <!-- Deuxième colonne avec les petites images -->
-      <div class="col-md-6">
-        <div class="row" style="margin-top:30px;">
-          <?php if ($row_center['id'] != 305) { ?>
-            <div class="col-md-6">
-              <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
-                   alt="Photo secondaire du centre Aquavélo" class="img-fluid">
-            </div>
-          <?php } else { ?>
-            <div class="col-md-6">
-              <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
-            </div>
-          <?php } ?>
-
-          <div class="col-md-6">
-            <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
-                 alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
-          </div>
-        </div>
+      <!-- Image secondaire -->
+      <div class="col-md-3 col-6">
+        <?php if ($row_center['id'] != 305) { ?>
+          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
+               alt="Photo secondaire du centre Aquavélo" class="img-fluid">
+        <?php } else { ?>
+          <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
+        <?php } ?>
       </div>
-    </div>
 
-    <!-- Nouvelle ligne pour l'image promotionnelle -->
-    <?php 
-    $promotions = [
-        305 => "Cannes",
-        253 => "Antibes",
-        347 => "Nice"
-    ];
+      <!-- Image supplémentaire -->
+      <div class="col-md-3 col-6">
+        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+             alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
+      </div>
 
-    if (array_key_exists($row_center['id'], $promotions)) { ?>
-      <div class="row" style="margin-top:30px;">
-        <div class="col-12 text-center">
+      <!-- Image promotionnelle -->
+      <?php 
+      $promotions = [
+          305 => "Cannes",
+          253 => "Antibes",
+          347 => "Nice"
+      ];
+
+      if (array_key_exists($row_center['id'], $promotions)) { ?>
+        <div class="col-md-3 col-6">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
             <img src="/images/promoJan24.webp" 
                  alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-promo">
           </a>
         </div>
-      </div>
-    <?php } ?>
+      <?php } ?>
+    </div>
   </div>
 </section>
+
 
 
 

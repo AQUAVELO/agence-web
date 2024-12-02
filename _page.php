@@ -96,13 +96,14 @@ fbq('track', 'PageView');
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
             <img src="/images/promoJan24.webp" 
                  alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="img-fluid" style="max-width: 70%; height: auto;">
+                 class="img-fluid img-promo">
           </a>
         </div>
       </div>
     <?php } ?>
   </div>
 </section>
+
 
 
 

@@ -105,59 +105,57 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
 	      
 
 <div class="col-md-6">
-        <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
-			
-        <form role="form" class="contact-form" method="POST" action="_page.php">
+  <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
 
-		
-          <div class="form-group">
-            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-            <select class="form-control" id="center" name="center">
-              <?php foreach ($centers_list_d as &$free_d) { ?>
-                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
-              <?php } ?>
-            </select>
-          </div>
+  <form role="form" class="contact-form" method="POST" action="_page.php">
+    <div class="form-group">
+      <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+      <select class="form-control" id="center" name="center">
+        <?php foreach ($centers_list_d as &$free_d) { ?>
+          <option 
+            value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8') ?>"
+            <?= (isset($_GET['city']) && $_GET['city'] === $free_d['city']) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8') ?>
+          </option>
+        <?php } ?>
+      </select>
+    </div>
 
-          <div class="form-group">
-            <label for="nom">Nom et prénom</label>
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <label for="phone">Téléphone</label>
-            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
-          </div>
-          <input type="hidden" name="reason" id="reason">
-          <input type="hidden" name="segment" id="segment">
-          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-        </form>	
-      </div>
-     </div>
+    <div class="form-group">
+      <label for="nom">Nom et prénom</label>
+      <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Téléphone</label>
+      <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone">
+    </div>
+    <input type="hidden" name="reason" id="reason">
+    <input type="hidden" name="segment" id="segment">
+    <button type="submit" class="btn btn-secondary">Recevoir mon bon par email</button>
+  </form>
+</div>
 
-  <div class="col-md-6">
-			
-         <dl style="margin-top:30px;">
-          <dt>Adresse </dt>
-          <dd>
-		  
-            <?= $row_center['address']; ?>
-          </dd>
-          <dt>Téléphone </dt>
-          <dd>
-            <?= $row_center['phone']; ?>
-          </dd>
-          <dt>Horaires </dt>
-          <dd>
-            <?= $row_center['openhours']; ?>
-          </dd>
-          <dt>Découvrez la vie de votre centre </dt>
-          <dd>
-           <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
-
+<div class="col-md-6">
+  <dl style="margin-top:30px;">
+    <dt>Adresse</dt>
+    <dd><?= htmlspecialchars($row_center['address'], ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Téléphone</dt>
+    <dd><?= htmlspecialchars($row_center['phone'], ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Horaires</dt>
+    <dd><?= htmlspecialchars($row_center['openhours'], ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Découvrez la vie de votre centre</dt>
+    <dd>
+      <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'], ENT_QUOTES, 'UTF-8') ?>" 
+         title="Facebook" 
+         target="_blank" 
+         class="btn btn-secondary">Facebook</a>
+    </dd>
+  </dl>
+</div>
 
 
 

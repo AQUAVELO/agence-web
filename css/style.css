@@ -4116,7 +4116,7 @@ footer .socialIcons.bigIcons > li > a:hover,
   color: #2d91ff;
 } 
 .img-promo {
-    max-width: 150%; /* Agrandissement à 1,5 fois la taille maximale normale */
+    max-width: 100%; /* Agrandissement à 1,5 fois la taille maximale normale */
     height: auto; /* Garde les proportions */
     margin-top: 15px; /* Espacement entre les images */
 }

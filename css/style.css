@@ -4135,12 +4135,7 @@ td {
     margin-top: 15px; /* Ajoute un espacement supérieur */
 }
 
-/* Rendre l'image plus grande sur les écrans de téléphone */
-@media (max-width: 768px) { 
-    .img-promo {
-        max-width: 80%; /* Étend l'image à 80% sur les petits écrans */
-    }
-}
+
 
 
 

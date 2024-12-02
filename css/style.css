@@ -4116,18 +4116,6 @@ footer .socialIcons.bigIcons > li > a:hover,
   color: #2d91ff;
 } 
 
-table {
-    border: 2px solid rgba(0, 0, 0, 0.1); /* Bordure légère et transparente */
-    width: 100%; /* Prend toute la largeur */
-    border-collapse: collapse; /* Supprime les espaces entre les cellules */
-    margin-top: 30px; /* Espacement supérieur */
-}
-
-td {
-    border: 1px solid rgba(0, 0, 0, 0.1); /* Bordure légère pour les cellules */
-    padding: 10px; /* Espacement interne */
-    text-align: center; /* Centre le contenu */
-}
 
 .img-promo {
     max-width: 50%; /* Taille par défaut : 50% de la largeur */

@@ -4130,11 +4130,18 @@ td {
 }
 
 .img-promo {
-    max-width: 150%; /* Agrandit légèrement l'image promo */
+    max-width: 50%; /* Taille par défaut : 50% de la largeur */
     height: auto; /* Conserve les proportions */
+    margin-top: 15px; /* Ajoute un espacement supérieur */
 }
 
+/* Rendre l'image plus grande sur les écrans de téléphone */
+@media (max-width: 768px) { 
+    .img-promo {
+        max-width: 80%; /* Étend l'image à 80% sur les petits écrans */
+    }
 }
+
 
 
 .circle-text {

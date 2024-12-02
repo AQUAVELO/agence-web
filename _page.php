@@ -50,6 +50,7 @@ fbq('track', 'PageView');
 </header>
 
 
+
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
@@ -78,7 +79,7 @@ fbq('track', 'PageView');
                  alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
           </div>
 
-          <!-- Image promotionnelle au même format -->
+          <!-- Image promotionnelle agrandie -->
           <?php 
           $promotions = [
               305 => "Cannes",
@@ -87,11 +88,11 @@ fbq('track', 'PageView');
           ];
 
           if (array_key_exists($row_center['id'], $promotions)) { ?>
-            <div class="col-md-6">
+            <div class="col-md-6" style="flex: 0 0 100%; max-width: 100%; margin-top: 15px;">
               <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
                 <img src="/images/promoJan24.webp" 
                      alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                     class="img-fluid">
+                     class="img-fluid" style="transform: scale(1.5);">
               </a>
             </div>
           <?php } ?>

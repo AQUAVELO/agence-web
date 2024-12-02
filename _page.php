@@ -135,7 +135,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
     </div>
     <input type="hidden" name="reason" id="reason">
     <input type="hidden" name="segment" id="segment">
-    <button type="submit" class="btn btn-secondary">Recevoir mon bon par email</button>
+    <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
   </form>
 </div>
 
@@ -152,7 +152,7 @@ src="https://www.facebook.com/tr?id=259009481449831&ev=PageView
       <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'], ENT_QUOTES, 'UTF-8') ?>" 
          title="Facebook" 
          target="_blank" 
-         class="btn btn-secondary">Facebook</a>
+         class="btn btn-default">Facebook</a>
     </dd>
   </dl>
 </div>

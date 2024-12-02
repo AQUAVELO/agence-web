@@ -4122,6 +4122,12 @@ footer .socialIcons.bigIcons > li > a:hover,
     height: auto; /* Conserve les proportions */
     margin-top: 15px; /* Ajoute un espacement supérieur */
 }
+.img-same {
+    width: 100%; /* Rend l'image responsive */
+    height: 200px; /* Fixe une hauteur uniforme */
+    object-fit: cover; /* Garde les proportions en recadrant si nécessaire */
+    border-radius: 5px; /* Ajoute des coins arrondis (optionnel) */
+}
 
 
 

@@ -1,64 +1,73 @@
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
-    <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
+	  
+   <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
+	  <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
+   
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-      <li class="active"><?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>, <?= htmlspecialchars($department, ENT_QUOTES, 'UTF-8'); ?></li>
+	
+	    
+      <li class="active"><?= $city; ?>, <?= $department; ?></li> 
     </ol>
   </div>
+	
+		  <?php if($row_center['id'] == 253) { ?>
 
-  <?php if (isset($row_center['id']) && $row_center['id'] == 253) { ?>
-  <!-- Facebook Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){
-      if(f.fbq)return;
-      n=f.fbq=function(){
-          n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments);
-      };
-      if(!f._fbq)f._fbq=n;
-      n.push=n;
-      n.loaded=!0;
-      n.version='2.0';
-      n.queue=[];
-      t=b.createElement(e);t.async=!0;
-      t.src=v;
-      s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s);
-  }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+          <!-- Facebook Pixel Code -->
 
-  fbq('init', '259009481449831');
-  fbq('track', 'PageView');
-  </script>
-  <!-- End Facebook Pixel Code -->
-  <?php } ?>
+<script>
+!function(f,b,e,v,n,t,s)
+{
+    if(f.fbq)return;
+    n=f.fbq=function(){
+        n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments);
+    };
+    if(!f._fbq)f._fbq=n;
+    n.push=n;
+    n.loaded=!0;
+    n.version='2.0';
+    n.queue=[];
+    t=b.createElement(e);t.async=!0;
+    t.src=v;
+    s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s);
+}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '259009481449831');
+fbq('track', 'PageView');
+</script>
+
+
+<!-- End Facebook Pixel Code -->
+
+          <?php } ?>
+	
+
+
+	
 </header>
+
 
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
-      <!-- Image principale -->
       <div class="col-md-6">
-        <?php if (!empty($row_center['id'])): ?>
         <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
              alt="Photo du centre Aquavélo" class="img-fluid">
-        <?php endif; ?>
-      </div>
 
-      <!-- Images supplémentaires -->
-      <div class="col-md-6">
-        <div class="row margin-top-30">
-          <?php if ($row_center['id'] != 305): ?>
-          <div class="col-md-6">
-            <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
-                 alt="Photo secondaire du centre Aquavélo" class="img-fluid">
-          </div>
-          <?php else: ?>
-          <div class="col-md-6">
-            <img src="/images/Cannes1.jpg" alt="Photo promotionnelle du centre de Cannes" class="img-fluid">
-          </div>
-          <?php endif; ?>
+        <div class="row" style="margin-top:30px;">
+          <?php if ($row_center['id'] != 305) { ?>
+            <div class="col-md-6">
+              <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
+                   alt="Photo secondaire du centre Aquavélo" class="img-fluid">
+            </div>
+          <?php } else { ?>
+            <div class="col-md-6">
+              <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
+            </div>
+          <?php } ?>
 
           <div class="col-md-6">
             <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
@@ -66,10 +75,8 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Bloc Promotion -->
-    <div class="row">
+      <!-- Bloc Promotion -->
       <?php 
       $promotions = [
           305 => "Cannes",
@@ -77,33 +84,41 @@
           347 => "Nice"
       ];
 
-      if (array_key_exists($row_center['id'], $promotions)): ?>
-      <div class="col-md-6 margin-top-30 animated activate fadeInLeft">
-        <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-          <img src="/images/promoJan24.webp" 
-               alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-               class="img-fluid">
-        </a>
-      </div>
-      <?php endif; ?>
+      if (array_key_exists($row_center['id'], $promotions)) { ?>
+        <div class="animated activate fadeInLeft">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= $promotions[$row_center['id']]; ?>">
+            <img src="/images/promoJan24.webp" 
+                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="img-fluid">
+          </a>
+        </div>
+      <?php } ?>
     </div>
   </div>
 </section>
 
+
+
+
+	      
+
 <div class="col-md-6">
-  <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
+  <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
+
   <form role="form" class="contact-form" method="POST" action="_page.php">
     <div class="form-group">
       <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
       <select class="form-control" id="center" name="center">
-        <?php foreach ($centers_list_d as &$free_d): ?>
-        <option value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8') ?>" 
-                <?= (isset($_GET['city']) && $_GET['city'] === $free_d['city']) ? 'selected' : '' ?>>
-          <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
-        </option>
-        <?php endforeach; ?>
+        <?php foreach ($centers_list_d as &$free_d) { ?>
+          <option 
+            value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8') ?>"
+            <?= (isset($_GET['city']) && $_GET['city'] === $free_d['city']) ? 'selected' : '' ?>>
+            <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8') ?>
+          </option>
+        <?php } ?>
       </select>
     </div>
+
     <div class="form-group">
       <label for="nom">Nom et prénom</label>
       <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" required>
@@ -116,6 +131,8 @@
       <label for="phone">Téléphone</label>
       <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone">
     </div>
+    <input type="hidden" name="reason" id="reason">
+    <input type="hidden" name="segment" id="segment">
     <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
   </form>
 </div>
@@ -131,7 +148,9 @@
     <dt>Découvrez la vie de votre centre</dt>
     <dd>
       <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'], ENT_QUOTES, 'UTF-8') ?>" 
-         title="Facebook" target="_blank" class="btn btn-default">Facebook</a>
+         title="Facebook" 
+         target="_blank" 
+         class="btn btn-default">Facebook</a>
     </dd>
   </dl>
 </div>

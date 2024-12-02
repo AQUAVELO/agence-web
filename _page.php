@@ -60,7 +60,7 @@ fbq('track', 'PageView');
              alt="Photo principale du centre Aquavélo" class="img-fluid">
       </div>
 
-      <!-- Deuxième colonne avec les petites images et la promo -->
+      <!-- Deuxième colonne avec les petites images -->
       <div class="col-md-6">
         <div class="row" style="margin-top:30px;">
           <?php if ($row_center['id'] != 305) { ?>
@@ -78,29 +78,32 @@ fbq('track', 'PageView');
             <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
                  alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
           </div>
-
-          <!-- Image promotionnelle agrandie -->
-          <?php 
-          $promotions = [
-              305 => "Cannes",
-              253 => "Antibes",
-              347 => "Nice"
-          ];
-
-          if (array_key_exists($row_center['id'], $promotions)) { ?>
-            <div class="col-md-6" style="flex: 0 0 100%; max-width: 100%; margin-top: 15px;">
-              <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-                <img src="/images/promoJan24.webp" 
-                     alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                     class="img-fluid" style="transform: scale(1.5);">
-              </a>
-            </div>
-          <?php } ?>
         </div>
       </div>
     </div>
+
+    <!-- Nouvelle ligne pour l'image promotionnelle -->
+    <?php 
+    $promotions = [
+        305 => "Cannes",
+        253 => "Antibes",
+        347 => "Nice"
+    ];
+
+    if (array_key_exists($row_center['id'], $promotions)) { ?>
+      <div class="row" style="margin-top:30px;">
+        <div class="col-12 text-center">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
+            <img src="/images/promoJan24.webp" 
+                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="img-fluid" style="max-width: 70%; height: auto;">
+          </a>
+        </div>
+      </div>
+    <?php } ?>
   </div>
 </section>
+
 
 
 

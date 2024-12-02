@@ -53,10 +53,14 @@ fbq('track', 'PageView');
 <section class="content-area bg1">
   <div class="container">
     <div class="row">
+      <!-- Première colonne avec la grande image -->
       <div class="col-md-6">
         <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
-             alt="Photo du centre Aquavélo" class="img-fluid">
+             alt="Photo principale du centre Aquavélo" class="img-fluid">
+      </div>
 
+      <!-- Deuxième colonne avec les petites images et la promo -->
+      <div class="col-md-6">
         <div class="row" style="margin-top:30px;">
           <?php if ($row_center['id'] != 305) { ?>
             <div class="col-md-6">
@@ -73,29 +77,30 @@ fbq('track', 'PageView');
             <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
                  alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
           </div>
+
+          <!-- Image promotionnelle au même format -->
+          <?php 
+          $promotions = [
+              305 => "Cannes",
+              253 => "Antibes",
+              347 => "Nice"
+          ];
+
+          if (array_key_exists($row_center['id'], $promotions)) { ?>
+            <div class="col-md-6">
+              <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
+                <img src="/images/promoJan24.webp" 
+                     alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                     class="img-fluid">
+              </a>
+            </div>
+          <?php } ?>
         </div>
       </div>
-
-      <!-- Bloc Promotion -->
-      <?php 
-      $promotions = [
-          305 => "Cannes",
-          253 => "Antibes",
-          347 => "Nice"
-      ];
-
-      if (array_key_exists($row_center['id'], $promotions)) { ?>
-        <div class="animated activate fadeInLeft">
-          <a href="https://www.aquavelo.com/seance-decouverte/<?= $promotions[$row_center['id']]; ?>">
-            <img src="/images/promoJan24.webp" 
-                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="img-fluid">
-          </a>
-        </div>
-      <?php } ?>
     </div>
   </div>
 </section>
+
 
 
 

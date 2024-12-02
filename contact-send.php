@@ -124,19 +124,45 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 
 		$msg = '
-	
+
+
+
+ 	<p>Bonjour <?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>,</p>
+
+<p>Merci pour votre demande !</p>
+
+<p>Nous sommes ravis de vous offrir une <strong>séance découverte gratuite</strong> au centre <strong>Aquavelo de <?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8') ?></strong>. Lors de votre visite, vous aurez l’occasion de participer à un <strong>cours d’aquabiking</strong>, encadré par nos professeurs de sport diplômés. Avant de commencer, nous effectuerons un <strong>bilan personnalisé</strong> afin de définir ensemble vos besoins et vos objectifs.</p>
+
+<p>Prenez rendez-vous dès maintenant en appelant au <strong><?= htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') ?></strong>.</p>
+
+<p>Pour profiter pleinement de votre séance, n’oubliez d’apporter :</p>
+<ul>
+  <li>votre maillot de bain,</li>
+  <li>une serviette,</li>
+  <li>du gel douche,</li>
+  <li>une bouteille d’eau,</li>
+  <li>et des chaussures adaptées à l’aquabike.</li>
+</ul>
+
+<p><strong>Horaires d’ouverture :</strong><br>
+<?= htmlspecialchars($hours, ENT_QUOTES, 'UTF-8') ?></p>
+
+<p><strong>Adresse :</strong><br>
+<?= htmlspecialchars($address, ENT_QUOTES, 'UTF-8') ?></p>
+
+<p><em>(Offre non cumulable)</em></p>
+
+<p>Nous avons hâte de vous accueillir !</p>
+
+<p>Cordialement,<br>
+L’équipe Aquavelo<br>
+<a href="http://aquavelo.com/">http://aquavelo.com/</a></p>
+
+
 
 	
-	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p>
-	<p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coach&eacute;</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
 	
-	<p>Prenez vite rendez vous avec le centre <strong>Aquavelo de ' . $city . '</strong> en appelant au <strong>' . $phone . '</strong>. Pour effectuer votre s&eacute;ance, pensez &agrave; prendre un maillot de bain, une serviette de bain, un gel douche, une bouteille d\'eau et des chaussures d\'aquav&eacute;lo.</p>
-	<p>
-	Horaires d\'ouverture: <strong> ' . $hours . ' </strong><br>
-	Adresse: <strong> ' . $address . ' </strong><br>
-	
-	<p><em>*Offre non cumulable.</em></p>
-	<p>Cordialement,<br>L\'&eacute;quipe Aquavelo<br>http://aquavelo.com/</p>
+ 
 	<p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>'; // Image ajoutée uniquement en bas
 	
 	$mail2->Body = $msg;

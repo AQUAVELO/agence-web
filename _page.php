@@ -53,46 +53,57 @@ fbq('track', 'PageView');
 
 <section class="content-area bg1">
   <div class="container">
-    <table style="width: 100%; border-collapse: collapse; margin-top: 30px; border: 2px solid rgba(0, 0, 0, 0.1);">
-      <tr>
-        <td style="width: 50%; padding: 10px; text-align: center;">
-          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
-               alt="Photo principale du centre Aquavélo" class="img-fluid">
-        </td>
-        <td style="width: 50%; padding: 10px; text-align: center;">
-          <?php if ($row_center['id'] != 305) { ?>
-            <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
-                 alt="Photo secondaire du centre Aquavélo" class="img-fluid">
-          <?php } else { ?>
-            <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
-          <?php } ?>
-        </td>
-      </tr>
-      <tr>
-        <td style="width: 50%; padding: 10px; text-align: center;">
-          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
-               alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
-        </td>
-        <td style="width: 50%; padding: 10px; text-align: center;">
-          <?php 
-          $promotions = [
-              305 => "Cannes",
-              253 => "Antibes",
-              347 => "Nice"
-          ];
+    <div class="row">
+      <!-- Première colonne avec la grande image -->
+      <div class="col-md-6">
+        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
+             alt="Photo principale du centre Aquavélo" class="img-fluid">
+      </div>
 
-          if (array_key_exists($row_center['id'], $promotions)) { ?>
-            <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-              <img src="/images/promoJan24.webp" 
-                   alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                   class="img-fluid img-promo">
-            </a>
+      <!-- Deuxième colonne avec les petites images -->
+      <div class="col-md-6">
+        <div class="row" style="margin-top:30px;">
+          <?php if ($row_center['id'] != 305) { ?>
+            <div class="col-md-6">
+              <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
+                   alt="Photo secondaire du centre Aquavélo" class="img-fluid">
+            </div>
+          <?php } else { ?>
+            <div class="col-md-6">
+              <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid">
+            </div>
           <?php } ?>
-        </td>
-      </tr>
-    </table>
+
+          <div class="col-md-6">
+            <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+                 alt="Photo supplémentaire du centre Aquavélo" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nouvelle ligne pour l'image promotionnelle -->
+    <?php 
+    $promotions = [
+        305 => "Cannes",
+        253 => "Antibes",
+        347 => "Nice"
+    ];
+
+    if (array_key_exists($row_center['id'], $promotions)) { ?>
+      <div class="row" style="margin-top:30px;">
+        <div class="col-12 text-center">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
+            <img src="/images/promoJan24.webp" 
+                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="img-fluid img-promo">
+          </a>
+        </div>
+      </div>
+    <?php } ?>
   </div>
 </section>
+
 
 
 

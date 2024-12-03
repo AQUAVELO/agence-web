@@ -190,54 +190,71 @@ fbq('track', 'PageView');
 		  
 
 <!-- Ajouter un espace entre les sections -->
-<div style="margin-top: 40px;"></div>
 
+	<div style="margin-top: 40px;"></div>
 
-	 <dt><strong>Repas hypocalorique du <?php echo $date; ?></strong> réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</dt>
-          <dd>			  
-          <table>
+<dt><strong>Repas hypocalorique du <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></strong></dt>
+<dd>
+    <p>Réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</p>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
             <tr>
-              <th style="width: 200px; padding: 10px;">Petit déjeuner</th>
-              <th style="width: 200px; padding: 10px;">Repas du midi</th>
-              <th style="width: 200px; padding: 10px;">Repas du soir</th>
-	  </tr>
-	    <tr>
-                <!-- Photo du petit déjeuner -->
-		<td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_pd'];  ?>" alt="Photo du petit déjeuner" style="max-width: 100px;"></td>
-		<!-- Photo du repas du midi -->
-        	<td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_m'];  ?>" alt="Photo du repas du midi" style="max-width: 100px;"></td>
-       		 <!-- Photo du repas du soir -->
-		 <td style="width: 200px; padding: 10px;"><img src="<?php echo $menu_data['photo_s']; ?>" alt="Photo du repas du soir" style="max-width: 100px;"></td>
+                <th style="width: 200px; padding: 10px; text-align: center;">Petit déjeuner</th>
+                <th style="width: 200px; padding: 10px; text-align: center;">Repas du midi</th>
+                <th style="width: 200px; padding: 10px; text-align: center;">Repas du soir</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;">
+                    <?php if (isset($menu_data['photo_pd'])): ?>
+                        <img src="<?= htmlspecialchars($menu_data['photo_pd'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du petit déjeuner" style="max-width: 100px;">
+                    <?php else: ?>
+                        <span>Image non disponible</span>
+                    <?php endif; ?>
+                </td>
+                <td style="text-align: center;">
+                    <?php if (isset($menu_data['photo_m'])): ?>
+                        <img src="<?= htmlspecialchars($menu_data['photo_m'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du repas du midi" style="max-width: 100px;">
+                    <?php else: ?>
+                        <span>Image non disponible</span>
+                    <?php endif; ?>
+                </td>
+                <td style="text-align: center;">
+                    <?php if (isset($menu_data['photo_s'])): ?>
+                        <img src="<?= htmlspecialchars($menu_data['photo_s'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du repas du soir" style="max-width: 100px;">
+                    <?php else: ?>
+                        <span>Image non disponible</span>
+                    <?php endif; ?>
+                </td>
             </tr>
             <tr>
-              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['petit_dejeuner']; ?></td>
-              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['repas_midi']; ?></td>
-              <td style="width: 200px; padding: 10px;"><?php echo $menu_data['souper']; ?></td>
+                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['petit_dejeuner'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
+                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['repas_midi'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
+                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['souper'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
             </tr>
-          </table>
+        </tbody>
+    </table>
 
-		  
-		  
-		 
-	 <div>
- 	  <strong>Collation:</strong> <?php echo $menu_data['collation']; ?>
-	<br>
-	  <strong>Calories totales:</strong> <?php echo $menu_data['calories']; ?>
-	  <p>Moyenne de la consommation calorique quotidienne d'une femme : 1500 calories. 
+    <div>
+        <strong>Collation :</strong> <?= htmlspecialchars($menu_data['collation'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?><br>
+        <strong>Calories totales :</strong> <?= htmlspecialchars($menu_data['calories'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?>
+        <p>Moyenne de la consommation calorique quotidienne d'une femme : 1500 calories. 
         Si vous maintenez un déficit calorique quotidien avec le menu ci-dessus, cela va entraîner <strong>une perte de poids.</strong> 👍</p>
-		 
-	 </div>
+    </div>
 
-	 <div>
-	
+    <div>
+        <?php if (isset($menu_envoye['photo_plat'])): ?>
+            <img src="<?= htmlspecialchars($menu_envoye['photo_plat'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du plat" style="max-width: 100px;">
+        <?php else: ?>
+            <span>Photo du plat non disponible</span>
+        <?php endif; ?>
+    </div>
+</dd>
 
- 	
- 	
-	<!-- Photo du plat: <?php echo '<img src="' . $menu_envoye['photo_plat'] . '" alt="Photo du plat">'; ?>-->
 
-	 </div>
 
-          </dd>
+		  
 	 <?php if($row_center['book_link']) { ?>
           <dt>Agenda pour les adhérents</dt>
           <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>

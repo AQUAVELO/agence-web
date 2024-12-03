@@ -178,7 +178,7 @@ fbq('track', 'PageView');
 		 
 	
 
-          <dd>
+   
 	   <?php	  
 	   // Définition de la variable $date
 		$date = date('d/m/Y');

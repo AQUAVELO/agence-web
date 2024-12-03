@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: text/html; charset=UTF-8');
+
 require '_settings.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -129,17 +129,17 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 		 <p>Bonjour ' . $name . ',</p>
 		
-		<p>Merci pour votre intérêt ! Nous sommes ravis de vous offrir une <strong>séance découverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
+		<p>Merci pour votre int&eacute;r&ecirc;t ! Nous sommes ravis de vous offrir une <strong>s&eacute;ance découverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
 		
-		<p>Lors de votre visite, vous profiterez d’un <strong>cours d’aquabiking coaché</strong>, encadré par nos professeurs de sport diplômés. Nous commencerons par un <strong>bilan personnalisé</strong> pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.</p>
+		<p>Lors de votre visite, vous profiterez d’un <strong>cours d’aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport diplôm&eacute;s. Nous commencerons par un <strong>bilan personnalisé</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-être.</p>
 		
-		<p>Ne manquez pas cette opportunité ! Prenez dès maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N’oubliez de venir équipé(e) avec :</p>
+		<p>Ne manquez pas cette opportunité ! Prenez dès maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N’oubliez de venir équip&eacute;(e) avec :</p>
 		<ul>
 		  <li>Votre maillot de bain,</li>
 		  <li>Une serviette,</li>
 		  <li>Un gel douche,</li>
 		  <li>Une bouteille d’eau,</li>
-		  <li>Et des chaussures adaptées à l’aquabiking.</li>
+		  <li>Et des chaussures adapt&eacute;es &agrave; l’aquabiking.</li>
 		</ul>
 		
 		<p><strong>Horaires d’ouverture :</strong> ' . $hours . '<br>

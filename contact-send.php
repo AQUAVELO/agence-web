@@ -1,5 +1,5 @@
 <?php
-
+header('Content-Type: text/html; charset=UTF-8');
 require '_settings.php';
 
 use PHPMailer\PHPMailer\PHPMailer;

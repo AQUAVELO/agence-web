@@ -229,10 +229,10 @@ fbq('track', 'PageView');
                 </td>
             </tr>
             <tr>
-                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['petit_dejeuner'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
-                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['repas_midi'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
-                <td style="padding: 10px;"><?= htmlspecialchars($menu_data['souper'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?></td>
-            </tr>
+        	<td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['petit_dejeuner'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
+		<td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['repas_midi'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
+		<td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['souper'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
+	   </tr>
         </tbody>
     </table>
 

@@ -133,7 +133,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		
 		<p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
 		
-		<p>Ne manquez pas cette opportunit&eacute; &#33; Prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
+		<p>Ne manquez pas cette opportunit&eacute;, prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
 		<ul>
 		  <li>Votre maillot de bain,</li>
 		  <li>Une serviette,</li>
@@ -145,7 +145,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		<p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
 		<strong>Adresse :</strong> ' . $address . '</p>
 		
-		<p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es !</em></p>
+		<p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
 		
 		<p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
 		

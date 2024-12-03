@@ -253,71 +253,51 @@ fbq('track', 'PageView');
 </dd>
 
 
+<dl>
+  <?php if (!empty($row_center['book_link'])) { ?>
+    <dt>Agenda pour les adhérents</dt>
+    <dd>
+      <a href="https://<?= htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8'); ?>" 
+         title="Réservation en ligne" 
+         aria-label="Cliquez pour réserver en ligne"
+         target="_blank" 
+         class="btn btn-default">Réserver en ligne</a>
+    </dd>
+  <?php } ?>
 
-		  
-	 <?php if($row_center['book_link']) { ?>
-          <dt>Agenda pour les adhérents</dt>
-          <dd> <a href="https://<?=$row_center['book_link'];?>/" title="Réservation en ligne" target="_blank" class="btn btn-default">Réserver en ligne</a> </dd>
-		 <?php } ?>
-
-	   </dd>
-		   
-	  <dd>
-		 
-
-		   
-		   
-          <dt>Résultats Minceurs Rapides</dt>
-          <dd><a class= "btn btn-default" href="javascript:ouvre_popup('/nouveauResultat.html')">Résultats Minceurs</a>  </dd>
-         <script type="text/javascript">
-        function ouvre_popup(page) {
-            window.open(page, "nom_popup", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
-        }
-	</script>
-		    <dt>Mesurez vos résultats Minceurs </dt>
-          <dd><a class= "btn btn-default" href="javascript:ouvre_popup('/menu1.php')">Mesurez vos résultats Minceurs</a>  </dd>
-         <script type="text/javascript">
-        function ouvre_popup(page) {
-            window.open(page, "nom_popup", "menubar=no, status=no, scrollbars=no, menubar=no, width=700, height=700");
-        }
-	</script>
-		  
-          
-         <?php 
-$plannings = [
-  179 => "PLANNING.pdf",
-  253 => "PLANNINGANTIBES.pdf",
-  305 => "PLANNING%20CANNES.pdf",
-  308 => "PLANNINGSTRAPHAEL.pdf",
-  338 => "PLANNINGPUGET?dl=0"
-];
-
-if (isset($plannings[$row_center['id']])) { ?>
-  <dt>Planning</dt>
+  <dt>Résultats Minceurs Rapides</dt>
   <dd>
-    <a href="https://www.dropbox.com/s/<?= $plannings[$row_center['id']] ?>" 
-       title="Réservation Resamania" target="_blank" class="btn btn-default">
-      Télécharger le planning des cours
-    </a>
+    <a class="btn btn-default" 
+       href="javascript:ouvre_popup('/nouveauResultat.html')" 
+       title="Ouvrir les résultats minceurs" 
+       aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
   </dd>
-<?php } ?>
 
-        </dl>
-		   
-   
-		   
-		   
-        <p>
-          <?= $row_center['description']; ?>
-        </p>
-      </div>
-    </div>
-  </div>
+  <dt>Mesurez vos résultats Minceurs</dt>
+  <dd>
+    <a class="btn btn-default" 
+       href="javascript:ouvre_popup('/menu1.php')" 
+       title="Mesurez vos résultats minceurs" 
+       aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
+  </dd>
+
+  <?php 
+  if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
+    <dt>Planning</dt>
+    <dd>
+      <a href="https://www.dropbox.com/s/<?= htmlspecialchars($plannings[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+         title="Télécharger le planning des cours" 
+         aria-label="Télécharger le planning des cours" 
+         target="_blank" 
+         class="btn btn-default">
+        Télécharger le planning des cours
+      </a>
+    </dd>
+  <?php } ?>
+</dl>
+
+	    
 	
-
-	
-
-</section>
 <!--
 <section class="content-area bg2">
   <div class="container">

@@ -129,17 +129,17 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 		 <p>Bonjour ' . $name . ',</p>
 		
-		<p>Merci pour votre int&eacute;r&ecirc;t. Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
+		<p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
 		
-		<p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport diplôm&eacute;s. Nous commencerons par un <strong>bilan personnalisé</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-être.</p>
+		<p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
 		
-		<p>Ne manquez pas cette opportunit&eacute; ! Prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir équip&eacute;(e) avec :</p>
+		<p>Ne manquez pas cette opportunit&eacute; &#33; Prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
 		<ul>
 		  <li>Votre maillot de bain,</li>
 		  <li>Une serviette,</li>
 		  <li>Un gel douche,</li>
 		  <li>Une bouteille d&#39;eau,</li>
-		  <li>Et des chaussures adapt&eacute;es &agrave; l’aquabiking.</li>
+		  <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
 		</ul>
 		
 		<p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
@@ -150,7 +150,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		<p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
 		
 		<p>Cordialement,<br>
-		L’équipe Aquavelo<br>
+		L&#39;&eacute;quipe Aquavelo<br>
 		<a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
 
 

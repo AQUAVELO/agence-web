@@ -127,16 +127,31 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 
 
- 	<p>Bonjour ' . $name . ', </p><p>Nous avons bien re&ccedil;u votre demande pour une s&eacute;ance d&eacute;couverte gratuite.</p>
-	<p>Le centre <strong>Aquavelo de ' . $city . '</strong> est heureux de vous accueillir pour vous faire essayer un <strong>cours d\'aquabiking coach&eacute;</strong> par des professeurs de sport diplom&eacute;s &agrave; la suite d\'un <strong>bilan</strong> durant lequel nous d&eacute;finirons vos besoins et vos objectifs.</p>
-	
-	<p>Prenez vite rendez vous avec le centre <strong>Aquavelo de ' . $city . '</strong> en appelant au <strong>' . $phone . '</strong>. Pour effectuer votre s&eacute;ance, pensez &agrave; prendre un maillot de bain, une serviette de bain, un gel douche, une bouteille d\'eau et des chaussures d\'aquav&eacute;lo.</p>
-	<p>
-	Horaires d\'ouverture: <strong> ' . $hours . ' </strong><br>
-	Adresse: <strong> ' . $address . ' </strong><br>
-	
-	<p><em>*Offre non cumulable.</em></p>
-	<p>Cordialement,<br>L\'&eacute;quipe Aquavelo<br>http://aquavelo.com/</p>
+		 <p>Bonjour ' . $name . ',</p>
+		
+		<p>Merci pour votre intérêt ! Nous sommes ravis de vous offrir une <strong>séance découverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
+		
+		<p>Lors de votre visite, vous profiterez d’un <strong>cours d’aquabiking coaché</strong>, encadré par nos professeurs de sport diplômés. Nous commencerons par un <strong>bilan personnalisé</strong> pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.</p>
+		
+		<p>Ne manquez pas cette opportunité ! Prenez dès maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N’oubliez de venir équipé(e) avec :</p>
+		<ul>
+		  <li>Votre maillot de bain,</li>
+		  <li>Une serviette,</li>
+		  <li>Un gel douche,</li>
+		  <li>Une bouteille d’eau,</li>
+		  <li>Et des chaussures adaptées à l’aquabiking.</li>
+		</ul>
+		
+		<p><strong>Horaires d’ouverture :</strong> ' . $hours . '<br>
+		<strong>Adresse :</strong> ' . $address . '</p>
+		
+		<p><em>*Offre non cumulable. Réservez vite, les places sont limitées !</em></p>
+		
+		<p>Nous avons hâte de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-être.</p>
+		
+		<p>Cordialement,<br>
+		L’équipe Aquavelo<br>
+		<a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
 
 
 

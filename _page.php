@@ -164,7 +164,10 @@ fbq('track', 'PageView');
           </dd>
           <dt>Découvrez la vie de votre centre </dt>
           <dd>
-           <dd> <a href="https://www.facebook.com/<?= $row_center['facebook']; ?>"" title="Facebook" target="_blank" class="btn btn-default">Facebook</a> </dd>
+           <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'], ENT_QUOTES, 'UTF-8'); ?>" 
+  		 title="Facebook" 
+  		 target="_blank" 
+   		class="btn btn-default">Facebook</a>
 
 
 

@@ -141,8 +141,8 @@ fbq('track', 'PageView');
       <label for="phone">Téléphone</label>
       <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone">
     </div>
-    <input type="hidden" name="reason" id="reason">
-    <input type="hidden" name="segment" id="segment">
+    <input type="hidden" name="reason" id="reason" value="default_value">
+    <input type="hidden" name="segment" id="segment" value="default_value">
     <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
   </form>
 </div>

@@ -143,7 +143,7 @@ fbq('track', 'PageView');
     </div>
     <input type="hidden" name="reason" id="reason" value="default_value">
     <input type="hidden" name="segment" id="segment" value="default_value">
-    <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+   <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
   </form>
 </div>
 

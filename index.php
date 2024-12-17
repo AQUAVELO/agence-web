@@ -89,7 +89,7 @@ if (isset($_GET['city'])) {
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];
-  $title = "Aquavelo $city : Aquabiking en $department ";
+  $title = "Aquavelo $city";
 }
 
 ?>

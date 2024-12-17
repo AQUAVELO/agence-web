@@ -9,7 +9,7 @@
       <li><a href="/centres">Centres</a></li>
 	
 	    
-      <li class="active"><?= $city; ?>, <?= $department; ?></li> 
+      <li class="active"><?= $city; ?></li> 
     </ol>
   </div>
 	

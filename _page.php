@@ -270,6 +270,16 @@ fbq('track', 'PageView');
     </dd>
   <?php } ?>
 
+<script>
+function ouvre_popup(url) {
+    window.open(url, '_blank', 'width=800,height=600,scrollbars=yes');
+}
+</script>
+
+<!-- Lien utilisant la fonction -->
+<a href="#" onclick="ouvre_popup('/menu1.php'); return false;">Ouvrir un popup</a>
+	
+
   <dt>Résultats Minceurs Rapides</dt>
   <dd>
     <a class="btn btn-default" 

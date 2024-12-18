@@ -299,9 +299,9 @@ function ouvre_popup(url) {
 
   <?php 
 $plannings = [
-    179 => 'https://www.dropbox.com/scl/fi/qbsl8jydinve58ouqscon/PLANNING.pdf?rlkey=1ugsl2mo7918q7af4f35jc6u5&st=c53qsrbc&dl=1',
-    253 => 'https://www.dropbox.com/scl/fi/cdx3239ternr3lnrpk1gw/PLANNINGANTIBES.pdf?rlkey=ms9o5k3ithrillkl7g3n4tu3u&st=7uxywwwu&dl=1',
-    305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=1'
+    179 => 'https://www.dropbox.com/scl/fi/qbsl8jydinve58ouqscon/PLANNING.pdf?rlkey=1ugsl2mo7918q7af4f35jc6u5&st=c53qsrbc&dl=0',
+    253 => 'https://www.dropbox.com/scl/fi/cdx3239ternr3lnrpk1gw/PLANNINGANTIBES.pdf?rlkey=ms9o5k3ithrillkl7g3n4tu3u&st=7uxywwwu&dl=0',
+    305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=0'
 ];
 
 if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>

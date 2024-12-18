@@ -252,7 +252,7 @@ fbq('track', 'PageView');
         <?php if (isset($menu_envoye['photo_plat'])): ?>
             <img src="<?= htmlspecialchars($menu_envoye['photo_plat'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du plat" style="max-width: 100px;">
         <?php else: ?>
-            <span>Photo du plat non disponible</span>
+            <span></span>
         <?php endif; ?>
     </div>
 </dd>

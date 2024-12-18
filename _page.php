@@ -299,8 +299,8 @@ function ouvre_popup(url) {
 
   <?php 
 $plannings = [
-    101 => 'https://www.dropbox.com/s/abcd123/planning_centre101.pdf',
-    102 => 'https://www.dropbox.com/s/efgh456/planning_centre102.pdf',
+    179 => 'https://www.dropbox.com/home/Public/Aquavelo/Planning?preview=PLANNING.pdf',
+    253 => 'https://www.dropbox.com/home/Public/Aquavelo/Planning?preview=PLANNINGANTIBES.pdf',
     305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=0'
 ];
 

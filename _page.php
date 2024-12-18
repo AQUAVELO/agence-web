@@ -276,8 +276,7 @@ function ouvre_popup(url) {
 }
 </script>
 
-<!-- Lien utilisant la fonction -->
-<a href="#" onclick="ouvre_popup('/menu1.php'); return false;">Ouvrir un popup</a>
+
 	
 
   <dt>Résultats Minceurs Rapides</dt>

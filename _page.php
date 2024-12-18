@@ -302,7 +302,7 @@ function ouvre_popup(url) {
   $plannings = [
     101 => 'https://www.dropbox.com/s/abcd123/planning_centre101.pdf',
     102 => 'https://www.dropbox.com/s/efgh456/planning_centre102.pdf',
-    305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&dl=0'
+    305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&e=1&dl=0'
 ];
   if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
     <dt>Planning</dt>

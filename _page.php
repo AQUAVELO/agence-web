@@ -278,13 +278,15 @@ fbq('track', 'PageView');
        aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
   </dd>
 
-  <dt>Mesurez vos résultats Minceurs</dt>
-  <dd>
-    <a class="btn btn-default" 
-       href="javascript:ouvre_popup('/menu1.php')" 
-       title="Mesurez vos résultats minceurs" 
-       aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
-  </dd>
+ <dt>Mesurez vos résultats Minceurs</dt>
+<dd>
+  <a class="btn btn-default" 
+     href="#"
+     onclick="ouvre_popup('/menu1.php'); return false;" 
+     title="Mesurez vos résultats minceurs" 
+     aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
+</dd>
+
 
   <?php 
   if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>

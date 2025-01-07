@@ -317,11 +317,15 @@ if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
     </dd>
 <?php } ?>
 
+   <dt>Description</dt>
+    <dd>
+<p>
+          <?= $row_center['description']; ?>
+</p>
+   </dd>    
 </dl>
 		 
-  <p>
-          <?= $row_center['description']; ?>
- </p>
+ 
 
 	    
 	

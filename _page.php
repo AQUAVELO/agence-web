@@ -318,6 +318,10 @@ if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
 <?php } ?>
 
 </dl>
+		 
+  <p>
+          <?= $row_center['description']; ?>
+ </p>
 
 	    
 	

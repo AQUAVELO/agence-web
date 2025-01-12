@@ -112,20 +112,26 @@
     <div id="response"></div>
 
     <script>
-        // Fonction pour appeler le script backend
-        async function getAdvice(prompt) {
-            const response = await fetch('api_handler.php', {
+        // Remplacez par votre clé API OpenAI
+        const apiKey = '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';
+
+        // Fonction pour interagir avec l'API ChatGPT
+        async function getAdvice(age, weight, localisation, moral, sport, eau) {
+            const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
+            const url = 'https://api.openai.com/v1/chat/completions';
+
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
                 },
-                body: JSON.stringify({ prompt }),
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 250 // Limite la réponse à 250 tokens
+                })
             });
-
-            if (!response.ok) {
-                console.error('Erreur lors de la communication avec le serveur');
-                return null;
-            }
 
             const data = await response.json();
             return data.choices[0].message.content;
@@ -145,8 +151,7 @@
             responseDiv.textContent = 'Je vais vous donner une réponse adaptée à vous, chargement...';
 
             try {
-                const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
-                const advice = await getAdvice(prompt);
+                const advice = await getAdvice(age, weight, localisation, moral, sport, eau);
                 responseDiv.textContent = advice;
             } catch (error) {
                 responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';

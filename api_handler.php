@@ -5,7 +5,6 @@
 
 require_once '../Include/config.php'; // 
 
-<?php
 echo "Config loaded!";
 
 

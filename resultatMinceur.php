@@ -114,7 +114,7 @@
     <script>
         // Fonction pour appeler le script backend
         async function getAdvice(prompt) {
-            const response = await fetch('/api_handler.php', {
+            const response = await fetch('api_handler.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

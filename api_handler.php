@@ -1,5 +1,13 @@
 <?php
+
+
+
+
 require_once '../Include/config.php'; // 
+
+<?php
+echo "Config loaded!";
+
 
 header('Content-Type: application/json');
 

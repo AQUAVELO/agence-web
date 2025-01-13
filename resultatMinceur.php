@@ -112,26 +112,15 @@
     <div id="response"></div>
 
     <script>
-     document.getElementById('weightForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const age = document.getElementById('age').value;
-    const weight = document.getElementById('weight').value;
-    const localisation = document.getElementById('localisation').value;
-    const moral = document.getElementById('moral').value;
-    const sport = document.getElementById('sport').value;
-    const eau = document.getElementById('eau').value;
-    const responseDiv = document.getElementById('response');
-
-    responseDiv.textContent = 'Je vais vous donner une réponse adaptée à vous, chargement...';
-
+     async function getAdvice() {
     try {
-        const response = await fetch('api.php', {
+        const response = await fetch('http://www.aquavelo.com/api.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                prompt: `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`
+                prompt: 'Donne-moi des conseils pour perdre 5 kg pour une personne âgée de 25 ans.'
             })
         });
 
@@ -140,12 +129,15 @@
         }
 
         const data = await response.json();
-        responseDiv.textContent = data.choices[0].message.content;
+        console.log(data); // Affiche la réponse dans la console
+        return data;
     } catch (error) {
-        responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
         console.error('Erreur:', error);
     }
-});
+}
+
+// Appelez la fonction pour tester
+getAdvice();
     </script>
 </body>
 </html>

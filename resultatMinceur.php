@@ -112,39 +112,41 @@
     <div id="response"></div>
 
     <script>
-        document.getElementById('weightForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Fonction pour interagir avec l'API via api_handler.php
+async function getAdvice(age, weight, localisation, moral, sport, eau) {
+    const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
 
-            // Récupération des données du formulaire
-            const age = document.getElementById('age').value;
-            const weight = document.getElementById('weight').value;
-            const localisation = document.getElementById('localisation').value;
-            const moral = document.getElementById('moral').value;
-            const sport = document.getElementById('sport').value;
-            const eau = document.getElementById('eau').value;
+    const response = await fetch('./api_handler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+    });
 
-            const responseDiv = document.getElementById('response');
-            responseDiv.textContent = 'Je vais vous donner une réponse adaptée à vous, chargement...';
+    const data = await response.json();
+    return data.choices[0].message.content;
+}
 
-            // Crée le prompt et appelle le backend
-            const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour.`;
+// Gestionnaire de formulaire
+document.getElementById('weightForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const age = document.getElementById('age').value;
+    const weight = document.getElementById('weight').value;
+    const localisation = document.getElementById('localisation').value;
+    const moral = document.getElementById('moral').value;
+    const sport = document.getElementById('sport').value;
+    const eau = document.getElementById('eau').value;
+    const responseDiv = document.getElementById('response');
 
-            try {
-                const response = await fetch('./api.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt })
-                });
+    responseDiv.textContent = 'Je vais vous donner une réponse adaptée à vous, chargement...';
 
-                if (!response.ok) throw new Error('Erreur lors de la communication avec le serveur');
-
-                const data = await response.json();
-                responseDiv.textContent = data.choices[0].message.content;
-            } catch (error) {
-                responseDiv.textContent = 'Une erreur est survenue. Veuillez réessayer.';
-                console.error(error);
-            }
-        });
+    try {
+        const advice = await getAdvice(age, weight, localisation, moral, sport, eau);
+        responseDiv.textContent = advice;
+    } catch (error) {
+        responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
+        console.error(error);
+    }
+});
     </script>
 </body>
 </html>

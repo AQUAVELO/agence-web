@@ -1,15 +1,16 @@
 <?php
+// Activer l'affichage des erreurs
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require '_config.php';
-// Assurez-vous que ce chemin est correct
 
+// Inclure _config.php
+require '_config.php';
+error_log("Config loaded!");
+
+// Définir le type de contenu
 header('Content-Type: application/json');
 
-// Étape de débogage : vérifier si le fichier est exécuté
-error_log("api.php est appelé");
-
-// Vérifiez la méthode HTTP
+// Vérifier la méthode HTTP
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405); // Méthode non autorisée
     echo json_encode(['error' => 'Seules les requêtes POST sont autorisées.']);
@@ -17,25 +18,31 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Lire les données JSON
-$data = json_decode(file_get_contents('php://input'), true);
+$input = file_get_contents('php://input');
+$data = json_decode($input, true);
+
 if (empty($data)) {
     http_response_code(400); // Requête incorrecte
     echo json_encode(['error' => 'Aucune donnée reçue']);
     exit;
 }
 
-// Étape de débogage : afficher les données reçues
-error_log("Données reçues : " . print_r($data, true));
-
-// Vérifiez si "prompt" est présent
+// Vérifier si "prompt" est présent
 if (!isset($data['prompt'])) {
     http_response_code(400);
     echo json_encode(['error' => 'Le champ "prompt" est requis.']);
     exit;
 }
 
-// Testez en renvoyant une réponse fictive
-echo json_encode(['message' => 'api.php fonctionne correctement', 'prompt' => $data['prompt']]);
+// Log des données reçues
+error_log("Données reçues : " . print_r($data, true));
+
+// Réponse de test
+echo json_encode([
+    'message' => 'api.php fonctionne correctement',
+    'prompt' => $data['prompt'],
+    'api_key' => defined('API_KEY') ? 'API_KEY est définie' : 'API_KEY non définie'
+]);
 exit;
 ?>
 

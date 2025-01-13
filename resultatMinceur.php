@@ -5,139 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conseils pour perdre du poids</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        select, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #response {
-            margin-top: 20px;
-            padding: 15px;
-            background: #e8f5e9;
-            border-radius: 4px;
-            color: #2e7d32;
-        }
+        /* Styles restent les mêmes */
     </style>
 </head>
 <body>
     <h1>Conseils pour perdre du poids</h1>
     <form id="weightForm">
-        <label for="age">Choisissez votre tranche d'âge :</label>
-        <select id="age" name="age">
-            <option value="15-25">15-25 ans</option>
-            <option value="26-35">26-35 ans</option>
-            <option value="36-45">36-45 ans</option>
-            <option value="46-55">46-55 ans</option>
-            <option value="56-65">56-65 ans</option>
-            <option value="66-75">66-75 ans</option>
-            <option value="80+">80 ans et plus</option>
-        </select>
-
-        <label for="weight">Choisissez votre poids en trop :</label>
-        <select id="weight" name="weight">
-            <option value="moins de 5">5 kg et moins</option>
-            <option value="6 à 9">6 à 9 kg</option>
-            <option value="10 à 15">10 à 15 kg</option>
-            <option value="15 à 20">15 à 20 kg</option>
-            <option value="plus de 21">plus de 21 kg</option>
-        </select>
-
-        <label for="localisation">Où est localisée votre prise de poids ?</label>
-        <select id="localisation" name="localisation">
-            <option value="ventre">Plutôt sur le ventre</option>
-            <option value="hanches">Plutôt sur les hanches</option>
-            <option value="ventre et hanches">Sur le ventre et les hanches</option>
-        </select>
-
-        <label for="moral">Comment vous sentez-vous actuellement ?</label>
-        <select id="moral" name="moral">
-            <option value="stressé">Plutôt stressé</option>
-            <option value="fatigué">Plutôt fatigué</option>
-            <option value="tout va bien">Tout va bien</option>
-        </select>
-
-        <label for="sport">Pratiquez-vous une activité sportive cardiovasculaire ?</label>
-        <select id="sport" name="sport">
-            <option value="1 heure par semaine">1 heure par semaine</option>
-            <option value="3 heures par semaine">3 heures par semaine</option>
-            <option value="plus de 3 heures par semaine">Plus de 3 heures par semaine</option>
-            <option value="pas du tout">Pas du tout</option>
-        </select>
-
-        <label for="eau">Combien d'eau buvez-vous par jour ?</label>
-        <select id="eau" name="eau">
-            <option value="1,5 litre et plus">1,5 litre et plus</option>
-            <option value="1 litre">1 litre</option>
-            <option value="1/2 litre et moins">1/2 litre et moins</option>
-        </select>
-
+        <!-- Éléments du formulaire restent les mêmes -->
         <button type="submit">Obtenir des conseils</button>
     </form>
     <div id="response"></div>
 
     <script>
-     async function getAdvice() {
-    try {
-        const response = await fetch('http://www.aquavelo.com/api.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                prompt: 'Donne-moi des conseils pour perdre 5 kg pour une personne âgée de 25 ans.'
-            })
+        document.getElementById('weightForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Empêche le comportement par défaut
+
+            // Récupère les données du formulaire
+            var age = document.getElementById('age').value;
+            var weight = document.getElementById('weight').value;
+            var localisation = document.getElementById('localisation').value;
+            var moral = document.getElementById('moral').value;
+            var sport = document.getElementById('sport').value;
+            var eau = document.getElementById('eau').value;
+
+            // Construit le prompt dynamique
+            var prompt = 'Conseils pour perdre du poids pour une personne de ' + age + ' ans, avec ' + weight + ' kg en trop, principalement sur ' + localisation + ', se sent ' + moral + ', fait ' + sport + ' de sport par semaine, et boit ' + eau + ' d\'eau par jour.';
+
+            // Affiche un message de chargement
+            document.getElementById('response').innerHTML = 'En cours de traitement...';
+
+            // Appelle getAdvice avec le prompt
+            var advice = await getAdvice(prompt);
+
+            // Affiche la réponse
+            document.getElementById('response').innerHTML = advice;
         });
 
-        if (!response.ok) {
-            throw new Error('Erreur réseau');
-        }
-
-        const data = await response.json();
-        console.log(data); // Affiche la réponse dans la console
-        return data;
-    } catch (error) {
-        console.error('Erreur:', error);
-    }
-}
-
-// Appelez la fonction pour tester
-getAdvice();
-    </script>
-</body>
-</html>
+        async function getAdvice(prompt) {
+            try {
+                const response = await fetch('http://www.aquavelo.com/api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': '

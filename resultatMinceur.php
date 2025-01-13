@@ -1,4 +1,4 @@
- <html>
+<html>
 <head>
     <style>.lw { font-size: 60px; }</style>
 </head>
@@ -134,7 +134,8 @@
 
         <button type="submit">Obtenir des conseils</button>
     </form>
-    <div id="response">Pour perdre moins de 5 kg, il est conseillé de pratiquer une activité physique plus régulière, comme l'aquavelo, qui est idéale pour cibler la perte de poids au niveau du ventre. En plus de l'activité sportive cardiovasculaire hebdomadaire, il est important de manger équilibré en privilégiant les fruits, les légumes, les protéines maigres et les céréales complètes. Il faut également limiter la consommation de sucres et de graisses saturées. Boire 1,5 litre d'eau par jour est une bonne habitude, mais il est important de rester hydraté tout au long de la journée. Pour améliorer le moral, il est recommandé de pratiquer des activités relaxantes comme la méditation, le yoga ou la lecture. Il est conseillé de perdre entre 2 à 3 kilos par mois pour une perte de poids saine et durable.</div>
+    <!-- Div vide pour afficher la réponse -->
+    <div id="response"></div>
 
     <script>
         // Remplacez par votre clé API OpenAI

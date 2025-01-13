@@ -110,6 +110,7 @@
         <button type="submit">Obtenir des conseils</button>
     </form>
     <div id="response"></div>
+    <button id="closeButton" style="display: none;">Fermer la fenêtre</button>
 
     <script>
         // Fonction pour interagir avec l'API via api_handler.php
@@ -147,6 +148,9 @@ document.getElementById('weightForm').addEventListener('submit', async (e) => {
         console.error(error);
     }
 });
+document.getElementById('closeButton').addEventListener('click', () => {
+    window.close(); // Ferme la fenêtre du navigateur
+});        
     </script>
 </body>
 </html>

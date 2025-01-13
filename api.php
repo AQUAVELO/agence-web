@@ -1,5 +1,6 @@
 <?php
-require_once '../include/config.php'; // Assurez-vous que ce chemin est correct
+require_once __DIR__ . '/../Include/config.php';
+// Assurez-vous que ce chemin est correct
 
 header('Content-Type: application/json');
 

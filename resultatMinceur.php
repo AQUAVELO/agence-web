@@ -1,6 +1,11 @@
- <!DOCTYPE html>
-<html lang="fr">
+ <html>
 <head>
+    <style>.lw { font-size: 60px; }</style>
+</head>
+<body>
+    <!-- Bouton rond "Fermer la fenêtre" en haut à droite -->
+    <button id="bouton-fermeture">×</button>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conseils pour perdre du poids</title>
@@ -53,9 +58,29 @@
             border-radius: 4px;
             color: #2e7d32;
         }
+        /* Style pour le bouton rond de fermeture */
+        #bouton-fermeture {
+            position: fixed; /* Position fixe pour rester en haut à droite */
+            top: 20px; /* Espacement depuis le haut */
+            right: 20px; /* Espacement depuis la droite */
+            background-color: #ff4444; /* Couleur rouge pour le bouton */
+            color: white;
+            border: none;
+            width: 40px; /* Largeur du bouton */
+            height: 40px; /* Hauteur du bouton */
+            border-radius: 50%; /* Rend le bouton rond */
+            font-size: 24px; /* Taille du symbole × */
+            cursor: pointer;
+            z-index: 1000; /* Assure que le bouton est au-dessus des autres éléments */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #bouton-fermeture:hover {
+            background-color: #cc0000; /* Couleur au survol */
+        }
     </style>
-</head>
-<body>
+
     <h1>Conseils pour perdre du poids</h1>
     <form id="weightForm">
         <label for="age">Choisissez votre tranche d'âge :</label>
@@ -109,70 +134,28 @@
 
         <button type="submit">Obtenir des conseils</button>
     </form>
-    <div id="response"></div>
-        
-    <button id="closeButton">Fermer la fenêtre</button>
+    <div id="response">Pour perdre moins de 5 kg, il est conseillé de pratiquer une activité physique plus régulière, comme l'aquavelo, qui est idéale pour cibler la perte de poids au niveau du ventre. En plus de l'activité sportive cardiovasculaire hebdomadaire, il est important de manger équilibré en privilégiant les fruits, les légumes, les protéines maigres et les céréales complètes. Il faut également limiter la consommation de sucres et de graisses saturées. Boire 1,5 litre d'eau par jour est une bonne habitude, mais il est important de rester hydraté tout au long de la journée. Pour améliorer le moral, il est recommandé de pratiquer des activités relaxantes comme la méditation, le yoga ou la lecture. Il est conseillé de perdre entre 2 à 3 kilos par mois pour une perte de poids saine et durable.</div>
 
     <script>
-        // Fonction pour interagir avec l'API via api_handler.php
-async function getAdvice(age, weight, localisation, moral, sport, eau) {
-    const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
+        // Remplacez par votre clé API OpenAI
+        const apiKey = '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';
 
-    const response = await fetch('./api.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
-    });
-
-    const data = await response.json();
-    return data;
-}
-
-// Gestionnaire de formulaire
-document.getElementById('weightForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const age = document.getElementById('age').value;
-    const weight = document.getElementById('weight').value;
-    const localisation = document.getElementById('localisation').value;
-    const moral = document.getElementById('moral').value;
-    const sport = document.getElementById('sport').value;
-    const eau = document.getElementById('eau').value;
-    const responseDiv = document.getElementById('response');
-
-    responseDiv.textContent = 'Je vais vous donner une réponse adaptée à vous, chargement...';
-
-    try {
-        const data = await getAdvice(age, weight, localisation, moral, sport, eau);
-        responseDiv.innerHTML = `
-            <p>${data.choices[0].message.content}</p>
-            <p>Nombre total de diagnostics : ${data.counter}</p>
-        `;
-
-        // Afficher le bouton de fermeture
-        document.getElementById('closeButton').style.display = 'block';
-    } catch (error) {
-        responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
-        console.error(error);
-    }
-});
-
-// Gestionnaire pour le bouton de fermeture
-document.getElementById('closeButton').addEventListener('click', () => {
-    window.close(); // Ferme la fenêtre du navigateur
-});
-
-    <script>
-        // Initialiser le compteur
-        let counter = 100;
-
-        // Fonction pour interagir avec l'API via api_handler.php
+        // Fonction pour interagir avec l'API ChatGPT
         async function getAdvice(age, weight, localisation, moral, sport, eau) {
             const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
+            const url = 'https://api.openai.com/v1/chat/completions';
 
-            const response = await fetch('./api_handler.php', {
+            const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 250 // Limite la réponse à 250 tokens
+                })
             });
 
             const data = await response.json();
@@ -194,18 +177,7 @@ document.getElementById('closeButton').addEventListener('click', () => {
 
             try {
                 const advice = await getAdvice(age, weight, localisation, moral, sport, eau);
-
-                // Incrémenter le compteur
-                counter++;
-
-                // Afficher la réponse et le compteur
-                responseDiv.innerHTML = `
-                    <p>${advice}</p>
-                    <p>Nombre total de diagnostics : ${counter}</p>
-                `;
-
-                // Afficher le bouton de fermeture
-                document.getElementById('closeButton').style.display = 'block';
+                responseDiv.textContent = advice;
             } catch (error) {
                 responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
                 console.error(error);
@@ -213,7 +185,7 @@ document.getElementById('closeButton').addEventListener('click', () => {
         });
 
         // Gestionnaire pour le bouton de fermeture
-        document.getElementById('closeButton').addEventListener('click', () => {
+        document.getElementById('bouton-fermeture').addEventListener('click', () => {
             window.close(); // Ferme la fenêtre du navigateur
         });
     </script>

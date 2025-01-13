@@ -1,5 +1,5 @@
 <?php
-require_once '../include/config.php'; // Charge la clé API de manière sécurisée
+require_once '../Include/config.php'; // Charge la clé API de manière sécurisée
 
 header('Content-Type: application/json');
 

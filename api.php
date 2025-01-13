@@ -1,42 +1,54 @@
 <?php
+require_once '../include/config.php'; // Charge la clé API de manière sécurisée
+
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *'); // Autoriser les requêtes CORS
-header('Access-Control-Allow-Methods: POST'); // Autoriser uniquement POST
-header('Access-Control-Allow-Headers: Content-Type'); // Autoriser les en-têtes JSON
 
-// Vérifier que la méthode est bien POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['error' => 'Méthode non autorisée. Utilisez POST.']);
+// Vérifie si la requête est une requête POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    if (!isset($data['prompt'])) {
+        echo json_encode(['error' => 'Prompt is required']);
+        http_response_code(400);
+        exit;
+    }
+
+    $prompt = $data['prompt'];
+
+    // Appelle l'API OpenAI
+    $apiUrl = 'https://api.openai.com/v1/chat/completions';
+    $headers = [
+        'Authorization: Bearer ' . API_KEY,
+        'Content-Type: application/json'
+    ];
+    $body = json_encode([
+        'model' => 'gpt-3.5-turbo',
+        'messages' => [['role' => 'user', 'content' => $prompt]],
+        'max_tokens' => 250
+    ]);
+
+    // Effectue une requête cURL
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode === 200) {
+        echo $response;
+    } else {
+        echo json_encode(['error' => 'API request failed', 'details' => $response]);
+        http_response_code($httpCode);
+    }
     exit;
 }
 
-// Lire les données JSON envoyées
-$input = json_decode(file_get_contents('php://input'), true);
-if (json_last_error() !== JSON_ERROR_NONE) {
-    http_response_code(400); // Bad Request
-    echo json_encode(['error' => 'Données JSON invalides.']);
-    exit;
-}
-
-// Exemple de traitement des données
-$prompt = $input['prompt'] ?? '';
-if (empty($prompt)) {
-    http_response_code(400); // Bad Request
-    echo json_encode(['error' => 'Le champ "prompt" est requis.']);
-    exit;
-}
-
-// Simuler une réponse (remplacez ceci par un appel à l'API OpenAI)
-$response = [
-    'choices' => [
-        [
-            'message' => [
-                'content' => 'Ceci est une réponse simulée pour : ' . $prompt
-            ]
-        ]
-    ]
-];
-
-echo json_encode($response);
+// Si la requête n'est pas POST
+http_response_code(405); // Méthode non autorisée
+echo json_encode(['error' => 'Invalid request method']);
 ?>
+

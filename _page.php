@@ -282,7 +282,7 @@ function ouvre_popup(url) {
   <dt>Résultats Minceurs Rapides</dt>
   <dd>
     <a class="btn btn-default" 
-       href="javascript:ouvre_popup('/resultatMinceur.php')" 
+       href="javascript:ouvre_popup('/nouveauResultat.html')" 
        title="Ouvrir les résultats minceurs" 
        aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
   </dd>
@@ -291,7 +291,7 @@ function ouvre_popup(url) {
 <dd>
   <a class="btn btn-default" 
      href="#"
-     onclick="ouvre_popup('/menu1.php'); return false;" 
+     onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
      title="Mesurez vos résultats minceurs" 
      aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
 </dd>

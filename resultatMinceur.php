@@ -112,7 +112,7 @@
     <div id="response"></div>
 
     <script>
-       document.getElementById('weightForm').addEventListener('submit', async (e) => {
+     document.getElementById('weightForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const age = document.getElementById('age').value;
     const weight = document.getElementById('weight').value;
@@ -134,11 +134,16 @@
                 prompt: `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`
             })
         });
+
+        if (!response.ok) {
+            throw new Error('Erreur réseau');
+        }
+
         const data = await response.json();
         responseDiv.textContent = data.choices[0].message.content;
     } catch (error) {
         responseDiv.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
-        console.error(error);
+        console.error('Erreur:', error);
     }
 });
     </script>

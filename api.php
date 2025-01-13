@@ -1,24 +1,42 @@
 <?php
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *'); // Autoriser les requêtes CORS
+header('Access-Control-Allow-Methods: POST'); // Autoriser uniquement POST
+header('Access-Control-Allow-Headers: Content-Type'); // Autoriser les en-têtes JSON
 
-// Récupérer les données du formulaire
-$data = json_decode(file_get_contents('php://input'), true);
+// Vérifier que la méthode est bien POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405); // Method Not Allowed
+    echo json_encode(['error' => 'Méthode non autorisée. Utilisez POST.']);
+    exit;
+}
 
-// Clé API (stockée de manière sécurisée)
-$apiKey = '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';
+// Lire les données JSON envoyées
+$input = json_decode(file_get_contents('php://input'), true);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400); // Bad Request
+    echo json_encode(['error' => 'Données JSON invalides.']);
+    exit;
+}
 
-// Appeler l'API OpenAI
-$url = 'https://api.openai.com/v1/chat/completions';
-$response = http_post_data($url, json_encode([
-    'model' => 'gpt-3.5-turbo',
-    'messages' => [['role' => 'user', 'content' => $data['prompt']]],
-    'max_tokens' => 250
-]), [
-    'headers' => [
-        'Content-Type: application/json',
-        'Authorization' => 'Bearer ' . $apiKey
+// Exemple de traitement des données
+$prompt = $input['prompt'] ?? '';
+if (empty($prompt)) {
+    http_response_code(400); // Bad Request
+    echo json_encode(['error' => 'Le champ "prompt" est requis.']);
+    exit;
+}
+
+// Simuler une réponse (remplacez ceci par un appel à l'API OpenAI)
+$response = [
+    'choices' => [
+        [
+            'message' => [
+                'content' => 'Ceci est une réponse simulée pour : ' . $prompt
+            ]
+        ]
     ]
-]);
+];
 
-echo $response;
+echo json_encode($response);
 ?>

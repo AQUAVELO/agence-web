@@ -287,12 +287,12 @@ function ouvre_popup(url) {
        aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
   </dd>
 
- <dt>Mesurez vos résultats Minceurs</dt>
+ <dt>Conseils pour perdre du poids</dt>
 <dd>
   <a class="btn btn-default" 
      href="#"
      onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-     title="Mesurez vos résultats minceurs" 
+     title="Conseils pour perdre du poids" 
      aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
 </dd>
 

@@ -293,7 +293,7 @@ function ouvre_popup(url) {
      href="#"
      onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
      title="Conseils pour perdre du poids" 
-     aria-label="Mesurez vos résultats minceurs">Mesurez vos résultats Minceurs</a>
+     aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
 </dd>
 
 

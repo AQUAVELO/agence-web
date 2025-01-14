@@ -96,14 +96,14 @@
 
         <label for="weight">Choisissez votre poids en trop :</label>
         <select id="weight" name="weight">
-            <option value="moins de 5">5 kg et moins</option>
-            <option value="6 à 9">6 à 9 kg</option>
-            <option value="10 à 15">10 à 15 kg</option>
-            <option value="15 à 20">15 à 20 kg</option>
+            <option value="moins de 3">3 kg et moins</option>
+            <option value="4 à 7">4 à 7 kg</option>
+            <option value="8 à 12">8 à 12 kg</option>
+            <option value="13 à 20">13 à 20 kg</option>
             <option value="plus de 21">plus de 21 kg</option>
         </select>
 
-        <label for="localisation">Où est localisée votre prise de poids ?</label>
+        <label for="localisation">Où est localisée votre cellulite ?</label>
         <select id="localisation" name="localisation">
             <option value="ventre">Plutôt sur le ventre</option>
             <option value="hanches">Plutôt sur les hanches</option>
@@ -140,7 +140,7 @@
     <script>
         // Fonction pour interagir avec l'API via api_handler.php
         async function getAdvice(age, weight, localisation, moral, sport, eau) {
-            const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une prise de poids localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
+            const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une cellulite localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
 
             const response = await fetch('./api_handler.php', {
                 method: 'POST',

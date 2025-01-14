@@ -138,7 +138,7 @@
     <div id="response"></div>
 
     <script>
-        // Fonction pour interagir avec l'API via api_handler.php
+        // Fonction 
         async function getAdvice(age, weight, localisation, moral, sport, eau) {
             const prompt = `Donne-moi des conseils pour perdre ${weight} kg pour une personne âgée de ${age} ans, avec une cellulite localisée ${localisation}, qui se sent ${moral}, pratique une activité sportive cardiovasculaire ${sport}, et boit ${eau} d'eau par jour. Parle de son âge, propose l'aquavelo comme activité physique pour solutionner son problème de poids localisé, explique ce qu'il faut manger durant les repas, cite le nombre de kilos à perdre, et donne des conseils pour améliorer son moral et son hydratation si nécessaire. Limite la réponse à 12 lignes. Ne parle pas de consultation auprès d'un médecin.`;
 

@@ -10,6 +10,7 @@ if ($page == 'centers') $title = 'Centres d\'aquabiking';
 if ($page == 'concept') $title = 'Concept Aquavelo';
 if ($page == 'free') $title = 'Séance découverte';
 if ($page == 'partenaires') $title = 'Partenaires';
+if ($page == 'conseilminceur') $title = 'Conseils Minceur';
 if ($page == 'contact') $title = 'Contactez-nous';
 
 
@@ -243,9 +244,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
 
 
-                 <li <?php if ($page == 'Conseils minceurs') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">
-                  <li><a href="https://www.dietsuccess.fr">Conseils minceurs</a></li>
+                  <li><a href="/conseilminceur">Conseils Minceur</a></li>
                 </ul>
                     </li>
 

@@ -39,9 +39,7 @@ $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 $news_querys = $database->prepare('SELECT news, photo, titre FROM article');
 $news_querys->execute();
 $news_datas = $news_querys->fetchAll(PDO::FETCH_ASSOC); // Récupère toutes les lignes
- if (!empty($news_datas)) {
-            // Afficher un message indiquant qu'il y a des résultats
-            echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
+
 
 
 // NOUVEAU

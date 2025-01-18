@@ -69,8 +69,14 @@
         $sql = "SELECT id, titre, news, photo FROM article"; // Assurez-vous que les noms des champs sont corrects
         $result = $conn->query($sql); // Exécuter la requête
 
+        // Vérifier si la requête a réussi
+        if ($result === false) {
+            // Afficher un message d'erreur détaillé
+            die("Erreur lors de l'exécution de la requête : " . $conn->error);
+        }
+
         // Vérifier s'il y a des résultats
-        if ($result && $result->num_rows > 0) {
+        if ($result->num_rows > 0) {
             // Afficher les données de chaque ligne
             while($row = $result->fetch_assoc()) {
                 echo '<div class="article">';

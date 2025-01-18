@@ -55,10 +55,15 @@
 
     <div class="container">
         <?php
-
-         // Inclure les paramètres de connexion à la base de données
+        // Inclure les paramètres de connexion à la base de données
         require '_settings.php';
-        
+
+        // Tester si la connexion à la base de données est réussie
+        if ($conn->connect_error) {
+            die("Erreur de connexion à la base de données : " . $conn->connect_error);
+        } else {
+            echo "Connexion à la base de données réussie !<br><br>";
+        }
 
         // Requête SQL pour sélectionner les articles
         $sql = "SELECT id, titre, news, photo FROM article"; // Assurez-vous que les noms des champs sont corrects

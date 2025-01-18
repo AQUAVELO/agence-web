@@ -55,6 +55,9 @@
 
     <div class="container">
         <?php
+
+         // Inclure les paramètres de connexion à la base de données
+        require '_settings.php';
         
 
         // Requête SQL pour sélectionner les articles

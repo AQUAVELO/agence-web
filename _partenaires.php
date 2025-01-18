@@ -1,11 +1,5 @@
 <?php
-// Connexion à la base de données
-try {
-    $database = new PDO('mysql:host=localhost;dbname=nom_de_votre_base', 'utilisateur', 'mot_de_passe');
-    $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Erreur de connexion à la base de données : " . $e->getMessage());
-}
+
 
 // Requête pour récupérer tous les articles
 $news_query = $database->prepare('SELECT news, photo, titre FROM article');

@@ -252,7 +252,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                   <li <?php if ($page == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>
                 <ul class="dropdown-menu">
-                  <li><a href="/conseilminceur.php">Partenaires</a></li>
+                  <li><a href="/partenaires">Partenaires</a></li>
               
 
                 </ul>

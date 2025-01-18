@@ -28,3 +28,7 @@ RewriteRule ^cgv$ /?p=cgv [QSA,L]
 RewriteRule ^mentions-legales$ /?p=mentions [QSA,L]
 
 RewriteRule ^facebook$ http://www.facebook.com/pages/aquavelo/number?fref=ts [QSA,L]
+
+# Nouvelle règle pour conseilminceur
+RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
+</IfModule>

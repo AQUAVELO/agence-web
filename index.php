@@ -34,6 +34,12 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
+// requete pour récuperer les news 
+$news_query = $database->prepare('SELECT news, photo, titre FROM article ');
+$news_query->bindParam(':condition', $valeur_condition, PDO::PARAM_STR); // ou PDO::PARAM_INT si la condition est un entier
+$news_query->execute();
+$news_data = $news_query->fetch(PDO::FETCH_ASSOC);
+
 
 
 // NOUVEAU

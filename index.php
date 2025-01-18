@@ -244,7 +244,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
 
 
-                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_analyse.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/_conseilminceur.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
                  <ul class="dropdown-menu">
                   <li><a href="/conseilminceur.php">Conseils Minceur</a></li>
                 </ul>

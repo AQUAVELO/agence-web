@@ -102,9 +102,37 @@ fbq('track', 'PageView');
 
 
 
+<?php
 
 
-
+// Vérifier si des données ont été trouvées
+if ($news_data) {
+    // Afficher les données sur une page web
+    echo "<!DOCTYPE html>
+    <html lang='fr'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>" . htmlspecialchars($news_data['titre']) . "</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #333; }
+            img { max-width: 100%; height: auto; }
+            .content { margin-top: 20px; }
+        </style>
+    </head>
+    <body>
+        <h1>" . htmlspecialchars($news_data['titre']) . "</h1>
+        <div class='content'>
+            <img src='" . htmlspecialchars($news_data['photo']) . "' alt='Image de l'article'>
+            <p>" . nl2br(htmlspecialchars($news_data['news'])) . "</p>
+        </div>
+    </body>
+    </html>";
+} else {
+    echo "<p>Aucune donnée trouvée pour cette condition.</p>";
+}
+?>
 
 
 

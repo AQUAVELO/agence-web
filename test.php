@@ -53,7 +53,7 @@
     <div class="container">
         <?php
         // Inclure les paramètres de connexion à la base de données
-        require '_settings.php';
+        //require '_settings.php';
 
         // Tester si la connexion à la base de données est réussie
         if ($conn->connect_error) {

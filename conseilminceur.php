@@ -77,6 +77,9 @@
 
         // Vérifier s'il y a des résultats
         if ($result->num_rows > 0) {
+            // Afficher un message indiquant qu'il y a des résultats
+            echo "<p>Nombre d'articles trouvés : " . $result->num_rows . "</p><br>";
+
             // Afficher les données de chaque ligne
             while($row = $result->fetch_assoc()) {
                 echo '<div class="article">';
@@ -102,5 +105,4 @@
         $conn->close();
         ?>
     </div>
-</body>
-</html>
+</body

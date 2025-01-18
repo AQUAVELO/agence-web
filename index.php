@@ -249,11 +249,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </li>
 
 
-                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> <a href="/test.php" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
-                 <ul class="dropdown-menu">
-                  <li><a href="https://www.dietsuccess.fr">Conseils Minceur</a></li>
-                </ul>
-                    </li>
+                <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> 
+    <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+    <ul class="dropdown-menu">
+        <li><a href="/conseilminceur">Articles Minceur</a></li> <!-- Nouveau lien -->
+        <li><a href="https://www.dietsuccess.fr">Conseils Minceur</a></li>
+    </ul>
+              </li>
 
                   <li <?php if ($page == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>
                 <ul class="dropdown-menu">

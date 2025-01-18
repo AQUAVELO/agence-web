@@ -42,6 +42,7 @@ $news_datas = $news_querys->fetchAll(PDO::FETCH_ASSOC); // Récupère toutes les
 
 
 
+
 // NOUVEAU
 
 
@@ -55,7 +56,11 @@ $user_query->execute();
 $user_data = $user_query->fetch(PDO::FETCH_ASSOC);
 
 
-
+if (isset($_GET['p']) && is_file('_' . strip_tags($_GET['p']) . '.php')) {
+    $page = strip_tags($_GET['p']);
+} else {
+    $page = 'home';
+}
 
 
 #home

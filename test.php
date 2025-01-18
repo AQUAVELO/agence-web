@@ -24,21 +24,26 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .activity {
+        .article {
             display: flex; /* Utilisation de Flexbox */
             align-items: flex-start; /* Aligner les éléments en haut */
             margin-bottom: 20px;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
         }
-        .activity-content {
+        .article img {
+            width: 33.33%; /* Largeur de l'image réduite à 1/3 */
+            height: auto;
+            margin-right: 20px; /* Espace entre l'image et le texte */
+        }
+        .article-content {
             flex: 1; /* Le contenu prend le reste de l'espace */
         }
-        .activity h2 {
+        .article h2 {
             margin-top: 0; /* Supprimer la marge supérieure du titre */
             color: #555;
         }
-        .activity p {
+        .article p {
             line-height: 1.6;
             margin: 0; /* Supprimer la marge par défaut */
             color: #777;
@@ -52,49 +57,31 @@
 
     <div class="container">
         <?php
-        // Inclure les paramètres de connexion à la base de données
-        //require '_settings.php';
-
-        // Tester si la connexion à la base de données est réussie
-        if ($conn->connect_error) {
-            die("Erreur de connexion à la base de données : " . $conn->connect_error);
-        } else {
-            echo "Connexion à la base de données réussie !<br><br>";
-        }
-
-        // Requête SQL pour sélectionner les activités
-        $sql = "SELECT Date, Activity FROM activite"; // Assurez-vous que les noms des champs sont corrects
-        $result = $conn->query($sql); // Exécuter la requête
-
-        // Vérifier si la requête a réussi
-        if ($result === false) {
-            // Afficher un message d'erreur détaillé
-            die("Erreur lors de l'exécution de la requête : " . $conn->error);
-        }
-
-        // Vérifier s'il y a des résultats
-        if ($result->num_rows > 0) {
+        // Vérifier si des articles ont été trouvés
+        if (!empty($news_datas)) {
             // Afficher un message indiquant qu'il y a des résultats
-            echo "<p>Nombre d'activités trouvées : " . $result->num_rows . "</p><br>";
+            echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
 
             // Afficher les données de chaque ligne
-            while($row = $result->fetch_assoc()) {
-                echo '<div class="activity">';
+            foreach ($news_datas as $article) {
+                echo '<div class="article">';
                 
-                // Contenu (date et activité)
-                echo '<div class="activity-content">';
-                echo '<h2>' . htmlspecialchars($row["Date"]) . '</h2>';
-                echo '<p>' . nl2br(htmlspecialchars($row["Activity"])) . '</p>';
+                // Afficher l'image si elle existe
+                if (!empty($article["photo"])) {
+                    echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article">';
+                }
+                
+                // Contenu (titre et article) à droite de l'image
+                echo '<div class="article-content">';
+                echo '<h2>' . htmlspecialchars($article["titre"]) . '</h2>';
+                echo '<p>' . nl2br(htmlspecialchars($article["news"])) . '</p>';
                 echo '</div>';
                 
                 echo '</div>';
             }
         } else {
-            echo "Aucune activité trouvée.";
+            echo "Aucun article trouvé.";
         }
-
-        // Fermer la connexion
-        $conn->close();
         ?>
     </div>
 </body>

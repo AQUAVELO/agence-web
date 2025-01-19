@@ -29,9 +29,9 @@
           echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
           
           // Transformation du texte
-          $formattedText = str_replace('**', '<strong>', str_replace('**', '</strong>', $article["news"])); // Mettre en gras
+          $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $article["news"]); // Mettre en gras
           $formattedText = nl2br(htmlspecialchars($formattedText)); // Sauts de ligne et échappement des caractères spéciaux
-          
+ 
           // Affichage avec le style souhaité
           echo '<p style="line-height: 1.6; margin: 0; color: #777;">' . $formattedText . '</p>';
           

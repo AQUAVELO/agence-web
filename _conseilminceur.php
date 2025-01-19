@@ -29,7 +29,7 @@
           echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
           
           // Transformation du texte
-          $formattedText = $article["contenu"]; // Récupérer le texte brut
+          $formattedText = $article["news"]; // Récupérer le texte brut
           $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $formattedText); // Mettre en gras
           $formattedText = nl2br($formattedText); // Convertir les sauts de ligne en <br>
 

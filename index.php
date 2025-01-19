@@ -250,7 +250,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> 
-    <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils minceurs</a>
+    <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Articles Minceurs</a>
     <ul class="dropdown-menu">
         <li><a href="/conseilminceur">Articles Minceur</a></li> <!-- Nouveau lien -->
       

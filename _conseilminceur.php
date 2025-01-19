@@ -28,9 +28,11 @@
           echo '<div class="article-content" style="flex: 1;">';
           echo '<h2 style="margin-top: 0; color: #555;">' . $article["titre"]. '</h2>';
           
-          // Transformation du texte
-          $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $article["news"]); // Mettre en gras
-          $formattedText = nl2br($formattedText); // Sauts de ligne et échappement des caractères spéciaux
+        // Transformation du texte
+          $formattedText = $article["news"]; // Récupérer le texte brut
+          $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $formattedText); // Mettre en gras
+          $formattedText = nl2br($formattedText); // Convertir les sauts de ligne en <br>
+          $formattedText = htmlspecialchars($formattedText); // Échapper les caractères spéciaux
  
           // Affichage avec le style souhaité
           echo '<p style="line-height: 1.6; margin: 0; color: #777;">' . $formattedText . '</p>';

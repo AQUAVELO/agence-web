@@ -1,188 +1,139 @@
 <header class="main-header clearfix">
   <div class="container">
-	  
-   <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
-	  <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
-   
+    <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
+    <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-	
-	    
-      <li class="active"><?= $city; ?></li> 
+      <li class="active"><?php echo htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
     </ol>
   </div>
-	
-		  <?php if($row_center['id'] == 253) { ?>
 
-          <!-- Facebook Pixel Code -->
+  <?php if (isset($row_center['id']) && $row_center['id'] == 253) { ?>
+    <!-- Facebook Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s) {
+        if(f.fbq)return;
+        n=f.fbq=function(){
+          n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments);
+        };
+        if(!f._fbq)f._fbq=n;
+        n.push=n;
+        n.loaded=!0;
+        n.version='2.0';
+        n.queue=[];
+        t=b.createElement(e);t.async=!0;
+        t.src=v;
+        s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s);
+      }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 
-<script>
-!function(f,b,e,v,n,t,s)
-{
-    if(f.fbq)return;
-    n=f.fbq=function(){
-        n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments);
-    };
-    if(!f._fbq)f._fbq=n;
-    n.push=n;
-    n.loaded=!0;
-    n.version='2.0';
-    n.queue=[];
-    t=b.createElement(e);t.async=!0;
-    t.src=v;
-    s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s);
-}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-
-fbq('init', '259009481449831');
-fbq('track', 'PageView');
-</script>
-
-
-<!-- End Facebook Pixel Code -->
-
-          <?php } ?>
-	
-
-
-	
+      fbq('init', '259009481449831');
+      fbq('track', 'PageView');
+    </script>
+    <!-- End Facebook Pixel Code -->
+  <?php } ?>
 </header>
-
-
-
-
 
 <section class="content-area bg1">
   <div class="container">
     <div class="row mt-3">
       <!-- Image principale -->
       <div class="col-md-3 col-6 text-center">
-        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
-             alt="Photo principale du centre Aquavélo" class="img-fluid img-same">
+        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
+             alt="Photo principale du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
       </div>
 
       <!-- Image secondaire -->
       <div class="col-md-3 col-6 text-center">
-        <?php if ($row_center['id'] != 305) { ?>
+        <?php if (isset($row_center['id']) && $row_center['id'] != 305) { ?>
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
-               alt="Photo secondaire du centre Aquavélo" class="img-fluid img-same">
+               alt="Photo secondaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
         <?php } else { ?>
-          <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid img-same">
+          <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid img-same" width="300" height="200">
         <?php } ?>
       </div>
 
       <!-- Image supplémentaire -->
       <div class="col-md-3 col-6 text-center">
-        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
-             alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same">
+        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+             alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
       </div>
 
       <!-- Image promotionnelle -->
-	<style>
-  .img-highlight {
-    border: 5px solid blue; /* Bordure bleue épaisse */
-    border-radius: 10px; /* Coins arrondis optionnels */
-  }
-	</style>
+      <?php 
+      $promotions = [
+          305 => "Cannes",
+          253 => "Antibes",
+          347 => "Nice"
+      ];
 
-<!-- Image promotionnelle avec bordure bleue -->
-<?php 
-$promotions = [
-    305 => "Cannes",
-    253 => "Antibes",
-    347 => "Nice"
-];
-
-if (array_key_exists($row_center['id'], $promotions)) { ?>
-  <div class="col-md-3 col-6 text-center">
-    <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-      <img src="/images/promoJan24.webp" 
-           alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-           class="img-fluid img-same <?php if ($row_center['id'] == 305) echo 'img-highlight'; ?>">
-    </a>
-  </div>
-<?php } ?>
-
-
-	    
+      if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) { ?>
+        <div class="col-md-3 col-6 text-center">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
+            <img src="/images/promoJan24.webp" 
+                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+                 class="img-fluid img-same" width="300" height="200">
+          </a>
+        </div>
+      <?php } ?>
     </div>
   </div>
 </section>
 
-
-
-
-
-
-	    
-
-
-
-
-
-
-
-
-
-	      
+<div class="col-md-6">
+  <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
+  <form role="form" class="contact-form" method="POST" action="_page.php">
+    <div class="form-group">
+      <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+      <select class="form-control" id="center" name="center">
+        <?php if (isset($centers_list_d)) { ?>
+          <?php foreach ($centers_list_d as $free_d) { ?>
+            <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
+              <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
+            </option>
+          <?php } ?>
+        <?php } ?>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="nom">Nom et prénom</label>
+      <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </div>
+    <div class="form-group">
+      <label for="phone">Téléphone</label>
+      <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+    </div>
+    <input type="hidden" name="reason" id="reason">
+    <input type="hidden" name="segment" id="segment">
+    <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">Recevoir mon bon par email</button>
+  </form>
+</div>
 
 <div class="col-md-6">
-        <h2 class="form-group"> Essayez une séance gratuite de 45 mn </h2>
-			
-        <form role="form" class="contact-form" method="POST" action="_page.php">
-
-		
-          <div class="form-group">
-            <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-            <select class="form-control" id="center" name="center">
-              <?php foreach ($centers_list_d as &$free_d) { ?>
-                <option <?php if (isset($_GET['city']) &&  $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= $free_d['id'] ?>"><?= $free_d['city'] ?></option>
-              <?php } ?>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="nom">Nom et prénom</label>
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom">
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-          </div>
-          <div class="form-group">
-            <label for="phone">Téléphone</label>
-            <input type="phone" class="form-control" id="phone" name="phone" placeholder="Téléphone">
-          </div>
-          <input type="hidden" name="reason" id="reason">
-          <input type="hidden" name="segment" id="segment">
-          <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
-        </form>	
-      </div>
-     </div>
-
-  <div class="col-md-6">
-			
-         <dl style="margin-top:30px;">
-          <dt>Adresse </dt>
-          <dd>
-		  
-            <?= $row_center['address']; ?>
-          </dd>
-          <dt>Téléphone </dt>
-          <dd>
-            <?= $row_center['phone']; ?>
-          </dd>
-          <dt>Horaires </dt>
-          <dd>
-            <?= $row_center['openhours']; ?>
-          </dd>
-          <dt>Découvrez la vie de votre centre </dt>
-          <dd>
-           <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'], ENT_QUOTES, 'UTF-8'); ?>" 
-  		 title="Facebook" 
-  		 target="_blank" 
-   		class="btn btn-default">Facebook</a>
+  <dl style="margin-top:30px;">
+    <dt>Adresse</dt>
+    <dd><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Téléphone</dt>
+    <dd><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Horaires</dt>
+    <dd><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+    <dt>Découvrez la vie de votre centre</dt>
+    <dd>
+      <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+         title="Facebook" 
+         target="_blank" 
+         class="btn btn-default" 
+         aria-label="Visitez notre page Facebook">
+        Facebook
+      </a>
+    </dd>
+  </dl>
+</div>
 
 
 

@@ -144,7 +144,6 @@
 <div style="margin-top: 40px;"></div>
 
 <!-- Encadré autour des repas de la diététicienne -->
-<div style="border: 2px solid #ccc; padding: 20px; border-radius: 10px; background-color: #f9f9f9; margin-bottom: 20px;">
     <dt><strong>Repas hypocalorique du <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></strong></dt>
     <dd>
         <p>Réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</p>
@@ -203,7 +202,7 @@
             <?php endif; ?>
         </div>
     </dd>
-</div>
+
 
 <!-- Reste du contenu (agenda, résultats minceurs, etc.) -->
 <dl>

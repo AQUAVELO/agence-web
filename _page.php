@@ -5,11 +5,11 @@
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li><a href="/centres">Centres</a></li>
-      <li class="active"><?php echo htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
+      <li class="active"><?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
     </ol>
   </div>
 
-  <?php if (isset($row_center['id']) && $row_center['id'] == 253) { ?>
+  <?php if (isset($row_center['id']) && $row_center['id'] == 253) : ?>
     <!-- Facebook Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s) {
@@ -32,7 +32,7 @@
       fbq('track', 'PageView');
     </script>
     <!-- End Facebook Pixel Code -->
-  <?php } ?>
+  <?php endif; ?>
 </header>
 
 <section class="content-area bg1">
@@ -46,12 +46,12 @@
 
       <!-- Image secondaire -->
       <div class="col-md-3 col-6 text-center">
-        <?php if (isset($row_center['id']) && $row_center['id'] != 305) { ?>
+        <?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
                alt="Photo secondaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
-        <?php } else { ?>
+        <?php else : ?>
           <img src="/images/Cannes1.jpg" alt="Photo du centre de Cannes" class="img-fluid img-same" width="300" height="200">
-        <?php } ?>
+        <?php endif; ?>
       </div>
 
       <!-- Image supplémentaire -->
@@ -68,7 +68,7 @@
           347 => "Nice"
       ];
 
-      if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) { ?>
+      if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : ?>
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
             <img src="/images/promoJan24.webp" 
@@ -76,7 +76,7 @@
                  class="img-fluid img-same" width="300" height="200">
           </a>
         </div>
-      <?php } ?>
+      <?php endif; ?>
     </div>
   </div>
 </section>

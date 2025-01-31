@@ -79,22 +79,33 @@ fbq('track', 'PageView');
       </div>
 
       <!-- Image promotionnelle -->
-      <?php 
-      $promotions = [
-          305 => "Cannes",
-          253 => "Antibes",
-          347 => "Nice"
-      ];
+	<style>
+  .img-highlight {
+    border: 5px solid blue; /* Bordure bleue épaisse */
+    border-radius: 10px; /* Coins arrondis optionnels */
+  }
+	</style>
 
-      if (array_key_exists($row_center['id'], $promotions)) { ?>
-        <div class="col-md-3 col-6 text-center">
-          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="/images/promoJan24.webp" 
-                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="img-fluid img-same">
-          </a>
-        </div>
-      <?php } ?>
+<!-- Image promotionnelle avec bordure bleue -->
+<?php 
+$promotions = [
+    305 => "Cannes",
+    253 => "Antibes",
+    347 => "Nice"
+];
+
+if (array_key_exists($row_center['id'], $promotions)) { ?>
+  <div class="col-md-3 col-6 text-center">
+    <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
+      <img src="/images/promoJan24.webp" 
+           alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+           class="img-fluid img-same <?php if ($row_center['id'] == 305) echo 'img-highlight'; ?>">
+    </a>
+  </div>
+<?php } ?>
+
+
+	    
     </div>
   </div>
 </section>

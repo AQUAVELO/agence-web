@@ -81,10 +81,12 @@
   </div>
 </section>
 
+<!-- Formulaire -->
 <div class="col-md-6">
   <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
   <?php if (isset($row_center['id']) && $row_center['id'] == 305) : ?>
-    <p>en vous inscrivant sur notre <strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a> ou en prenant rendez-vous ci dessous.</p>  <?php endif; ?>
+    <p>en vous inscrivant sur notre <strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
+  <?php endif; ?>
   <form role="form" class="contact-form" method="POST" action="_page.php">
     <div class="form-group">
       <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
@@ -116,6 +118,7 @@
   </form>
 </div>
 
+<!-- Informations du centre -->
 <div class="col-md-6">
   <dl style="margin-top:30px;">
     <dt>Adresse</dt>
@@ -137,38 +140,11 @@
   </dl>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-		 
-	
-
-   
-	   <?php	  
-	   // Définition de la variable $date
-		$date = date('d/m/Y');
-
-
-            ?>
-
-
-		  
-
-<!-- Ajouter un espace entre les sections -->
-
-	<!-- Ajouter un espace entre les sections -->
+<!-- Espace entre les sections -->
 <div style="margin-top: 40px;"></div>
 
 <!-- Encadré autour des repas de la diététicienne -->
-<div style="border: 2px solid #ccc; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+<div style="border: 2px solid #ccc; padding: 20px; border-radius: 10px; background-color: #f9f9f9; margin-bottom: 20px;">
     <dt><strong>Repas hypocalorique du <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></strong></dt>
     <dd>
         <p>Réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</p>
@@ -228,9 +204,8 @@
         </div>
     </dd>
 </div>
-	    
 
-
+<!-- Reste du contenu (agenda, résultats minceurs, etc.) -->
 <dl>
   <?php if (!empty($row_center['book_link'])) { ?>
     <dt>Agenda pour les adhérents</dt>
@@ -243,15 +218,6 @@
     </dd>
   <?php } ?>
 
-<script>
-function ouvre_popup(url) {
-    window.open(url, '_blank', 'width=800,height=600,scrollbars=yes');
-}
-</script>
-
-
-	
-
   <dt>Résultats Minceurs Rapides</dt>
   <dd>
     <a class="btn btn-default" 
@@ -260,42 +226,39 @@ function ouvre_popup(url) {
        aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
   </dd>
 
- <dt>Conseils pour perdre du poids</dt>
-<dd>
-  <a class="btn btn-default" 
-     href="#"
-     onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-     title="Conseils pour perdre du poids" 
-     aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
-</dd>
-
+  <dt>Conseils pour perdre du poids</dt>
+  <dd>
+    <a class="btn btn-default" 
+       href="#"
+       onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
+       title="Conseils pour perdre du poids" 
+       aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
+  </dd>
 
   <?php 
-$plannings = [
-    179 => 'https://www.dropbox.com/scl/fi/qbsl8jydinve58ouqscon/PLANNING.pdf?rlkey=1ugsl2mo7918q7af4f35jc6u5&st=c53qsrbc&dl=0',
-    253 => 'https://www.dropbox.com/scl/fi/cdx3239ternr3lnrpk1gw/PLANNINGANTIBES.pdf?rlkey=ms9o5k3ithrillkl7g3n4tu3u&st=7uxywwwu&dl=0',
-    305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=0'
-];
+  $plannings = [
+      179 => 'https://www.dropbox.com/scl/fi/qbsl8jydinve58ouqscon/PLANNING.pdf?rlkey=1ugsl2mo7918q7af4f35jc6u5&st=c53qsrbc&dl=0',
+      253 => 'https://www.dropbox.com/scl/fi/cdx3239ternr3lnrpk1gw/PLANNINGANTIBES.pdf?rlkey=ms9o5k3ithrillkl7g3n4tu3u&st=7uxywwwu&dl=0',
+      305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=0'
+  ];
 
-if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
-    <dt>Planning</dt>
-    <dd>
-        <a href="<?= htmlspecialchars($plannings[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-           title="Télécharger le planning des cours" 
-           aria-label="Télécharger le planning des cours" 
-           target="_blank" 
-           class="btn btn-default">
-            Télécharger le planning des cours
-        </a>
-    </dd>
-<?php } ?>
+  if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
+      <dt>Planning</dt>
+      <dd>
+          <a href="<?= htmlspecialchars($plannings[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+             title="Télécharger le planning des cours" 
+             aria-label="Télécharger le planning des cours" 
+             target="_blank" 
+             class="btn btn-default">
+              Télécharger le planning des cours
+          </a>
+      </dd>
+  <?php } ?>
 
-   <dt>Description</dt>
-    <dd>
-<p>
-          <?= $row_center['description']; ?>
-</p>
-   </dd>    
+  <dt>Description</dt>
+  <dd>
+    <p><?= $row_center['description']; ?></p>
+  </dd>    
 </dl>
 		 
  

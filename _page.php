@@ -193,11 +193,20 @@
 		 
  <!-- Script JavaScript à la fin -->
   <script>
-    function ouvre_popup(url) {
-      window.open(url, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
-      return false;
-    }
-  </script>
+  function ouvre_popup(url) {
+    // Calculer 1/4 de la largeur et de la hauteur du viewport
+    const width = window.innerWidth / 4;
+    const height = window.innerHeight / 4;
+
+    // Ouvrir la fenêtre pop-up avec les dimensions calculées
+    window.open(
+      url, 
+      'popup', 
+      `width=${width},height=${height},scrollbars=yes,resizable=yes`
+    );
+    return false;
+  }
+</script>
 
 	    
 	

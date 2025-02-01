@@ -120,12 +120,16 @@
   </form>
 
   <!-- Ajout de l'image avec bouton pour agrandir -->
-  <div class="text-center mt-4">
-    <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
-    <br>
-    <a href="/images/PLANNINGCANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
-  </div>
-</div>
+	<?php 
+	if (in_array($row_center['id'], [305, 347, 349])) { ?>
+	  <div class="text-center mt-4">
+	      <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
+	      <br>
+	      <a href="/images/PLANNINGCANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
+	  </div>
+	<?php } ?>
+	
+	</div>
 
 <!-- Informations du centre -->
 <div class="col-md-6">
@@ -185,25 +189,6 @@
        aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
   </dd>
 
-  <?php 
-  $plannings = [
-      179 => 'https://www.dropbox.com/scl/fi/qbsl8jydinve58ouqscon/PLANNING.pdf?rlkey=1ugsl2mo7918q7af4f35jc6u5&st=c53qsrbc&dl=0',
-      253 => 'https://www.dropbox.com/scl/fi/cdx3239ternr3lnrpk1gw/PLANNINGANTIBES.pdf?rlkey=ms9o5k3ithrillkl7g3n4tu3u&st=7uxywwwu&dl=0',
-      305 => 'https://www.dropbox.com/scl/fi/ckpc872v3pelhw08ad3ei/PLANNING-CANNES.pdf?rlkey=b8lu043cu41bthgwm4allxonz&st=55k0x617&dl=0'
-  ];
-
-  if (isset($row_center['id']) && isset($plannings[$row_center['id']])) { ?>
-      <dt>Planning</dt>
-      <dd>
-          <a href="<?= htmlspecialchars($plannings[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-             title="Télécharger le planning des cours" 
-             aria-label="Télécharger le planning des cours" 
-             target="_blank" 
-             class="btn btn-default">
-              Télécharger le planning des cours
-          </a>
-      </dd>
-  <?php } ?>
 
   <dt>Description</dt>
   <dd>

@@ -194,7 +194,7 @@
  <!-- Script JavaScript à la fin -->
   <script>
     function ouvre_popup(url) {
-      window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      window.open(url, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
       return false;
     }
   </script>

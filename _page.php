@@ -130,16 +130,18 @@
     </div>
   <?php endif; ?>
 </div>
-
-<!-- Informations du centre -->
+<!-- Informations du centre et autres sections -->
 <div class="col-md-6">
   <dl style="margin-top:30px;">
+    <!-- Adresse, Téléphone, Horaires -->
     <dt>Adresse</dt>
     <dd><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
     <dt>Téléphone</dt>
     <dd><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
     <dt>Horaires</dt>
     <dd><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+
+    <!-- Découvrez la vie de votre centre -->
     <dt>Découvrez la vie de votre centre</dt>
     <dd>
       <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
@@ -150,36 +152,33 @@
         Facebook
       </a>
     </dd>
+
+    <!-- Résultats Minceurs Rapides -->
+    <dt>Résultats Minceurs Rapides</dt>
+    <dd>
+      <a class="btn btn-default" 
+         href="javascript:ouvre_popup('/nouveauResultat.html')" 
+         title="Ouvrir les résultats minceurs" 
+         aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
+    </dd>
+
+    <!-- Conseils pour perdre du poids -->
+    <dt>Conseils pour perdre du poids</dt>
+    <dd>
+      <a class="btn btn-default" 
+         href="#"
+         onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
+         title="Conseils pour perdre du poids" 
+         aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
+    </dd>
+
+    <!-- Description -->
+    <dt>Description</dt>
+    <dd>
+      <p><?= $row_center['description']; ?></p>
+    </dd>
   </dl>
 </div>
-
-<!-- Espace entre les sections -->
-<div style="margin-top: 40px;"></div>
-
-<!-- Reste du contenu (agenda, résultats minceurs, etc.) -->
-<dl>
-  <dt>Résultats Minceurs Rapides</dt>
-  <dd>
-    <a class="btn btn-default" 
-       href="javascript:ouvre_popup('/nouveauResultat.html')" 
-       title="Ouvrir les résultats minceurs" 
-       aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
-  </dd>
-
-  <dt>Conseils pour perdre du poids</dt>
-  <dd>
-    <a class="btn btn-default" 
-       href="#"
-       onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-       title="Conseils pour perdre du poids" 
-       aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
-  </dd>
-
-  <dt>Description</dt>
-  <dd>
-    <p><?= $row_center['description']; ?></p>
-  </dd>    
-</dl>
 
 <!-- Script JavaScript à la fin -->
 <script>

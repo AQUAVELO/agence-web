@@ -82,6 +82,7 @@
   </div>
 </section>
 
+
 <!-- Formulaire -->
 <div class="col-md-6">
   <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
@@ -117,6 +118,13 @@
     <input type="hidden" name="segment" id="segment">
     <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">Recevoir mon bon par email</button>
   </form>
+
+  <!-- Ajout de l'image avec bouton pour agrandir -->
+  <div class="text-center mt-4">
+    <img src="/images/PLANNING-CANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
+    <br>
+    <a href="/images/PLANNING-CANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
+  </div>
 </div>
 
 <!-- Informations du centre -->

@@ -54,11 +54,14 @@
         <?php endif; ?>
       </div>
 
+     
       <!-- Image supplémentaire -->
-      <div class="col-md-3 col-6 text-center">
-        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
-             alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
-      </div>
+<?php if (!in_array($row_center['id'], [305, 347, 349])) : ?>
+  <div class="col-md-3 col-6 text-center">
+    <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+         alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
+  </div>
+<?php endif; ?>
 
       <!-- Image promotionnelle -->
       <?php 

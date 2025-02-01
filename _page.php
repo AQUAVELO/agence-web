@@ -31,6 +31,11 @@
       fbq('init', '259009481449831');
       fbq('track', 'PageView');
     </script>
+    <script>
+function ouvre_popup(url) {
+    window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+}
+</script>
     <!-- End Facebook Pixel Code -->
   <?php endif; ?>
 </header>

@@ -181,9 +181,9 @@
 <!-- Script JavaScript à la fin -->
 <script>
   function ouvre_popup(url) {
-    // Calculer 1/4 de la largeur et de la hauteur du viewport
-    const width = Math.max(window.innerWidth / 4, 300); // Largeur minimale de 300 pixels
-    const height = Math.max(window.innerHeight / 4, 200); // Hauteur minimale de 200 pixels
+    // Calculer 1/3 de la largeur et de la hauteur du viewport
+    const width = Math.max(window.innerWidth / 3, 300); // Largeur minimale de 300 pixels
+    const height = Math.max(window.innerHeight / 3, 200); // Hauteur minimale de 200 pixels
 
     // Centrer la pop-up
     const left = (window.innerWidth - width) / 2;

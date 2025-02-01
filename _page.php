@@ -144,65 +144,7 @@
 <!-- Espace entre les sections -->
 <div style="margin-top: 40px;"></div>
 
-<!-- Encadré autour des repas de la diététicienne -->
-    <dt><strong>Repas hypocalorique du <?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></strong></dt>
-    <dd>
-        <p>Réalisé par Cyrielle Diététicienne pour perdre du poids rapidement :</p>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-            <thead>
-                <tr>
-                    <th style="width: 200px; padding: 10px; text-align: center;">Petit déjeuner</th>
-                    <th style="width: 200px; padding: 10px; text-align: center;">Repas du midi</th>
-                    <th style="width: 200px; padding: 10px; text-align: center;">Repas du soir</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">
-                        <?php if (isset($menu_data['photo_pd'])): ?>
-                            <img src="<?= htmlspecialchars($menu_data['photo_pd'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du petit déjeuner" style="max-width: 100px;">
-                        <?php else: ?>
-                            <span>Image non disponible</span>
-                        <?php endif; ?>
-                    </td>
-                    <td style="text-align: center;">
-                        <?php if (isset($menu_data['photo_m'])): ?>
-                            <img src="<?= htmlspecialchars($menu_data['photo_m'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du repas du midi" style="max-width: 100px;">
-                        <?php else: ?>
-                            <span>Image non disponible</span>
-                        <?php endif; ?>
-                    </td>
-                    <td style="text-align: center;">
-                        <?php if (isset($menu_data['photo_s'])): ?>
-                            <img src="<?= htmlspecialchars($menu_data['photo_s'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du repas du soir" style="max-width: 100px;">
-                        <?php else: ?>
-                            <span>Image non disponible</span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['petit_dejeuner'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
-                    <td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['repas_midi'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
-                    <td style="padding: 10px;"><?= htmlspecialchars_decode($menu_data['souper'] ?? 'Non spécifié', ENT_QUOTES); ?></td>
-                </tr>
-            </tbody>
-        </table>
 
-        <div>
-            <strong>Collation :</strong> <?= htmlspecialchars($menu_data['collation'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?><br>
-            <strong>Calories totales :</strong> <?= htmlspecialchars($menu_data['calories'] ?? 'Non spécifié', ENT_QUOTES, 'UTF-8'); ?>
-            <p>Moyenne de la consommation calorique quotidienne d'une femme : 1500 calories. 
-            Si vous maintenez un déficit calorique quotidien avec le menu ci-dessus, cela va entraîner <strong>une perte de poids.</strong> 👍</p>
-        </div>
-
-        <div>
-            <?php if (isset($menu_envoye['photo_plat'])): ?>
-                <img src="<?= htmlspecialchars($menu_envoye['photo_plat'], ENT_QUOTES, 'UTF-8'); ?>" alt="Photo du plat" style="max-width: 100px;">
-            <?php else: ?>
-                <span></span>
-            <?php endif; ?>
-        </div>
-    </dd>
 
 
 <!-- Reste du contenu (agenda, résultats minceurs, etc.) -->

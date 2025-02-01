@@ -30,12 +30,7 @@
 
       fbq('init', '259009481449831');
       fbq('track', 'PageView');
-	    <
-	function ouvre_popup(url) {
-   	     window.open(url, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-	}
     </script>
-   
     <!-- End Facebook Pixel Code -->
   <?php endif; ?>
 </header>
@@ -71,7 +66,7 @@
           305 => "Cannes",
           253 => "Antibes",
           347 => "Nice",
-	  349 => "Vallauris"
+          349 => "Vallauris"
       ];
 
       if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : ?>
@@ -86,7 +81,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- Formulaire -->
 <div class="col-md-6">
@@ -125,16 +119,14 @@
   </form>
 
   <!-- Ajout de l'image avec bouton pour agrandir -->
-	<?php 
-	if (in_array($row_center['id'], [305, 347, 349])) { ?>
-	  <div class="text-center mt-4">
-	      <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
-	      <br>
-	      <a href="/images/PLANNINGCANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
-	  </div>
-	<?php } ?>
-	
-	</div>
+  <?php if (in_array($row_center['id'], [305, 347, 349])) : ?>
+    <div class="text-center mt-4">
+      <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
+      <br>
+      <a href="/images/PLANNINGCANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
+    </div>
+  <?php endif; ?>
+</div>
 
 <!-- Informations du centre -->
 <div class="col-md-6">
@@ -161,12 +153,8 @@
 <!-- Espace entre les sections -->
 <div style="margin-top: 40px;"></div>
 
-
-
-
 <!-- Reste du contenu (agenda, résultats minceurs, etc.) -->
 <dl>
-
   <dt>Résultats Minceurs Rapides</dt>
   <dd>
     <a class="btn btn-default" 
@@ -184,73 +172,32 @@
        aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
   </dd>
 
-
   <dt>Description</dt>
   <dd>
     <p><?= $row_center['description']; ?></p>
   </dd>    
 </dl>
-		 
- <!-- Script JavaScript à la fin -->
-  <script>
+
+<!-- Script JavaScript à la fin -->
+<script>
   function ouvre_popup(url) {
     // Calculer 1/4 de la largeur et de la hauteur du viewport
-    const width = window.innerWidth / 4;
-    const height = window.innerHeight / 4;
+    const width = Math.max(window.innerWidth / 4, 300); // Largeur minimale de 300 pixels
+    const height = Math.max(window.innerHeight / 4, 200); // Hauteur minimale de 200 pixels
 
-    // Ouvrir la fenêtre pop-up avec les dimensions calculées
+    // Centrer la pop-up
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+
+    // Ouvrir la fenêtre pop-up
     window.open(
       url, 
       'popup', 
-      `width=${width},height=${height},scrollbars=yes,resizable=yes`
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
     );
     return false;
   }
 </script>
-
-	    
-	
-<!--
-<section class="content-area bg2">
-  <div class="container">
-    <header class="page-header text-center">
-      <h1 class="page-title">Centres à proximité</h1>
-    </header>
-    <div id="galleryContainer" class="clearfix withSpaces col-4">
-      <div class="galleryItem identity">
-        <article class="portfolio-item">
-          <div class="portfolio-thumbnail"> <a href="04-pluto-portfolio-single.html"><img src="/images/content/related-01.jpg" alt=" "></a> <a href="04-pluto-portfolio-single.html" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
-          <div class="entry-meta"> <span class="cat-links"><a href="#">Identity</a>, <a href="#">Web</a></span> </div>
-          <h4 class="entry-title"><a href="04-pluto-portfolio-single.html">Project name goes here</a></h4>
-        </article>
-      </div>
-      <div class="galleryItem web">
-        <article class="portfolio-item">
-          <div class="portfolio-thumbnail"> <a href="04-pluto-portfolio-single.html"><img src="/images/content/related-02.jpg" alt=" "></a> <a href="04-pluto-portfolio-single.html" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
-          <div class="entry-meta"> <span class="cat-links"><a href="#">Identity</a>, <a href="#">Web</a></span> </div>
-          <h4 class="entry-title"><a href="04-pluto-portfolio-single.html">Project name goes here</a></h4>
-        </article>
-      </div>
-      <div class="galleryItem print">
-        <article class="portfolio-item">
-          <div class="portfolio-thumbnail"> <a href="04-pluto-portfolio-single.html"><img src="/images/content/related-03.jpg" alt=" "></a> <a href="04-pluto-portfolio-single.html" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
-          <div class="entry-meta"> <span class="cat-links"><a href="#">Identity</a>, <a href="#">Web</a></span> </div>
-          <h4 class="entry-title"><a href="04-pluto-portfolio-single.html">Project name goes here</a></h4>
-        </article>
-      </div>
-      <div class="galleryItem identity web">
-        <article class="portfolio-item">
-          <div class="portfolio-thumbnail"> <a href="04-pluto-portfolio-single.html"><img src="/images/content/related-04.jpg" alt=" "></a> <a href="04-pluto-portfolio-single.html" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
-          <div class="entry-meta"> <span class="cat-links"><a href="#">Identity</a>, <a href="#">Web</a></span> </div>
-          <h4 class="entry-title"><a href="04-pluto-portfolio-single.html">Project name goes here</a></h4>
-        </article>
-      </div>
-    </div>
-    
-  </div>
-
-
-</section>
 		   
 		  
 		   

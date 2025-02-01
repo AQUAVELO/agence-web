@@ -65,7 +65,8 @@
       $promotions = [
           305 => "Cannes",
           253 => "Antibes",
-          347 => "Nice"
+          347 => "Nice",
+	  349 => "Vallauris"
       ];
 
       if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : ?>

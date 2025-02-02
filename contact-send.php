@@ -123,7 +123,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 
 
-		<?php
+		
 		// Définir les centres promotionnels
 		$promotions = [
 		    305 => "Cannes",

@@ -123,68 +123,49 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 
 
-		
-		// Définir les centres promotionnels
-		$promotions = [
-		    305 => "Cannes",
-		    253 => "Antibes",
-		    347 => "Nice",
-		    349 => "Vallauris"
-		];
-		
-		// Vérifier si l'identifiant du centre est défini et s'il fait partie des promotions
-		if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) {
-		    // Si le centre est en promotion, on envoie le message avec contenu HTML et image intégrée
-		    $msg = '
-		    <p>Bonjour ' . $name . ',</p>
-		    
-		    <p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
-		    
-		    <p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
-		    
-		    <p>Ne manquez pas cette opportunit&eacute;, prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
-		    <ul>
-		      <li>Votre maillot de bain,</li>
-		      <li>Une serviette,</li>
-		      <li>Un gel douche,</li>
-		      <li>Une bouteille d&#39;eau,</li>
-		      <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
-		    </ul>
-		    
-		    <p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
-		    <strong>Adresse :</strong> ' . $address . '</p>
-		    
-		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
-		    
-		    <p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
-		    
-		    <p>Cordialement,<br>
-		    L&#39;&eacute;quipe Aquavelo<br>
-		    <a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
-		    
-		    <p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>';
-		    
-		    $mail2->Body    = $msg;
-		    $mail2->AltBody = strip_tags($msg);
-		    
-		    // Ajout de l'image comme ressource intégrée
-		    $mail2->AddEmbeddedImage('images/pubemailing.jpg', 'pubemailing', 'pubemailing.jpg');
-		} else {
-		    // Sinon, pour les centres non promotionnels, on envoie le message suivant
-		    $msg = 'Bonjour,
-		
-		Vous avez fait une demande de bilan et séance découverte dans notre centre Aquavélo de CANNES. 
-		Vous pouvez prendre rdv directement sur https://calendly.com/aqua-cannes, ou en répondant à ce sms nos horaires pour le 1er rendez vous sont du Lundi au Vendredi entre 10-18h et le Samedi 10h-16h? 
-		
-		Aquavelo Cannes
-		60 avenue du Docteur Raymond Picaud à Cannes
-		04 93 93 05 65';
-		    
-		    $mail2->Body    = $msg;
-		    $mail2->AltBody = strip_tags($msg);
-		}
-		?>
+		$msg = '
 
+
+
+		 <p>Bonjour ' . $name . ',</p>
+		
+		<p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
+		
+		<p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
+		
+		<p>Ne manquez pas cette opportunit&eacute;, prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
+		<ul>
+		  <li>Votre maillot de bain,</li>
+		  <li>Une serviette,</li>
+		  <li>Un gel douche,</li>
+		  <li>Une bouteille d&#39;eau,</li>
+		  <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
+		</ul>
+		
+		<p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
+		<strong>Adresse :</strong> ' . $address . '</p>
+		
+		<p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
+		
+		<p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
+		
+		<p>Cordialement,<br>
+		L&#39;&eacute;quipe Aquavelo<br>
+		<a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
+
+
+
+
+	
+	
+ 
+	<p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>'; // Image ajoutée uniquement en bas
+	
+	$mail2->Body = $msg;
+	$mail2->AltBody = strip_tags($msg);
+	
+	// Ajouter l'image comme ressource intégrée
+	$mail2->AddEmbeddedImage('images/pubemailing.jpg', 'pubemailing', 'pubemailing.jpg');
 
 
 		//PHPMAILER

@@ -163,8 +163,8 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		// Tableau des centres promotionnels
 		$promotions = [
 		    305 => "Cannes",
-		    253 => "Antibes",
-		    347 => "Nice",
+		
+		    347 => "Mandelieu",
 		    349 => "Vallauris"
 		];
 		
@@ -189,7 +189,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		    </ul>
 		    
 		    <p><strong>Adresse :</strong> 60 avenue du Docteur Raymond Picaud, Cannes<br>
-		    <strong>T&eacute;l&eacute;phone :</strong> 04 93 93 05 65</p>
+		  
 		    
 		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
 		    

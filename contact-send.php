@@ -145,9 +145,6 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		    <strong>Adresse :</strong> ' . $address . '</p>
 		    
 		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
-		    
-		    <p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
-		    
 		    <p>Cordialement,<br>
 		    L&#39;&eacute;quipe Aquavelo<br>
 		    <a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
@@ -191,10 +188,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		    <p><strong>Adresse :</strong> 60 avenue du Docteur Raymond Picaud, Cannes<br>
 		  
 		    
-		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
-		    
-		    <p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquav&eacute;lo de Cannes</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
-		    
+		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>   
 		    <p>Cordialement,<br>
 		    L&#39;&eacute;quipe Aquav&eacute;lo<br>
 		    <a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>';

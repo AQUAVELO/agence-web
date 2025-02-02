@@ -125,8 +125,7 @@
   <?php if (in_array($row_center['id'], [305, 347, 349])) : ?>
     <div class="text-center mt-4">
       <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
-      <br>
-      <a href="/images/PLANNINGCANNES0125.jpg" target="_blank" class="btn btn-default mt-2">Agrandir l'image</a>
+   
     </div>
   <?php endif; ?>
 </div>

@@ -123,49 +123,92 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 
 
 
+			
+		// Message par défaut (pour les centres non promotionnels)
 		$msg = '
+		    <p>Bonjour ' . $name . ',</p>
+		    
+		    <p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
+		    
+		    <p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
+		    
+		    <p>Ne manquez pas cette opportunit&eacute;, prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
+		    <ul>
+		      <li>Votre maillot de bain,</li>
+		      <li>Une serviette,</li>
+		      <li>Un gel douche,</li>
+		      <li>Une bouteille d&#39;eau,</li>
+		      <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
+		    </ul>
+		    
+		    <p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
+		    <strong>Adresse :</strong> ' . $address . '</p>
+		    
+		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
+		    
+		    <p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
+		    
+		    <p>Cordialement,<br>
+		    L&#39;&eacute;quipe Aquavelo<br>
+		    <a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
+		    
+		    <p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>';
+		
+		$mail2->Body    = $msg;
+		$mail2->AltBody = strip_tags($msg);
+		// Ajout de l'image comme ressource intégrée
+		$mail2->AddEmbeddedImage('images/pubemailing.jpg', 'pubemailing', 'pubemailing.jpg');
+		
+		
+		// Tableau des centres promotionnels
+		$promotions = [
+		    305 => "Cannes",
+		    253 => "Antibes",
+		    347 => "Nice",
+		    349 => "Vallauris"
+		];
+		
+		// Si l'identifiant du centre est défini et qu'il figure dans le tableau des promotions,
+		// alors on remplace le message par celui destiné aux centres en promotion.
+		if (isset($row_center_contact['id']) && array_key_exists($row_center_contact['id'], $promotions)) {
+		    $msg = '
+		    <p>Bonjour ' . $name . ',</p>
+		    
+		    <p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquav&eacute;lo de Cannes</strong>.</p>
+		    
+		    <p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
+		    
+		    <p>Vous pouvez prendre rendez-vous directement sur <a href="https://calendly.com/aqua-cannes" target="_blank">https://calendly.com/aqua-cannes</a></p>
+		    <ul>
+		      <li>Du Lundi au Vendredi entre 10h et 18h,</li>
+		      <li>Le Samedi de 10h &agrave; 16h.</li>
+		    </ul>
+		    
+		    <p>N&#39;oubliez pas de venir &eacute;quip&eacute;(e) avec :</p>
+		    <ul>
+		      <li>Votre maillot de bain,</li>
+		      <li>Une serviette,</li>
+		      <li>Un gel douche,</li>
+		      <li>Une bouteille d&#39;eau,</li>
+		      <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
+		    </ul>
+		    
+		    <p><strong>Adresse :</strong> 60 avenue du Docteur Raymond Picaud, Cannes<br>
+		    <strong>T&eacute;l&eacute;phone :</strong> 04 93 93 05 65</p>
+		    
+		    <p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
+		    
+		    <p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquav&eacute;lo de Cannes</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
+		    
+		    <p>Cordialement,<br>
+		    L&#39;&eacute;quipe Aquav&eacute;lo<br>
+		    <a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>';
+		    
+		    $mail2->Body    = $msg;
+		    $mail2->AltBody = strip_tags($msg);
+		}
 
 
-
-		 <p>Bonjour ' . $name . ',</p>
-		
-		<p>Merci pour votre int&eacute;r&ecirc;t &#33; Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquavelo de ' . $city . '</strong>.</p>
-		
-		<p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
-		
-		<p>Ne manquez pas cette opportunit&eacute;, prenez d&egrave;s maintenant rendez-vous en appelant le <strong>' . $phone . '</strong>. N&#39;oubliez de venir &eacute;quip&eacute;(e) avec :</p>
-		<ul>
-		  <li>Votre maillot de bain,</li>
-		  <li>Une serviette,</li>
-		  <li>Un gel douche,</li>
-		  <li>Une bouteille d&#39;eau,</li>
-		  <li>Et des chaussures adapt&eacute;es &agrave; l&#39;aquabiking.</li>
-		</ul>
-		
-		<p><strong>Horaires d&#39;ouverture :</strong> ' . $hours . '<br>
-		<strong>Adresse :</strong> ' . $address . '</p>
-		
-		<p><em>*Offre non cumulable. R&eacute;servez vite, les places sont limit&eacute;es.</em></p>
-		
-		<p>Nous avons h&acirc;te de vous accueillir au <strong>centre Aquavelo de ' . $city . '</strong> et de vous accompagner dans votre parcours bien-&ecirc;tre.</p>
-		
-		<p>Cordialement,<br>
-		L&#39;&eacute;quipe Aquavelo<br>
-		<a href="http://aquavelo.com" target="_blank">www.aquavelo.com</a></p>
-
-
-
-
-	
-	
- 
-	<p><img src="cid:pubemailing" alt="Image Promotionnelle" style="margin-top: 20px; display: block;"></p>'; // Image ajoutée uniquement en bas
-	
-	$mail2->Body = $msg;
-	$mail2->AltBody = strip_tags($msg);
-	
-	// Ajouter l'image comme ressource intégrée
-	$mail2->AddEmbeddedImage('images/pubemailing.jpg', 'pubemailing', 'pubemailing.jpg');
 
 
 		//PHPMAILER

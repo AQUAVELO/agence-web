@@ -126,7 +126,7 @@
     <div class="text-center mt-4">
       <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
     </div>
-<?php elseif ($row_center['id'] == 147) : ?>
+<?php elseif ($row_center['id'] == 179) : ?>
     <div class="text-center mt-4">
       <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
     </div>

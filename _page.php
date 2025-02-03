@@ -156,7 +156,7 @@
         <!-- Découvrez la vie de votre centre -->
 
     	<dt>Agenda pour les adhérents</dt>
-    <?php if ($row_center['ID'] == 253 && !empty($row_center['book_link'])) { ?>
+    <?php if ($row_center['id'] == 253 && !empty($row_center['book_link'])) { ?>
     	<dt>Agenda pour les adhérents</dt>
     	<dd>
      	 <a href="https://<?= htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8'); ?>" 

@@ -131,7 +131,8 @@
       <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
     </div>
 <?php endif; ?>
-du centre et autres sections -->
+</div>
+	    
 <div class="col-md-6">
   <dl style="margin-top:30px;">
     <!-- Adresse, Téléphone, Horaires -->

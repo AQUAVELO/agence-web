@@ -288,7 +288,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     
 
-  <section class="content-area prefooter">
+   <section class="content-area prefooter">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
@@ -361,6 +361,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <?php } ?>
   </div>
 </section>
+    
     
 
     <footer>

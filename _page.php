@@ -122,7 +122,11 @@
   </form>
 
   <!-- Ajout de l'image avec bouton pour agrandir -->
- <?php if (in_array($row_center['id'], [305, 347, 349])) : ?>
+ <?php if ($row_center['id'] == 253) : ?>
+    <div class="text-center mt-4">
+      <img src="/images/planningAntibes.jpg" alt="Planning des cours Aquavelo Antibes" class="img-fluid" style="max-width: 100%; height: auto;">
+    </div>
+<?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
     <div class="text-center mt-4">
       <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
     </div>
@@ -131,6 +135,7 @@
       <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
     </div>
 <?php endif; ?>
+
 </div>
 	    
 <div class="col-md-6">

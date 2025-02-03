@@ -154,7 +154,7 @@
 
 	      
         <!-- Découvrez la vie de votre centre -->
-<?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
+
     	<dt>Agenda pour les adhérents</dt>
     <dd>
       <a href="https://<?= htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8'); ?>" 
@@ -163,7 +163,7 @@
          target="_blank" 
          class="btn btn-default">Réserver en ligne</a>
     </dd>
-<?php } ?>
+
 	      
 
         <dt>Découvrez la vie de votre centre</dt>

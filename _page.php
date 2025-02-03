@@ -122,14 +122,16 @@
   </form>
 
   <!-- Ajout de l'image avec bouton pour agrandir -->
-  <?php if (in_array($row_center['id'], [305, 347, 349])) : ?>
+ <?php if (in_array($row_center['id'], [305, 347, 349])) : ?>
     <div class="text-center mt-4">
       <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
-   
     </div>
-  <?php endif; ?>
-</div>
-<!-- Informations du centre et autres sections -->
+<?php elseif ($row_center['id'] == 147) : ?>
+    <div class="text-center mt-4">
+      <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
+    </div>
+<?php endif; ?>
+du centre et autres sections -->
 <div class="col-md-6">
   <dl style="margin-top:30px;">
     <!-- Adresse, Téléphone, Horaires -->

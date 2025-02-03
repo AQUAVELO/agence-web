@@ -64,6 +64,9 @@
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">Essayez une séance gratuite de 45 mn</h2>
               <div class="col-md-6">
+                <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+                  <p>en vous inscrivant sur notre <strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
+                <?php endif; ?>
                 <form role="form" class="contact-form" method="POST" action="_page.php">
                   <div class="form-group">
                     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>

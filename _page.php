@@ -54,14 +54,13 @@
         <?php endif; ?>
       </div>
 
-     
       <!-- Image supplémentaire -->
-<?php if (!in_array($row_center['id'], [305, 347, 349])) : ?>
-  <div class="col-md-3 col-6 text-center">
-    <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
-         alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
-  </div>
-<?php endif; ?>
+      <?php if (isset($row_center['id']) && !in_array($row_center['id'], [305, 347, 349])) : ?>
+        <div class="col-md-3 col-6 text-center">
+          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+               alt="Photo supplémentaire du centre Aquavélo" class="img-fluid img-same" width="300" height="200">
+        </div>
+      <?php endif; ?>
 
       <!-- Image promotionnelle -->
       <?php 
@@ -85,106 +84,114 @@
   </div>
 </section>
 
-<!-- Formulaire -->
-<div class="col-md-6">
-  <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
-  <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-    <p>en vous inscrivant sur notre <strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
-  <?php endif; ?>
-  <form role="form" class="contact-form" method="POST" action="_page.php">
-    <div class="form-group">
-      <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-      <select class="form-control" id="center" name="center">
-        <?php if (isset($centers_list_d)) { ?>
-          <?php foreach ($centers_list_d as $free_d) { ?>
-            <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
-              <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
-            </option>
-          <?php } ?>
-        <?php } ?>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="nom">Nom et prénom</label>
-      <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-    </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-    </div>
-    <div class="form-group">
-      <label for="phone">Téléphone</label>
-      <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-    </div>
-    <input type="hidden" name="reason" id="reason">
-    <input type="hidden" name="segment" id="segment">
-    <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">Recevoir mon bon par email</button>
-  </form>
+<!-- Formulaire et Informations supplémentaires -->
+<div class="container">
+  <div class="row">
+    <!-- Formulaire -->
+    <div class="col-md-6">
+      <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
+      <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+        <p>en vous inscrivant sur notre <strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
+      <?php endif; ?>
+      <form role="form" class="contact-form" method="POST" action="_page.php">
+        <div class="form-group">
+          <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
+          <select class="form-control" id="center" name="center">
+            <?php if (isset($centers_list_d)) : ?>
+              <?php foreach ($centers_list_d as $free_d) : ?>
+                <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                  <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
+                </option>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom et prénom</label>
+          <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
+        <div class="form-group">
+          <label for="phone">Téléphone</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
+        <input type="hidden" name="reason" id="reason">
+        <input type="hidden" name="segment" id="segment">
+        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">Recevoir mon bon par email</button>
+      </form>
 
-  <!-- Ajout de l'image avec bouton pour agrandir -->
- <?php if ($row_center['id'] == 253) : ?>
-    <div class="text-center mt-4">
-      <img src="/images/planningAntibes.jpg" alt="Planning des cours Aquavelo Antibes" class="img-fluid" style="max-width: 100%; height: auto;">
+      <!-- Ajout de l'image avec bouton pour agrandir -->
+      <?php if (isset($row_center['id'])) : ?>
+        <?php if ($row_center['id'] == 253) : ?>
+          <div class="text-center mt-4">
+            <img src="/images/planningAntibes.jpg" alt="Planning des cours Aquavelo Antibes" class="img-fluid" style="max-width: 100%; height: auto;">
+          </div>
+        <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
+          <div class="text-center mt-4">
+            <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
+          </div>
+        <?php elseif ($row_center['id'] == 179) : ?>
+          <div class="text-center mt-4">
+            <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
+          </div>
+        <?php endif; ?>
+      <?php endif; ?>
     </div>
-<?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
-    <div class="text-center mt-4">
-      <img src="/images/PLANNINGCANNES0125.jpg" alt="Planning des cours Aquavelo Cannes" class="img-fluid" style="max-width: 100%; height: auto;">
+
+    <!-- Informations supplémentaires -->
+    <div class="col-md-6">
+      <dl style="margin-top:30px;">
+        <!-- Adresse, Téléphone, Horaires -->
+        <dt>Adresse</dt>
+        <dd><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+        <dt>Téléphone</dt>
+        <dd><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+        <dt>Horaires</dt>
+        <dd><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+
+        <!-- Découvrez la vie de votre centre -->
+        <dt>Découvrez la vie de votre centre</dt>
+        <dd>
+          <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+             title="Facebook" 
+             target="_blank" 
+             class="btn btn-default" 
+             aria-label="Visitez notre page Facebook">
+            Facebook
+          </a>
+        </dd>
+
+        <!-- Résultats Minceurs Rapides -->
+        <dt>Résultats Minceurs Rapides</dt>
+        <dd>
+          <a href="#" class="btn btn-default" onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
+             title="Ouvrir les résultats minceurs" 
+             aria-label="Ouvrir les résultats minceurs">
+            Résultats Minceurs
+          </a>
+        </dd>
+
+        <!-- Conseils pour perdre du poids -->
+        <dt>Conseils pour perdre du poids</dt>
+        <dd>
+          <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
+             title="Conseils pour perdre du poids" 
+             aria-label="Conseils pour perdre du poids">
+            Conseils pour perdre du poids
+          </a>
+        </dd>
+
+        <!-- Description -->
+        <dt>Description</dt>
+        <dd>
+          <p><?= htmlspecialchars($row_center['description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+        </dd>
+      </dl>
     </div>
-<?php elseif ($row_center['id'] == 179) : ?>
-    <div class="text-center mt-4">
-      <img src="/images/planningNice.jpg" alt="Planning des cours Aquavelo Nice" class="img-fluid" style="max-width: 100%; height: auto;">
-    </div>
-<?php endif; ?>
-
-</div>
-	    
-<div class="col-md-6">
-  <dl style="margin-top:30px;">
-    <!-- Adresse, Téléphone, Horaires -->
-    <dt>Adresse</dt>
-    <dd><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
-    <dt>Téléphone</dt>
-    <dd><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
-    <dt>Horaires</dt>
-    <dd><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
-
-    <!-- Découvrez la vie de votre centre -->
-    <dt>Découvrez la vie de votre centre</dt>
-    <dd>
-      <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
-         title="Facebook" 
-         target="_blank" 
-         class="btn btn-default" 
-         aria-label="Visitez notre page Facebook">
-        Facebook
-      </a>
-    </dd>
-
-    <!-- Résultats Minceurs Rapides -->
-    <dt>Résultats Minceurs Rapides</dt>
-    <dd>
-      <a class="btn btn-default" 
-         href="javascript:ouvre_popup('/nouveauResultat.html')" 
-         title="Ouvrir les résultats minceurs" 
-         aria-label="Ouvrir les résultats minceurs">Résultats Minceurs</a>
-    </dd>
-
-    <!-- Conseils pour perdre du poids -->
-    <dt>Conseils pour perdre du poids</dt>
-    <dd>
-      <a class="btn btn-default" 
-         href="#"
-         onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-         title="Conseils pour perdre du poids" 
-         aria-label="Conseils pour perdre du poids">Conseils pour perdre du poids</a>
-    </dd>
-
-    <!-- Description -->
-    <dt>Description</dt>
-    <dd>
-      <p><?= $row_center['description']; ?></p>
-    </dd>
-  </dl>
+  </div>
 </div>
 
 <!-- Script JavaScript à la fin -->

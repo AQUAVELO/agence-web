@@ -288,79 +288,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     
 
-   <section class="content-area prefooter">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <article class="table-content animated" data-fx="flipInY">
-          <section class="table-row">
-            <div class="table-cell">
-              <h2 class="widget-title">Suivez-nous</h2>
-            </div>
-            <div class="table-cell">
-              <ul class="socialIcons bigIcons">
-                <li><a href="https://www.facebook.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="https://www.instagram.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Instagram"><i class="fa fa-instagram"></i></a></li>
-                <li><a href="http://twitter.com/AquaveloNice" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-              </ul>
-            </div>
-          </section>
-        </article>
-      </div>
-      <div class="col-md-6">
-        <div class="newsletterForm">
-          <div class="successMessage alert alert-success alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Abonnement confirmé. 
+ <section class="content-area prefooter">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <article class="table-content animated" data-fx="flipInY">
+              <section class="table-row">
+                <div class="table-cell">
+                  <h2 class="widget-title">Suivez-nous</h2>
+                </div>
+                <div class="table-cell">
+                  <ul class="socialIcons bigIcons">
+                    <li><a href="https://www.facebook.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://www.instagram.com/aquaveloCannes/?locale=fr_FR" data-toggle="tooltip" title="Instagram"><i class="fa fa-instagram"></i></a></li>
+    
+                    <li><a href="http://twitter.com/AquaveloNice" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                   </ul>
+                </div>
+              </section>
+            </article>
           </div>
-          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Une erreur est survenue. 
+          <div class="col-md-6">
+            <div class="newsletterForm">
+              <div class="successMessage alert alert-success alert-dismissable" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                Abonnement confirmé. </div>
+              <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                Une erreur est survenue. </div>
+              <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
+                <fieldset>
+                  <article class="table-content animated" data-fx="flipInY">
+                    <section class="table-row">
+                      <div class="table-cell">
+                        <h2 class="widget-title">Recevoir la newsletter</h2>
+                      </div>
+                      <div class="table-cell">
+                        <label class="sr-only">Adresse e-mail</label>
+                        <input type="email" name="field[]" class="form-control" placeholder="Adresse e-mail">
+                      </div>
+                      <div class="table-cell">
+                        <input type="submit" class="btn btn-primary" value="S'abonner">
+                      </div>
+                    </section>
+                  </article>
+                </fieldset>
+              </form>
+            </div>
           </div>
-          <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
-            <fieldset>
-              <article class="table-content animated" data-fx="flipInY">
-                <section class="table-row">
-                  <div class="table-cell">
-                    <h2 class="widget-title">Recevoir la newsletter</h2>
-                  </div>
-                  <div class="table-cell">
-                    <label class="sr-only">Adresse e-mail</label>
-                    <input type="email" name="field[]" class="form-control" placeholder="Adresse e-mail">
-                  </div>
-                  <div class="table-cell">
-                    <input type="submit" class="btn btn-primary" value="S'abonner">
-                  </div>
-                </section>
-              </article>
-            </fieldset>
-          </form>
         </div>
       </div>
-    </div>
-    <!-- Insertion du programme PHP ici -->
-    <?php if (!empty($row_center['book_link'])) { ?>
-      <div class="row">
-        <div class="col-md-12">
-          <article class="table-content animated" data-fx="flipInY">
-            <section class="table-row">
-              <div class="table-cell">
-                <dt>Agenda pour les adhérents</dt>
-                <dd>
-                  <a href="https://<?= htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8'); ?>" 
-                     title="Réservation en ligne" 
-                     aria-label="Cliquez pour réserver en ligne"
-                     target="_blank" 
-                     class="btn btn-default">Réserver en ligne</a>
-                </dd>
-              </div>
-            </section>
-          </article>
-        </div>
-      </div>
-    <?php } ?>
-  </div>
-</section>
+    </section>
+
     
     
 

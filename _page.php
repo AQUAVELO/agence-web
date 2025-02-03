@@ -187,7 +187,8 @@
         <!-- Description -->
         <dt>Description</dt>
         <dd>
-          <p><?= htmlspecialchars($row_center['description'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+          <p><?= $row_center['description'] ?? '' ?></p>
+
         </dd>
       </dl>
     </div>

@@ -51,7 +51,7 @@
     const extraAgeOption=document.createElement('option');extraAgeOption.value="80+";extraAgeOption.textContent="80 et plus";ageSelect.appendChild(extraAgeOption);
     function calculateIMC(weight,height){const heightInMeters=height/100;return(weight/(heightInMeters*heightInMeters)).toFixed(2);}
     async function getAdvice(age,weight,height,imc,localisation,moral,sport,eau,tdee){
-      const prompt=`Donne des conseils pour une personne de ${age} ans, ${weight} kg, ${height} cm, IMC ${imc}. Cellulite: ${localisation}. Moral: ${moral}. Sport: ${sport}. Eau: ${eau}. Besoin calorique: ${tdee} calories. Propose l'Aquavelo, des conseils alimentaires et des ajustements pour atteindre les objectifs minceur. Limite à 10 lignes et 350 tokens. Ne parle pas de professionnel de santé.`;
+      const prompt=`Donne des conseils pour une personne de ${age} ans, ${weight} kg, ${height} cm, IMC ${imc}. Cellulite: ${localisation}. Moral: ${moral}. Sport: ${sport}. Eau: ${eau}. Besoin calorique: ${tdee} calories. Propose l'Aquavelo, des conseils alimentaires et des ajustements pour atteindre les objectifs minceur. Limite à 10 lignes et 350 tokens. Ne parle pas de professionnel de santé, ni de nutritionniste.`;
     const response = await fetch('./api_handler.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

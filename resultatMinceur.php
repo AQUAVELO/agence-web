@@ -29,7 +29,7 @@
     <select id="weightCalc" name="weightCalc" required></select>
     <label for="ageCalc">Âge (ans) :</label>
     <select id="ageCalc" name="ageCalc" required></select>
-    <label for="localisation">Où est localisée votre cellulite ?</label>
+    <label for="localisation">Où est localisée votre cellulite ou votre adiposité ?</label>
     <select id="localisation" name="localisation"><option value="ventre">Plutôt sur le ventre</option><option value="hanches">Plutôt sur les hanches</option><option value="ventre et hanches">Sur le ventre et les hanches</option></select>
     <label for="moral">Comment vous sentez-vous actuellement ?</label>
     <select id="moral" name="moral"><option value="stressé">Plutôt stressé</option><option value="fatigué">Plutôt fatigué</option><option value="tout va bien">Tout va bien</option></select>

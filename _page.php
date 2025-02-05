@@ -191,11 +191,11 @@
         </dd>
 
         <!-- Conseils pour perdre du poids -->
-        <dt>Votre calculateur de calories avec des conseils pour perdre du poids</dt>
+        <dt>Calculateur calories avec conseils minceur</dt>
         <dd>
           <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
              title="Calculateur de calories et conseils pour perdre du poids" 
-             aria-label="Conseils pour perdre du poids">
+             aria-label="Calculateur calories & conseils minceur">
             Conseils pour perdre du poids
           </a>
         </dd>

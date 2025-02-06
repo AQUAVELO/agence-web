@@ -10,9 +10,16 @@
 
 <div class="container" style="background-color: white; padding: 20px;">
   <?php
+  date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
+
+  $day_number = date('j'); 
+  echo "<p>Jour du mois actuel : $day_number</p>";
+
   // Vérifier si des menus sont trouvés
   if ($menu_datam && $menu_datam->num_rows > 0) {
       echo "<p>Nombre de menus trouvés : " . $menu_datam->num_rows . "</p><br>";
+
+      
 
       // Afficher les données de chaque ligne
       while ($row = $menu_datam->fetch_assoc()) {

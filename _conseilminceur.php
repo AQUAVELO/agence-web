@@ -15,6 +15,18 @@
   $day_number = date('j'); 
   echo "<p>Jour du mois actuel : $day_number</p>";
 
+ $menu_datam = $conn->query($sql);
+
+  if (!$menu_datam) {
+    die("Erreur SQL : " . $conn->error);
+  }
+
+  if ($menu_datam->num_rows > 0) {
+    echo "<p>Menus trouvés : " . $menu_datam->num_rows . "</p>";
+  } else {
+    echo "<p>Aucun menu trouvé pour le jour $day_number.</p>";
+  }
+
   // Vérifier si des menus sont trouvés
   if ($menu_datam && $menu_datam->num_rows > 0) {
       echo "<p>Nombre de menus trouvés : " . $menu_datam->num_rows . "</p><br>";

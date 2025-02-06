@@ -13,25 +13,10 @@
   try {
       date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
 
-      // Connexion à la base de données
-      $database = new PDO('mysql:host=localhost;dbname=repas;charset=utf8', 'root', 'root');
-      $database->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+     
 
       $jour_du_mois = date('j');
 
-      // Préparer la requête pour récupérer les données du menu
-      $menu_querym = $database->prepare('
-          SELECT id, day_number, total_calories, 
-              petit_dejeuner_menu, petit_dejeuner_recette, photo_pet_dej, 
-              repas_midi_menu, repas_midi_recette, photo_repas_midi, 
-              souper_menu, souper_recette, photo_souper, 
-              collation_menu, collation_recette, photo_collation 
-          FROM menu 
-          WHERE day_number = :jour_du_mois
-      ');
-      $menu_querym->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
-      $menu_querym->execute();
-      $menu_datam = $menu_querym->fetch(PDO::FETCH_ASSOC);
 
       // Vérifier si des menus sont trouvés
       if ($menu_datam) {

@@ -35,6 +35,12 @@ $menu_query->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_query->execute();
 $menu_data = $menu_query->fetch(PDO::FETCH_ASSOC);
 
+// Préparer la requête pour récupérer les champs spécifiques de la table menu
+$menu_querym = $database->prepare('SELECT id, day_number, total_calories, petit_dejeuner_menu, petit_dejeuner_recette, photo_pet_dej, repas_midi_menu, repas_midi_recette, photo_repas_midi, souper_menu, souper_recette, photo_souper, collation_menu, collation_recette, photo_collation FROM menu WHERE day_number = :jour_du_mois');
+$menu_querym->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
+$menu_querym->execute();
+$menu_datam = $menu_querym->fetch(PDO::FETCH_ASSOC);
+
 // Requête pour récupérer tous les articles
 $news_querys = $database->prepare('SELECT news, photo, titre FROM article');
 $news_querys->execute();

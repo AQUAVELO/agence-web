@@ -10,6 +10,11 @@
 
 <div class="container" style="background-color: white; padding: 20px;">
   <?php
+ // vérifier si des menus sont trouvés
+   if (!empty($menu_datam)) {
+      // Afficher un message indiquant qu'il y a des résultats
+      echo "<p>Nombre de menus trouvés : " . count($menu_datam) . "</p><br>";
+ 
   // Vérifier si des articles ont été trouvés
   if (!empty($news_datas)) {
       // Afficher un message indiquant qu'il y a des résultats

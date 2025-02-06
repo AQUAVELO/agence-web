@@ -20,7 +20,7 @@
 
       // Vérifier si des menus sont trouvés
       if ($menu_datam) {
-          echo "<h1>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h1>";
+          echo "<h2>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h2>";
 
           // Affichage des sections (Petit Déjeuner, Déjeuner, Dîner, Collation)
           $sections = [

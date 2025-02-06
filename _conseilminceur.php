@@ -12,26 +12,41 @@
   <?php
 
 
-  date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
 
-  $day_number = date('j'); 
-  echo "<p>Jour du mois actuel : $day_number</p>";
 
-  $sql = "SELECT * FROM menu WHERE day_number = $day_number";
+  if ($menu_datam) {
+        echo "<h1>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h1>";
 
-  echo "<p>Requête SQL : $sql</p>";
+        // Affichage des sections (Petit Déjeuner, Déjeuner, Dîner, Collation)
+        $sections = [
+            "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
+            "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
+            "Dîner" => ["menu" => "souper_menu", "recette" => "souper_recette", "photo" => "photo_souper"],
+            "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
+        ];
 
-  $menu_datam = $conn->query($sql);
+        echo "<div style='display: flex; justify-content: space-around; gap: 20px;'>";
+        foreach ($sections as $title => $fields) {
+            echo "<div style='flex: 1; text-align: center;'>";
+            echo "<h2>$title</h2>";
+            echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
+            echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 
-  if (!$menu_datam) {
-    die("Erreur SQL : " . $conn->error);
-  }
+            if (!empty($menu_datam[$fields['photo']]) && file_exists($menu_datam[$fields['photo']])) {
+                echo "<img src='" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' style='max-width: 100%; height: auto;'>";
+            }
+            echo "</div>";
+        }
+        echo "</div>";
+    } else {
+        echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
+    }
+} catch (PDOException $e) {
+    echo "Erreur de connexion : " . $e->getMessage();
+}
 
-  if ($menu_datam->num_rows > 0) {
-    echo "<p>Menus trouvés : " . $menu_datam->num_rows . "</p>";
-  } else {
-    echo "<p>Aucun menu trouvé pour le jour $day_number.</p>";
-  }
+
+  
 
 
   // Vérifier si des menus sont trouvés

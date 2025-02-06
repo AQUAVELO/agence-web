@@ -43,9 +43,9 @@
       } else {
           echo "Aucun article trouvé.";
       }
-//  } else {
- //     echo "Aucun menu trouvé.";
- // }
+    } else {
+        echo "Aucun menu trouvé.";
+  }
   ?>
 </div>
 

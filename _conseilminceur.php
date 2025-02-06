@@ -10,42 +10,42 @@
 
 <div class="container" style="background-color: white; padding: 20px;">
   <?php
- // vérifier si des menus sont trouvés
-   if (!empty($menu_datam)) {
-      // Afficher un message indiquant qu'il y a des résultats
-      echo "<p>Nombre de menus trouvés : " . count($menu_datam) . "</p><br>";
- 
-  // Vérifier si des articles ont été trouvés
-  if (!empty($news_datas)) {
-      // Afficher un message indiquant qu'il y a des résultats
-      echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
+  // Vérifier si des menus sont trouvés
+  if (!empty($menu_data)) {
+      echo "<p>Nombre de menus trouvés : " . count($menu_data) . "</p><br>";
 
-      // Afficher les données de chaque ligne
-      foreach ($news_datas as $article) {
-          echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
-          
-          // Afficher l'image si elle existe
-          if (!empty($article["photo"])) {
-              echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" style="width: 33.33%; height: auto; margin-right: 20px;">';
+      // Vérifier si des articles ont été trouvés
+      if (isset($news_datas) && !empty($news_datas)) {
+          echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
+
+          foreach ($news_datas as $article) {
+              echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
+
+              // Afficher l'image si elle existe
+              if (!empty($article["photo"])) {
+                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" style="width: 33.33%; height: auto; margin-right: 20px;">';
+              }
+
+              // Contenu (titre et article) à droite de l'image
+              echo '<div class="article-content" style="flex: 1;">';
+              echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
+
+              // Transformation du texte
+              $formattedText = $article["news"];
+              $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $formattedText);
+              $formattedText = nl2br($formattedText);
+
+              echo '<p style="line-height: 1.6; margin: 0; color: #777;">' . $formattedText . '</p>';
+
+              echo '</div>'; // Fermeture de .article-content
+              echo '</div>'; // Fermeture de .article
           }
-          
-          // Contenu (titre et article) à droite de l'image
-          echo '<div class="article-content" style="flex: 1;">';
-          echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
-          
-          // Transformation du texte
-          $formattedText = $article["news"]; // Récupérer le texte brut
-          $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $formattedText); // Mettre en gras
-          $formattedText = nl2br($formattedText); // Convertir les sauts de ligne en <br>
-
-          // Affichage avec le style souhaité
-          echo '<p style="line-height: 1.6; margin: 0; color: #777;">' . $formattedText . '</p>';
-          
-          echo '</div>'; // Fermeture de .article-content
-          echo '</div>'; // Fermeture de .article
+      } else {
+          echo "Aucun article trouvé.";
       }
   } else {
-      echo "Aucun article trouvé.";
+      echo "Aucun menu trouvé.";
   }
   ?>
 </div>
+

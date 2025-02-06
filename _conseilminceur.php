@@ -10,12 +10,18 @@
 
 <div class="container" style="background-color: white; padding: 20px;">
   <?php
+
+
   date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
 
   $day_number = date('j'); 
   echo "<p>Jour du mois actuel : $day_number</p>";
 
- $menu_datam = $conn->query($sql);
+  $sql = "SELECT * FROM menu WHERE day_number = $day_number";
+
+  echo "<p>Requête SQL : $sql</p>";
+
+  $menu_datam = $conn->query($sql);
 
   if (!$menu_datam) {
     die("Erreur SQL : " . $conn->error);
@@ -26,6 +32,7 @@
   } else {
     echo "<p>Aucun menu trouvé pour le jour $day_number.</p>";
   }
+
 
   // Vérifier si des menus sont trouvés
   if ($menu_datam && $menu_datam->num_rows > 0) {

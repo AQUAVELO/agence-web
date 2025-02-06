@@ -11,8 +11,8 @@
 <div class="container" style="background-color: white; padding: 20px;">
   <?php
   // Vérifier si des menus sont trouvés
-  if (!empty($menu_data)) {
-      echo "<p>Nombre de menus trouvés : " . count($menu_data) . "</p><br>";
+ // if (!empty($menu_data)) {
+    //  echo "<p>Nombre de menus trouvés : " . count($menu_data) . "</p><br>";
 
       // Vérifier si des articles ont été trouvés
       if (isset($news_datas) && !empty($news_datas)) {
@@ -43,9 +43,9 @@
       } else {
           echo "Aucun article trouvé.";
       }
-  } else {
-      echo "Aucun menu trouvé.";
-  }
+//  } else {
+ //     echo "Aucun menu trouvé.";
+ // }
   ?>
 </div>
 

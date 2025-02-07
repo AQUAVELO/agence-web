@@ -200,6 +200,16 @@
             Conseils pour perdre du poids
           </a>
         </dd>
+	<!-- Menu Perte de Poids -->
+	<dt>Menu perte de poids</dt>
+	<dd>
+  	<a href="https://www.aquavelo.com/conseilminceur" class="btn btn-default" 
+     	   title="Menu Perte de Poids" 
+            aria-label="Menu Perte de Poids">
+         Menu Perte de Poids
+         </a>
+	</dd>
+
 
         <!-- Description -->
         <dt>Description</dt>

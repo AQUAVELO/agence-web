@@ -119,7 +119,7 @@ if (isset($_GET['city'])) {
 
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Cours d'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps.">
+  <meta name="description" content="Cours d'aquabiking et d'aquagym collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps.">
   <meta name="keywords" content="aquavelo, aquabiking, waterbike, aquabike, aquagym, anti cellulite, amincissement, perte de poids, kg en moins, affinement rapide de la silhouette">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">

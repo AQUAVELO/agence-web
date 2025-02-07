@@ -11,8 +11,8 @@
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
-      width: 100px; /* Taille réduite de moitié */
-      height: 55px;
+      width: 150px; /* Taille réduite de moitié */
+      height: 100px;
       object-fit: cover;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -20,8 +20,8 @@
     }
 
     .article-image {
-      width: 100px; /* Taille réduite de moitié */
-      height: 75px;
+      width: 300px; /* Taille réduite de moitié */
+      height: 200px;
       object-fit: cover;
       margin-right: 20px;
       border-radius: 8px;

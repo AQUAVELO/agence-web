@@ -11,25 +11,31 @@
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
-      width: 200px;         /* Largeur fixe */
-      height: 150px;        /* Hauteur fixe */
-      object-fit: cover;    /* Pour ajuster l'image sans déformer */
-      border-radius: 10px;  /* Coins arrondis pour un style plus doux */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Légère ombre pour un effet visuel */
-      margin: 10px 0;       /* Espacement au-dessus et en dessous */
+      width: 200px;         /* Taille des images du menu */
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 10px 0;
+    }
+
+    .article-image {
+      width: 200px;         /* Augmenté de 150px à 200px (+1/3) */
+      height: 133px;        /* Proportionnel à la nouvelle largeur */
+      object-fit: cover;
+      margin-right: 20px;
+      border-radius: 8px;
     }
   </style>
 
   <?php
   try {
-      date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
+      date_default_timezone_set('Europe/Paris');
       $jour_du_mois = date('j');
 
-      // Vérifier si des menus sont trouvés
       if ($menu_datam) {
           echo "<h3>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h3>";
 
-          // Affichage des sections (Petit Déjeuner, Déjeuner, Dîner, Collation)
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
               "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
@@ -37,9 +43,9 @@
               "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
           ];
 
-          echo "<div style='display: flex; justify-content: space-around; gap: 13px; flex-wrap: wrap;'>"; // flex-wrap pour s'adapter aux petits écrans
+          echo "<div style='display: flex; justify-content: space-around; gap: 13px; flex-wrap: wrap;'>";
           foreach ($sections as $title => $fields) {
-              echo "<div style='flex: 1; text-align: center; min-width: 250px;'>"; // min-width pour un affichage responsive
+              echo "<div style='flex: 1; text-align: center; min-width: 250px;'>";
               echo "<h3>$title</h3>";
               echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
               echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
@@ -54,23 +60,19 @@
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
 
-      // Vérifier si des articles ont été trouvés
       if (isset($news_datas) && !empty($news_datas)) {
           echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
 
           foreach ($news_datas as $article) {
               echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
 
-              // Afficher l'image si elle existe
               if (!empty($article["photo"])) {
-                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" style="width: 150px; height: 100px; object-fit: cover; margin-right: 20px; border-radius: 8px;">';
+                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" class="article-image">';
               }
 
-              // Contenu (titre et article) à droite de l'image
               echo '<div class="article-content" style="flex: 1;">';
               echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
 
-              // Transformation du texte
               $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $article["news"]);
               $formattedText = nl2br($formattedText);
 
@@ -86,6 +88,7 @@
   }
   ?>
 </div>
+
 
 
 

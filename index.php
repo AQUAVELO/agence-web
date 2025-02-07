@@ -195,11 +195,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
 <meta property="og:url" content="https://www.aquavelo.com" />
 <meta property="og:site_name" content="Aquavélo" />
-<?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/Aquavelo_Icon.png">
-    <meta name="theme-color" content="#00ACDC">
-<?php endif; ?>
+
 </head>
 
 <body class="withAnimation">

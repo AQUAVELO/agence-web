@@ -20,7 +20,7 @@
 
       // Vérifier si des menus sont trouvés
       if ($menu_datam) {
-          echo "<h2>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h2>";
+          echo "<h3>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h3>";
 
           // Affichage des sections (Petit Déjeuner, Déjeuner, Dîner, Collation)
           $sections = [
@@ -30,7 +30,7 @@
               "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
           ];
 
-          echo "<div style='display: flex; justify-content: space-around; gap: 20px;'>";
+          echo "<div style='display: flex; justify-content: space-around; gap: 13px;'>";
           foreach ($sections as $title => $fields) {
               echo "<div style='flex: 1; text-align: center;'>";
               echo "<h2>$title</h2>";

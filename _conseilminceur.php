@@ -46,7 +46,7 @@
           echo "<div style='display: flex; justify-content: space-around; gap: 13px; flex-wrap: wrap;'>";
           foreach ($sections as $title => $fields) {
               echo "<div style='flex: 1; text-align: center; min-width: 250px;'>";
-              echo "<h3>$title</h3>";
+              echo "<h4>$title</h4>";
               echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
               echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 

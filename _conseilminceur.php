@@ -33,7 +33,7 @@
           echo "<div style='display: flex; justify-content: space-around; gap: 13px;'>";
           foreach ($sections as $title => $fields) {
               echo "<div style='flex: 1; text-align: center;'>";
-              echo "<h2>$title</h2>";
+              echo "<h3>$title</h3>";
               echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
               echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 

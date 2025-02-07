@@ -33,11 +33,7 @@
     </script>
     <!-- End Facebook Pixel Code -->
   <?php endif; ?>
-   <?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="/images/Aquavelo_Icon.png">
-    <meta name="theme-color" content="#00ACDC">
-  <?php endif; ?>
+ 
 </header>
 
 <section class="content-area bg1">

@@ -34,7 +34,7 @@
       $jour_du_mois = date('j');
 
       if ($menu_datam) {
-          echo "<h3>Menu du jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h3>";
+          echo "<h3>Tous les jours un nouveau menu, aujourd'hui pour le jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],

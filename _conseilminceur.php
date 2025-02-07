@@ -9,25 +9,6 @@
 </header>
 
 <div class="container" style="background-color: white; padding: 20px;">
-  <style>
-    .menu-image {
-      width: 200px;         /* Taille des images du menu */
-      height: 150px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin: 10px 0;
-    }
-
-    .article-image {
-      width: 200px;         /* Augmenté de 150px à 200px (+1/3) */
-      height: 133px;        /* Proportionnel à la nouvelle largeur */
-      object-fit: cover;
-      margin-right: 20px;
-      border-radius: 8px;
-    }
-  </style>
-
   <?php
   try {
       date_default_timezone_set('Europe/Paris');
@@ -60,9 +41,9 @@
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
 
-      if (isset($news_datas) && !empty($news_datas)) {
-          echo "<p>Nombre d'articles trouvés : " . count($news_datas) . "</p><br>";
+      echo "<hr style='margin: 20px 0;'>"; // Barre horizontale entre les menus et les articles
 
+      if (isset($news_datas) && !empty($news_datas)) {
           foreach ($news_datas as $article) {
               echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
 
@@ -88,6 +69,7 @@
   }
   ?>
 </div>
+
 
 
 

@@ -9,14 +9,21 @@
 </header>
 
 <div class="container" style="background-color: white; padding: 20px;">
+  <style>
+    .menu-image {
+      width: 200px;         /* Largeur fixe */
+      height: 150px;        /* Hauteur fixe */
+      object-fit: cover;    /* Pour ajuster l'image sans déformer */
+      border-radius: 10px;  /* Coins arrondis pour un style plus doux */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Légère ombre pour un effet visuel */
+      margin: 10px 0;       /* Espacement au-dessus et en dessous */
+    }
+  </style>
+
   <?php
   try {
       date_default_timezone_set('Europe/Paris'); // Assurez-vous du bon fuseau horaire
-
-     
-
       $jour_du_mois = date('j');
-
 
       // Vérifier si des menus sont trouvés
       if ($menu_datam) {
@@ -30,15 +37,15 @@
               "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
           ];
 
-          echo "<div style='display: flex; justify-content: space-around; gap: 13px;'>";
+          echo "<div style='display: flex; justify-content: space-around; gap: 13px; flex-wrap: wrap;'>"; // flex-wrap pour s'adapter aux petits écrans
           foreach ($sections as $title => $fields) {
-              echo "<div style='flex: 1; text-align: center;'>";
+              echo "<div style='flex: 1; text-align: center; min-width: 250px;'>"; // min-width pour un affichage responsive
               echo "<h3>$title</h3>";
               echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
               echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 
               if (!empty($menu_datam[$fields['photo']])) {
-                  echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' style='max-width: 100%; height: auto;'>";
+                  echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' class='menu-image'>";
               }
               echo "</div>";
           }
@@ -56,7 +63,7 @@
 
               // Afficher l'image si elle existe
               if (!empty($article["photo"])) {
-                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" style="width: 33.33%; height: auto; margin-right: 20px;">';
+                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" style="width: 150px; height: 100px; object-fit: cover; margin-right: 20px; border-radius: 8px;">';
               }
 
               // Contenu (titre et article) à droite de l'image
@@ -79,6 +86,7 @@
   }
   ?>
 </div>
+
 
 
 

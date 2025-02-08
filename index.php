@@ -201,15 +201,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <?php if ($row_center['id'] == 305) : // Cannes ?>
     <link rel="manifest" href="/manifest-cannes.json">
     <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_C.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_512_C.png">
+    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_C.png">
   <?php elseif ($row_center['id'] == 253) : // Antibes ?>
     <link rel="manifest" href="/manifest-antibes.json">
     <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_A.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_512_A.png">
+    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_A.png">
   <?php elseif ($_SERVER['REQUEST_URI'] === '/conseilminceur') : // Conseil Minceur ?>
     <link rel="manifest" href="/manifest-conseilminceur.json">
     <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_M.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_512_M.png">
+    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_M.png">
   <?php endif; ?>
   <meta name="theme-color" content="#00ACDC">
 <?php endif; ?>

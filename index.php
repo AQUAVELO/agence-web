@@ -197,7 +197,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:site_name" content="Aquavélo" />
 
 
-<head>
+
   <meta charset="UTF-8">
   <title>Aquavelo Cannes</title>
   
@@ -222,7 +222,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
   
-</head>
+
 
 </head>
 

@@ -7,13 +7,13 @@
   "theme_color": "#00ACDC",
   "icons": [
     {
-      "src": "/images/Aquavelo_Icon_192-M.png",
-      "sizes": "192x192",
+      "src": "/images/Aquavelo_Icon_M.png",
+      "sizes": "92x92",
       "type": "image/png"
     },
     {
-      "src": "/images/Aquavelo_Icon_M.png",
-      "sizes": "512x512",
+      "src": "/images/Aquavelo_Icon_512_M.png",
+      "sizes": "192x192",
       "type": "image/png"
     }
   ]

@@ -10,7 +10,7 @@ if ($page == 'centers') $title = 'Centres d\'aquabiking';
 if ($page == 'concept') $title = 'Concept Aquavelo';
 if ($page == 'free') $title = 'Séance découverte';
 if ($page == 'partenaires') $title = 'Partenaires';
-if ($page == 'conseilminceur') $title = 'Articles Minceur';
+if ($page == 'conseilminceur') $title = 'Minceur';
 if ($page == 'contact') $title = 'Contactez-nous';
 
 

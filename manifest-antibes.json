@@ -1,15 +1,21 @@
 {
   "name": "Aquavelo Antibes",
-  "short_name": "Aquavelo Antibes",
+  "short_name": "Antibes",
   "start_url": "/centres/Antibes",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#00ACDC",
   "icons": [
     {
-      "src": "/images/Aquavelo_Icon.png",
+      "src": "/images/Aquavelo_Icon_A.png",
+      "sizes": "92x92",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/Aquavelo_Icon_512_A.png",
       "sizes": "192x192",
       "type": "image/png"
     }
   ]
 }
+

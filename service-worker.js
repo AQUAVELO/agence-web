@@ -1,7 +1,8 @@
-const CACHE_NAME = 'aquavelo-cache-v2';
+const CACHE_NAME = 'aquavelo-cache-v3';
 
 self.addEventListener('install', function(event) {
-  console.log('Service Worker (v2) installé.');
+  console.log('Service Worker (v3) installé.');
+
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll([
@@ -9,16 +10,19 @@ self.addEventListener('install', function(event) {
         '/centres/Cannes',
         '/centres/Antibes',
         '/conseilminceur',
-        '/images/Aquavelo_Icon.png',
-        '/images/Aquavelo_Icon_192-M.png',
-        '/images/Aquavelo_Icon_M.png'
+        '/images/Aquavelo_Icon_C.png',
+        '/images/Aquavelo_Icon_512_C.png',
+        '/images/Aquavelo_Icon_A.png',
+        '/images/Aquavelo_Icon_512_A.png',
+        '/images/Aquavelo_Icon_M.png',
+        '/images/Aquavelo_Icon_512_M.png'
       ]);
     })
   );
 });
 
 self.addEventListener('activate', function(event) {
-  console.log('Service Worker (v2) activé.');
+  console.log('Service Worker (v3) activé.');
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -40,4 +44,5 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+
 

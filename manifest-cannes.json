@@ -1,7 +1,7 @@
 {
   "name": "Aquavelo Cannes",
-  "short_name": "Aquavelo",
-  "start_url": "https://www.aquavelo.com/centres/Cannes",
+  "short_name": "Aquavelo Cannes",
+  "start_url": "/centres/Cannes",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#00ACDC",
@@ -13,3 +13,4 @@
     }
   ]
 }
+

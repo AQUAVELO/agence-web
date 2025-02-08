@@ -1,7 +1,7 @@
 {
   "name": "Aquavelo Conseil Minceur",
   "short_name": "Conseil Minceur",
-  "start_url": "https://www.aquavelo.com/conseilminceur",
+  "start_url": "/conseilminceur",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#00ACDC",

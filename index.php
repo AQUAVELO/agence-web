@@ -281,11 +281,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
                 <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'Conseils minceurs') echo ' active'; ?>"> 
-    <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Minceurs</a>
-    <ul class="dropdown-menu">
-        <li><a href="/conseilminceur">Minceur</a></li> <!-- Nouveau lien -->
-      
-    </ul>
+    <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils Minceurs</a>
+   
               </li>
 
                   <li <?php if ($page == 'partenaires') echo ' class="active"'; ?> class="dropdown<?php if ($page == 'partenaires') echo ' active'; ?>"> <a href="/partenaires" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Partenaires</a>

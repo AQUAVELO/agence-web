@@ -211,6 +211,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="theme-color" content="#00ACDC">
 <?php endif; ?>
 
+<link rel="manifest" href="/manifest-conseilminceur.json">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/Aquavelo_Icon_192-M.png">
+<link rel="apple-touch-icon" href="/images/Aquavelo_Icon_M.png">
+<meta name="theme-color" content="#00ACDC">
+
+
   
 </head>
 

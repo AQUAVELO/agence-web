@@ -62,11 +62,7 @@ $user_query->execute();
 $user_data = $user_query->fetch(PDO::FETCH_ASSOC);
 
 
-if (isset($_GET['p']) && is_file('_' . strip_tags($_GET['p']) . '.php')) {
-    $page = strip_tags($_GET['p']);
-} else {
-    $page = 'home';
-}
+
 
 
 #home

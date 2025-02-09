@@ -11,11 +11,11 @@ self.addEventListener('install', function(event) {
         '/centres/Antibes',
         '/conseilminceur',
         '/images/Aquavelo_Icon_C.png',
-        '/images/Aquavelo_Icon_512_C.png',
+        '/images/Aquavelo_Icon_192_C.png',
         '/images/Aquavelo_Icon_A.png',
-        '/images/Aquavelo_Icon_512_A.png',
+        '/images/Aquavelo_Icon_192_A.png',
         '/images/Aquavelo_Icon_M.png',
-        '/images/Aquavelo_Icon_512_M.png'
+        '/images/Aquavelo_Icon_192_M.png'
       ]);
     })
   );

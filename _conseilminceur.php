@@ -64,7 +64,7 @@ try {
     echo "</div>";
 
 
-    if ($menu_query && $menu_query->num_rows > 0) {
+    if ($all_menus && $all_menus->num_rows > 0) {
         echo "<h2>Sélecteur de menus par jour</h2>";
         echo "<select id='menu_selector' onchange='afficherMenu()'>";
         echo "<option value=''>-- Sélectionner un jour --</option>";

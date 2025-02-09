@@ -33,15 +33,11 @@
       date_default_timezone_set('Europe/Paris');
       $jour_du_mois = date('j');
 
-      if (isset($menu_datam) && !empty($menu_datam)) {
-        echo "<h1>Menu du jour " . htmlspecialchars($menu_datam["day_number"]) . " (Total " . htmlspecialchars($menu_datam["total_calories"]) . ")</h1>";
-      } else {
-        echo "<p>Aucun menu trouvé pour aujourd'hui.</p>";
-        }
-   
-       echo "<div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>";
+      // Affichage du menu du jour
+if (isset($menu_datam) && !empty($menu_datam)) {
+    echo "<h1>Menu du jour " . htmlspecialchars($menu_datam["day_number"]) . " (Total " . htmlspecialchars($menu_datam["total_calories"]) . ")</h1>";
 
-    // Sections du menu
+    echo "<div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>";
     $sections = [
         "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
         "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
@@ -60,9 +56,10 @@
         }
         echo "</div>";
     }
-
     echo "</div>";
-
+} else {
+    echo "<p>Aucun menu trouvé pour aujourd'hui.</p>";
+}
 
 // Sélecteur de menus précédents
 $menu_query = "SELECT day_number, petit_dejeuner_menu, repas_midi_menu, souper_menu, collation_menu, petit_dejeuner_recette, repas_midi_recette, souper_recette, collation_recette FROM menu ORDER BY day_number ASC";
@@ -72,8 +69,8 @@ if ($menu_result->num_rows > 0) {
     echo "<h2>Sélecteur de menus par jour</h2>";
     echo "<select id='menu_selector' onchange='afficherMenu()'>";
     echo "<option value=''>-- Sélectionner un jour --</option>";
-    while($menu = $menu_result->fetch_assoc()) {
-        $value = htmlspecialchars(json_encode($menu));
+    while ($menu = $menu_result->fetch_assoc()) {
+        $value = htmlentities(json_encode($menu));
         echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
     }
     echo "</select>";

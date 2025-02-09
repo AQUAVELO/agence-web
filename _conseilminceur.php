@@ -8,6 +8,7 @@
   </div>
 </header>
 
+
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
@@ -67,7 +68,7 @@ try {
     // Affichage du sélecteur
     if ($all_menus && count($all_menus) > 0) {
       echo "<h2>Sélecteur de menus par jour</h2>";
-      echo "<select id='menu_selector' onchange='afficherMenu()'>";
+      echo '<select id="menu_selector">';
       echo "<option value=''>-- Sélectionner un jour --</option>";
       
       foreach ($all_menus as $menu) {

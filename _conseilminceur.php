@@ -63,13 +63,6 @@ try {
 
     echo "</div>";
 
-
-
-      // Débogage
-    echo "Nombre de menus trouvés : " . count($all_menus) . "<br>";
-    echo "<pre>";
-    print_r($all_menus);
-    echo "</pre>";
     
     // Affichage du sélecteur
     if ($all_menus && count($all_menus) > 0) {

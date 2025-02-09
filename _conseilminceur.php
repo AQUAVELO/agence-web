@@ -113,6 +113,8 @@ function afficherMenu() {
     if (selectedValue) {
         try {
             const menu = JSON.parse(selectedValue);
+            console.log(menu); // Vérifie les données récupérées
+
             const recetteHTML = `
                 <h3>Jour ${menu.day_number}</h3>
                 <div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>

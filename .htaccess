@@ -5,6 +5,11 @@ Options +FollowSymlinks
 RewriteEngine on
 RewriteBase /
 
+# Exclure les fichiers statiques des règles de réécriture
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
 RewriteCond %{HTTP_HOST} !^$
 RewriteCond %{HTTP_HOST} !^www\.aquavelo\.com [NC]
 RewriteCond %{HTTPS}s ^on(s)|

@@ -41,6 +41,14 @@ $menu_querym->bindParam(':jour_du_mois', $jour_du_mois, PDO::PARAM_INT);
 $menu_querym->execute();
 $menu_datam = $menu_querym->fetch(PDO::FETCH_ASSOC);
 
+
+// Requête pour récupérer tous les menus
+$all_menus_query = $database->prepare('SELECT day_number, petit_dejeuner_menu, repas_midi_menu, souper_menu, collation_menu, petit_dejeuner_recette, repas_midi_recette, souper_recette, collation_recette FROM menu ORDER BY day_number ASC');
+$all_menus_query->execute();
+$all_menus = $all_menus_query->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 // Requête pour récupérer tous les articles
 $news_querys = $database->prepare('SELECT news, photo, titre FROM article');
 $news_querys->execute();

@@ -107,49 +107,61 @@ try {
     echo "Erreur de connexion : " . $e->getMessage();
 }
 ?>
+  
+<!-- Placez cette balise en bas de votre fichier, avant </body> -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function afficherMenu() {
+        const selectedValue = document.getElementById('menu_selector').value;
+        console.log("Valeur sélectionnée (brut) :", selectedValue); // ✅ Vérification des données brutes
 
-function afficherMenu() {
-    const selectedValue = document.getElementById('menu_selector').value;
-    console.log("Valeur sélectionnée (brut) :", selectedValue); // ✅ Vérification des données brutes
+        if (selectedValue) {
+            try {
+                const menu = JSON.parse(selectedValue);
+                console.log("Données du menu après JSON.parse :", menu); // ✅ Vérification des données analysées
 
-    if (selectedValue) {
-        try {
-            const menu = JSON.parse(selectedValue);
-            console.log("Données du menu après JSON.parse :", menu); // ✅ Vérification des données analysées
-
-            const recetteHTML = `
-                <h3>Jour ${menu.day_number}</h3>
-                <div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>
-                    <div style='flex: 1; text-align: center;'>
-                        <h4>Petit Déjeuner</h4>
-                        <p><strong>Menu :</strong> ${menu.petit_dejeuner_menu}</p>
-                        <p><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+                const recetteHTML = `
+                    <h3>Jour ${menu.day_number}</h3>
+                    <div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>
+                        <div style='flex: 1; text-align: center;'>
+                            <h4>Petit Déjeuner</h4>
+                            <p><strong>Menu :</strong> ${menu.petit_dejeuner_menu}</p>
+                            <p><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+                        </div>
+                        <div style='flex: 1; text-align: center;'>
+                            <h4>Déjeuner</h4>
+                            <p><strong>Menu :</strong> ${menu.repas_midi_menu}</p>
+                            <p><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
+                        </div>
+                        <div style='flex: 1; text-align: center;'>
+                            <h4>Dîner</h4>
+                            <p><strong>Menu :</strong> ${menu.souper_menu}</p>
+                            <p><strong>Recette :</strong> ${menu.souper_recette}</p>
+                        </div>
+                        <div style='flex: 1; text-align: center;'>
+                            <h4>Collation</h4>
+                            <p><strong>Menu :</strong> ${menu.collation_menu}</p>
+                            <p><strong>Recette :</strong> ${menu.collation_recette}</p>
+                        </div>
                     </div>
-                    <div style='flex: 1; text-align: center;'>
-                        <h4>Déjeuner</h4>
-                        <p><strong>Menu :</strong> ${menu.repas_midi_menu}</p>
-                        <p><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
-                    </div>
-                    <div style='flex: 1; text-align: center;'>
-                        <h4>Dîner</h4>
-                        <p><strong>Menu :</strong> ${menu.souper_menu}</p>
-                        <p><strong>Recette :</strong> ${menu.souper_recette}</p>
-                    </div>
-                    <div style='flex: 1; text-align: center;'>
-                        <h4>Collation</h4>
-                        <p><strong>Menu :</strong> ${menu.collation_menu}</p>
-                        <p><strong>Recette :</strong> ${menu.collation_recette}</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('recette_affichee').innerHTML = recetteHTML;
-        } catch (error) {
-            console.error("Erreur lors de l'analyse JSON : ", error); // ✅ Affichage des erreurs de parsing
+                `;
+                document.getElementById('recette_affichee').innerHTML = recetteHTML;
+            } catch (error) {
+                console.error("Erreur lors de l'analyse JSON : ", error); // ✅ Affichage des erreurs de parsing
+            }
+        } else {
+            document.getElementById('recette_affichee').innerHTML = '';
         }
-    } else {
-        document.getElementById('recette_affichee').innerHTML = '';
     }
-}
+
+    // Assurez-vous que l'événement est bien attaché
+    const selector = document.getElementById('menu_selector');
+    if (selector) {
+        selector.addEventListener('change', afficherMenu);
+    }
+});
+</script>
+
 
 
 

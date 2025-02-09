@@ -64,19 +64,24 @@ try {
     echo "</div>";
 
 
-    if ($all_menus && $all_menus->num_rows > 0) {
-        echo "<h2>Sélecteur de menus par jour</h2>";
-        echo "<select id='menu_selector' onchange='afficherMenu()'>";
-        echo "<option value=''>-- Sélectionner un jour --</option>";
-        while ($menu = $menu_result->fetch_assoc()) {
-            $value = htmlentities(json_encode($menu));
-            echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
-        }
-        echo "</select>";
-        echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
-    } else {
-        echo "<p>Aucun menu précédent trouvé.</p>";
+   
+
+if ($all_menus && $all_menus->num_rows > 0) {
+    echo "<h2>Sélecteur de menus par jour</h2>";
+    echo "<select id='menu_selector' onchange='afficherMenu()'>";
+    echo "<option value=''>-- Sélectionner un jour --</option>";
+    
+    while ($menu = $all_menus->fetch_assoc()) {
+        $value = htmlentities(json_encode($menu));
+        echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
     }
+    
+    echo "</select>";
+    echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
+} else {
+    echo "<p>Aucun menu précédent trouvé.</p>";
+}
+
 
     $conn->close();
 } catch (PDOException $e) {

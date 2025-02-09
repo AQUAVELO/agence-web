@@ -27,65 +27,61 @@
     }
   </style>
 
+
   <?php
-  try {
-      date_default_timezone_set('Europe/Paris');
-      $jour_du_mois = date('j');
+try {
+    date_default_timezone_set('Europe/Paris');
+    $jour_du_mois = date('j');
 
-      if (isset($menu_datam) && !empty($menu_datam)) {
-          echo "<h1>Menu du jour " . htmlspecialchars($menu_datam["day_number"]) . " (Total " . htmlspecialchars($menu_datam["total_calories"]) . ")</h1>";
-      } else {
-          echo "<p>Aucun menu trouvé pour aujourd'hui.</p>";
-      }
+    if (isset($menu_datam) && !empty($menu_datam)) {
+        echo "<h1>Menu du jour " . htmlspecialchars($menu_datam["day_number"]) . " (Total " . htmlspecialchars($menu_datam["total_calories"]) . ")</h1>";
+    } else {
+        echo "<p>Aucun menu trouvé pour aujourd'hui.</p>";
+    }
 
-      echo "<div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>";
+    echo "<div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>";
 
-      $sections = [
-          "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
-          "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
-          "Dîner" => ["menu" => "souper_menu", "recette" => "souper_recette", "photo" => "photo_souper"],
-          "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
-      ];
+    $sections = [
+        "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
+        "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
+        "Dîner" => ["menu" => "souper_menu", "recette" => "souper_recette", "photo" => "photo_souper"],
+        "Collation" => ["menu" => "collation_menu", "recette" => "collation_recette", "photo" => "photo_collation"]
+    ];
 
-      foreach ($sections as $title => $fields) {
-          echo "<div style='flex: 1; text-align: center; min-width: 250px;'>";
-          echo "<h4>$title</h4>";
-          echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
-          echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
+    foreach ($sections as $title => $fields) {
+        echo "<div style='flex: 1; text-align: center; min-width: 250px;'>";
+        echo "<h4>$title</h4>";
+        echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
+        echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 
-          if (!empty($menu_datam[$fields['photo']])) {
-              echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' class='menu-image'>";
-          }
-          echo "</div>";
-      }
-      echo "</div>";
+        if (!empty($menu_datam[$fields['photo']])) {
+            echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' class='menu-image'>";
+        }
+        echo "</div>";
+    }
+    echo "</div>";
 
-      // Barre horizontale entre les menus et les articles
-      echo "<hr style='margin: 20px 0;'>";
+    // Ajout du sélecteur de menus par jour
+    $menu_query = "SELECT day_number, petit_dejeuner_menu, repas_midi_menu, souper_menu, collation_menu, petit_dejeuner_recette, repas_midi_recette, souper_recette, collation_recette FROM menu ORDER BY day_number ASC";
+    $menu_result = $conn->query($menu_query);
 
-      if (isset($news_datas) && !empty($news_datas)) {
-          foreach ($news_datas as $article) {
-              echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
+    if ($menu_result->num_rows > 0) {
+        echo "<h2>Sélecteur de menus par jour</h2>";
+        echo "<select id='menu_selector' onchange='afficherMenu()'>";
+        echo "<option value=''>-- Sélectionner un jour --</option>";
+        while ($menu = $menu_result->fetch_assoc()) {
+            $value = htmlentities(json_encode($menu));
+            echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
+        }
+        echo "</select>";
+        echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
+    }
 
-              if (!empty($article["photo"])) {
-                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" class="article-image">';
-              }
-
-              echo '<div class="article-content" style="flex: 1;">';
-              echo '<h2>' . htmlspecialchars($article["titre"]) . '</h2>';
-              $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $article["news"]);
-              echo '<p>' . nl2br($formattedText) . '</p>';
-              echo '</div>';
-              echo '</div>';
-          }
-      } else {
-          echo "Aucun article trouvé.";
-      }
-  } catch (PDOException $e) {
-      echo "Erreur de connexion : " . $e->getMessage();
-  }
-  ?>
-</div>
+    $conn->close();
+} catch (PDOException $e) {
+    echo "Erreur de connexion : " . $e->getMessage();
+}
+?>
 
 <script>
 function afficherMenu() {
@@ -123,6 +119,7 @@ function afficherMenu() {
     }
 }
 </script>
+
 
 
 

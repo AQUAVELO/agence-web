@@ -66,20 +66,21 @@ try {
     
     // Affichage du sélecteur
     if ($all_menus && count($all_menus) > 0) {
-        echo "<h2>Sélecteur de menus par jour</h2>";
-        echo "<select id='menu_selector' onchange='afficherMenu()'>";
-        echo "<option value=''>-- Sélectionner un jour --</option>";
+      echo "<h2>Sélecteur de menus par jour</h2>";
+      echo "<select id='menu_selector' onchange='afficherMenu()'>";
+      echo "<option value=''>-- Sélectionner un jour --</option>";
+      
+      foreach ($all_menus as $menu) {
+          $value = htmlentities(json_encode($menu), ENT_QUOTES, 'UTF-8'); // ✅ Encodage sécurisé
+          echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . "</option>";
+      }
     
-        foreach ($all_menus as $menu) {
-            $value = htmlentities(json_encode($menu));
-            echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
-        }
-    
-        echo "</select>";
-        echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
-    } else {
-        echo "<p>Aucun menu précédent trouvé.</p>";
-    }
+    echo "</select>";
+    echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
+  } else {
+    echo "<p>Aucun menu précédent trouvé.</p>";
+  }
+
   // Affichage du menu du jour
   if ($menu_du_jour) {
       echo "<h2>Menu du jour</h2>";
@@ -107,13 +108,14 @@ try {
 }
 ?>
 
-<script>
 function afficherMenu() {
     const selectedValue = document.getElementById('menu_selector').value;
+    console.log("Valeur sélectionnée (brut) :", selectedValue); // ✅ Vérification des données brutes
+
     if (selectedValue) {
         try {
             const menu = JSON.parse(selectedValue);
-            console.log(menu); // Vérifie les données récupérées
+            console.log("Données du menu après JSON.parse :", menu); // ✅ Vérification des données analysées
 
             const recetteHTML = `
                 <h3>Jour ${menu.day_number}</h3>
@@ -142,13 +144,13 @@ function afficherMenu() {
             `;
             document.getElementById('recette_affichee').innerHTML = recetteHTML;
         } catch (error) {
-            console.error("Erreur lors de l'analyse JSON : ", error);
+            console.error("Erreur lors de l'analyse JSON : ", error); // ✅ Affichage des erreurs de parsing
         }
     } else {
         document.getElementById('recette_affichee').innerHTML = '';
     }
 }
-</script>
+
 
 
 

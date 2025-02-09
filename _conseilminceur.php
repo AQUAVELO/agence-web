@@ -111,38 +111,43 @@ try {
 function afficherMenu() {
     const selectedValue = document.getElementById('menu_selector').value;
     if (selectedValue) {
-        const menu = JSON.parse(selectedValue);
-        const recetteHTML = `
-            <h3>Jour ${menu.day_number}</h3>
-            <div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>
-                <div style='flex: 1; text-align: center;'>
-                    <h4>Petit Déjeuner</h4>
-                    <p><strong>Menu :</strong> ${menu.petit_dejeuner_menu}</p>
-                    <p><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+        try {
+            const menu = JSON.parse(selectedValue);
+            const recetteHTML = `
+                <h3>Jour ${menu.day_number}</h3>
+                <div style='display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap;'>
+                    <div style='flex: 1; text-align: center;'>
+                        <h4>Petit Déjeuner</h4>
+                        <p><strong>Menu :</strong> ${menu.petit_dejeuner_menu}</p>
+                        <p><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+                    </div>
+                    <div style='flex: 1; text-align: center;'>
+                        <h4>Déjeuner</h4>
+                        <p><strong>Menu :</strong> ${menu.repas_midi_menu}</p>
+                        <p><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
+                    </div>
+                    <div style='flex: 1; text-align: center;'>
+                        <h4>Dîner</h4>
+                        <p><strong>Menu :</strong> ${menu.souper_menu}</p>
+                        <p><strong>Recette :</strong> ${menu.souper_recette}</p>
+                    </div>
+                    <div style='flex: 1; text-align: center;'>
+                        <h4>Collation</h4>
+                        <p><strong>Menu :</strong> ${menu.collation_menu}</p>
+                        <p><strong>Recette :</strong> ${menu.collation_recette}</p>
+                    </div>
                 </div>
-                <div style='flex: 1; text-align: center;'>
-                    <h4>Déjeuner</h4>
-                    <p><strong>Menu :</strong> ${menu.repas_midi_menu}</p>
-                    <p><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
-                </div>
-                <div style='flex: 1; text-align: center;'>
-                    <h4>Dîner</h4>
-                    <p><strong>Menu :</strong> ${menu.souper_menu}</p>
-                    <p><strong>Recette :</strong> ${menu.souper_recette}</p>
-                </div>
-                <div style='flex: 1; text-align: center;'>
-                    <h4>Collation</h4>
-                    <p><strong>Menu :</strong> ${menu.collation_menu}</p>
-                    <p><strong>Recette :</strong> ${menu.collation_recette}</p>
-                </div>
-            </div>
-        `;
-        document.getElementById('recette_affichee').innerHTML = recetteHTML;
+            `;
+            document.getElementById('recette_affichee').innerHTML = recetteHTML;
+        } catch (error) {
+            console.error("Erreur lors de l'analyse JSON : ", error);
+        }
     } else {
         document.getElementById('recette_affichee').innerHTML = '';
     }
 }
 </script>
+
 
 
 

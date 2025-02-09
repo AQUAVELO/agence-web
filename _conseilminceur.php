@@ -64,26 +64,29 @@ try {
     echo "</div>";
 
 
-echo "<pre>";
-print_r($all_menus);
-echo "</pre>";
 
-
-if ($all_menus && $all_menus->num_rows > 0) {
-    echo "<h2>Sélecteur de menus par jour</h2>";
-    echo "<select id='menu_selector' onchange='afficherMenu()'>";
-    echo "<option value=''>-- Sélectionner un jour --</option>";
+      // Débogage
+    echo "Nombre de menus trouvés : " . count($all_menus) . "<br>";
+    echo "<pre>";
+    print_r($all_menus);
+    echo "</pre>";
     
-    while ($menu = $all_menus->fetch_assoc()) {
-        $value = htmlentities(json_encode($menu));
-        echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
+    // Affichage du sélecteur
+    if ($all_menus && count($all_menus) > 0) {
+        echo "<h2>Sélecteur de menus par jour</h2>";
+        echo "<select id='menu_selector' onchange='afficherMenu()'>";
+        echo "<option value=''>-- Sélectionner un jour --</option>";
+    
+        foreach ($all_menus as $menu) {
+            $value = htmlentities(json_encode($menu));
+            echo "<option value='" . $value . "'>Jour " . htmlspecialchars($menu["day_number"]) . " - PD: " . htmlspecialchars($menu["petit_dejeuner_menu"]) . ", Déj: " . htmlspecialchars($menu["repas_midi_menu"]) . ", Dîner: " . htmlspecialchars($menu["souper_menu"]) . ", Collation: " . htmlspecialchars($menu["collation_menu"]) . "</option>";
+        }
+    
+        echo "</select>";
+        echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
+    } else {
+        echo "<p>Aucun menu précédent trouvé.</p>";
     }
-    
-    echo "</select>";
-    echo "<div id='recette_affichee' style='margin-top: 20px;'></div>";
-} else {
-    echo "<p>Aucun menu précédent trouvé.</p>";
-}
 
 
     $conn->close();

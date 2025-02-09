@@ -64,7 +64,10 @@ try {
     echo "</div>";
 
 
-   
+echo "<pre>";
+print_r($all_menus);
+echo "</pre>";
+
 
 if ($all_menus && $all_menus->num_rows > 0) {
     echo "<h2>Sélecteur de menus par jour</h2>";

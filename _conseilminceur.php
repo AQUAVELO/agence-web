@@ -80,6 +80,25 @@ try {
     } else {
         echo "<p>Aucun menu précédent trouvé.</p>";
     }
+  // Affichage du menu du jour
+  if ($menu_du_jour) {
+      echo "<h2>Menu du jour</h2>";
+      echo "<div id='menu_du_jour'>";
+      echo "<h3>Petit Déjeuner</h3>";
+      echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_du_jour["petit_dejeuner_menu"]) . "</p>";
+      echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_du_jour["petit_dejeuner_recette"]) . "</p>";
+  
+      echo "<h3>Repas du Midi</h3>";
+      echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_du_jour["repas_midi_menu"]) . "</p>";
+      echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_du_jour["repas_midi_recette"]) . "</p>";
+  
+      echo "<h3>Souper</h3>";
+      echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_du_jour["souper_menu"]) . "</p>";
+      echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_du_jour["souper_recette"]) . "</p>";
+      echo "</div>";
+  } else {
+      echo "<p>Aucun menu trouvé pour aujourd'hui.</p>";
+  }
 
 
     $conn->close();

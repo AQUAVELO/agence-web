@@ -41,7 +41,7 @@ header("Pragma: no-cache");
           // Format de la date JJ/MM/AA
           $date_du_jour = date('d/m/y'); 
 
-          echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . " - Date : " . $date_du_jour . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+          echo "<h3>Menu du jour ( " - Date : " . $date_du_jour . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],

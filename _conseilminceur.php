@@ -1,10 +1,13 @@
+<?php
+// Désactiver le cache navigateur
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+?>
+
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
     <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
-    <ol class="breadcrumb pull-right">
-      <!-- Liens de navigation ici -->
-    </ol>
   </div>
 </header>
 
@@ -31,9 +34,9 @@
   <?php
   try {
       date_default_timezone_set('Europe/Paris');
-      $jour_du_mois = date('j');  // Jour actuel
+      $jour_du_mois = date('j');
+      $date_cache_buster = date('YmdHis');
 
-      // Affichage de la date du jour
       echo "<h2>Aujourd'hui : " . strftime('%A %d %B %Y') . "</h2>";
 
       if ($menu_datam) {
@@ -54,7 +57,7 @@
               echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
 
               if (!empty($menu_datam[$fields['photo']])) {
-                  echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "' alt='Photo $title' class='menu-image'>";
+                  echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' alt='Photo $title' class='menu-image'>";
               }
               echo "</div>";
           }
@@ -65,12 +68,14 @@
 
       echo "<hr style='margin: 20px 0;'>"; // Séparation
 
+      // Affichage des articles
       if (isset($news_datas) && !empty($news_datas)) {
+          echo "<h2>Articles récents</h2>";
           foreach ($news_datas as $article) {
               echo '<div class="article" style="display: flex; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">';
 
               if (!empty($article["photo"])) {
-                  echo '<img src="' . htmlspecialchars($article["photo"]) . '" alt="Image de l\'article" class="article-image">';
+                  echo '<img src="' . htmlspecialchars($article["photo"]) . '?v=' . $date_cache_buster . '" alt="Image de l\'article" class="article-image">';
               }
 
               echo '<div class="article-content" style="flex: 1;">';
@@ -84,7 +89,7 @@
               echo '</div>';
           }
       } else {
-          echo "Aucun article trouvé.";
+          echo "<p>Aucun article trouvé.</p>";
       }
   } catch (PDOException $e) {
       echo "Erreur de connexion : " . $e->getMessage();
@@ -92,8 +97,12 @@
   ?>
 </div>
 
-
-
+<script>
+  // Rafraîchissement automatique toutes les 24 heures
+  setTimeout(function() {
+    window.location.reload(true);
+  }, 86400000); // 24 heures (en millisecondes)
+</script>
 
 
 

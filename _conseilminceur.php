@@ -37,14 +37,12 @@ header("Pragma: no-cache");
       $jour_du_mois = date('j');
       $date_cache_buster = date('YmdHis');
 
-     if ($menu_datam) {
-    // Format de la date JJ/MM/AA
-    $date_du_jour = date('d/m/y'); 
+      if ($menu_datam) {
+          // Format de la date JJ/MM/AA
+          $date_du_jour = date('d/m/y'); 
 
-    echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . " - Date : " . $date_du_jour . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
-      }
+          echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . " - Date : " . $date_du_jour . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
 
-      
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
               "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],
@@ -103,6 +101,7 @@ header("Pragma: no-cache");
 <script>
   // Rafraîchissement automatique toutes les 24 heures
   setTimeout(function() {
+    console.log("Rafraîchissement de la page pour mettre à jour le menu du jour.");
     window.location.reload(true);
   }, 86400000); // 24 heures (en millisecondes)
 </script>

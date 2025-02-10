@@ -37,11 +37,14 @@ header("Pragma: no-cache");
       $jour_du_mois = date('j');
       $date_cache_buster = date('YmdHis');
 
-      echo "<h2>Aujourd'hui : " . strftime('%A %d %B %Y') . "</h2>";
+     if ($menu_datam) {
+    // Format de la date JJ/MM/AA
+    $date_du_jour = date('d/m/y'); 
 
-      if ($menu_datam) {
-          echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+    echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . " - Date : " . $date_du_jour . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+      }
 
+      
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
               "Déjeuner" => ["menu" => "repas_midi_menu", "recette" => "repas_midi_recette", "photo" => "photo_repas_midi"],

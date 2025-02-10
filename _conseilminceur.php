@@ -11,7 +11,7 @@
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
-      width: 150px; /* Taille réduite de moitié */
+      width: 150px;
       height: 100px;
       object-fit: cover;
       border-radius: 10px;
@@ -20,7 +20,7 @@
     }
 
     .article-image {
-      width: 300px; /* Taille réduite de moitié */
+      width: 300px;
       height: 200px;
       object-fit: cover;
       margin-right: 20px;
@@ -31,10 +31,13 @@
   <?php
   try {
       date_default_timezone_set('Europe/Paris');
-      $jour_du_mois = date('j');
+      $jour_du_mois = date('j');  // Jour actuel
+
+      // Affichage de la date du jour
+      echo "<h2>Aujourd'hui : " . strftime('%A %d %B %Y') . "</h2>";
 
       if ($menu_datam) {
-          echo "<h3>Tous les jours un nouveau menu, aujourd'hui pour le jour " . htmlspecialchars($menu_datam['day_number']) . " (Total " . htmlspecialchars($menu_datam['total_calories']) . ")</h3>";
+          echo "<h3>Menu du jour (Jour " . htmlspecialchars($menu_datam['day_number']) . ") - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
@@ -60,7 +63,7 @@
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
 
-      echo "<hr style='margin: 20px 0;'>"; // Barre horizontale entre les menus et les articles
+      echo "<hr style='margin: 20px 0;'>"; // Séparation
 
       if (isset($news_datas) && !empty($news_datas)) {
           foreach ($news_datas as $article) {
@@ -77,8 +80,8 @@
               $formattedText = nl2br($formattedText);
 
               echo '<p style="line-height: 1.6; margin: 0; color: #777;">' . $formattedText . '</p>';
-              echo '</div>'; // Fermeture de .article-content
-              echo '</div>'; // Fermeture de .article
+              echo '</div>';
+              echo '</div>';
           }
       } else {
           echo "Aucun article trouvé.";
@@ -88,6 +91,7 @@
   }
   ?>
 </div>
+
 
 
 

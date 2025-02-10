@@ -1,8 +1,4 @@
-<?php
-// Désactiver le cache navigateur
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Pragma: no-cache");
-?>
+
 
 <header class="main-header clearfix">
   <div class="container">
@@ -98,13 +94,7 @@ header("Pragma: no-cache");
   ?>
 </div>
 
-<script>
-  // Rafraîchissement automatique toutes les 24 heures
-  setTimeout(function() {
-    console.log("Rafraîchissement de la page pour mettre à jour le menu du jour.");
-    window.location.reload(true);
-  }, 86400000); // 24 heures (en millisecondes)
-</script>
+
 
 
 

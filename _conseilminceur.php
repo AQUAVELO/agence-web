@@ -1,11 +1,4 @@
 
-<header class="main-header clearfix">
-  <div class="container">
-    <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
-    <h2 class="page-title pull-left">Excellent pour affiner la silhouette, la tonification et le bien-être.</h2>
-  </div>
-</header>
-
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
@@ -16,7 +9,6 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       margin: 10px 0;
     }
-
     .article-image {
       width: 300px;
       height: 200px;
@@ -32,10 +24,9 @@
       $jour_du_mois = date('j');
       $date_cache_buster = date('YmdHis');
 
-      if ($menu_datam) {
+      if (isset($menu_datam)) {
           $date_du_jour = date('d/m/y'); 
-
-          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " </h3>";
+          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
@@ -48,8 +39,8 @@
           foreach ($sections as $title => $fields) {
               echo "<div style='flex: 1; text-align: center; min-width: 250px;'>";
               echo "<h4>$title</h4>";
-              echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']]) . "</p>";
-              echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']]) . "</p>";
+              echo "<p><strong>Menu :</strong> " . htmlspecialchars($menu_datam[$fields['menu']] ?? 'Non disponible') . "</p>";
+              echo "<p><strong>Recette :</strong> " . htmlspecialchars($menu_datam[$fields['recette']] ?? 'Non disponible') . "</p>";
 
               if (!empty($menu_datam[$fields['photo']])) {
                   echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' alt='Photo $title' class='menu-image'>";
@@ -63,15 +54,14 @@
   ?>
 
   <!-- ✅ Sélecteur de menus -->
-<h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
-<select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
+  <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
+  <select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
     <option value="">-- Sélectionner un jour --</option>
     <?php foreach ($all_menus as $menu): ?>
         <?php
-            // Extraire le texte avant la première virgule
             $pd = explode(',', $menu['petit_dejeuner_menu'])[0];
-            $dejeuner = explode(',', $menu['dejeuner_menu'])[0];
-            $diner = explode(',', $menu['diner_menu'])[0];
+            $dejeuner = explode(',', $menu['repas_midi_menu'])[0]; // Correction des noms de clés
+            $diner = explode(',', $menu['souper_menu'])[0];
         ?>
         <option value='<?php echo json_encode($menu); ?>'>
             Jour <?php echo htmlspecialchars($menu['day_number']); ?> - 
@@ -80,9 +70,7 @@
             Dîner: <?php echo htmlspecialchars($diner); ?>
         </option>
     <?php endforeach; ?>
-</select>
-
-
+  </select>
 
   <!-- ✅ Bouton pour afficher le menu sélectionné -->
   <button onclick="afficherMenu()" style="padding: 5px 15px; margin-left: 10px;">Afficher le Menu</button>

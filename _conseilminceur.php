@@ -63,18 +63,25 @@
   ?>
 
   <!-- ✅ Sélecteur de menus -->
-   <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
-  <select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
+<h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
+<select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
     <option value="">-- Sélectionner un jour --</option>
     <?php foreach ($all_menus as $menu): ?>
+        <?php
+            // Extraire le texte avant la première virgule
+            $pd = explode(',', $menu['petit_dejeuner_menu'])[0];
+            $dejeuner = explode(',', $menu['dejeuner_menu'])[0];
+            $diner = explode(',', $menu['diner_menu'])[0];
+        ?>
         <option value='<?php echo json_encode($menu); ?>'>
             Jour <?php echo htmlspecialchars($menu['day_number']); ?> - 
-            PD: <?php echo htmlspecialchars($menu['petit_dejeuner_menu']); ?> - 
-            Déjeuner: <?php echo htmlspecialchars($menu['dejeuner_menu']); ?> - 
-            Dîner: <?php echo htmlspecialchars($menu['diner_menu']); ?>
+            PD: <?php echo htmlspecialchars($pd); ?> - 
+            Déjeuner: <?php echo htmlspecialchars($dejeuner); ?> - 
+            Dîner: <?php echo htmlspecialchars($diner); ?>
         </option>
     <?php endforeach; ?>
-  </select>
+</select>
+
 
 
   <!-- ✅ Bouton pour afficher le menu sélectionné -->

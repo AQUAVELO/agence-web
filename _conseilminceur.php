@@ -35,7 +35,7 @@
       if ($menu_datam) {
           $date_du_jour = date('d/m/y'); 
 
-          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " </h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],

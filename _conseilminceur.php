@@ -63,6 +63,27 @@
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
 
+    <div class="container" style="background-color: white; padding: 20px;">
+  <h2>Sélecteur de menus par jour</h2>
+
+  <!-- ✅ Sélecteur de menus -->
+  <select id="menu_selector" style="padding: 5px; width: 250px;">
+    <option value="">-- Sélectionner un jour --</option>
+    <?php foreach ($all_menus as $menu): ?>
+        <option value='<?php echo json_encode($menu); ?>'>
+            Jour <?php echo htmlspecialchars($menu['day_number']); ?> - PD: <?php echo htmlspecialchars($menu['petit_dejeuner_menu']); ?>
+        </option>
+    <?php endforeach; ?>
+  </select>
+
+  <!-- ✅ Bouton pour afficher le menu sélectionné -->
+  <button onclick="afficherMenu()" style="padding: 5px 15px; margin-left: 10px;">Afficher le Menu</button>
+
+  <div id="recette_affichee" style="margin-top: 20px;"></div>
+</div>
+
+
+
       echo "<hr style='margin: 20px 0;'>"; // Séparation
 
       // Affichage des articles
@@ -92,7 +113,29 @@
       echo "Erreur de connexion : " . $e->getMessage();
   }
   ?>
+
+  
 </div>
+<script>
+function afficherMenu() {
+    const selectedValue = document.getElementById('menu_selector').value;
+    const recetteContainer = document.getElementById('recette_affichee');
+
+    if (selectedValue) {
+        const menu = JSON.parse(selectedValue);
+        const recetteHTML = `
+            <h3>Jour ${menu.day_number}</h3>
+            <p><strong>Petit Déjeuner :</strong> ${menu.petit_dejeuner_menu}<br><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+            <p><strong>Déjeuner :</strong> ${menu.repas_midi_menu}<br><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
+            <p><strong>Dîner :</strong> ${menu.souper_menu}<br><strong>Recette :</strong> ${menu.souper_recette}</p>
+            <p><strong>Collation :</strong> ${menu.collation_menu}<br><strong>Recette :</strong> ${menu.collation_recette}</p>
+        `;
+        recetteContainer.innerHTML = recetteHTML;
+    } else {
+        recetteContainer.innerHTML = '<p>Veuillez sélectionner un menu.</p>';
+    }
+}
+</script>
 
 
 

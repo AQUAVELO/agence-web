@@ -64,7 +64,7 @@
 
   <!-- ✅ Sélecteur de menus -->
   <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
-<select id="menu_selector" style="padding: 5px; min-width: 250px; width: auto;">
+<select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
   <option value="">-- Sélectionner un jour --</option>
   <?php foreach ($all_menus as $menu): ?>
       <option value='<?php echo json_encode($menu); ?>'>

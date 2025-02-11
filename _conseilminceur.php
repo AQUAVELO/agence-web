@@ -1,5 +1,4 @@
 
-
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
@@ -34,10 +33,9 @@
       $date_cache_buster = date('YmdHis');
 
       if ($menu_datam) {
-          // Format de la date JJ/MM/AA
           $date_du_jour = date('d/m/y'); 
 
-         echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
@@ -62,11 +60,10 @@
       } else {
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
-
-    <div class="container" style="background-color: white; padding: 20px;">
-  <h2>Sélecteur de menus par jour</h2>
+  ?>
 
   <!-- ✅ Sélecteur de menus -->
+  <h2>Sélecteur de menus par jour</h2>
   <select id="menu_selector" style="padding: 5px; width: 250px;">
     <option value="">-- Sélectionner un jour --</option>
     <?php foreach ($all_menus as $menu): ?>
@@ -80,13 +77,10 @@
   <button onclick="afficherMenu()" style="padding: 5px 15px; margin-left: 10px;">Afficher le Menu</button>
 
   <div id="recette_affichee" style="margin-top: 20px;"></div>
-</div>
 
+  <hr style='margin: 20px 0;'>
 
-
-      echo "<hr style='margin: 20px 0;'>"; // Séparation
-
-      // Affichage des articles
+  <?php
       if (isset($news_datas) && !empty($news_datas)) {
           echo "<h2>Articles récents</h2>";
           foreach ($news_datas as $article) {
@@ -113,9 +107,8 @@
       echo "Erreur de connexion : " . $e->getMessage();
   }
   ?>
-
-  
 </div>
+
 <script>
 function afficherMenu() {
     const selectedValue = document.getElementById('menu_selector').value;

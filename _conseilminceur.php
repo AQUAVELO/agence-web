@@ -64,14 +64,15 @@
 
   <!-- ✅ Sélecteur de menus -->
   <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
-  <select id="menu_selector" style="padding: 5px; width: 250px;">
-    <option value="">-- Sélectionner un jour --</option>
-    <?php foreach ($all_menus as $menu): ?>
-        <option value='<?php echo json_encode($menu); ?>'>
-            Jour <?php echo htmlspecialchars($menu['day_number']); ?> - PD: <?php echo htmlspecialchars($menu['petit_dejeuner_menu']); ?>
-        </option>
-    <?php endforeach; ?>
-  </select>
+<select id="menu_selector" style="padding: 5px; min-width: 250px; width: auto;">
+  <option value="">-- Sélectionner un jour --</option>
+  <?php foreach ($all_menus as $menu): ?>
+      <option value='<?php echo json_encode($menu); ?>'>
+          Jour <?php echo htmlspecialchars($menu['day_number']); ?> - PD: <?php echo htmlspecialchars($menu['petit_dejeuner_menu']); ?>
+      </option>
+  <?php endforeach; ?>
+</select>
+
 
   <!-- ✅ Bouton pour afficher le menu sélectionné -->
   <button onclick="afficherMenu()" style="padding: 5px 15px; margin-left: 10px;">Afficher le Menu</button>

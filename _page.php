@@ -158,18 +158,20 @@
 
     	
   
-    	<dt>Agenda pour les adhérents</dt>
+  
+	<dt>Agenda pour les adhérents</dt>
 	<dd>
 	    <a href="<?php 
 	        echo ($row_center['id'] == 179) 
 	            ? 'https://member.resamania.com/aquavelonice' 
-	            : 'https://member.resamania.com/aquavelo/' . htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8'); 
+	            : 'https://member.resamania.com/aquavelo/' . (isset($row_center['book_link']) ? htmlspecialchars($row_center['book_link'], ENT_QUOTES, 'UTF-8') : ''); 
 	    ?>" 
 	    title="Réservation en ligne" 
 	    aria-label="Cliquez pour réserver en ligne"
 	    target="_blank" 
 	    class="btn btn-default">Réserver en ligne</a>
 	</dd>
+
 
    
 

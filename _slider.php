@@ -77,8 +77,8 @@
                     </select>
                   </div>
                   <div id="calendrier_section" style="display: none; margin-top: 15px;">
-   		 <p>En vous inscrivant sur notre <strong style="color: #00acdc;">calendrier</strong> 
-   		 <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00acdc;">(cliquez ici)</a> 
+   		 <p>Vous pouvez réserver sur notre  
+   		 <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00acdc;"><strong>calendrier</strong> (cliquez ici)</a> 
 		    ou en prenant rendez-vous ci-dessous.</p>
 		</div>
 

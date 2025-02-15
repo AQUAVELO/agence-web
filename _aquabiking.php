@@ -250,18 +250,6 @@
   </div>
 </section>
 
-<section class="content-area bg1" id="partenariats">
-  <div class="container">
-    <header class="page-header text-center">
-      <h1 class="page-title">Nos Partenaires</h1>
-    </header>
-    <div class="row">
-      <div class="col-md-12">
-        <iframe src="https://www.partenaires.aquavelocannes.fr/affichagelocal.php" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="content-area brightText" data-bg="images/content/testimonials-bg.jpg" data-btmspace="75">
   <div class="container">

@@ -76,9 +76,12 @@
                       <?php } ?>
                     </select>
                   </div>
-                  <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-      		            <p>en vous inscrivant sur notre <span style="color: #00acdc;"><strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
-	                <?php endif; ?>
+                  <div id="calendrier_section" style="display: none; margin-top: 15px;">
+   		 <p>En vous inscrivant sur notre <strong style="color: #00acdc;">calendrier</strong> 
+   		 <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00acdc;">(cliquez ici)</a> 
+		    ou en prenant rendez-vous ci-dessous.</p>
+		</div>
+
 
                   <div class="form-group">
                     <label for="nom">Nom et prénom</label>
@@ -98,4 +101,29 @@
                 </form>
               </div>
               <!-- Fin du formulaire -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const centerSelect = document.getElementById("center");
+    const calendrierSection = document.getElementById("calendrier_section");
+
+    centerSelect.addEventListener("change", function () {
+        const selectedCenter = parseInt(this.value);
+        const centersWithCalendly = [305, 347, 349];
+
+        if (centersWithCalendly.includes(selectedCenter)) {
+            calendrierSection.style.display = "block";
+        } else {
+            calendrierSection.style.display = "none";
+        }
+    });
+
+    // Vérifier si un centre est déjà sélectionné au chargement
+    if (centersWithCalendly.includes(parseInt(centerSelect.value))) {
+        calendrierSection.style.display = "block";
+    } else {
+        calendrierSection.style.display = "none";
+    }
+});
+</script>
+
 

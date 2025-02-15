@@ -92,7 +92,7 @@
     <div class="col-md-6">
       <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
 	<?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-      	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"><strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
+      	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
 	<?php endif; ?>
     
       <form role="form" class="contact-form" method="POST" action="_page.php">

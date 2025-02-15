@@ -76,6 +76,9 @@
                       <?php } ?>
                     </select>
                   </div>
+                  <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+      		            <p>en vous inscrivant sur notre <span style="color: #00acdc;"><strong>calendrier</strong> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank">(cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
+	                <?php endif; ?>
 
                   <div class="form-group">
                     <label for="nom">Nom et prénom</label>

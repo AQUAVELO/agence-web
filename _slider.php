@@ -61,6 +61,13 @@
 </section>
    <br />
 
+<script>
+if (typeof centersWithCalendly === "undefined") {
+    var centersWithCalendly = [];
+}
+console.log("centersWithCalendly chargé :", centersWithCalendly);
+</script>
+
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">Essayez une séance gratuite de 45 mn</h2>
               <div class="col-md-6">

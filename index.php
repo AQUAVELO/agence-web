@@ -219,6 +219,37 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <?php endif; ?>
 
 
+<!-- Styles pour la bannière RGPD -->
+<style>
+  #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      display: none;
+      z-index: 1000;
+  }
+  #cookie-banner button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+  }
+  #accept-cookies {
+      background: #4CAF50;
+      color: white;
+  }
+  #reject-cookies {
+      background: #D32F2F;
+      color: white;
+  }
+</style>
 
 
 
@@ -473,6 +504,63 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
   }
 </script>
+  <body>
+
+  <!-- Contenu du site -->
+
+  <!-- ✅ Ajout du script RGPD de gestion des cookies -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.createElement("div");
+        banner.id = "cookie-banner";
+        banner.innerHTML = `
+            <p>Nous utilisons des cookies pour améliorer votre expérience. En acceptant, vous nous autorisez à collecter des statistiques de navigation.</p>
+            <button id="accept-cookies">Accepter</button>
+            <button id="reject-cookies">Refuser</button>
+        `;
+
+        document.body.appendChild(banner);
+
+        const acceptBtn = document.getElementById("accept-cookies");
+        const rejectBtn = document.getElementById("reject-cookies");
+
+        if (!localStorage.getItem("cookieConsent")) {
+            banner.style.display = "block";
+        }
+
+        acceptBtn.addEventListener("click", function () {
+            localStorage.setItem("cookieConsent", "accepted");
+            banner.style.display = "none";
+            loadAnalytics();
+        });
+
+        rejectBtn.addEventListener("click", function () {
+            localStorage.setItem("cookieConsent", "rejected");
+            banner.style.display = "none";
+        });
+
+        if (localStorage.getItem("cookieConsent") === "accepted") {
+            loadAnalytics();
+        }
+    });
+
+    function loadAnalytics() {
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX";
+        document.head.appendChild(script);
+
+        script.onload = function () {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+        };
+    }
+  </script>
+
+
+
 
 </body>
 

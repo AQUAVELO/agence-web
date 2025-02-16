@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks
 
+Header set Access-Control-Allow-Origin "*"
+
+
 # URL rewriting module activation
 RewriteEngine on
 RewriteBase /

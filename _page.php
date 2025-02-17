@@ -169,7 +169,7 @@
 	        if (isset($row_center['id']) && $row_center['id'] == 179) {
 	            echo 'https://member.resamania.com/aquavelonice';
 	        } else {
-	                echo 'https://app.resamania.com/aquavelo/'; // Sinon, on concatène correctement
+	                echo 'https://member.resamania.com/aquavelo/'; // Sinon, on concatène correctement
 	            }
 	        
 	    ?>" 

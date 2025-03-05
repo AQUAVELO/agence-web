@@ -16,6 +16,18 @@
       margin-right: 20px;
       border-radius: 8px;
     }
+    .btn-default {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #47c3e6;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .btn-default:hover {
+      background-color: #0056b3;
+    }
   </style>
 
   <?php
@@ -53,6 +65,19 @@
       }
   ?>
 
+  <!-- ✅ Conseils pour perdre du poids avec calculateur -->
+  <h3>Voici nos conseils pour perdre du poids :</h3>
+  <p>1) Calculez votre besoin calorique journalier avec ce calculateur</p>
+  <dt>Calculateur calories avec conseils minceur</dt>
+  <dd>
+    <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
+       title="Calculateur de calories et conseils pour perdre du poids" 
+       aria-label="Calculateur calories & conseils minceur">
+      Conseils pour perdre du poids
+    </a>
+  </dd>
+  <p style="margin-top: 10px;">Respectez les conseils préconisés pour perdre du poids rapidement</p>
+
   <!-- ✅ Sélecteur de menus -->
   <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
   <select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
@@ -60,7 +85,7 @@
     <?php foreach ($all_menus as $menu): ?>
         <?php
             $pd = explode(',', $menu['petit_dejeuner_menu'])[0];
-            $dejeuner = explode(',', $menu['repas_midi_menu'])[0]; // Correction des noms de clés
+            $dejeuner = explode(',', $menu['repas_midi_menu'])[0];
             $diner = explode(',', $menu['souper_menu'])[0];
         ?>
         <option value='<?php echo json_encode($menu); ?>'>
@@ -126,6 +151,11 @@ function afficherMenu() {
     } else {
         recetteContainer.innerHTML = '<p>Veuillez sélectionner un menu.</p>';
     }
+}
+
+// Fonction pour ouvrir la popup (assumant qu'elle est définie ailleurs, sinon à ajouter)
+function ouvre_popup(url) {
+    window.open(url, 'Calculateur', 'width=600,height=400,scrollbars=yes');
 }
 </script>
 

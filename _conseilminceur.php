@@ -38,12 +38,13 @@
 
   <!-- ✅ Conseils pour perdre du poids avec calculateur AVANT le menu du jour -->
   <h3>Voici nos conseils pour perdre du poids :</h3>
+  <p>1) Calculez votre besoin calorique avec ce calculateur</p>
 
   <dd>
     <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
        title="Calculateur de calories et conseils pour perdre du poids" 
        aria-label="Calculateur calories & conseils minceur">
-      1) Calculez votre besoin calorique avec ce calculateur
+      Cliquez ici
     </a>
   </dd>
   <p style="margin-top: 10px;">2) Respectez les conseils préconisés pour perdre du poids rapidement en respectant l'alimentation à moins de 1500 calories ci dessous :</p>

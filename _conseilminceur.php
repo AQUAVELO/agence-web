@@ -39,7 +39,6 @@
   <!-- ✅ Conseils pour perdre du poids avec calculateur AVANT le menu du jour -->
   <h3>Voici nos conseils pour perdre du poids :</h3>
   <p>1) Calculez votre besoin calorique avec ce calculateur</p>
-
   <dd>
     <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
        title="Calculateur de calories et conseils pour perdre du poids" 
@@ -136,9 +135,30 @@
 </div>
 
 <script>
+function ouvre_popup(url) {
+    window.open(url, 'Calculateur', 'width=600,height=400,scrollbars=yes');
+    return false; // Assure que le lien ne suit pas le href="#"
+}
+
 function afficherMenu() {
     const selectedValue = document.getElementById('menu_selector').value;
-    const recetteContainer = document.getElementById('re
+    const recetteContainer = document.getElementById('recette_affichee');
+
+    if (selectedValue) {
+        const menu = JSON.parse(selectedValue);
+        const recetteHTML = `
+            <h3>Jour ${menu.day_number}</h3>
+            <p><strong>Petit Déjeuner :</strong> ${menu.petit_dejeuner_menu}<br><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
+            <p><strong>Déjeuner :</strong> ${menu.repas_midi_menu}<br><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
+            <p><strong>Dîner :</strong> ${menu.souper_menu}<br><strong>Recette :</strong> ${menu.souper_recette}</p>
+            <p><strong>Collation :</strong> ${menu.collation_menu}<br><strong>Recette :</strong> ${menu.collation_recette}</p>
+        `;
+        recetteContainer.innerHTML = recetteHTML;
+    } else {
+        recetteContainer.innerHTML = '<p>Veuillez sélectionner un menu.</p>';
+    }
+}
+</script>
 
 
 

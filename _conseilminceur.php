@@ -1,4 +1,3 @@
-
 <div class="container" style="background-color: white; padding: 20px;">
   <style>
     .menu-image {
@@ -35,7 +34,23 @@
       date_default_timezone_set('Europe/Paris');
       $jour_du_mois = date('j');
       $date_cache_buster = date('YmdHis');
+  ?>
 
+  <!-- ✅ Conseils pour perdre du poids avec calculateur AVANT le menu du jour -->
+  <h3>Voici nos conseils pour perdre du poids :</h3>
+  <p>1) Calculez votre besoin calorique journalier avec ce calculateur</p>
+  <dt>CALCULATEUR CALORIES AVEC CONSEILS MINCEUR</dt>
+  <dd>
+    <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
+       title="Calculateur de calories et conseils pour perdre du poids" 
+       aria-label="Calculateur calories & conseils minceur">
+      Conseils pour perdre du poids
+    </a>
+  </dd>
+  <p style="margin-top: 10px;">Respectez les conseils préconisés pour perdre du poids rapidement</p>
+  <hr style='margin: 20px 0;'>
+
+  <?php
       if (isset($menu_datam)) {
           $date_du_jour = date('d/m/y'); 
           echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
@@ -64,19 +79,6 @@
           echo "<p>Aucun menu trouvé pour aujourd'hui (jour $jour_du_mois).</p>";
       }
   ?>
-
-  <!-- ✅ Conseils pour perdre du poids avec calculateur -->
-  <h3>Voici nos conseils pour perdre du poids :</h3>
-  <p>1) Calculez votre besoin calorique journalier avec ce calculateur</p>
-  <dt>Calculateur calories avec conseils minceur</dt>
-  <dd>
-    <a href="#" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-       title="Calculateur de calories et conseils pour perdre du poids" 
-       aria-label="Calculateur calories & conseils minceur">
-      Conseils pour perdre du poids
-    </a>
-  </dd>
-  <p style="margin-top: 10px;">Respectez les conseils préconisés pour perdre du poids rapidement</p>
 
   <!-- ✅ Sélecteur de menus -->
   <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
@@ -136,28 +138,7 @@
 <script>
 function afficherMenu() {
     const selectedValue = document.getElementById('menu_selector').value;
-    const recetteContainer = document.getElementById('recette_affichee');
-
-    if (selectedValue) {
-        const menu = JSON.parse(selectedValue);
-        const recetteHTML = `
-            <h3>Jour ${menu.day_number}</h3>
-            <p><strong>Petit Déjeuner :</strong> ${menu.petit_dejeuner_menu}<br><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
-            <p><strong>Déjeuner :</strong> ${menu.repas_midi_menu}<br><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
-            <p><strong>Dîner :</strong> ${menu.souper_menu}<br><strong>Recette :</strong> ${menu.souper_recette}</p>
-            <p><strong>Collation :</strong> ${menu.collation_menu}<br><strong>Recette :</strong> ${menu.collation_recette}</p>
-        `;
-        recetteContainer.innerHTML = recetteHTML;
-    } else {
-        recetteContainer.innerHTML = '<p>Veuillez sélectionner un menu.</p>';
-    }
-}
-
-// Fonction pour ouvrir la popup (assumant qu'elle est définie ailleurs, sinon à ajouter)
-function ouvre_popup(url) {
-    window.open(url, 'Calculateur', 'width=600,height=400,scrollbars=yes');
-}
-</script>
+    const recetteContainer = document.getElementById('re
 
 
 

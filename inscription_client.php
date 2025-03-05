@@ -1,6 +1,6 @@
 <?php
 require '_settings.php'; // Inclut les paramètres comme dans index.php (base de données, Redis, etc.)
-$title = "Inscription Client | Aquavelo"; // Titre de la page
+$title = "Inscription Maître-Nageur | Aquavelo"; // Titre de la page
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +110,7 @@ $title = "Inscription Client | Aquavelo"; // Titre de la page
                                 <?php } ?>
                             </ul>
                         </li>
-                        <li class="dropdown<?php if ($page == 'concept') echo ' active'; ?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</ bandera </a>
+                        <li class="dropdown<?php if ($page == 'concept') echo ' active'; ?>"> <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
                             <ul class="dropdown-menu">
                                 <li><a href="/concept-aquabiking#ouvrir">Ouvrir un centre</a></li>
                             </ul>
@@ -145,8 +145,8 @@ $title = "Inscription Client | Aquavelo"; // Titre de la page
         <!-- Contenu centré -->
         <div class="form-wrapper">
             <div class="form-container">
-                <h2>Inscription Client</h2>
-                <form action="traitement_client.php" method="POST">
+                <h2>Inscription Maître-Nageur</h2>
+                <form action="traitement_nageur.php" method="POST">
                     <label for="nom">Nom *</label>
                     <input type="text" id="nom" name="nom" required>
 
@@ -271,7 +271,7 @@ $title = "Inscription Client | Aquavelo"; // Titre de la page
                         <option value="976">976 - Mayotte</option>
                     </select>
 
-                    <label for="activites">Activités souhaitées (natation, phobie de l'eau, cours collectifs, individuel..etc)</label>
+                    <label for="activites">Activités proposées (natation, phobie de l'eau, cours collectifs, individuel..etc)</label>
                     <textarea id="activites" name="activites" rows="4"></textarea>
 
                     <label for="besoin">Spécificités (dans piscine à domicile, en mer, handicap...etc)</label>
@@ -353,7 +353,7 @@ $title = "Inscription Client | Aquavelo"; // Titre de la page
                         <p> Tél.: +33 (0)4 93 93 05 65</p>
                     </aside>
                     <aside class="col-md-3 widget">
-                        <h2 class="widget-title"> </h2>
+                        <h2 class="widget-title"> </h2>
                     </aside>
                     <aside class="col-md-3 widget">
                         <h3 class="widget-title">Flux de photo</h3>

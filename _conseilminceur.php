@@ -52,7 +52,7 @@
   <?php
       if (isset($menu_datam)) {
           $date_du_jour = date('d/m/y'); 
-          echo "<h3>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h3>";
+          echo "<h4>Menu du jour - Date : " . $date_du_jour . " - Total : " . htmlspecialchars($menu_datam['total_calories']) . " kcal</h4>";
 
           $sections = [
               "Petit Déjeuner" => ["menu" => "petit_dejeuner_menu", "recette" => "petit_dejeuner_recette", "photo" => "photo_pet_dej"],
@@ -80,7 +80,7 @@
   ?>
 
   <!-- ✅ Sélecteur de menus -->
-  <h3>Sélectionner d'autres menus à moins de 1500 calories</h3>
+  <h4>Sélectionner d'autres menus à moins de 1500 calories</h4>
   <select id="menu_selector" style="padding: 5px; min-width: 400px; width: auto;">
     <option value="">-- Sélectionner un jour --</option>
     <?php foreach ($all_menus as $menu): ?>

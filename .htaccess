@@ -75,5 +75,5 @@ RewriteRule ^mentions-legales$ /?p=mentions [QSA,L]
 RewriteRule ^facebook$ http://www.facebook.com/pages/aquavelo/number?fref=ts [QSA,L]
 RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
 RewriteRule ^natation$ /?p=natation [QSA,L]
-</IfModule>
+
 </IfModule>

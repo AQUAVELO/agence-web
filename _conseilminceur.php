@@ -147,7 +147,7 @@ function afficherMenu() {
     if (selectedValue) {
         const menu = JSON.parse(selectedValue);
         const recetteHTML = `
-            <h3>Jour ${menu.day_number}</h3>
+            <h4>Jour ${menu.day_number}</h4>
             <p><strong>Petit Déjeuner :</strong> ${menu.petit_dejeuner_menu}<br><strong>Recette :</strong> ${menu.petit_dejeuner_recette}</p>
             <p><strong>Déjeuner :</strong> ${menu.repas_midi_menu}<br><strong>Recette :</strong> ${menu.repas_midi_recette}</p>
             <p><strong>Dîner :</strong> ${menu.souper_menu}<br><strong>Recette :</strong> ${menu.souper_recette}</p>

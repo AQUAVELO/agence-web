@@ -116,7 +116,7 @@
               }
 
               echo '<div class="article-content" style="flex: 1;">';
-              echo '<h2 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h2>';
+              echo '<h3 style="margin-top: 0; color: #555;">' . htmlspecialchars($article["titre"]) . '</h3>';
 
               $formattedText = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $article["news"]);
               $formattedText = nl2br($formattedText);

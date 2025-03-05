@@ -47,7 +47,7 @@
       Conseils pour perdre du poids
     </a>
   </dd>
-  <p style="margin-top: 10px;">Respectez les conseils préconisés pour perdre du poids rapidement en respectant l'alimentation à moins de 1500 calories</p>
+  <p style="margin-top: 10px;">2) Respectez les conseils préconisés pour perdre du poids rapidement en respectant l'alimentation à moins de 1500 calories</p>
   <hr style='margin: 20px 0;'>
 
   <?php

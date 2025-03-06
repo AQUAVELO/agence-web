@@ -1,107 +1,47 @@
 <?php
-require '_settings.php';
-session_start();
-
-// Activer l'affichage des erreurs
+// Activer l'affichage des erreurs pour le débogage
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Log initial
-error_log("Début test_insert.php - " . date('Y-m-d H:i:s'));
+// Paramètres de connexion
+$host = 'localhost'; // Hôte o2switch
+$dbname = 'hfqf5148_bachata'; // Nom de la base
+$username = 'hfqf5148_user'; // Remplace par ton utilisateur MySQL
+$password = 'ton_mot_de_passe'; // Remplace par ton mot de passe
+$port = 3306; // Port par défaut
 
-// Vérifier la connexion à la base
-if (!$database) {
-    $message = "Erreur : Connexion à la base de données non établie.";
-    error_log($message);
-    die($message);
+// Connexion à la base avec PDO
+try {
+    $dsn = "mysql:host=$host;dbname=$dbname;port=$port;charset=utf8";
+    $database = new PDO($dsn, $username, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+    echo "Connexion à la base $dbname réussie !<br>";
+    error_log("Connexion réussie à $dbname - " . date('Y-m-d H:i:s'));
+} catch (PDOException $e) {
+    $error = "Erreur de connexion : " . $e->getMessage();
+    echo $error;
+    error_log($error);
+    exit;
 }
 
-// Insertion dans `client`
+// Tester une requête sur la table `client`
 try {
-    $stmt_client = $database->prepare('
-        INSERT INTO client (nom, prenom, tel, email, adresse, ville, dept, activites, besoin)
-        VALUES (:nom, :prenom, :tel, :email, :adresse, :ville, :dept, :activites, :besoin)
-    ');
+    $stmt = $database->prepare("SELECT * FROM client LIMIT 1");
+    $stmt->execute();
+    $client = $stmt->fetch();
     
-    $client_data = [
-        ':nom' => 'Dupont',
-        ':prenom' => 'Jean',
-        ':tel' => '0123456789',
-        ':email' => 'jean.dupont@example.com',
-        ':adresse' => '123 Rue Exemple',
-        ':ville' => 'Paris',
-        ':dept' => '75',
-        ':activites' => 'Natation',
-        ':besoin' => 'Cours individuel'
-    ];
-    
-    if ($stmt_client->execute($client_data)) {
-        $client_id = $database->lastInsertId();
-        error_log("Insertion réussie dans client - ID: $client_id");
-        $message = "Enregistrement client réussi (ID: $client_id).<br>";
+    if ($client) {
+        echo "Données trouvées dans la table client :<br>";
+        print_r($client);
     } else {
-        $error_info = $stmt_client->errorInfo();
-        $message = "Échec de l'insertion dans client : " . implode(", ", $error_info);
-        error_log($message);
+        echo "Aucune donnée dans la table client ou table vide.";
     }
 } catch (PDOException $e) {
-    $message = "Erreur client : " . $e->getMessage();
-    error_log($message);
-}
-
-// Insertion dans `nageur`
-try {
-    $stmt_nageur = $database->prepare('
-        INSERT INTO nageur (nom, prenom, tel, ville, dept, diplome, presentation, prix, dispo, preference, email)
-        VALUES (:nom, :prenom, :tel, :ville, :dept, :diplome, :presentation, :prix, :dispo, :preference, :email)
-    ');
-    
-    $nageur_data = [
-        ':nom' => 'Martin',
-        ':prenom' => 'Sophie',
-        ':tel' => '0987654321',
-        ':ville' => 'Lyon',
-        ':dept' => '69',
-        ':diplome' => 'BPJEPS AAN',
-        ':presentation' => 'Maître-nageuse expérimentée',
-        ':prix' => '30.00',
-        ':dispo' => 'Lundi et Mercredi 14h-18h',
-        ':preference' => 'Cours collectifs',
-        ':email' => 'sophie.martin@example.com'
-    ];
-    
-    if ($stmt_nageur->execute($nageur_data)) {
-        $nageur_id = $database->lastInsertId();
-        error_log("Insertion réussie dans nageur - ID: $nageur_id");
-        $message .= "Enregistrement nageur réussi (ID: $nageur_id).";
-    } else {
-        $error_info = $stmt_nageur->errorInfo();
-        $message .= "Échec de l'insertion dans nageur : " . implode(", ", $error_info);
-        error_log($message);
-    }
-} catch (PDOException $e) {
-    $message .= "Erreur nageur : " . $e->getMessage();
-    error_log($message);
+    $error = "Erreur lors de la requête sur client : " . $e->getMessage();
+    echo $error;
+    error_log($error);
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test d'Insertion</title>
-    <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f0f0; }
-        .container { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Test d'Insertion</h2>
-        <p><?= htmlspecialchars($message); ?></p>
-        <p><a href="test_insert.php">Relancer le test</a></p>
-    </div>
-</body>
-</html>

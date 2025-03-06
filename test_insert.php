@@ -1,11 +1,23 @@
 <?php
-require '_settings.php'; // Inclut la connexion à la base ($database)
+require '_settings.php';
 session_start();
 
-// Activer les logs pour le débogage
+// Activer l'affichage des erreurs
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Log initial
 error_log("Début test_insert.php - " . date('Y-m-d H:i:s'));
 
-// Insertion dans la table `client`
+// Vérifier la connexion à la base
+if (!$database) {
+    $message = "Erreur : Connexion à la base de données non établie.";
+    error_log($message);
+    die($message);
+}
+
+// Insertion dans `client`
 try {
     $stmt_client = $database->prepare('
         INSERT INTO client (nom, prenom, tel, email, adresse, ville, dept, activites, besoin)
@@ -24,17 +36,21 @@ try {
         ':besoin' => 'Cours individuel'
     ];
     
-    $stmt_client->execute($client_data);
-    $client_id = $database->lastInsertId(); // Récupérer l'ID auto-incrémenté
-    error_log("Insertion réussie dans client - ID: $client_id");
-    $message = "Enregistrement client réussi (ID: $client_id).<br>";
+    if ($stmt_client->execute($client_data)) {
+        $client_id = $database->lastInsertId();
+        error_log("Insertion réussie dans client - ID: $client_id");
+        $message = "Enregistrement client réussi (ID: $client_id).<br>";
+    } else {
+        $error_info = $stmt_client->errorInfo();
+        $message = "Échec de l'insertion dans client : " . implode(", ", $error_info);
+        error_log($message);
+    }
 } catch (PDOException $e) {
-    $error = "Erreur client : " . $e->getMessage();
-    error_log($error);
-    $message = $error . "<br>";
+    $message = "Erreur client : " . $e->getMessage();
+    error_log($message);
 }
 
-// Insertion dans la table `nageur`
+// Insertion dans `nageur`
 try {
     $stmt_nageur = $database->prepare('
         INSERT INTO nageur (nom, prenom, tel, ville, dept, diplome, presentation, prix, dispo, preference, email)
@@ -55,14 +71,18 @@ try {
         ':email' => 'sophie.martin@example.com'
     ];
     
-    $stmt_nageur->execute($nageur_data);
-    $nageur_id = $database->lastInsertId(); // Récupérer l'ID auto-incrémenté
-    error_log("Insertion réussie dans nageur - ID: $nageur_id");
-    $message .= "Enregistrement nageur réussi (ID: $nageur_id).";
+    if ($stmt_nageur->execute($nageur_data)) {
+        $nageur_id = $database->lastInsertId();
+        error_log("Insertion réussie dans nageur - ID: $nageur_id");
+        $message .= "Enregistrement nageur réussi (ID: $nageur_id).";
+    } else {
+        $error_info = $stmt_nageur->errorInfo();
+        $message .= "Échec de l'insertion dans nageur : " . implode(", ", $error_info);
+        error_log($message);
+    }
 } catch (PDOException $e) {
-    $error = "Erreur nageur : " . $e->getMessage();
-    error_log($error);
-    $message .= $error;
+    $message .= "Erreur nageur : " . $e->getMessage();
+    error_log($message);
 }
 ?>
 
@@ -73,22 +93,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test d'Insertion</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 600px;
-        }
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f0f0; }
+        .container { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; max-width: 600px; }
     </style>
 </head>
 <body>

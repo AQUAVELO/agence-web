@@ -77,6 +77,7 @@ RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
 RewriteRule ^natation$ /?p=natation [QSA,L]
 RewriteRule ^inscription_client$ /?p=inscription_client [QSA,L]
 RewriteRule ^inscription_nageur$ /?p=inscription_nageur [QSA,L]
+RewriteRule ^traitement_nageur.php$ /traitement_nageur.php [QSA,L]
 
 
 </IfModule>

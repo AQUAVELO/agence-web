@@ -359,10 +359,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
               </li>
               <!-- Nouvel onglet Natation -->
-              <li <?php if ($page == 'natation') echo ' class="active"'; ?>>
-                  <a href="/natation">-</a>
-              </li>
-
+             
             
           </ul>
                   </div>

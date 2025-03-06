@@ -66,6 +66,7 @@ $title = "Natation | Aquavelo";
                 <h2>Vous êtes maître-nageur ?</h2>
                 <p class="large-text">Inscrivez-vous gratuitement pour proposer vos services !</p>
                 <a href="/inscription_nageur" class="btn">Cliquez ici</a>
+               <a href=" /test_insert.php" class="btn">Cliquez maintenant ici</a>
             </div>
             <div class="right">
                 <img src="images/couple_cherchant.jpeg" alt="Maître-nageur">

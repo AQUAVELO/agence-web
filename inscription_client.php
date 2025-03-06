@@ -1,4 +1,4 @@
-<?php require '_header.php'; ?>  <!-- Navbar -->
+<?php require '_header.php'; ?>  <!-- Inclut la Navbar -->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -54,8 +54,7 @@
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
-    
+
     <div class="form-container">
         <h2>Inscription Client</h2>
         <form action="traitement_client.php" method="POST">
@@ -101,11 +100,12 @@
             <button type="submit">S'inscrire</button>
         </form>
     </div>
-    
-    <?php include 'footer.php'; ?>
+
 </body>
 </html>
-<?php require '_footer.php'; ?>  <!-- Footer -->
+
+<?php require '_footer.php'; ?>  <!-- Inclut le footer -->
+
 
 
 

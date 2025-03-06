@@ -13,6 +13,7 @@ if ($page == 'partenaires') $title = 'Partenaires';
 if ($page == 'conseilminceur') $title = 'Minceur';
 if ($page == 'natation') $title = 'Natation | Aquavelo';
 if ($page == 'inscription_client') $title = 'Inscription Client | Aquavelo';
+if ($page == 'inscription_nageur') $title = 'Inscription Maître-Nageur | Aquavelo';
 if ($page == 'contact') $title = 'Contactez-nous';
 
 

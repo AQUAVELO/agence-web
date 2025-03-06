@@ -1,5 +1,4 @@
 <?php
-// Définir le titre de la page pour index.php
 $title = "Natation";
 ?>
 
@@ -25,12 +24,12 @@ $title = "Natation";
                 text-align: center;
             }
             .left {
-                background-color: #00afdf; /* Bleu vif */
-                border-right: 2px solid #ccc; /* Trait vertical */
+                background-color: #00afdf;
+                border-right: 2px solid #ccc;
                 color: white;
             }
             .right {
-                background-color: #47c3e6; /* Bleu clair */
+                background-color: #47c3e6;
                 color: #333;
             }
             img {
@@ -66,13 +65,13 @@ $title = "Natation";
                 <img src="images/cours.jpeg" alt="Cours de natation">
                 <h2>Vous êtes maître-nageur ?</h2>
                 <p class="large-text">Inscrivez-vous gratuitement pour proposer vos services !</p>
-                <a href="/inscription_nageur.php" class="btn">Cliquez ici</a>
+                <a href="/inscription_nageur" class="btn">Cliquez ici</a>
             </div>
             <div class="right">
                 <img src="images/couple_cherchant.jpeg" alt="Maître-nageur">
                 <h2>Vous recherchez un maître-nageur ?</h2>
                 <p class="large-text">Pour des cours de natation ou animer une séance, cliquez ici !</p>
-                <a href="/inscription_client.php" class="btn">Cliquez ici</a>
+                <a href="/inscription_client" class="btn">Cliquez ici</a>
             </div>
         </div>
     </div>

@@ -1,4 +1,9 @@
 <?php
+// Activer les erreurs temporairement pour diagnostiquer en ligne
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Définir le titre de la page pour index.php
 $title = "Inscription Maître-Nageur | Aquavelo";
 ?>
@@ -8,7 +13,7 @@ $title = "Inscription Maître-Nageur | Aquavelo";
         <div class="form-wrapper">
             <div class="form-container">
                 <h2>Inscription Maître-Nageur</h2>
-                <form action="traitement_nageur.php" method="POST" enctype="multipart/form-data">
+                <form action="/traitement_nageur.php" method="POST" enctype="multipart/form-data">
                     <label for="nom">Nom *</label>
                     <input type="text" id="nom" name="nom" required>
 

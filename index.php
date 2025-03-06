@@ -64,7 +64,7 @@ $clients_data = $clients_query->fetchAll(PDO::FETCH_ASSOC);
 
 // NOUVEAU : Récupérer tous les maîtres-nageurs (nageurs)
 $nageurs_query = $database->prepare('SELECT id, nom, prenom, tel, photo, ville, dept, diplome, presentation, prix, dispo, preference, email FROM nageur ORDER BY id DESC');
-$nageurs_query->executeQin();
+$nageurs_query->execute(); // Correction ici
 $nageurs_data = $nageurs_query->fetchAll(PDO::FETCH_ASSOC);
 
 

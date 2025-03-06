@@ -1,3 +1,5 @@
+<?php require '_header.php'; ?>  <!-- Navbar -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -103,6 +105,8 @@
     <?php include 'footer.php'; ?>
 </body>
 </html>
+<?php require '_footer.php'; ?>  <!-- Footer -->
+
 
 
 

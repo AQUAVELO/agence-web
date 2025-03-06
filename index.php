@@ -56,7 +56,16 @@ $news_datas = $news_querys->fetchAll(PDO::FETCH_ASSOC); // Récupère toutes les
 
 
 
-// NOUVEAU
+
+// NOUVEAU : Récupérer tous les prospects (clients)
+$clients_query = $database->prepare('SELECT id, nom, prenom, tel, email, adresse, ville, dept, activites, besoin FROM client ORDER BY id DESC');
+$clients_query->execute();
+$clients_data = $clients_query->fetchAll(PDO::FETCH_ASSOC);
+
+// NOUVEAU : Récupérer tous les maîtres-nageurs (nageurs)
+$nageurs_query = $database->prepare('SELECT id, nom, prenom, tel, photo, ville, dept, diplome, presentation, prix, dispo, preference, email FROM nageur ORDER BY id DESC');
+$nageurs_query->executeQin();
+$nageurs_data = $nageurs_query->fetchAll(PDO::FETCH_ASSOC);
 
 
 

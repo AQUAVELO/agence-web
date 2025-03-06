@@ -1,5 +1,5 @@
 <?php
-$title = "Natation";
+$title = "Natation | Aquavelo";
 ?>
 
 <section class="content-area">

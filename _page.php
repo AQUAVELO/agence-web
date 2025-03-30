@@ -232,15 +232,7 @@
           <p><?= $row_center['description'] ?? '' ?></p>
 
         </dd>
-	<!-- test -->     
-	<dt>t</dt>
-	<dd>
-  	<a href="vente_stripe.php" class="btn btn-default" 
-     	   title="test" 
-            aria-label="Acheter un forfait Aquavelo">
-         t
-         </a>
-	</dd>
+	
 	      
       </dl>
     </div>

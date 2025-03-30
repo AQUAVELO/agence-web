@@ -32,7 +32,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Choisissez votre abonnement Aqua Connect</h1>
+        <h1>Choisissez votre abonnement Aquavélo</h1>
 
         <?php if (isset($_GET['error'])): ?>
             <div class="error-message"><?php echo htmlspecialchars($_GET['error']); ?></div>

@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+
 
 function sanitizeString($str) {
     $str = trim($str);

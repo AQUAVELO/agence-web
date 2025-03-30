@@ -1,6 +1,6 @@
 <?php
 
-require_once('vendor/autoload.php'); // Si tu utilises Composer
+
 
 // Tes clés d'API Stripe (à remplacer par tes vraies clés)
 $stripeSecretKey = getenv('STRIPE_SECRET_KEY') ?: 'sk_test_xxxxxxxxxxxxx'; // Utilise la variable d'env si définie

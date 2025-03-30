@@ -3,8 +3,8 @@
 session_start();
 
 // Configuration de Stripe - Remplacez par vos clés réelles
-$stripeSecretKey = 'sk_test_VOTRE_CLE_SECRETE';
-$stripePublicKey = 'pk_test_VOTRE_CLE_PUBLIQUE';
+$stripeSecretKey = 'sk_test_51R0razK3GWmEE8Ic7OHpRMz8BcnfnuYSHmixqzKPD8Ww3UVrY5Fsti9B3Hiq8canrQ36M6lYpOSDg7uZcocLfikg00ipggxD7x';
+$stripePublicKey = 'pk_test_51R0razK3GWmEE8IcMClhIck5shXPh8iGQ41LwFbec7CTnfK3pKGbUA5FpW9Zw4Bm3Ho2GckSpEUMl7FKyggvD07S004FHPm73I';
 
 // Inclusion de la bibliothèque Stripe
 require_once('vendor/autoload.php');

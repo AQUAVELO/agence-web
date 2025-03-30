@@ -8,6 +8,9 @@ Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
 RewriteBase /
 
+# Exclure le fichier vente_stripe.php des règles de réécriture
+RewriteCond %{REQUEST_URI} !^vente_stripe\.php$
+
 # Exclure les fichiers statiques des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
@@ -48,8 +51,6 @@ Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
 RewriteBase /
 
-# Exclure le fichier vente_stripe.php des règles de réécriture
-RewriteCond %{REQUEST_URI} !^vente_stripe\.php$
 
 # Exclure les fichiers statiques des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} -f [OR]

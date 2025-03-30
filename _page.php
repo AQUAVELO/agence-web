@@ -236,7 +236,7 @@
 	<dt>t</dt>
 	<dd>
   	<a href="vente_stripe.php" class="btn btn-default" 
-     	   title="t" 
+     	   title="test" 
             aria-label="Acheter un forfait Aquavelo">
          t
          </a>

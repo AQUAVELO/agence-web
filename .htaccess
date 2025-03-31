@@ -8,8 +8,8 @@ Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
 RewriteBase /
 
-# Réécrire /test vers vente_stripe.php
-RewriteRule ^test$ vente_stripe.php [L]
+# Réécrire /vente vers vente_formule.php
+RewriteRule ^vente$ vente_formule.php [L]
 
 # Exclure les fichiers statiques des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} -f [OR]

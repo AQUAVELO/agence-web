@@ -35,19 +35,32 @@ $url_monetico = "https://p.monetico-services.com/paiement.cgi";
             text-align: center;
         }
         img {
-            max-width: 100%;
+            max-width: 50%; /* Image réduite de moitié */
             height: auto;
         }
         .container {
             width: 80%;
             margin: 0 auto;
         }
+        input[type="submit"] {
+            background-color: #008CBA; /* Couleur de fond du bouton */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px; /* Taille de la police du bouton */
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px; /* Bords arrondis du bouton */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Achat d'une séance de Cryolipolyse - Aquavelo Cannes</h1>
-        <img src="images/cryo.jpg" alt="Séance Cryolipolyse Aquavelo Cannes">
+        <img src="URL_DE_VOTRE_IMAGE" alt="Séance Cryolipolyse Aquavelo Cannes">
         <p>
             Profitez de notre offre exceptionnelle : une séance de Cryolipolyse d'une heure à seulement 99 € !
             Ciblez la zone de votre choix (ventre, cuisses, fessier, etc.) et définissez-la avec notre praticienne expérimentée.

@@ -60,7 +60,7 @@ $url_monetico = "https://p.monetico-services.com/paiement.cgi";
 <body>
     <div class="container">
         <h1>Achat d'une séance de Cryolipolyse - Aquavelo Cannes</h1>
-        <img src="URL_DE_VOTRE_IMAGE" alt="Séance Cryolipolyse Aquavelo Cannes">
+        <img src="images/cryo.jpg" alt="Séance Cryolipolyse Aquavelo Cannes">
         <p>
             Profitez de notre offre exceptionnelle : une séance de Cryolipolyse d'une heure à seulement 99 € !
             Ciblez la zone de votre choix (ventre, cuisses, fessier, etc.) et définissez-la avec notre praticienne expérimentée.

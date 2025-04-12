@@ -64,6 +64,11 @@ function calculateMAC($fields, $key) {
     // Calcul du MAC avec HMAC-SHA1 et conversion en majuscules
     $binaryKey = pack('H*', $key);
     return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    echo "<pre>";
+    echo "CHAÎNE UTILISÉE POUR LE MAC :\n$chaine\n\n";
+    echo "MAC CALCULÉ : $mac\n";
+    echo "</pre>";
+    exit;
 }
 
 // Préparation des données pour Monetico

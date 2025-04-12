@@ -50,7 +50,7 @@ foreach ($params as $key => $value) {
 $signature = strtoupper(hash_hmac("sha1", $str, $monetico_cle));
 
 $params["MAC"] = $signature; // Le nom du champ signature a changé depuis version 3.0
-$cgi_url = "https://p.monetico.net/paiement.cgi"; // URL de paiement de Monetico (à vérifier)
+$cgi_url = "https://p.monetico-services.com/paiement.cgi"; // URL de paiement de Monetico (à vérifier)
 
 ?>
 

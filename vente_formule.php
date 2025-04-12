@@ -63,7 +63,7 @@ $fields = [
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['email']) && filter_var($_POST()['email'], FILTER_VALIDATE_EMAIL)) {
+    if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $fields['mail'] = $_POST['email'];
         
         // Calcul du MAC

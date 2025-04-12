@@ -32,8 +32,9 @@ function calculateMAC($fields, $key) {
     // 2. Construction de la chaîne à signer
     $chaine = '';
     foreach ($fields as $param => $value) {
-        // Conversion en UTF-8
+        // **Ajouter cette ligne ici :**
         $value = mb_convert_encoding($value, 'UTF-8', 'auto');
+
         $chaine .= $param . '=' . $value . '*';
     }
     $chaine = rtrim($chaine, '*'); // Supprimer le dernier '*'

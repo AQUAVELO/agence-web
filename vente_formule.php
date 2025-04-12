@@ -1,11 +1,11 @@
 <?php
 // Configuration de Monetico
-define('MONETICO_TPE', '6684349');             // Votre numéro de TPE
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');   // Votre clé secrète
-define('MONETICO_COMPANY', 'ALESIA MINCEUR');        // Nom de votre société
-define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi'); // URL de paiement Monetico
-define('MONETICO_RETURN_URL', 'https://aquavelo.com/confirmation.php'); // URL de retour après paiement
-define('MONETICO_CANCEL_URL', 'https://aquavelo.com/annulation.php');   // URL en cas d'annulation
+define('MONETICO_TPE', '6684349');
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+define('MONETICO_COMPANY', 'ALESIA MINCEUR');
+define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
+define('MONETICO_RETURN_URL', 'https://aquavelo.com/confirmation.php');
+define('MONETICO_CANCEL_URL', 'https://aquavelo.com/annulation.php');
 
 // Information du produit
 $produit = [
@@ -18,49 +18,50 @@ $produit = [
 // Génération d'un ID de commande unique
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);
 
-// Fonction pour générer le MAC (Message Authentication Code)
+// Fonction pour générer le MAC
 function calculateMAC($fields, $key) {
-    // Préparation de la chaîne à hacher
-    $content = '';
-    foreach ($fields as $field => $value) {
-        if ($field != 'MAC') {
-            $content .= $value . '*';
-        }
-    }
-    $content .= $key;
+    $orderedFields = [
+        'TPE', 'date', 'montant', 'reference', 'texte-libre', 'version', 'lgue',
+        'societe', 'mail', 'context_commande', 'url_retour_ok', 'url_retour_err'
+    ];
     
-    // Génération du MAC avec l'algorithme HMAC-SHA1
-    $mac = strtoupper(hash_hmac('sha1', $content, $key));
-    return $mac;
+    $content = '';
+    foreach ($orderedFields as $field) {
+        $content .= (isset($fields[$field]) ? $fields[$field] : '') . '*';
+    }
+    $content = rtrim($content, '*');
+    
+    $binaryKey = pack('H*', $key);
+    return strtoupper(hash_hmac('sha1', $content, $binaryKey));
 }
 
 // Préparation des données pour Monetico
 $dateCommande = date('d/m/Y:H:i:s');
 $contextCommande = base64_encode(json_encode([
     'billing' => [
-        'addressLine1' => '',
-        'city' => '',
-        'postalCode' => '',
-        'country' => 'FRA'
+        'addressLine1' => 'Non fourni',
+        'city' => 'Non fourni',
+        'postalCode' => '00000',
+        'country' => 'FR'
     ]
 ]));
 
 $fields = [
     'TPE' => MONETICO_TPE,
     'date' => $dateCommande,
-    'montant' => $produit['prix'] . $produit['devise'],
+    'montant' => number_format($produit['prix'], 2, '.', '') . $produit['devise'],
     'reference' => $reference,
     'texte-libre' => $produit['description'],
     'version' => '3.0',
     'lgue' => 'FR',
     'societe' => MONETICO_COMPANY,
     'context_commande' => $contextCommande,
-    'mail' => '',  // Sera rempli par le formulaire
+    'mail' => '',
     'url_retour_ok' => MONETICO_RETURN_URL,
     'url_retour_err' => MONETICO_CANCEL_URL
 ];
 
-// Si le formulaire est soumis, on génère le MAC et on redirige vers Monetico
+// Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $fields['mail'] = $_POST['email'];
@@ -69,38 +70,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mac = calculateMAC($fields, MONETICO_KEY);
         $fields['MAC'] = $mac;
         
-        // Stockage des informations de la commande en base de données ou en session
-        // ...
+        // Log des données pour débogage
+        file_put_contents('monetico_log.txt', print_r($fields, true));
         
-        // Redirection via un formulaire auto-soumis
-        echo '<!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Redirection vers la page de paiement</title>
-            <script type="text/javascript">
-                window.onload = function() {
-                    document.getElementById("form-monetico").submit();
-                }
-            </script>
-        </head>
-        <body>
-            <p>Redirection vers la page de paiement en cours...</p>
-            <form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
-        
+        // Redirection via formulaire
+        echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
             echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '">';
         }
-        
-        echo '</form>
-        </body>
-        </html>';
+        echo '<input type="submit" value="Payer maintenant">';
+        echo '</form>';
         exit;
     } else {
         $error = "Veuillez saisir une adresse email valide";
     }
 }
 ?>
+
+<!-- HTML reste inchangé -->
 
 <!DOCTYPE html>
 <html lang="fr">

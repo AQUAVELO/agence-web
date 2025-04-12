@@ -1,7 +1,7 @@
 <?php
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD52805');
 define('MONETICO_COMPANY', 'ALESIA MINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://aquavelo.com/confirmation.php');
@@ -49,7 +49,8 @@ $contextCommande = base64_encode(json_encode([
 $fields = [
     'TPE' => MONETICO_TPE,
     'date' => $dateCommande,
-    'montant' => number_format($produit['prix'], 2, '.', '') . $produit['devise'],
+    // Modification du format du montant
+    'montant' => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference' => $reference,
     'texte-libre' => $produit['description'],
     'version' => '3.0',
@@ -364,3 +365,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </footer>
 </body>
 </html>
+

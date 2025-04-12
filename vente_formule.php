@@ -4,7 +4,7 @@ session_start();
 // **** Configuration ****
 define('MONETICO_TPE', '6684349'); // Remplacez par votre code site
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594'); // Remplacez par votre clé de sécurité
-define('MONETICO_COMPANY', 'ALESIAMINCEUR');
+define('MONETICO_COMPANY', 'ALESIA MINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi'); // ou https://p.monetico.net/paiement.cgi en production
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');  // Veiller à respecter exactement l'URL enregistrée (ici avec www)
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');

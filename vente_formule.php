@@ -22,7 +22,7 @@ $reference = 'CMD' . date('YmdHis') . rand(100, 999);
 function calculateMAC($fields, $key) {
     $orderedFields = [
         'TPE', 'date', 'montant', 'reference', 'texte-libre', 'version', 'lgue',
-        'societe', 'mail', 'context_commande', 'url_retour_ok', 'url_retour_err'
+        'societe', 'mail'
     ];
     
     $content = '';
@@ -63,7 +63,7 @@ $fields = [
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (isset($_POST['email']) && filter_var($_POST()['email'], FILTER_VALIDATE_EMAIL)) {
         $fields['mail'] = $_POST['email'];
         
         // Calcul du MAC
@@ -86,8 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
-<!-- HTML reste inchangé -->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -361,7 +359,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <footer>
         <div class="container">
-            <p>&copy; <?php echo date('Y'); ?> Aquavelo - Tous droits réservés</p>
+            <p>© <?php echo date('Y'); ?> Aquavelo - Tous droits réservés</p>
         </div>
     </footer>
 </body>

@@ -3,7 +3,7 @@
 define('MONETICO_TPE', '6684349');             // Votre numéro de TPE
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');   // Votre clé secrète
 define('MONETICO_COMPANY', 'ALESIA MINCEUR');        // Nom de votre société
-define('MONETICO_URL', 'https://p.monetico-services.com/paiement.cgi'); // URL de paiement Monetico
+define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi'); // URL de paiement Monetico
 define('MONETICO_RETURN_URL', 'https://aquavelo.com/confirmation.php'); // URL de retour après paiement
 define('MONETICO_CANCEL_URL', 'https://aquavelo.com/annulation.php');   // URL en cas d'annulation
 

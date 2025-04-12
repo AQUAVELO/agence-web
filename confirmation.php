@@ -1,32 +1,34 @@
 <?php
 
+session_start();
 // **** Configuration ****
-$monetico_tpe = "6684394"; // Remplacez par votre numéro de TPE
+$monetico_tpe = "AQUACANNES"; // Remplacez par votre code site
 $monetico_cle = "AB477436DAE9200BF71E755208720A3CD5280594"; // Remplacez par votre clé de sécurité
-$monetico_mail_surveillance = "aqua.cannes@gmail.com"; // Remplacez par votre adresse email de surveillance
+$monetico_mail_surveillance = "claude@alesiaminceur.com"; // Remplacez par votre adresse email de surveillance
 $monetico_debug = true; // Mettez à false en production
+$isTest = true; // à false en production
 
 // **** Fonctions Utiles ****
 
 function log_message($message) {
-  global $monetico_debug;
-  $log_file = "monetico_log.txt"; // Nom du fichier de log (sécurisez l'accès à ce fichier !)
-  $date = date("Y-m-d H:i:s");
-  $message = "[" . $date . "] " . $message . "\n";
-  if($monetico_debug){
-    error_log($message, 3, $log_file);
-  }
+    global $monetico_debug;
+    $log_file = "monetico_log.txt"; // Nom du fichier de log (sécurisez l'accès à ce fichier !)
+    $date = date("Y-m-d H:i:s");
+    $message = "[" . $date . "] " . $message . "\n";
+    if ($monetico_debug) {
+        error_log($message, 3, $log_file);
+    }
 }
 
 function verify_signature($params, $cle) {
     $str = "";
     foreach ($params as $key => $value) {
-        if (strtoupper($key) != "SIGNATURE") {
+        if (strtoupper($key) != "MAC") { // Utiliser MAC ici (et non signature)
             $str .= $value;
         }
     }
     $calculated_signature = strtoupper(hash_hmac("sha1", $str, $cle));
-    return $calculated_signature == strtoupper($params["signature"]);
+    return $calculated_signature == strtoupper($params["MAC"]); // Comparer avec MAC
 }
 
 // **** Réception des données de Monetico ****
@@ -41,17 +43,18 @@ log_message("Paramètres reçus : " . json_encode($params));
 
 // **** Vérification de la signature ****
 
-if (isset($params["signature"])) {
+if (isset($params["MAC"])) { // Vérifier la présence de MAC
     if (verify_signature($params, $monetico_cle)) {
         log_message("Signature valide.");
 
         // **** Traitement de la transaction ****
 
         $montant = $params["montant"];
-        $devise = $params["devise"];
+        $devise = substr($montant, -3); // Extraire la devise du montant
+        $montant_net = substr($montant, 0, strlen($montant) - 3); // Extraire le montant numérique
         $reference = $params["reference"];
         $code_retour = $params["code_retour"];
-        $texte_libre = $params["texte_libre"]; // Informations supplémentaires
+        $texte_libre = $params["texte-libre"]; // Informations supplémentaires
         $motif_refus = isset($params["motif_refus"]) ? $params["motif_refus"] : ""; // Motif du refus s'il y en a un
 
         log_message("Montant: " . $montant . ", Référence: " . $reference . ", Code Retour: " . $code_retour);
@@ -79,15 +82,13 @@ if (isset($params["signature"])) {
             //     // Gérer l'erreur (envoyer un email d'alerte, etc.)
             // }
             // $conn->close();
-
-            // **** Envoi d'une notification (si nécessaire) ****
-            // if (!empty($monetico_url_notify)) {
-            //   // Implémentez le code pour envoyer une notification à $monetico_url_notify
-            // }
+         if($isTest) {
+              log_message("MODE TEST ACTIF : Pas de mise à jour de la BDD.");
+         }
 
             // Envoyer un email de confirmation à l'administrateur
             $subject = "Paiement réussi - Référence: " . $reference;
-            $message = "Un paiement de " . $montant . " " . $devise . " a été effectué avec succès pour la référence " . $reference . ".";
+            $message = "Un paiement de " . $montant_net . " " . $devise . " a été effectué avec succès pour la référence " . $reference . ".";
             mail($monetico_mail_surveillance, $subject, $message);
 
         } else {
@@ -106,6 +107,11 @@ if (isset($params["signature"])) {
             $subject = "Paiement refusé - Référence: " . $reference;
             $message = "Un paiement a été refusé pour la référence " . $reference . ". Code retour: " . $code_retour . ", Motif refus: " . $motif_refus;
             mail($monetico_mail_surveillance, $subject, $message);
+        }
+
+        if (isset($_SESSION['produit_reference'])) {
+            unset($_SESSION['produit_reference']); // Suppression de la session après traitement
+            log_message("Suppression de la référence de session.");
         }
 
     } else {

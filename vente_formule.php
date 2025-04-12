@@ -1,94 +1,74 @@
 <?php
-// Informations Monetico (à remplacer par vos informations)
-$monetico_tpe = "6684349";
-$monetico_cle = "AB477436DAE9200BF71E755208720A3CD5280594";
+session_start();
+
+// **** Configuration ****
+$monetico_tpe = "AQUACANNES"; // Remplacez par votre code site
+$monetico_cle = "AB477436DAE9200BF71E755208720A3CD5280594"; // Remplacez par votre clé de sécurité
 $monetico_devise = "EUR";
 $monetico_langue = "FR";
-$monetico_url_retour = "https://www.aquavelo.com/confirmation.php";
-$monetico_url_notify = "https://www.aquavelo.com/notification.php";
-$monetico_mail_surveillance = "aqua.cannes@gmail.com";
+$monetico_url_home = "https://www.aquavelo.com/vente_formule.php"; // Important en mode test
+$monetico_url_retour = "https://www.aquavelo.com/confirmation.php"; // URL de notification (CGI2)
 $monetico_version = "3.0";
 $monetico_societe = "ALESIAMINCEUR";
-$monetico_url_home = "https://www.aquavelo.com/vente_formule.php";
 
-// Informations de la commande
-$montant = "99.00";
-$reference = uniqid();
+// **** Informations sur le produit ****
+$produit_nom = "Soin Minceur";
+$produit_prix = 99.00;
+$produit_reference = uniqid("soin_"); // Générer une référence unique
+$produit_texte_libre = "Achat du Soin Minceur"; // Texte libre pour le CGI2
 
-// Calcul de la signature
-$texte_libre = "";
-$date = gmdate("YmdHis");
-$concat = $monetico_tpe . "*" . $date . "*" . $montant . "*" . $monetico_devise . "*" . $reference . "*" . $texte_libre . "*" . $monetico_cle;
-$signature = hash("sha256", $concat);
+// **** Création de la commande (Exemple - à adapter à votre base de données) ****
+// Dans un vrai scénario, vous inséreriez ici la commande dans votre base de données
+// avec un statut "en attente de paiement".
 
-// URL du formulaire Monetico
-$url_monetico = "https://p.monetico-services.com/paiement.cgi";
+// Stocker la référence en session pour la récupérer après le retour de Monetico
+$_SESSION['produit_reference'] = $produit_reference;
+
+// **** Préparation des données pour Monetico ****
+$montant = number_format($produit_prix, 2, '.', ''); // Formatage du montant (important!)
+
+$params = array(
+    "TPE" => $monetico_tpe,
+    "date" => date("d/m/Y:H:i:s"),
+    "montant" => $montant . $monetico_devise,
+    "reference" => $produit_reference,
+    "texte-libre" => $produit_texte_libre,
+    "version" => $monetico_version,
+    "lgue" => $monetico_langue,
+    "societe" => $monetico_societe,
+    "url_retour" => $monetico_url_home, // Correction importante : c'est bien l'URL home
+    "url_retour_ok" => "https://www.aquavelo.com/vente_ok.php",
+    "url_retour_err" => "https://www.aquavelo.com/vente_ko.php",
+    "mail_surveillance" => "claude@alesiaminceur.com"
+);
+
+// **** Calcul de la signature ****
+$str = "";
+foreach ($params as $key => $value) {
+    $str .= $value;
+}
+$signature = strtoupper(hash_hmac("sha1", $str, $monetico_cle));
+
+$params["MAC"] = $signature; // Le nom du champ signature a changé depuis version 3.0
+$cgi_url = "https://p.monetico.net/paiement.cgi"; // URL de paiement de Monetico (à vérifier)
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Achat Séance Cryolipolyse - Aquavelo Cannes</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-        }
-        img {
-            max-width: 50%; /* Image réduite de moitié */
-            height: auto;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-        input[type="submit"] {
-            background-color: #008CBA; /* Couleur de fond du bouton */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 18px; /* Taille de la police du bouton */
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 10px; /* Bords arrondis du bouton */
-        }
-    </style>
+    <title>Achat du Soin Minceur</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Achat d'une séance de Cryolipolyse - Aquavelo Cannes</h1>
-        <img src="images/cryo.jpg" alt="Séance Cryolipolyse Aquavelo Cannes">
-        <p>
-            Profitez de notre offre exceptionnelle : une séance de Cryolipolyse d'une heure à seulement 99 € !
-            Ciblez la zone de votre choix (ventre, cuisses, fessier, etc.) et définissez-la avec notre praticienne expérimentée.
-            Offre valable jusqu'au 10/04/2025.
-        </p>
-        <p>
-            Rendez-vous chez Aquavelo : 60 avenue du Docteur Raymond Picaud, Cannes.
-        </p>
-
-        <form action="<?php echo $url_monetico; ?>" method="post">
-            <input type="hidden" name="version" value="<?php echo $monetico_version; ?>">
-            <input type="hidden" name="TPE" value="<?php echo $monetico_tpe; ?>">
-            <input type="hidden" name="date" value="<?php echo $date; ?>">
-            <input type="hidden" name="montant" value="<?php echo $montant; ?>">
-            <input type="hidden" name="devise" value="<?php echo $monetico_devise; ?>">
-            <input type="hidden" name="reference" value="<?php echo $reference; ?>">
-            <input type="hidden" name="texte-libre" value="<?php echo $texte_libre; ?>">
-            <input type="hidden" name="MAC" value="<?php echo $signature; ?>">
-            <input type="hidden" name="url_retour" value="<?php echo $monetico_url_retour; ?>">
-            <input type="hidden" name="url_retour_ok" value="<?php echo $monetico_url_retour; ?>">
-            <input type="hidden" name="url_retour_err" value="<?php echo $monetico_url_retour; ?>">
-            <input type="hidden" name="lgue" value="<?php echo $monetico_langue; ?>">
-            <input type="hidden" name="societe" value="<?php echo $monetico_societe; ?>">
-            <input type="hidden" name="mail" value="<?php echo $monetico_mail_surveillance; ?>">
-            <input type="hidden" name="url_ipn" value="<?php echo $monetico_url_notify; ?>">
-            <input type="hidden" name="url_boutique" value="<?php echo $monetico_url_home; ?>">
-            <input type="submit" value="Payer 99 €">
-        </form>
-    </div>
+    <h1>Achat du Soin Minceur</h1>
+    <p>Vous avez choisi d'acheter le soin minceur pour 99 €.</p>
+    <form action="<?php echo $cgi_url; ?>" method="POST">
+        <?php
+        foreach ($params as $key => $value) {
+            echo '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars($value) . '">';
+        }
+        ?>
+        <button type="submit">Payer avec Monetico</button>
+    </form>
 </body>
 </html>

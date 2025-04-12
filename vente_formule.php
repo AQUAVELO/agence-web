@@ -1,14 +1,14 @@
 <?php
 // Informations Monetico (à remplacer par vos informations)
-$monetico_tpe = "VOTRE_TPE";
-$monetico_cle = "VOTRE_CLE";
+$monetico_tpe = "6684349";
+$monetico_cle = "AB477436DAE9200BF71E755208720A3CD5280594";
 $monetico_devise = "EUR";
 $monetico_langue = "FR";
 $monetico_url_retour = "https://www.aquavelo.com/confirmation.php";
 $monetico_url_notify = "https://www.aquavelo.com/notification.php";
-$monetico_mail_surveillance = "votre@email.com";
+$monetico_mail_surveillance = "aqua.cannes@gmail.com";
 $monetico_version = "3.0";
-$monetico_societe = "AQUACANNES";
+$monetico_societe = "ALESIAMINCEUR";
 $monetico_url_home = "https://www.aquavelo.com/vente_formule.php";
 
 // Informations de la commande

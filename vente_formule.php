@@ -1,7 +1,7 @@
 <?php
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
-// define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD52805');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
@@ -64,12 +64,16 @@ function calculateMAC($fields, $key) {
     
     // Calcul du MAC avec HMAC-SHA1 et conversion en majuscules
     $binaryKey = pack('H*', $key);
-    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    
+    // Debug MAC
     echo "<pre>";
     echo "CHAÎNE UTILISÉE POUR LE MAC :\n$chaine\n\n";
     echo "MAC CALCULÉ : $mac\n";
     echo "</pre>";
     exit;
+    
+    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    
 }
 
 // Préparation des données pour Monetico
@@ -112,18 +116,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Log des données pour débogage (fichier "monetico_log.txt" situé dans le même répertoire)
         file_put_contents('monetico_log.txt', print_r($fields, true));
         
-        // Redirection par soumission automatique du formulaire
-        echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
+        // Envoi du formulaire vers Monetico sans encoder les champs
+        echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">' . "\n";
         foreach ($fields as $name => $value) {
-            // Ne PAS encoder les champs du MAC : sinon le MAC ne correspondra pas
-                if (in_array($name, ['texte-libre', 'mail', 'reference', 'montant', 'societe', 'date', 'TPE', 'version', 'lgue', 'url_retour_ok', 'url_retour_err'])) {
-                    echo '<input type="hidden" name="' . $name . '" value="' . $value . '">';
-                } else {
-                    echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_NOQUOTES) . '" value="' . htmlspecialchars($value, ENT_NOQUOTES) . '">';
-                }
+            echo '<input type="hidden" name="' . $name . '" value="' . $value . '">' . "\n";
         }
         echo '<input type="submit" value="Payer maintenant">';
         echo '</form>';
+
         exit;
     } else {
         $error = "Veuillez saisir une adresse email valide";

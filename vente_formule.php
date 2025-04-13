@@ -10,10 +10,10 @@ define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 // Information du produit
 $produit = [
-    'nom' => 'Séance Aquavelo',
+    'nom' => 'Seance Cryo',
     'prix' => 99.00,
     'devise' => 'EUR',
-    'description' => 'Séance d\'aquavelo de 45 minutes'
+    'description' => 'Cryo'
 ];
 
 // Génération d'un ID de commande unique

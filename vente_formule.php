@@ -114,7 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Redirection par soumission automatique du formulaire
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
-            echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_QUOTES) . '" value="' . htmlspecialchars($value, ENT_QUOTES) . '">';
+            // Ne PAS encoder les champs du MAC : sinon le MAC ne correspondra pas
+                if (in_array($name, ['texte-libre', 'mail', 'reference', 'montant', 'societe', 'date', 'TPE', 'version', 'lgue', 'url_retour_ok', 'url_retour_err'])) {
+                    echo '<input type="hidden" name="' . $name . '" value="' . $value . '">';
+                } else {
+                    echo '<input type="hidden" name="' . htmlspecialchars($name, ENT_NOQUOTES) . '" value="' . htmlspecialchars($value, ENT_NOQUOTES) . '">';
+                }
         }
         echo '<input type="submit" value="Payer maintenant">';
         echo '</form>';

@@ -2,7 +2,7 @@
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
 
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD52805');
+define('MONETICO_KEY', '9d9408074ca9948d376af00f58e558f695ee5dd014e918c0eb895e90ee665982ce952d41dfe2d0c');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');  // Veiller à respecter exactement l'URL enregistrée (ici avec www)

@@ -116,19 +116,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Log des données pour débogage (fichier "monetico_log.txt" situé dans le même répertoire)
         file_put_contents('monetico_log.txt', print_r($fields, true));
         
-        // Envoi du formulaire vers Monetico sans encoder les champs
+        // Envoi du formulaire vers Monetico sans encoder les champs (préserve les ' etc.)
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">' . "\n";
         foreach ($fields as $name => $value) {
-            echo '<input type="hidden" name="' . $name . '" value="' . $value . '">' . "\n";
+            echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">' . "\n";
         }
         echo '<input type="submit" value="Payer maintenant">';
-
-        echo "<pre>Formulaire envoyé à Monetico :\n";
-        foreach ($fields as $name => $value) {
-            echo "$name = $value\n";
-        }
-        echo "</pre>";
-
         echo '</form>';
 
         exit;
@@ -136,6 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Veuillez saisir une adresse email valide";
     }
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">

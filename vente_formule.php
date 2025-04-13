@@ -67,6 +67,11 @@ function calculateMAC($fields, $key) {
     $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     
  
+    echo "<pre>";
+    echo "Chaîne signée :\n$chaine\n\n";
+    echo "MAC généré : $mac\n";
+    echo "</pre>";
+    exit;
 
     
     // Retourne le MAC (si pas en mode debug)

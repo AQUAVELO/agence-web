@@ -62,17 +62,20 @@ function calculateMAC($fields, $key) {
     }
     $chaine = rtrim($chaine, '*');
     
-    // Calcul du MAC avec HMAC-SHA1 et conversion en majuscules
+   // Calcul du MAC avec HMAC-SHA1 et conversion en majuscules
     $binaryKey = pack('H*', $key);
+    $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     
-    // Debug MAC
+    // Affichage debug
     echo "<pre>";
     echo "CHAÎNE UTILISÉE POUR LE MAC :\n$chaine\n\n";
     echo "MAC CALCULÉ : $mac\n";
     echo "</pre>";
     exit;
     
-    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    // Retourne le MAC (si pas en mode debug)
+    return $mac;
+
     
 }
 

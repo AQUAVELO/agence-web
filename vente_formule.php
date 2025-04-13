@@ -75,9 +75,9 @@ function calculateMAC($fields, $key) {
 $dateCommande = date('d/m/Y:H:i:s');
 $contextCommande = base64_encode(json_encode([
     'billing' => [
-        'addressLine1' => 'Non fourni',
-        'city'         => 'Non fourni',
-        'postalCode'   => '00000',
+        'addressLine1' => 'Allée des Mimosas',
+        'city'         => 'Mandelieu',
+        'postalCode'   => '06400',
         'country'      => 'FR'
     ]
 ]));

@@ -122,6 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '<input type="hidden" name="' . $name . '" value="' . $value . '">' . "\n";
         }
         echo '<input type="submit" value="Payer maintenant">';
+
+        echo "<pre>Formulaire envoyé à Monetico :\n";
+        foreach ($fields as $name => $value) {
+            echo "$name = $value\n";
+        }
+        echo "</pre>";
+
         echo '</form>';
 
         exit;

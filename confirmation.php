@@ -1,46 +1,69 @@
+
+
 <?php
-// Configuration
-define('MONETICO_TPE', '6684349');
+// confirmation.php - Vérification du retour de paiement Monetico
+
+// Clé HEX fournie par Monetico
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 
-// Fonction pour recalculer le MAC
-function verifyMAC($post, $key) {
-    $params = [
-        'TPE', 'date', 'montant', 'reference', 'texte-libre', 'version',
-        'code-retour', 'cvx', 'vld', 'brand', 'status3ds', 'numauto',
-        'motifrefus', 'originecb', 'bincb', 'hpancb', 'ipclient', 'originetr',
-        'veres', 'pares'
-    ];
+// Récupération des données retournées par Monetico (POST recommandé)
+$tpe         = $_POST['TPE'] ?? '';
+$date        = $_POST['date'] ?? '';
+$montant     = $_POST['montant'] ?? '';
+$reference   = $_POST['reference'] ?? '';
+$texte_libre = $_POST['texte-libre'] ?? '';
+$version     = '3.0';
+$code_retour = $_POST['code-retour'] ?? '';
+$cvx         = $_POST['cvx'] ?? '';
+$vld         = $_POST['vld'] ?? '';
+$brand       = $_POST['brand'] ?? '';
+$status3ds   = $_POST['status3ds'] ?? '';
+$numauto     = $_POST['numauto'] ?? '';
+$motifrefus  = $_POST['motifrefus'] ?? '';
+$originecb   = $_POST['originecb'] ?? '';
+$bincb       = $_POST['bincb'] ?? '';
+$hpancb      = $_POST['hpancb'] ?? '';
+$ipclient    = $_POST['ipclient'] ?? '';
+$originetr   = $_POST['originetr'] ?? '';
+$veres       = $_POST['veres'] ?? '';
+$pares       = $_POST['pares'] ?? '';
+$mac         = $_POST['MAC'] ?? '';
 
-    // Préparer la chaîne à signer
-    $chaine = '';
-    foreach ($params as $param) {
-        $chaine .= (isset($post[$param]) ? $post[$param] : '') . '*';
-    }
-    $chaine = rtrim($chaine, '*');
+// Reconstitution de la chaîne selon la documentation (page 92)
+$chaine = implode('*', [
+    $tpe,
+    $date,
+    $montant,
+    $reference,
+    $texte_libre,
+    $version,
+    $code_retour,
+    $cvx,
+    $vld,
+    $brand,
+    $status3ds,
+    $numauto,
+    $motifrefus,
+    $originecb,
+    $bincb,
+    $hpancb,
+    $ipclient,
+    $originetr,
+    $veres,
+    $pares
+]) . '*';
 
-    // Calcul du MAC
-    $binaryKey = pack('H*', $key);
-    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
-}
+// Calcul du MAC localement
+$mac_calculated = strtoupper(hash_hmac('sha1', $chaine, pack('H*', MONETICO_KEY)));
 
-// Récupération des données POST
-$post = $_POST;
+// Affichage pour debug
+file_put_contents('log_confirmation.txt', "\nMAC Attendu: $mac\nMAC Calculé: $mac_calculated\nChaîne: $chaine\n", FILE_APPEND);
 
-// Vérification du MAC
-$mac_calculated = verifyMAC($post, MONETICO_KEY);
-$mac_received = $post['MAC'] ?? '';
-
-if ($mac_calculated === $mac_received) {
-    if ($post['code-retour'] === 'payetest' || $post['code-retour'] === 'paiement') {
-        echo "<h1>Paiement accepté</h1>";
-        // Vous pouvez enregistrer la commande ici
-    } else {
-        echo "<h1>Paiement refusé : " . htmlspecialchars($post['motifrefus'] ?? 'Inconnu') . "</h1>";
-    }
+if ($mac === $mac_calculated) {
+    echo "Paiement validé : commande $reference acceptée.";
+    // TODO : mettre à jour la base de données, envoyer un email, etc.
 } else {
-    echo "<h1>Signature invalide : données corrompues ou modifiées</h1>";
-    echo "<p>MAC attendu : $mac_calculated<br>MAC reçu : $mac_received</p>";
+    echo "Erreur de vérification du MAC. Paiement rejeté.";
+    // TODO : loger ou alerter l'administrateur
 }
 ?>
-

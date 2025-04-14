@@ -1,69 +1,40 @@
-
-
 <?php
 // confirmation.php - Vérification du retour de paiement Monetico
 
-// Clé HEX fournie par Monetico
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 
-// Récupération des données retournées par Monetico (POST recommandé)
-$tpe         = $_POST['TPE'] ?? '';
-$date        = $_POST['date'] ?? '';
-$montant     = $_POST['montant'] ?? '';
-$reference   = $_POST['reference'] ?? '';
-$texte_libre = $_POST['texte-libre'] ?? '';
-$version     = '3.0';
-$code_retour = $_POST['code-retour'] ?? '';
-$cvx         = $_POST['cvx'] ?? '';
-$vld         = $_POST['vld'] ?? '';
-$brand       = $_POST['brand'] ?? '';
-$status3ds   = $_POST['status3ds'] ?? '';
-$numauto     = $_POST['numauto'] ?? '';
-$motifrefus  = $_POST['motifrefus'] ?? '';
-$originecb   = $_POST['originecb'] ?? '';
-$bincb       = $_POST['bincb'] ?? '';
-$hpancb      = $_POST['hpancb'] ?? '';
-$ipclient    = $_POST['ipclient'] ?? '';
-$originetr   = $_POST['originetr'] ?? '';
-$veres       = $_POST['veres'] ?? '';
-$pares       = $_POST['pares'] ?? '';
-$mac         = $_POST['MAC'] ?? '';
+// Récupération des données POST
+$data = $_POST;
+$mac_attendu = $data['MAC'] ?? '';
 
-// Reconstitution de la chaîne selon la documentation (page 92)
-$chaine = implode('*', [
-    $tpe,
-    $date,
-    $montant,
-    $reference,
-    $texte_libre,
-    $version,
-    $code_retour,
-    $cvx,
-    $vld,
-    $brand,
-    $status3ds,
-    $numauto,
-    $motifrefus,
-    $originecb,
-    $bincb,
-    $hpancb,
-    $ipclient,
-    $originetr,
-    $veres,
-    $pares
-]) . '*';
+// Reconstruction de la chaîne à signer selon documentation (page 92)
+$champs = [
+    'TPE', 'date', 'montant', 'reference', 'texte-libre', 'version', 'code-retour',
+    'cvx', 'vld', 'brand', 'status3ds', 'numauto', 'motifrefus',
+    'originecb', 'bincb', 'hpancb', 'ipclient', 'originetr', 'veres', 'pares'
+];
 
-// Calcul du MAC localement
-$mac_calculated = strtoupper(hash_hmac('sha1', $chaine, pack('H*', MONETICO_KEY)));
+$chaine = '';
+foreach ($champs as $champ) {
+    $chaine .= ($data[$champ] ?? '') . '*';
+}
+$chaine = rtrim($chaine, '*');
 
-// Affichage pour debug
-file_put_contents('log_confirmation.txt', "\nMAC Attendu: $mac\nMAC Calculé: $mac_calculated\nChaîne: $chaine\n", FILE_APPEND);
+// Calcul du MAC
+$mac_calcule = strtoupper(hash_hmac('sha1', $chaine, pack('H*', MONETICO_KEY)));
 
-if ($mac === $mac_calculated) {
-    echo "Paiement validé : commande $reference acceptée.";
-    // TODO : mettre à jour la base de données, envoyer un email, etc.
+// Log pour debug
+file_put_contents('log_confirmation.txt', date('Y-m-d H:i:s') . "\nChaîne : $chaine\nMAC attendu : $mac_attendu\nMAC calculé : $mac_calcule\n\n", FILE_APPEND);
+
+// Vérification du MAC
+if ($mac_calcule === $mac_attendu) {
+    // MAC ok → traitement de la commande
+    // Ex : mise à jour BDD, envoi d'email, etc.
+    http_response_code(200);
+    echo "OK";
 } else {
-    echo "Erreur de vérification du MAC. Paiement rejeté.";
-    // TODO : loger ou alerter l'administrateur
+    http_response_code(200); // Toujours 200 même si erreur
+    echo "KO - MAC invalide";
 }
 ?>
+

@@ -45,7 +45,7 @@
         <p>Votre transaction n’a pas pu être finalisée.<br>
         Les informations transmises sont incomplètes ou erronées.</p>
         <p>Si besoin, vous pouvez recommencer votre réservation.</p>
-        <a href="/cryo.php">Retourner à la réservation</a>
+        <a href="/formule_vente.php">Retour à l'achat de la séance de Cryo</a>
     </div>
 </body>
 </html>

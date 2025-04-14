@@ -1,4 +1,5 @@
-<?php 
+<?php
+// Configuration de Monetico
 define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
@@ -80,13 +81,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
         file_put_contents('monetico_log.txt', print_r($fields, true));
 
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
+        echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
+        echo '<div style="margin-top:20px;">';
+        echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
+        echo '</div>';
+        echo '</div>';
+
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
             echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
         }
-        echo '<input type="submit" value="Payer maintenant">';
         echo '</form>';
-        echo '<script>document.getElementById("form-monetico").submit();</script>';
+        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
         exit;
     } else {
         $error = "Veuillez saisir une adresse email valide";
@@ -97,21 +104,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Cryolipolyse - Réservez votre séance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Séance Cryo - 60 minutes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff0f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #cc3366;
+            text-align: center;
+        }
+        .product-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            display: block;
+            border-radius: 10px;
+        }
+        .description {
+            text-align: center;
+            font-size: 1.1em;
+            margin: 20px 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #cc3366;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: block;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #b02e5c;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Séance Cryolipolyse - 60 minutes</h1>
-    <img src="images/cryo.jpg" alt="Cryolipolyse" style="width:100%;max-width:600px;">
-    <p>La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid. Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.</p>
-    <h2>Réservez votre séance à 99€</h2>
-    <?php if (isset($error)): ?>
-        <p style="color:red;"><?php echo $error; ?></p>
-    <?php endif; ?>
-    <form method="post" action="">
-        <label for="email">Votre email :</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        <button type="submit">Payer 99€ et réserver</button>
-    </form>
+    <div class="container">
+        <h1>Séance Cryo - 60 minutes</h1>
+        <img src="images/cryo.jpg" alt="Séance Cryo" class="product-image">
+        <p class="description">
+            La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
+            Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.
+        </p>
+        <?php if (isset($error)): ?>
+            <p class="error"><?php echo $error; ?></p>
+        <?php endif; ?>
+        <form method="post" action="">
+            <div class="form-group">
+                <label for="email">Votre adresse email :</label>
+                <input type="email" id="email" name="email" required placeholder="ex: votre@email.com">
+            </div>
+            <button type="submit" class="btn">Réserver et payer 99€</button>
+        </form>
+    </div>
 </body>
 </html>
 

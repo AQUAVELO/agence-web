@@ -18,8 +18,18 @@ $reference = 'CMD' . date('YmdHis') . rand(100, 999);
 
 function calculateMAC($fields, $keyHex) {
     $recognizedKeys = [
-        'TPE', 'context_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
-        'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
+        'TPE',
+        'contexte_commande',
+        'date',
+        'lgue',
+        'mail',
+        'montant',
+        'reference',
+        'societe',
+        'texte-libre',
+        'url_retour_err',
+        'url_retour_ok',
+        'version'
     ];
 
     $macFields = [];
@@ -52,7 +62,7 @@ $contextCommande = base64_encode(json_encode([
 
 $fields = [
     'TPE'               => MONETICO_TPE,
-    'context_commande' => $contextCommande,
+    'contexte_commande'=> $contextCommande,
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
@@ -118,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .product-image {
             width: 100%;
-            max-width: 250px;
+            max-width: 300px;
             margin: 0 auto;
             display: block;
             border-radius: 10px;
@@ -183,6 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
 
 
 

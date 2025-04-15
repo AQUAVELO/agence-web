@@ -58,7 +58,7 @@ function sendThankYouEmail($toEmail) {
 
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-        $mail->addAddress($toEmail);
+        $mail->addAddress('aqua.cannes@gmail.com');
         $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
 
         $mail->isHTML(true);

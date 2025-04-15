@@ -56,7 +56,7 @@ $fields = [
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
-    'texte-libre'       => $produit['description'],
+    'texte-libre'       => $produit['description'], // sera modifié plus bas avec email
     'version'           => '3.0',
     'lgue'              => 'FR',
     'societe'           => MONETICO_COMPANY,
@@ -68,8 +68,9 @@ $fields = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $fields['mail'] = $_POST['email'];
+        $fields['texte-libre'] .= ';email=' . $_POST['email'];
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
-        file_put_contents('monetico_log.txt', print_r($fields, true));
+        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
         echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
@@ -183,6 +184,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+
 
 
 

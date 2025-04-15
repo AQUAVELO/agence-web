@@ -38,6 +38,9 @@ function validateMAC($params, $keyHex) {
     return hash_equals($mac, strtoupper($_POST['MAC']));
 }
 
+
+
+
 function sendThankYouEmail($toEmail, $settings) {
     $mail = new PHPMailer(true);
     try {
@@ -71,6 +74,9 @@ function sendThankYouEmail($toEmail, $settings) {
 
 header('Content-Type: text/plain');
 
+file_put_contents('confirmation_debug.txt', "EMAIL DÉTECTÉ : " . ($_POST['email'] ?? 'non défini') . "\n", FILE_APPEND);
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['MAC']) && validateMAC($_POST, MONETICO_KEY)) {
         // Envoi d'email de remerciement
@@ -80,9 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'mjpassword' => '05906e966c8e2933b1dc8b0f8bb1e18b',
             'mjfrom' => 'jacquesverdier4@gmail.com'
         ];
-        
+       
+
         if (isset($_POST['email'])) {
-            sendThankYouEmail($_POST['email'], $settings);
+            sendThankYouEmail($_POST['aqua.cannes@gmail.com'], $settings);
         }
 
         echo "version=2\ncdr=0\n";

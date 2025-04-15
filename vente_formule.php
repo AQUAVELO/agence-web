@@ -79,10 +79,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fields['mail'] = $email;
 
         $texteLibreInfos = [
-            'email'     => $email,
-            'nom'       => $nom,
-            'prenom'    => $prenom,
-            'telephone' => $tel
+        'email'     => $email,
+        'nom'       => $nom,
+        'prenom'    => $prenom,
+        'telephone' => $tel,
+        'achat'     => $produit['description'],
+        'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');

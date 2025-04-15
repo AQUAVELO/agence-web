@@ -104,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "version=2\ncdr=1\n";
     }
 } else {
-    echo "version=2\ncdr=1\n";
+        header('Location: https://www.aquavelo.com/centres/Cannes');
+        exit;
 }
 
 

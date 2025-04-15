@@ -37,7 +37,7 @@ function validateMAC($params, $keyHex) {
 }
 
 // Envoi de l'email
-function sendThankYouEmail($toEmail, $prenom, $nom, $telephone) {
+function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();

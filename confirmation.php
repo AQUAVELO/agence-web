@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (validateMAC($_POST, MONETICO_KEY)) {
         // ✅ Récupération email : depuis POST ou fallback
-        $email = $_POST['email'] ?? 'aqua.cannes@gmail.com';
+        $email = $_POST['email'] ?? null;
         file_put_contents('confirmation_debug.txt', "Email utilisé : $email\n", FILE_APPEND);
         sendThankYouEmail($email);
 

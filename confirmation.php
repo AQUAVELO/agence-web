@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 
-// Fonction d’extraction du MAC
+// Vérification du MAC
 function validateMAC($params, $keyHex) {
     $recognizedKeys = [
         'TPE', 'contexte_commande', 'date', 'montant', 'reference', 'texte-libre', 'code-retour',
@@ -36,8 +36,8 @@ function validateMAC($params, $keyHex) {
     return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
 }
 
-// Envoi email
-function sendThankYouEmail($toEmail) {
+// Envoi de l'email
+function sendThankYouEmail($toEmail, $prenom, $nom, $telephone) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -48,36 +48,59 @@ function sendThankYouEmail($toEmail) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
+        $mail->CharSet = 'UTF-8';
         $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
         $mail->addAddress($toEmail);
-        $mail->Subject = 'Merci pour votre achat';
+        $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
+
         $mail->isHTML(true);
-        $mail->Body = "<p>Merci pour votre achat. Pour réserver votre séance de Cryo, contactez Loredana au 07 55 00 73 87 (WhatsApp).</p>";
+        $mail->Subject = 'Merci pour votre achat';
+
+        $mail->Body = "
+            <p>Bonjour <strong>$prenom $nom</strong>,</p>
+            <p>Merci pour votre achat de la séance de Cryo.</p>
+            <p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p>
+            <p><strong>Résumé de vos coordonnées :</strong><br>
+            📧 Email : $toEmail<br>
+            📱 Téléphone : $telephone</p>
+            <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
+        ";
+
+        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de la séance de Cryo.\nContactez Loredana au 07 55 00 73 87.\nEmail : $toEmail\nTéléphone : $telephone\nCordialement, Claude – AQUAVELO";
 
         $mail->send();
         file_put_contents('confirmation_debug.txt', "✅ Email envoyé à $toEmail\n", FILE_APPEND);
     } catch (Exception $e) {
-        file_put_contents('confirmation_debug.txt', "❌ Erreur envoi : " . $mail->ErrorInfo . "\n", FILE_APPEND);
+        file_put_contents('confirmation_debug.txt', "❌ Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);
     }
 }
 
-// Traitement Monetico
+// -------------------------
+// Traitement du POST
+// -------------------------
 header('Content-Type: text/plain');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    file_put_contents('confirmation_debug.txt', "Reçu POST :\n" . print_r($_POST, true), FILE_APPEND);
+    file_put_contents('confirmation_debug.txt', "POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
-        // Extraire email depuis texte-libre
-        $email = null;
-        if (isset($_POST['texte-libre']) && preg_match('/email=([\w.\-+]+@[\w.\-]+\.\w+)/', $_POST['texte-libre'], $match)) {
-            $email = $match[1];
+        // Extraction des données depuis texte-libre
+        $infos = [];
+        if (isset($_POST['texte-libre'])) {
+            parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
         }
 
+        $email     = $infos['email']     ?? null;
+        $prenom    = $infos['prenom']    ?? '';
+        $nom       = $infos['nom']       ?? '';
+        $telephone = $infos['telephone'] ?? '';
+
+        file_put_contents('confirmation_debug.txt', "Infos client :\n" . print_r($infos, true), FILE_APPEND);
+
         if ($email) {
-            sendThankYouEmail($email);
+            sendThankYouEmail($email, $prenom, $nom, $telephone);
         } else {
-            file_put_contents('confirmation_debug.txt', "❌ Email non trouvé dans texte-libre\n", FILE_APPEND);
+            file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
         echo "version=2\ncdr=0\n";

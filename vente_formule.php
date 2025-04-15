@@ -56,7 +56,7 @@ $fields = [
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
-    'texte-libre'       => $produit['description'], // sera modifié plus bas avec email
+    'texte-libre'       => $produit['description'], // sera enrichi plus bas
     'version'           => '3.0',
     'lgue'              => 'FR',
     'societe'           => MONETICO_COMPANY,
@@ -66,9 +66,27 @@ $fields = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $fields['mail'] = $_POST['email'];
-        $fields['texte-libre'] .= ';email=' . $_POST['email'];
+    $nom     = trim($_POST['nom'] ?? '');
+    $prenom  = trim($_POST['prenom'] ?? '');
+    $email   = trim($_POST['email'] ?? '');
+    $tel     = trim($_POST['telephone'] ?? '');
+
+    if (
+        $nom !== '' && $prenom !== '' &&
+        filter_var($email, FILTER_VALIDATE_EMAIL) &&
+        preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
+    ) {
+        $fields['mail'] = $email;
+
+        $texteLibreInfos = [
+            'email'     => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
+            'telephone' => $tel
+        ];
+
+        $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
+
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
         file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
@@ -87,16 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
         exit;
     } else {
-        $error = "Veuillez saisir une adresse email valide";
+        $error = "Tous les champs doivent être remplis correctement.";
     }
 }
 ?>
+
+<!-- FORMULAIRE HTML -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Séance Cryo - 60 minutes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -137,7 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        input[type="email"] {
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
@@ -164,24 +186,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Séance Cryo - 60 minutes</h1>
-        <img src="images/cryo.jpg" alt="Séance Cryo" class="product-image">
-        <p class="description">
-            La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
-            Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.
-        </p>
-        <?php if (isset($error)): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Votre adresse email :</label>
-                <input type="email" id="email" name="email" required placeholder="ex: votre@email.com">
-            </div>
-            <button type="submit" class="btn">Réserver et payer 99€</button>
-        </form>
-    </div>
+<div class="container">
+    <h1>Séance Cryo - 60 minutes</h1>
+    <img src="images/cryo.jpg" alt="Séance Cryo" class="product-image">
+    <p class="description">
+        La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
+        Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.
+    </p>
+
+    <?php if (isset($error)): ?>
+        <p class="error"><?= $error ?></p>
+    <?php endif; ?>
+
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" name="prenom" required>
+        </div>
+        <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" required>
+        </div>
+        <div class="form-group">
+            <label for="telephone">Téléphone :</label>
+            <input type="tel" id="telephone" name="telephone" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Adresse email :</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <button type="submit" class="btn">Réserver et payer 99€</button>
+    </form>
+</div>
 </body>
 </html>
 

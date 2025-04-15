@@ -1,7 +1,9 @@
 <?php
 require 'vendor/autoload.php'; // Assurez-vous que Composer a installé Mailjet
 
-use \Mailjet\Resources;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 // Configuration Mailjet
 $apiKey = 'adf33e0c77039ed69396e3a8a07400cb';

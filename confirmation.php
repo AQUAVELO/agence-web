@@ -73,8 +73,6 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
     }
 }
 
-header('Content-Type: text/plain');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents('confirmation_debug.txt', "POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
@@ -99,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        echo "version=2\ncdr=0\n";
+        header('Location: merci.php');
+        exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         echo "version=2\ncdr=1\n";

@@ -4,6 +4,8 @@ define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 
+require '_settings.php';
+
 require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

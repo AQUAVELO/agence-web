@@ -57,16 +57,16 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone) {
         $mail->Subject = 'Merci pour votre achat';
 
         $mail->Body = "
-            <p>Bonjour <strong>$prenom $nom</strong>,</p>
-            <p>Merci pour votre achat de la séance de Cryo.</p>
-            <p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p>
-            <p><strong>Résumé de vos coordonnées :</strong><br>
-            📧 Email : $toEmail<br>
-            📱 Téléphone : $telephone</p>
-            <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
+        <p>Bonjour <strong>$prenom $nom</strong>,</p>
+        <p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p>
+        <p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p>
+        <p><strong>Résumé de vos coordonnées :</strong><br>
+        📧 Email : $toEmail<br>
+        📱 Téléphone : $telephone</p>
+        <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
         ";
 
-        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de la séance de Cryo.\nContactez Loredana au 07 55 00 73 87.\nEmail : $toEmail\nTéléphone : $telephone\nCordialement, Claude – AQUAVELO";
+        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\nContactez Loredana au 07 55 00 73 87.\nEmail : $toEmail\nTéléphone : $telephone\nCordialement, Claude – AQUAVELO";
 
         $mail->send();
         file_put_contents('confirmation_debug.txt', "✅ Email envoyé à $toEmail\n", FILE_APPEND);
@@ -94,6 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prenom    = $infos['prenom']    ?? '';
         $nom       = $infos['nom']       ?? '';
         $telephone = $infos['telephone'] ?? '';
+        $achat   = $infos['achat']   ?? 'Inconnu';
+        $montant = $infos['montant'] ?? '0.00 EUR';
+
 
         file_put_contents('confirmation_debug.txt', "Infos client :\n" . print_r($infos, true), FILE_APPEND);
 

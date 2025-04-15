@@ -1,15 +1,12 @@
 <?php
-// Paramètres Monetico
-define('MONETICO_TPE', '6684349');
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
-define('MONETICO_COMPANY', 'ALESIAMINCEUR');
-
 require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Fonction de validation du MAC Monetico
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+
+// Fonction d’extraction du MAC
 function validateMAC($params, $keyHex) {
     $recognizedKeys = [
         'TPE', 'contexte_commande', 'date', 'montant', 'reference', 'texte-libre', 'code-retour',
@@ -33,21 +30,16 @@ function validateMAC($params, $keyHex) {
         }
     }
     $chaine = rtrim($chaine, '*');
-
     $binaryKey = pack('H*', $keyHex);
     $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
-
-    file_put_contents('confirmation_debug.txt', "==== APPEL CGI2 ====\n", FILE_APPEND);
-    file_put_contents('confirmation_debug.txt', "CHAINE SIGNEE:\n$chaine\nMAC attendu:\n$mac\nMAC reçu:\n" . ($params['MAC'] ?? 'NON FOURNI') . "\n\n", FILE_APPEND);
 
     return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
 }
 
-// Fonction pour envoyer un e-mail de remerciement
+// Envoi email
 function sendThankYouEmail($toEmail) {
     $mail = new PHPMailer(true);
     try {
-        // Configuration SMTP Mailjet
         $mail->isSMTP();
         $mail->Host       = 'in-v3.mailjet.com';
         $mail->SMTPAuth   = true;
@@ -56,49 +48,53 @@ function sendThankYouEmail($toEmail) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
-        $mail->CharSet = 'UTF-8';
         $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-        $mail->addAddress($toEmail); // ✅ email transmis dynamiquement
-        $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
-
-        $mail->isHTML(true);
+        $mail->addAddress($toEmail);
         $mail->Subject = 'Merci pour votre achat';
-        $mail->Body = "<p>Bonjour,</p>
-            <p>Merci pour votre achat. Pour prendre rendez-vous pour votre séance de Cryo, veuillez envoyer un message WhatsApp à Loredana au <strong>07 55 00 73 87</strong>.</p>
-            <p>Cordialement,<br>Claude de l'équipe AQUAVELO</p>";
-        $mail->AltBody = "Merci pour votre achat. Pour prendre rendez-vous pour votre séance de Cryo, envoyez un message WhatsApp à Loredana au 07 55 00 73 87. Cordialement, Claude de l'équipe AQUAVELO.";
+        $mail->isHTML(true);
+        $mail->Body = "<p>Merci pour votre achat. Pour réserver votre séance de Cryo, contactez Loredana au 07 55 00 73 87 (WhatsApp).</p>";
 
         $mail->send();
         file_put_contents('confirmation_debug.txt', "✅ Email envoyé à $toEmail\n", FILE_APPEND);
-        return true;
     } catch (Exception $e) {
-        file_put_contents('confirmation_debug.txt', "❌ Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);
-        return false;
+        file_put_contents('confirmation_debug.txt', "❌ Erreur envoi : " . $mail->ErrorInfo . "\n", FILE_APPEND);
     }
 }
 
+// Traitement Monetico
 header('Content-Type: text/plain');
 
-// Traitement de la requête POST venant de Monetico
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    file_put_contents('confirmation_debug.txt', "POST reçu à " . date('Y-m-d H:i:s') . " :\n" . print_r($_POST, true) . "\n", FILE_APPEND);
+    file_put_contents('confirmation_debug.txt', "Reçu POST :\n" . print_r($_POST, true), FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
-        // ✅ Récupération email : depuis POST ou fallback
-        $email = $_POST['email'] ?? null;
-        file_put_contents('confirmation_debug.txt', "Email utilisé : $email\n", FILE_APPEND);
-        sendThankYouEmail($email);
+        // Extraire email depuis texte-libre
+        $email = null;
+        if (isset($_POST['texte-libre']) && preg_match('/email=([\w.\-+]+@[\w.\-]+\.\w+)/', $_POST['texte-libre'], $match)) {
+            $email = $match[1];
+        }
 
-        echo "version=2\ncdr=0\n"; // OK pour Monetico
+        if ($email) {
+            sendThankYouEmail($email);
+        } else {
+            file_put_contents('confirmation_debug.txt', "❌ Email non trouvé dans texte-libre\n", FILE_APPEND);
+        }
+
+        echo "version=2\ncdr=0\n";
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         echo "version=2\ncdr=1\n";
     }
 } else {
-    file_put_contents('confirmation_debug.txt', "⚠️ Appel non POST\n", FILE_APPEND);
     echo "version=2\ncdr=1\n";
 }
-?>
+
+
+
+
+
+
+
 
 
 

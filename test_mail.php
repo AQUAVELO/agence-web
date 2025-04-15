@@ -1,49 +1,34 @@
 <?php
-require 'vendor/autoload.php'; // Assurez-vous que Composer a installé Mailjet
+require 'vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// Configuration Mailjet
-$apiKey = 'adf33e0c77039ed69396e3a8a07400cb';
-$apiSecret = '05906e966c8e2933b1dc8b0f8bb1e18b';
+$mail = new PHPMailer(true);
 
-$mj = new \Mailjet\Client($apiKey, $apiSecret, true, ['version' => 'v3.1']);
+try {
+    // Configuration du serveur SMTP de Mailjet
+    $mail->isSMTP();
+    $mail->Host       = 'in-v3.mailjet.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'adf33e0c77039ed69396e3a8a07400cb'; // Clé API publique Mailjet
+    $mail->Password   = '05906e966c8e2933b1dc8b0f8bb1e18b'; // Clé API secrète Mailjet
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
 
-$recipientEmail = "aqua.cannes@gmail.com"; // Remplacez par votre email de test
-$recipientName = "Test User"; // Nom du destinataire
+    // Paramètres de l’email
+    $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
+    $mail->addAddress('aqua.cannes@gmail.com', 'Test de réception'); // Destinataire
 
-$body = [
-    'Messages' => [
-        [
-            'From' => [
-                'Email' => "jacquesverdier4@gmail.com", // L'email de l'expéditeur
-                'Name' => "Aquavelo Natation"
-            ],
-            'To' => [
-                [
-                    'Email' => $recipientEmail,
-                    'Name' => $recipientName
-                ]
-            ],
-            'Subject' => "Test d'Email avec Mailjet",
-            'TextPart' => "Bonjour, ceci est un test d'envoi d'email avec Mailjet.",
-            'HTMLPart' => "<h3>Bonjour,</h3><p>Ceci est un test d'envoi d'email avec Mailjet.</p>"
-        ]
-    ]
-];
+    $mail->isHTML(true);
+    $mail->Subject = '✅ Test PHPMailer avec SMTP Mailjet';
+    $mail->Body    = '<h3>Ceci est un test SMTP avec PHPMailer via Mailjet</h3><p>Si vous recevez ce message, c\'est que la configuration fonctionne 🎉.</p>';
+    $mail->AltBody = 'Ceci est un test SMTP avec PHPMailer via Mailjet.';
 
-// Envoi de l'email
-$response = $mj->post(Resources::$Email, ['body' => $body]);
-
-// Vérification du succès de l'envoi
-if ($response->success()) {
-    echo "✅ Email envoyé avec succès à $recipientEmail";
-} else {
-    echo "❌ Échec de l'envoi de l'email.";
-    echo "<pre>";
-    print_r($response->getData()); // Affiche la réponse de Mailjet pour debug
-    echo "</pre>";
+    $mail->send();
+    echo '✅ Email envoyé avec succès';
+} catch (Exception $e) {
+    echo "❌ L'envoi a échoué. Erreur : {$mail->ErrorInfo}";
 }
 ?>
+

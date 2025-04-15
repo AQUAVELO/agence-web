@@ -76,9 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
-        $fields['mail'] = $email;
-
-        $texteLibreInfos = [
+       $texteLibreInfos = [
         'email'     => $email,
         'nom'       => $nom,
         'prenom'    => $prenom,
@@ -87,9 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
+        // ✅ Enrichir AVANT de calculer le MAC
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
-
+        $fields['mail'] = $email;
+        
+        // ✅ Puis calcul MAC avec champ enrichi
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
         file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';

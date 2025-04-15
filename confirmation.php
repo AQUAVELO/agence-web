@@ -58,7 +58,7 @@ function sendThankYouEmail($toEmail) {
 
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-        $mail->addAddress('aqua.cannes@gmail.com');
+        $mail->addAddress($toEmail); // ✅ email transmis dynamiquement
         $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
 
         $mail->isHTML(true);
@@ -84,13 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents('confirmation_debug.txt', "POST reçu à " . date('Y-m-d H:i:s') . " :\n" . print_r($_POST, true) . "\n", FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
-        if (isset($_POST['email'])) {
-            sendThankYouEmail($_POST['email']);
-        } else {
-            file_put_contents('confirmation_debug.txt', "⚠️ EMAIL non fourni\n", FILE_APPEND);
-        }
+        // ✅ Récupération email : depuis POST ou fallback
+        $email = $_POST['email'] ?? 'aqua.cannes@gmail.com';
+        file_put_contents('confirmation_debug.txt', "Email utilisé : $email\n", FILE_APPEND);
+        sendThankYouEmail($email);
 
-        echo "version=2\ncdr=0\n"; // Réponse attendue par Monetico
+        echo "version=2\ncdr=0\n"; // OK pour Monetico
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         echo "version=2\ncdr=1\n";
@@ -100,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "version=2\ncdr=1\n";
 }
 ?>
+
 
 
 

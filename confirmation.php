@@ -6,7 +6,6 @@ use PHPMailer\PHPMailer\Exception;
 
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 
-// Vérification du MAC
 function validateMAC($params, $keyHex) {
     $recognizedKeys = [
         'TPE', 'contexte_commande', 'date', 'montant', 'reference', 'texte-libre', 'code-retour',
@@ -36,7 +35,6 @@ function validateMAC($params, $keyHex) {
     return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
 }
 
-// Envoi de l'email
 function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant) {
     $mail = new PHPMailer(true);
     try {
@@ -75,16 +73,12 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
     }
 }
 
-// -------------------------
-// Traitement du POST
-// -------------------------
 header('Content-Type: text/plain');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents('confirmation_debug.txt', "POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
-        // Extraction des données depuis texte-libre
         $infos = [];
         if (isset($_POST['texte-libre'])) {
             parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
@@ -94,14 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prenom    = $infos['prenom']    ?? '';
         $nom       = $infos['nom']       ?? '';
         $telephone = $infos['telephone'] ?? '';
-        $achat   = $infos['achat']   ?? 'Inconnu';
-        $montant = $infos['montant'] ?? '0.00 EUR';
-
+        $achat     = $infos['achat']     ?? 'Inconnu';
+        $montant   = $infos['montant']   ?? '0.00 EUR';
 
         file_put_contents('confirmation_debug.txt', "Infos client :\n" . print_r($infos, true), FILE_APPEND);
 
         if ($email) {
-            sendThankYouEmail($email, $prenom, $nom, $telephone);
+            sendThankYouEmail($email, $prenom, $nom, $telephone, $achat, $montant);
         } else {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }

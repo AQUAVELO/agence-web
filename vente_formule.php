@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
         }
         .image-section img {
-            width: 100%;
+            width: 75%;
             border-radius: 10px;
             margin-top: 20px;
         }

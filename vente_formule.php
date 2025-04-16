@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container">
     <h1>Séance Cryo - 60 minutes</h1>
-    <img src="images/cryo.jpg" alt="Séance Cryo" class="product-image">
+    <img src="images/cryolipolyse.jpg" alt="Séance Cryo" class="product-image">
     <p class="description">
         La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
         Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.

@@ -71,7 +71,7 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
             <p><strong>Montant :</strong> $montant</p>
             <p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p>
             <p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>
-            <p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon imprimé lors de votre venue.</p>
+            <p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue.</p>
         </div>
         <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
         ";

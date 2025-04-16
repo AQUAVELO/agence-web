@@ -255,6 +255,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit">Réserver ma séance à 99€</button>
             </form>
         </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">
+            📍 <strong>AQUAVELO</strong><br>
+            <a href="https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes" target="_blank">60 avenue du Docteur Raymond Picaud à CANNES</a><br>
+            ☎️ <strong>04 93 93 05 65</strong>
+        </div>
     </div>
 </body>
 </html>

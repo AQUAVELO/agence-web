@@ -228,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Ce qu’en pensent nos clients</h2>
             <div class="avis">"Très satisfaite de ma séance, j’ai vu une vraie différence au bout de 3 semaines."<br><strong>— Julie R.</strong></div>
             <div class="avis">"Accueil chaleureux, protocole bien expliqué. Je recommande vivement."<br><strong>— Caroline B.</strong></div>
-            <div class="avis">"Top ! Le centre est propre, les machines sont modernes et efficaces."<br><strong>— Nathalie D.</strong></div>
+            <div class="avis">"Top ! Le centre est propre, l'appareil est moderne et surtout efficace."<br><strong>— Nathalie D.</strong></div>
         </div>
 
         <div class="form-section">

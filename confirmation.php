@@ -102,13 +102,15 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
         $adminMail->Body = "
             <p>Un achat vient d'être effectué :</p>
             <ul>
-                <li>Nom : <strong>$prenom $nom</strong></li>
+                <li>Nom et prénom : <strong>$nom $prenom</strong></li>
                 <li>Email : $toEmail</li>
                 <li>Téléphone : $telephone</li>
                 <li>Produit : <strong>$achat</strong></li>
                 <li>Montant : <strong>$montant</strong></li>
+                <li>Code de validation : $codeValidation</li>
                 <li>Centre : <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></li>
-                <li>Tél. du centre : 04 93 93 05 65</li>
+                <li>Tél. du centre : 04 93 93 05 65</li> 
+                
             </ul>";
         $adminMail->send();
     } catch (Exception $e) {

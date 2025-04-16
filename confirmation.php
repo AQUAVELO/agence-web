@@ -61,12 +61,50 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
         <p><strong>Résumé de vos coordonnées :</strong><br>
         📧 Email : $toEmail<br>
         📱 Téléphone : $telephone</p>
+        <p><strong>Centre :</strong><br>
+        📍 <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a><br>
+        ☎️ 04 93 93 05 65</p>
         <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
         ";
 
-        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\nContactez Loredana au 07 55 00 73 87.\nEmail : $toEmail\nTéléphone : $telephone\nCordialement, Claude – AQUAVELO";
+
+        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\n\nContactez Loredana au 07 55 00 73 87.\n\nRésumé de vos coordonnées :\nEmail : $toEmail\nTéléphone : $telephone\n\nCentre : AQUAVELO\nAdresse : 60 avenue du Docteur Raymond Picaud à CANNES\nTéléphone du centre : 04 93 93 05 65\n\nCordialement,\nClaude – Équipe AQUAVELO";
 
         $mail->send();
+
+        // Envoi d'une copie à Aqua.cannes@gmail.com
+    try {
+        $adminMail = new PHPMailer(true);
+        $adminMail->isSMTP();
+        $adminMail->Host       = 'in-v3.mailjet.com';
+        $adminMail->SMTPAuth   = true;
+        $adminMail->Username   = 'adf33e0c77039ed69396e3a8a07400cb';
+        $adminMail->Password   = '05906e966c8e2933b1dc8b0f8bb1e18b';
+        $adminMail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $adminMail->Port       = 587;
+        $adminMail->CharSet    = 'UTF-8';
+    
+        $adminMail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
+        $adminMail->addAddress('aqua.cannes@gmail.com');
+    
+        $adminMail->isHTML(true);
+        $adminMail->Subject = "Nouvel achat – $prenom $nom";
+        $adminMail->Body = "
+            <p>Un achat vient d'être effectué :</p>
+            <ul>
+                <li>Nom : <strong>$prenom $nom</strong></li>
+                <li>Email : $toEmail</li>
+                <li>Téléphone : $telephone</li>
+                <li>Produit : <strong>$achat</strong></li>
+                <li>Montant : <strong>$montant</strong></li>
+                <li>Centre : <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></li>
+                <li>Tél. du centre : 04 93 93 05 65</li>
+            </ul>";
+        $adminMail->send();
+    } catch (Exception $e) {
+        file_put_contents('confirmation_debug.txt', "❌ Erreur email staff : " . $adminMail->ErrorInfo . "\n", FILE_APPEND);
+    }
+
         file_put_contents('confirmation_debug.txt', "✅ Email envoyé à $toEmail\n", FILE_APPEND);
     } catch (Exception $e) {
         file_put_contents('confirmation_debug.txt', "❌ Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);

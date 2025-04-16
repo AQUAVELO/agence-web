@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .product-image {
             width: 100%;
-            max-width: 200px;
+            max-width: 350px;
             margin: 0 auto;
             display: block;
             border-radius: 10px;

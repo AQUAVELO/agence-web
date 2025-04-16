@@ -36,6 +36,8 @@ function validateMAC($params, $keyHex) {
 }
 
 function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant) {
+    $codeValidation = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
+
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -58,17 +60,25 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
         <p>Bonjour <strong>$prenom $nom</strong>,</p>
         <p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p>
         <p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p>
-        <p><strong>Résumé de vos coordonnées :</strong><br>
-        📧 Email : $toEmail<br>
-        📱 Téléphone : $telephone</p>
-        <p><strong>Centre :</strong><br>
-        📍 <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a><br>
-        ☎️ 04 93 93 05 65</p>
+        
+        <hr>
+        <div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'>
+            <h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation - Séance Cryo</h2>
+            <p><strong>Nom :</strong> $prenom $nom</p>
+            <p><strong>Téléphone :</strong> $telephone</p>
+            <p><strong>Email :</strong> $toEmail</p>
+            <p><strong>Offre :</strong> $achat</p>
+            <p><strong>Montant :</strong> $montant</p>
+            <p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p>
+            <p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>
+            <p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon imprimé lors de votre venue.</p>
+        </div>
         <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>
         ";
 
 
-        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\n\nContactez Loredana au 07 55 00 73 87.\n\nRésumé de vos coordonnées :\nEmail : $toEmail\nTéléphone : $telephone\n\nCentre : AQUAVELO\nAdresse : 60 avenue du Docteur Raymond Picaud à CANNES\nTéléphone du centre : 04 93 93 05 65\n\nCordialement,\nClaude – Équipe AQUAVELO";
+
+        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\n\nContactez Loredana au 07 55 00 73 87.\n\nCoordonnées :\nEmail : $toEmail\nTéléphone : $telephone\nCentre : AQUAVELO, 60 avenue du Docteur Raymond Picaud à CANNES\nCode de validation : $codeValidation\n\nVeuillez présenter ce code imprimé lors de votre venue.\n\nCordialement,\nClaude – Équipe AQUAVELO";
 
         $mail->send();
 

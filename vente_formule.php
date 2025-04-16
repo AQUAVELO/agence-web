@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #fff0f5;
+          
             text-align: center;
         }
         .product-image {

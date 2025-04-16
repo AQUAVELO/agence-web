@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2>Découvrez l'amincissement par cryolipolyse à 99€</h2>
 
         <div class="image-section">
-            <img src="cryolipolyse.jpg" alt="Séance de cryolipolyse">
+            <img src="images/cryolipolyse.jpg" alt="Séance de cryolipolyse">
         </div>
 
         <h2>Qu’est-ce que la Cryolipolyse ?</h2>

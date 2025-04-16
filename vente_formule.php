@@ -114,116 +114,148 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- FORMULAIRE HTML -->
+<?php
+// ... PHP code unchanged (see above)
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Séance Cryo - 60 minutes</title>
+    <title>Séance Découverte de Cryolipolyse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fff0f5;
+            background: #f4f8fb;
             margin: 0;
             padding: 0;
             color: #333;
         }
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
+        .section {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
-          
+        h1, h2 {
+            color: #104e8b;
             text-align: center;
         }
-        .product-image {
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
-            display: block;
-            border-radius: 10px;
-        }
-        .description {
-            text-align: center;
+        p {
             font-size: 1.1em;
-            margin: 20px 0;
         }
-        .form-group {
-            margin-bottom: 20px;
+        ul {
+            padding-left: 20px;
+        }
+        .form-section, .image-section, .avis-section {
+            margin-top: 40px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
+            margin-top: 10px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
         input[type="text"],
         input[type="email"],
         input[type="tel"] {
-            width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            margin-top: 5px;
             border-radius: 5px;
+            border: 1px solid #ccc;
         }
-        .btn {
-            background-color: #cc3366;
-            color: #fff;
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #104e8b;
+            color: white;
             border: none;
-            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            display: block;
-            width: 100%;
         }
-        .btn:hover {
-            background-color: #b02e5c;
+        button:hover {
+            background-color: #0d3e70;
         }
         .error {
             color: red;
             text-align: center;
         }
+        .image-section img {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .avis-section {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .avis {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        .avis strong {
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Séance Cryo - 60 minutes</h1>
-    <img src="images/cryolipolyse.jpg" alt="Séance Cryo" class="product-image">
-    <p class="description">
-        La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
-        Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.
-    </p>
+    <div class="section">
+        <h1>Vous souhaitez mincir ou perdre du poids ?</h1>
+        <h2>Découvrez l'amincissement par cryolipolyse à 99€</h2>
 
-    <?php if (isset($error)): ?>
-        <p class="error"><?= $error ?></p>
-    <?php endif; ?>
+        <div class="image-section">
+            <img src="https://www.institutcryo.fr/wp-content/uploads/2022/11/cryolipolyse-institut.jpg" alt="Séance de cryolipolyse">
+        </div>
 
-    <form method="post" action="">
-        <div class="form-group">
-            <label for="prenom">Prénom :</label>
-            <input type="text" id="prenom" name="prenom" required>
+        <h2>Qu’est-ce que la Cryolipolyse ?</h2>
+        <p>La Cryolipolyse est une méthode d’amincissement qui permet :</p>
+        <ul>
+            <li>De sculpter la silhouette grâce à l’application de plaques de froid</li>
+            <li>De tonifier les zones traitées</li>
+            <li>De traiter de nombreuses zones : ventre, cuisses, hanches, bras…</li>
+            <li>De réduire les cellules graisseuses de manière naturelle</li>
+        </ul>
+
+        <div class="avis-section">
+            <h2>Ce qu’en pensent nos clients</h2>
+            <div class="avis">"Très satisfaite de ma séance, j’ai vu une vraie différence au bout de 3 semaines."<br><strong>— Julie R.</strong></div>
+            <div class="avis">"Accueil chaleureux, protocole bien expliqué. Je recommande vivement."<br><strong>— Caroline B.</strong></div>
+            <div class="avis">"Top ! Le centre est propre, les machines sont modernes et efficaces."<br><strong>— Nathalie D.</strong></div>
         </div>
-        <div class="form-group">
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" name="nom" required>
+
+        <div class="form-section">
+            <h2>Réservez votre séance découverte</h2>
+            <?php if (isset($error)): ?>
+                <p class="error"><?= $error ?></p>
+            <?php endif; ?>
+            <form method="post" action="">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" required>
+
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" name="nom" required>
+
+                <label for="telephone">Téléphone *</label>
+                <input type="tel" id="telephone" name="telephone" required>
+
+                <label for="email">Adresse email *</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Réserver ma séance à 99€</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="telephone">Téléphone :</label>
-            <input type="tel" id="telephone" name="telephone" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Adresse email :</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <button type="submit" class="btn">Réserver et payer 99€</button>
-    </form>
-</div>
+    </div>
 </body>
 </html>
+
 
 
 

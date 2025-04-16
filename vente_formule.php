@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Séance Découverte de Cryolipolyse</title>
+    <title>Séance de Cryolipolyse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
     <style>
@@ -235,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-section">
-            <h2>Réservez votre séance découverte</h2>
+            <h2>Réservez votre séance de Cryolipolyse</h2>
             <?php if (isset($error)): ?>
                 <p class="error"><?= $error ?></p>
             <?php endif; ?>

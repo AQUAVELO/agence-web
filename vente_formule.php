@@ -190,6 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 75%;
             border-radius: 10px;
             margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .avis-section {
             background: #e8f0fe;

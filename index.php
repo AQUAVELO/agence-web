@@ -11,6 +11,7 @@ if ($page == 'concept') $title = 'Concept Aquavelo';
 if ($page == 'free') $title = 'Séance découverte';
 if ($page == 'partenaires') $title = 'Partenaires';
 if ($page == 'conseilminceur') $title = 'Minceur';
+if ($page == 'vente_formule') $title = 'vente_formule';
 if ($page == 'natation') $title = 'Natation | Aquavelo';
 if ($page == 'inscription_client') $title = 'Inscription Client | Aquavelo';
 if ($page == 'inscription_nageur') $title = 'Inscription Maître-Nageur | Aquavelo';

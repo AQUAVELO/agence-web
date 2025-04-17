@@ -8,8 +8,7 @@ Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
 RewriteBase /
 
-# Réécrire /vente vers vente_formule.php
-RewriteRule ^vente$ vente_formule.php [L]
+
 
 # Exclure les fichiers statiques des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -45,10 +44,7 @@ RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks
 
-# Nouvelle règle pour vente_formule
-RewriteRule ^vente_formule$ /?p=vente_formule [QSA,L]
-<IfModule mod_rewrite.c>
-Options +FollowSymlinks
+
 
 Header set Access-Control-Allow-Origin "*"
 

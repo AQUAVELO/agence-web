@@ -363,6 +363,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          <li <?php if ($page == 'natation') echo ' class="active"'; ?>>
                   <a href="/natation">-</a>
               </li>
+            <!-- Nouvel onglet vente_formule -->
+         <li <?php if ($page == 'vente_formule') echo ' class="active"'; ?>>
+                  <a href="/vente_formule">.</a>
+              </li>
             
           </ul>
                   </div>

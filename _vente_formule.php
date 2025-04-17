@@ -252,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="email">Adresse email *</label>
                 <input type="email" id="email" name="email" required>
 
-                <button type="submit">Réserver ma séance à 99€</button>
+                <button type="submit">Payer et réserver ma séance à 99€</button>
             </form>
         </div>
         <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">

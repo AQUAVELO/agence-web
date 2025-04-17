@@ -9,10 +9,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
 
     if ($nom && $prenom && $telephone && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $stmt = $database->prepare("INSERT INTO formule (nom, prenom, tel, email, vente, date) VALUES (?, ?, ?, ?, ?, NOW())");
-        $stmt->execute([$nom, $prenom, $telephone, $email, true]);
-        $successMessage = "✅ Votre réservation a bien été enregistrée. Merci !";
+        $produitNom = 'Séance Cryo';
+        $produitPrix = 99.00;
+
+        // Enregistre le client dans la base (vente = false au départ)
+        $stmt = $database->prepare("INSERT INTO formule (nom, prenom, tel, email, vente, prix, date, reference) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
+        $stmt->execute([$nom, $prenom, $telephone, $email, false, $produitPrix, $reference]);
+
+        // Redirige vers la page de paiement en générant le formulaire Monetico
+        $reference = 'CMD' . date('YmdHis') . rand(100, 999);
+        $dateCommande = date('d/m/Y:H:i:s');
+        $contexteCommande = base64_encode(json_encode([
+            'billing' => [
+                'addressLine1' => 'Allée des Mimosas',
+                'city' => 'Mandelieu',
+                'postalCode' => '06400',
+                'country' => 'FR'
+            ]
+        ], JSON_UNESCAPED_UNICODE));
+
+        $fields = [
+            'TPE'               => MONETICO_TPE,
+            'contexte_commande' => $contexteCommande,
+            'date'              => $dateCommande,
+            'montant'           => sprintf('%012.2f', $produitPrix) . 'EUR',
+            'reference'         => $reference,
+            'texte-libre'       => http_build_query([
+                'email'     => $email,
+                'nom'       => $nom,
+                'prenom'    => $prenom,
+                'telephone' => $telephone,
+                'achat'     => $produitNom,
+                'montant'   => number_format($produitPrix, 2) . ' EUR'
+            ], '', ';'),
+            'version'           => '3.0',
+            'lgue'              => 'FR',
+            'societe'           => MONETICO_COMPANY,
+            'mail'              => $email,
+            'url_retour_ok'     => MONETICO_RETURN_URL,
+            'url_retour_err'    => MONETICO_CANCEL_URL
+        ];
+
+        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
+        echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
+        echo '<div style="margin-top:20px;">';
+        echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
+        echo '</div>';
+        echo '</div>';
+
+        echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
+        foreach ($fields as $name => $value) {
+            echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
+        }
+        echo '</form>';
+        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
+        exit;
+    } else {
+        $error = "Tous les champs doivent être remplis correctement.";
     }
+}
 }
 ?>
 <!DOCTYPE html>
@@ -172,6 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
 
 
 

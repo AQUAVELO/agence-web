@@ -1,56 +1,98 @@
 <?php
-require '_settings.php'; // Inclut la connexion à la base de données ($database)
-$successMessage = null;
+// Configuration de Monetico
+define('MONETICO_TPE', '6684349');
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+define('MONETICO_COMPANY', 'ALESIAMINCEUR');
+define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
+define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
+define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
+
+$produit = [
+    'nom' => 'Séance Cryo',
+    'prix' => 99.00,
+    'devise' => 'EUR',
+    'description' => 'Cryo'
+];
+
+$reference = 'CMD' . date('YmdHis') . rand(100, 999);
+
+function calculateMAC($fields, $keyHex) {
+    $recognizedKeys = [
+        'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
+        'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
+    ];
+
+    $macFields = [];
+    foreach ($recognizedKeys as $key) {
+        $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
+    }
+
+    ksort($macFields, SORT_STRING);
+    $chaine = '';
+    foreach ($macFields as $k => $v) {
+        $chaine .= "$k=$v*";
+    }
+    $chaine = rtrim($chaine, '*');
+
+    $binaryKey = pack('H*', $keyHex);
+    $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    file_put_contents('monetico_debug.txt', "CHAINE SIGNEE:\n$chaine\n\nMAC:\n$mac\n", FILE_APPEND);
+    return $mac;
+}
+
+$dateCommande = date('d/m/Y:H:i:s');
+$contexteCommande = base64_encode(json_encode([
+    'billing' => [
+        'addressLine1' => 'Allée des Mimosas',
+        'city' => 'Mandelieu',
+        'postalCode' => '06400',
+        'country' => 'FR'
+    ]
+], JSON_UNESCAPED_UNICODE));
+
+$fields = [
+    'TPE'               => MONETICO_TPE,
+    'contexte_commande' => $contexteCommande,
+    'date'              => $dateCommande,
+    'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
+    'reference'         => $reference,
+    'texte-libre'       => $produit['description'], // sera enrichi plus bas
+    'version'           => '3.0',
+    'lgue'              => 'FR',
+    'societe'           => MONETICO_COMPANY,
+    'mail'              => '',
+    'url_retour_ok'     => MONETICO_RETURN_URL,
+    'url_retour_err'    => MONETICO_CANCEL_URL
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom = trim($_POST['nom'] ?? '');
-    $prenom = trim($_POST['prenom'] ?? '');
-    $telephone = trim($_POST['telephone'] ?? '');
-    $email = trim($_POST['email'] ?? '');
+    $nom     = trim($_POST['nom'] ?? '');
+    $prenom  = trim($_POST['prenom'] ?? '');
+    $email   = trim($_POST['email'] ?? '');
+    $tel     = trim($_POST['telephone'] ?? '');
 
-    if ($nom && $prenom && $telephone && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $produitNom = 'Séance Cryo';
-        $produitPrix = 99.00;
-
-        // Enregistre le client dans la base (vente = false au départ)
-        $stmt = $database->prepare("INSERT INTO formule (nom, prenom, tel, email, vente, prix, date, reference) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-        $stmt->execute([$nom, $prenom, $telephone, $email, false, $produitPrix, $reference]);
-
-        // Redirige vers la page de paiement en générant le formulaire Monetico
-        $reference = 'CMD' . date('YmdHis') . rand(100, 999);
-        $dateCommande = date('d/m/Y:H:i:s');
-        $contexteCommande = base64_encode(json_encode([
-            'billing' => [
-                'addressLine1' => 'Allée des Mimosas',
-                'city' => 'Mandelieu',
-                'postalCode' => '06400',
-                'country' => 'FR'
-            ]
-        ], JSON_UNESCAPED_UNICODE));
-
-        $fields = [
-            'TPE'               => MONETICO_TPE,
-            'contexte_commande' => $contexteCommande,
-            'date'              => $dateCommande,
-            'montant'           => sprintf('%012.2f', $produitPrix) . 'EUR',
-            'reference'         => $reference,
-            'texte-libre'       => http_build_query([
-                'email'     => $email,
-                'nom'       => $nom,
-                'prenom'    => $prenom,
-                'telephone' => $telephone,
-                'achat'     => $produitNom,
-                'montant'   => number_format($produitPrix, 2) . ' EUR'
-            ], '', ';'),
-            'version'           => '3.0',
-            'lgue'              => 'FR',
-            'societe'           => MONETICO_COMPANY,
-            'mail'              => $email,
-            'url_retour_ok'     => MONETICO_RETURN_URL,
-            'url_retour_err'    => MONETICO_CANCEL_URL
+    if (
+        $nom !== '' && $prenom !== '' &&
+        filter_var($email, FILTER_VALIDATE_EMAIL) &&
+        preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
+    ) {
+       $texteLibreInfos = [
+        'email'     => $email,
+        'nom'       => $nom,
+        'prenom'    => $prenom,
+        'telephone' => $tel,
+        'achat'     => $produit['description'],
+        'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
+        // ✅ Enrichir AVANT de calculer le MAC
+        $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
+        $fields['mail'] = $email;
+        
+        // ✅ Puis calcul MAC avec champ enrichi
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
+        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
         echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
@@ -70,13 +112,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
-}
+?>
+
+<?php
+// ... PHP code unchanged (see above)
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Séance Découverte de Cryolipolyse</title>
+    <title>Séance de Cryolipolyse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
     <style>
@@ -170,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h2>Découvrez l'amincissement par cryolipolyse à 99€</h2>
 
         <div class="image-section">
-            <img src="https://www.institutcryo.fr/wp-content/uploads/2022/11/cryolipolyse-institut.jpg" alt="Séance de cryolipolyse">
+            <img src="images/cryolipolyse.jpg" alt="Séance de cryolipolyse">
         </div>
 
         <h2>Qu’est-ce que la Cryolipolyse ?</h2>
@@ -186,24 +231,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h2>Ce qu’en pensent nos clients</h2>
             <div class="avis">"Très satisfaite de ma séance, j’ai vu une vraie différence au bout de 3 semaines."<br><strong>— Julie R.</strong></div>
             <div class="avis">"Accueil chaleureux, protocole bien expliqué. Je recommande vivement."<br><strong>— Caroline B.</strong></div>
-            <div class="avis">"Top ! Le centre est propre, les machines sont modernes et efficaces."<br><strong>— Nathalie D.</strong></div>
+            <div class="avis">"Top ! Le centre est propre, l'appareil est moderne et surtout efficace."<br><strong>— Nathalie D.</strong></div>
         </div>
 
         <div class="form-section">
-            <h2>Réservez votre séance découverte</h2>
+            <h2>Réservez votre séance de Cryolipolyse</h2>
             <?php if (isset($error)): ?>
                 <p class="error"><?= $error ?></p>
-            <?php endif; ?>
-            <?php if (isset($successMessage)): ?>
-                <p class="success" id="successMessage" style="text-align:center; color:green; font-weight:bold; margin-top: 10px;">
-                    <?= $successMessage ?>
-                </p>
-                <script>
-                    setTimeout(() => {
-                        const msg = document.getElementById('successMessage');
-                        if (msg) msg.style.display = 'none';
-                    }, 5000);
-                </script>
             <?php endif; ?>
             <form method="post" action="">
                 <label for="prenom">Prénom *</label>
@@ -221,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit">Réserver ma séance à 99€</button>
             </form>
         </div>
-            <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">
+        <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">
             📍 <strong>AQUAVELO</strong><br>
             <a href="https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes" target="_blank">60 avenue du Docteur Raymond Picaud à CANNES</a><br>
             ☎️ <strong>04 93 93 05 65</strong>
@@ -229,6 +263,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 

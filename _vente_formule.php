@@ -1,12 +1,11 @@
 <?php
-// Configuration de Monetico
-define('MONETICO_TPE', '6684349');
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
-define('MONETICO_COMPANY', 'ALESIAMINCEUR');
-define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
-define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
+require 'vendor/autoload.php';
+require '_settings.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Configuration Monetico
 $produit = [
     'nom' => 'Séance Cryo',
     'prix' => 99.00,
@@ -34,7 +33,7 @@ function calculateMAC($fields, $keyHex) {
     }
     $chaine = rtrim($chaine, '*');
 
-    $binaryKey = pack('H*', $keyHex);
+    $binaryKey = pack('H*', MONETICO_KEY);
     $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     file_put_contents('monetico_debug.txt', "CHAINE SIGNEE:\n$chaine\n\nMAC:\n$mac\n", FILE_APPEND);
     return $mac;
@@ -51,18 +50,18 @@ $contexteCommande = base64_encode(json_encode([
 ], JSON_UNESCAPED_UNICODE));
 
 $fields = [
-    'TPE'               => MONETICO_TPE,
+    'TPE'               => '6684349',
     'contexte_commande' => $contexteCommande,
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
-    'texte-libre'       => $produit['description'], // sera enrichi plus bas
+    'texte-libre'       => $produit['description'],
     'version'           => '3.0',
     'lgue'              => 'FR',
-    'societe'           => MONETICO_COMPANY,
+    'societe'           => 'ALESIAMINCEUR',
     'mail'              => '',
-    'url_retour_ok'     => MONETICO_RETURN_URL,
-    'url_retour_err'    => MONETICO_CANCEL_URL
+    'url_retour_ok'     => 'https://www.aquavelo.com/confirmation.php',
+    'url_retour_err'    => 'https://www.aquavelo.com/annulation.php'
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -76,21 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
-       $texteLibreInfos = [
-        'email'     => $email,
-        'nom'       => $nom,
-        'prenom'    => $prenom,
-        'telephone' => $tel,
-        'achat'     => $produit['description'],
-        'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
+        $texteLibreInfos = [
+            'email'     => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
+            'telephone' => $tel,
+            'achat'     => $produit['description'],
+            'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
-        // ✅ Enrichir AVANT de calculer le MAC
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
         $fields['mail'] = $email;
-        
-        // ✅ Puis calcul MAC avec champ enrichi
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
+        // Enregistrement en base de données
+        $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, date, reference) VALUES (?, ?, ?, ?, ?, 0, NOW(), ?)");
+        $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email, $reference]);
 
         file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
@@ -114,9 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php
-// ... PHP code unchanged (see above)
-?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

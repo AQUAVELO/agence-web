@@ -66,39 +66,39 @@ $fields = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom     = trim($_POST['nom'] ?? '');
-    $prenom  = trim($_POST['prenom'] ?? '');
-    $email   = trim($_POST['email'] ?? '');
-    $tel     = trim($_POST['telephone'] ?? '');
+    $nom = trim($_POST['nom'] ?? '');
+    $prenom = trim($_POST['prenom'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $tel = trim($_POST['telephone'] ?? '');
 
     if (
         $nom !== '' && $prenom !== '' &&
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
-       $texteLibreInfos = [
-        'email'     => $email,
-        'nom'       => $nom,
-        'prenom'    => $prenom,
-        'telephone' => $tel,
-        'achat'     => $produit['description'],
-        'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
+        try {
+            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
+            $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+        } catch (PDOException $e) {
+            file_put_contents('monetico_debug.txt', "Erreur BDD : " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+
+        $texteLibreInfos = [
+            'email' => $email,
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'telephone' => $tel,
+            'achat' => $produit['description'],
+            'montant' => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
-        // ✅ Enrichir AVANT de calculer le MAC
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
         $fields['mail'] = $email;
-        
-        // ✅ Puis calcul MAC avec champ enrichi
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
-
-        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
         echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
-        echo '<div style="margin-top:20px;">';
         echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
-        echo '</div>';
         echo '</div>';
 
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
@@ -112,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
+
 ?>
 
 <?php

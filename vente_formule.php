@@ -1,11 +1,13 @@
 <?php
+require 'settings.php';
+
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation');
-define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation');
+define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
+define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $produit = [
     'nom' => 'Séance Cryo',
@@ -56,7 +58,7 @@ $fields = [
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
-    'texte-libre'       => $produit['description'], // sera enrichi plus bas
+    'texte-libre'       => $produit['description'],
     'version'           => '3.0',
     'lgue'              => 'FR',
     'societe'           => MONETICO_COMPANY,
@@ -66,39 +68,44 @@ $fields = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom = trim($_POST['nom'] ?? '');
-    $prenom = trim($_POST['prenom'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $tel = trim($_POST['telephone'] ?? '');
+    $nom     = trim($_POST['nom'] ?? '');
+    $prenom  = trim($_POST['prenom'] ?? '');
+    $email   = trim($_POST['email'] ?? '');
+    $tel     = trim($_POST['telephone'] ?? '');
 
     if (
         $nom !== '' && $prenom !== '' &&
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
+        // Insertion dans la base de données
         try {
             $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
             $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
         } catch (PDOException $e) {
-            file_put_contents('monetico_debug.txt', "Erreur BDD : " . $e->getMessage() . "\n", FILE_APPEND);
+            file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
         }
 
         $texteLibreInfos = [
-            'email' => $email,
-            'nom' => $nom,
-            'prenom' => $prenom,
+            'email'     => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
             'telephone' => $tel,
-            'achat' => $produit['description'],
-            'montant' => number_format($produit['prix'], 2, '.', '') . $produit['devise']
+            'achat'     => $produit['description'],
+            'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
         ];
 
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
         $fields['mail'] = $email;
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
 
+        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
+
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
         echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
+        echo '<div style="margin-top:20px;">';
         echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
+        echo '</div>';
         echo '</div>';
 
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
@@ -112,8 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
-
 ?>
+
 
 <?php
 // ... PHP code unchanged (see above)

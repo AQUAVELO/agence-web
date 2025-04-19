@@ -114,6 +114,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
+        // ✅ Répond correctement à Monetico si appel CGI
+        if (php_sapi_name() !== 'cli' && empty($_SERVER['HTTP_USER_AGENT'])) {
+            echo "version=2\ncdr=0\n";
+            exit;
+        }
+
         header('Location: merci.php');
         exit;
     } else {

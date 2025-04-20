@@ -1,11 +1,14 @@
 <?php
-require 'vendor/autoload.php';
-require '_settings.php';
+require 'settings.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+// Configuration de Monetico
+define('MONETICO_TPE', '6684349');
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+define('MONETICO_COMPANY', 'AQUACANNES');
+define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
+define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
+define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
-// Configuration Monetico
 $produit = [
     'nom' => 'Séance Cryo',
     'prix' => 99.00,
@@ -33,7 +36,7 @@ function calculateMAC($fields, $keyHex) {
     }
     $chaine = rtrim($chaine, '*');
 
-    $binaryKey = pack('H*', MONETICO_KEY);
+    $binaryKey = pack('H*', $keyHex);
     $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     file_put_contents('monetico_debug.txt', "CHAINE SIGNEE:\n$chaine\n\nMAC:\n$mac\n", FILE_APPEND);
     return $mac;
@@ -50,7 +53,7 @@ $contexteCommande = base64_encode(json_encode([
 ], JSON_UNESCAPED_UNICODE));
 
 $fields = [
-    'TPE'               => '6684349',
+    'TPE'               => MONETICO_TPE,
     'contexte_commande' => $contexteCommande,
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
@@ -58,10 +61,10 @@ $fields = [
     'texte-libre'       => $produit['description'],
     'version'           => '3.0',
     'lgue'              => 'FR',
-    'societe'           => 'ALESIAMINCEUR',
+    'societe'           => MONETICO_COMPANY,
     'mail'              => '',
-    'url_retour_ok'     => 'https://www.aquavelo.com/confirmation.php',
-    'url_retour_err'    => 'https://www.aquavelo.com/annulation.php'
+    'url_retour_ok'     => MONETICO_RETURN_URL,
+    'url_retour_err'    => MONETICO_CANCEL_URL
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -75,6 +78,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
+        // Insertion dans la base de données
+        try {
+            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
+            $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+        } catch (PDOException $e) {
+            file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+
         $texteLibreInfos = [
             'email'     => $email,
             'nom'       => $nom,
@@ -87,10 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
         $fields['mail'] = $email;
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
-
-        // Enregistrement en base de données
-        $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, date, reference) VALUES (?, ?, ?, ?, ?, 0, NOW(), ?)");
-        $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email, $reference]);
 
         file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
@@ -115,6 +122,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 
+<?php
+// ... PHP code unchanged (see above)
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -261,6 +271,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,5 +1,9 @@
 <?php
+require 'vendor/autoload.php';
 require 'settings.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
@@ -78,12 +82,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
-        // Insertion dans la base de données
-        try {
-            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
-            $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
-        } catch (PDOException $e) {
-            file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
+        // Anti-double soumission : on stocke la soumission dans Redis
+        $key = 'vente_' . md5($email . $produit['description']);
+        $cacheItem = $redis->getItem($key);
+        if (!$cacheItem->isHit()) {
+            // Insertion en base de données
+            try {
+                $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
+                $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+                
+                // Enregistre en cache pour éviter double soumission pendant 10 minutes
+                $cacheItem->set(true)->expiresAfter(600);
+                $redis->save($cacheItem);
+            } catch (PDOException $e) {
+                file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
+            }
         }
 
         $texteLibreInfos = [
@@ -120,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 
 <?php

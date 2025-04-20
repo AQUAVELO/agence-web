@@ -56,7 +56,7 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 
         $mail->isHTML(true);
         $mail->Subject = 'Merci pour votre achat';
-        $mail->Body = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p><p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p><hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation - Séance Cryo</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $achat</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue.</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
+        $mail->Body = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p><p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p><hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $achat</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue.</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
 
         $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\n\nContactez Loredana au 07 55 00 73 87.\n\nCoordonnées :\nEmail : $toEmail\nTéléphone : $telephone\nCentre : AQUAVELO, 60 avenue du Docteur Raymond Picaud à CANNES\nCode de validation : $codeValidation\n\nVeuillez présenter ce code imprimé lors de votre venue.\n\nCordialement,\nClaude – Équipe AQUAVELO";
 
@@ -106,16 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($email) {
             $codeValidation = sendThankYouEmail($email, $prenom, $nom, $telephone, $achat, $montant);
-
-            // ✅ Met à jour le champ vente dans la table
             $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = :email ORDER BY id DESC LIMIT 1");
             $stmt->execute(['email' => $email]);
         } else {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        // ✅ Répond correctement à Monetico si appel CGI
-        if (php_sapi_name() !== 'cli' && empty($_SERVER['HTTP_USER_AGENT'])) {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && str_starts_with($_SERVER['HTTP_USER_AGENT'], 'InetCPT')) {
+            header('Content-Type: text/plain; charset=utf-8');
             echo "version=2\ncdr=0\n";
             exit;
         }
@@ -124,32 +122,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
+        header('Content-Type: text/plain; charset=utf-8');
         echo "version=2\ncdr=1\n";
+        exit;
     }
 } else {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

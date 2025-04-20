@@ -86,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $key = 'vente_' . md5($email . $produit['description']);
         $cacheItem = $redis->getItem($key);
         if (!$cacheItem->isHit()) {
-            // Insertion en base de données
             try {
                 $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
                 $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
-                
-                // Enregistre en cache pour éviter double soumission pendant 10 minutes
+
                 $cacheItem->set(true)->expiresAfter(600);
                 $redis->save($cacheItem);
+
+                echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
             } catch (PDOException $e) {
                 file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
             }
@@ -114,25 +114,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
-        echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
-        echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
-        echo '<div style="margin-top:20px;">';
-        echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
-        echo '</div>';
-        echo '</div>';
-
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
             echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
         }
         echo '</form>';
-        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
+        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 2000);</script>';
         exit;
     } else {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
 ?>
+
 
 
 

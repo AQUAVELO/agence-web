@@ -16,7 +16,6 @@ $settings = [];
 $settings['ttl'] = intval(getenv("REDIS_TTL"));
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
-
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
@@ -33,14 +32,20 @@ try {
     die("Couldn't connect to MySQL: " . $e->getMessage());
 }
 
-// Connexion à Redis
+// Configuration Redis (une seule fois pour tout le projet)
+CacheManager::setDefaultConfig(new Config([
+    'host' => getenv("REDIS_HOST"),
+    'port' => intval(getenv("REDIS_PORT")),
+    'password' => getenv("REDIS_PASSWORD"),
+]));
+
+// Instance Redis unique
 try {
-    $redis = CacheManager::getInstance('redis', new Config([
-        'host' => getenv("REDIS_HOST"),
-        'port' => intval(getenv("REDIS_PORT")),
-        'password' => getenv("REDIS_PASSWORD"),
-    ]));
+    if (!isset($GLOBALS['redis'])) {
+        $GLOBALS['redis'] = CacheManager::getInstance('redis');
+    }
+    $redis = $GLOBALS['redis'];
 } catch (Exception $e) {
     die("Couldn't connect to Redis: " . $e->getMessage());
 }
-?>
+

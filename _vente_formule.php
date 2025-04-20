@@ -92,12 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $cacheItem->set(true)->expiresAfter(600);
                 $redis->save($cacheItem);
-
-                echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
             } catch (PDOException $e) {
                 file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
             }
         }
+
+        // Affichage du message de remerciement dans tous les cas
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
 
         $texteLibreInfos = [
             'email'     => $email,
@@ -126,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 
 

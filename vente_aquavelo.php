@@ -25,7 +25,7 @@ $choix = $_POST['formule'] ?? '';
 $paiement10 = isset($_POST['acompte']);
 $produit = $formules[$choix] ?? ['nom' => 'Séance découverte', 'prix' => 0, 'description' => 'Offre non reconnue'];
 
-$prixFinal = $paiement10 ? round($produit['prix'], 2) : 0;
+$prixFinal = $paiement10 ? round($produit['prix'], 2) : round($produit['prix'] * 10, 2);
 
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);
 
@@ -120,35 +120,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Réservation Aquavelo</title>
+    <link href="https://www.aquavelo.com/wp-content/themes/aquavelo/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #104e8b;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background-color: #104e8b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0d3e70;
+        }
+    </style>
 </head>
 <body>
-    <h1>Réservez votre formule Aquavelo</h1>
-    <form method="post" action="">
-        <label>Prénom *</label><br>
-        <input type="text" name="prenom" required><br><br>
+    <div class="container">
+        <h1>Réservez votre formule Aquavelo</h1>
+        <form method="post" action="">
+            <label for="prenom">Prénom *</label>
+            <input type="text" name="prenom" id="prenom" required>
 
-        <label>Nom *</label><br>
-        <input type="text" name="nom" required><br><br>
+            <label for="nom">Nom *</label>
+            <input type="text" name="nom" id="nom" required>
 
-        <label>Téléphone *</label><br>
-        <input type="tel" name="telephone" required><br><br>
+            <label for="telephone">Téléphone *</label>
+            <input type="tel" name="telephone" id="telephone" required>
 
-        <label>Email *</label><br>
-        <input type="email" name="email" required><br><br>
+            <label for="email">Adresse email *</label>
+            <input type="email" name="email" id="email" required>
 
-        <label>Choisissez une formule :</label><br>
-        <select name="formule" required>
-            <option value="20_seances">20 séances à 380 €</option>
-            <option value="45_seances">45 séances - 63 € x 10 mois</option>
-            <option value="88_seances">88 séances - 79 € x 12 mois</option>
-            <option value="114_seances">114 séances - 97 € x 12 mois</option>
-            <option value="illimite">Illimité - 99 € x 12 mois</option>
-        </select><br><br>
+            <label for="formule">Choisissez une formule :</label>
+            <select name="formule" id="formule" required>
+                <option value="20_seances">20 séances à 380 €</option>
+                <option value="45_seances">45 séances - 63 € x 10 mois</option>
+                <option value="88_seances">88 séances - 79 € x 12 mois</option>
+                <option value="114_seances">114 séances - 97 € x 12 mois</option>
+                <option value="illimite">Illimité - 99 € x 12 mois</option>
+            </select>
 
-        <input type="checkbox" name="acompte" id="acompte">
-        <label for="acompte">Je souhaite régler 10% maintenant</label><br><br>
+            <input type="checkbox" name="acompte" id="acompte">
+            <label for="acompte">Je souhaite régler 10% maintenant</label>
 
-        <button type="submit">Valider la réservation</button>
-    </form>
+            <button type="submit">Valider la réservation</button>
+        </form>
+    </div>
 </body>
 </html>
+

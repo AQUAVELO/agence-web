@@ -126,10 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     ob_end_clean();
-    header('Location: https://www.aquavelo.com/centres/Cannes');
+    echo "<script>window.location.href='https://www.aquavelo.com/centres/Cannes';</script>";
     exit;
 }
-
 
 
 

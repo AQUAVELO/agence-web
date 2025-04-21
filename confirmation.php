@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require 'vendor/autoload.php';
 require 'settings.php';
 
@@ -56,9 +57,9 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 
         $mail->isHTML(true);
         $mail->Subject = 'Merci pour votre achat';
-        $mail->Body = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p><p>Veuillez fournir un RIB lors de votre première séance.</p><p>À bientôt,<br>Claude – Équipe AQUAVELO</p><hr><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>";
+        $mail->Body = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p><p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p><hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $achat</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue.</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
 
-        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\nVeuillez fournir un RIB lors de votre première séance.\nCode : $codeValidation\nCordialement, Claude – AQUAVELO";
+        $mail->AltBody = "Bonjour $prenom $nom,\nMerci pour votre achat de $achat pour $montant.\n\nContactez Loredana au 07 55 00 73 87.\n\nCoordonnées :\nEmail : $toEmail\nTéléphone : $telephone\nCentre : AQUAVELO, 60 avenue du Docteur Raymond Picaud à CANNES\nCode de validation : $codeValidation\n\nVeuillez présenter ce code imprimé lors de votre venue.\n\nCordialement,\nClaude – Équipe AQUAVELO";
 
         $mail->send();
 
@@ -77,7 +78,7 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 
         $adminMail->isHTML(true);
         $adminMail->Subject = "Nouvel achat – $prenom $nom";
-        $adminMail->Body = "<p>Un achat a été effectué :</p><ul><li>Nom : <strong>$nom $prenom</strong></li><li>Email : $toEmail</li><li>Téléphone : $telephone</li><li>Produit : <strong>$achat</strong></li><li>Montant : <strong>$montant</strong></li><li>Code : $codeValidation</li></ul>";
+        $adminMail->Body = "<p>Un achat vient d'être effectué :</p><ul><li>Nom et prénom : <strong>$nom $prenom</strong></li><li>Email : $toEmail</li><li>Téléphone : $telephone</li><li>Produit : <strong>$achat</strong></li><li>Montant : <strong>$montant</strong></li><li>Code de validation : $codeValidation</li><li>Centre : <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></li><li>Tél. du centre : 04 93 93 05 65</li></ul>";
         $adminMail->send();
 
         return $codeValidation;
@@ -87,6 +88,7 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    ob_clean();
     file_put_contents('confirmation_debug.txt', "POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
@@ -99,27 +101,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $prenom    = $infos['prenom']    ?? '';
         $nom       = $infos['nom']       ?? '';
         $telephone = $infos['telephone'] ?? '';
-        $achat     = $infos['achat']     ?? 'Formule Aquavelo';
+        $achat     = $infos['achat']     ?? 'Inconnu';
         $montant   = $infos['montant']   ?? '0.00 EUR';
 
         file_put_contents('confirmation_debug.txt', "Infos client :\n" . print_r($infos, true), FILE_APPEND);
 
         if ($email) {
             $codeValidation = sendThankYouEmail($email, $prenom, $nom, $telephone, $achat, $montant);
-
             $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = :email ORDER BY id DESC LIMIT 1");
             $stmt->execute(['email' => $email]);
         } else {
-            file_put_contents('confirmation_debug.txt', "❌ Email manquant\n", FILE_APPEND);
+            file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        if (php_sapi_name() !== 'cli' && empty($_SERVER['HTTP_USER_AGENT'])) {
-            header('Content-Type: text/plain; charset=utf-8');
-            echo "version=2\ncdr=0\n";
-            exit;
-        }
-
-        header('Location: merci.php');
+        header('Content-Type: text/plain; charset=utf-8');
+        echo "version=2\ncdr=0\n";
         exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
@@ -131,7 +127,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
-
 
 
 

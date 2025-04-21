@@ -1,4 +1,3 @@
-
 <?php
 require 'vendor/autoload.php';
 require 'settings.php';
@@ -11,15 +10,14 @@ define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'AQUACANNES');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_aquavelo.php');
+define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
-    '20'  => ['nom' => '20 séances', 'prix' => 95.00, 'description' => '20 seances'],
-    '45'  => ['nom' => '45 séances', 'prix' => 63.00, 'description' => '45 seances'],
-    '88'  => ['nom' => '88 séances', 'prix' => 79.00, 'description' => '88 seances'],
-    '114' => ['nom' => '114 séances', 'prix' => 97.00, 'description' => '114 seances'],
-    'illimite' => ['nom' => 'Illimité', 'prix' => 99.00, 'description' => 'Illimite']
+    ['nom' => 'Formule 1', 'prix' => 95.00, 'description' => 'Formule 1 - 95€'],
+    ['nom' => 'Formule 2', 'prix' => 63.00, 'description' => 'Formule 2 - 63€'],
+    ['nom' => 'Formule 3', 'prix' => 79.00, 'description' => 'Formule 3 - 79€'],
+    ['nom' => 'Formule 4', 'prix' => 97.00, 'description' => 'Formule 4 - 97€']
 ];
 
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);
@@ -61,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom  = trim($_POST['prenom'] ?? '');
     $email   = trim($_POST['email'] ?? '');
     $tel     = trim($_POST['telephone'] ?? '');
-    $choix   = $_POST['formule'] ?? '20';
+    $choix   = intval($_POST['formule'] ?? 0);
 
     if (!isset($formules[$choix])) {
         $error = "Formule invalide.";
@@ -117,13 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Formules Aquavelo</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <title>Choisissez votre formule</title>
   <style>
     body {
-      background: #f4f8fb;
       font-family: 'Segoe UI', sans-serif;
+      background: #f4f8fb;
       padding: 20px;
     }
     .container {
@@ -136,7 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     h1 {
       color: #104e8b;
-      margin-bottom: 20px;
       text-align: center;
     }
     label {
@@ -164,11 +159,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     button:hover {
       background-color: #0d3e70;
     }
-    p.italic-note {
-      font-style: italic;
-      margin-top: 10px;
-      color: #555;
-    }
   </style>
 </head>
 <body>
@@ -184,17 +174,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label>Email* <input type="email" name="email" required></label>
       <label>Formule :
         <select name="formule">
-          <?php foreach ($formules as $key => $formule): ?>
-            <option value="<?= $key ?>"><?= $formule['description'] ?></option>
+          <?php foreach ($formules as $index => $formule): ?>
+            <option value="<?= $index ?>"><?= $formule['description'] ?></option>
           <?php endforeach; ?>
         </select>
       </label>
-      <p class="italic-note">💡 Je fournis un RIB à la première séance pour les autres échéances.</p>
+      <p style="font-style: italic; color: #555;">Je fournis un RIB à la première séance pour les autres échéances.</p>
       <button type="submit">Payer le premier mois</button>
     </form>
   </div>
 </body>
 </html>
+
 
 
 

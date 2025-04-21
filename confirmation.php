@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function sendEmails($toEmail, $prenom, $nom, $telephone, $detail, $montant, $codeValidation) {
-        $customDetail = '20 séances payable en 4 x 95 €, vous avez payé la premiére échéance 95 €';
+        $customDetail = $detail;
 
         $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$customDetail</strong>.</p><p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p><p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
 
@@ -64,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Body = $messageClient . "<hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $customDetail</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue. Venez avec maillot de bain, serviette de bain, un gel douche, une bouteille d'eau, un cadenas pour les vestiaires, et des chaussures de piscine (nous vous en prêterons si vous n'en avez pas).</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
             $mail->send();
 
-            // Email admin
             $admin = new PHPMailer(true);
             $admin->isSMTP();
             $admin->Host = 'in-v3.mailjet.com';
@@ -118,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
 
 
 

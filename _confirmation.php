@@ -112,15 +112,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        if (
-            isset($_SERVER['HTTP_USER_AGENT']) &&
-            stripos($_SERVER['HTTP_USER_AGENT'], 'InetCPT') !== false
-        ) {
+        // Répondre systématiquement en texte brut pour les appels CGI, sans redirection
+        if (empty($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'InetCPT') !== false) {
             header('Content-Type: text/plain; charset=utf-8');
             echo "version=2\ncdr=0\n";
             exit;
         }
 
+        // Redirection normale pour utilisateur humain
         header('Location: merci.php');
         exit;
     } else {
@@ -133,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
 
 
 

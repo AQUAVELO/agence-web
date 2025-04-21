@@ -114,7 +114,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Formules Aquavelo</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      background: #f4f8fb;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #104e8b;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #104e8b;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0d3e70;
+    }
+    p.italic-note {
+      font-style: italic;
+      margin-top: 10px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Choisissez votre formule</h1>
+    <form method="post">
+      <label>Prénom* <input type="text" name="prenom" required></label>
+      <label>Nom* <input type="text" name="nom" required></label>
+      <label>Téléphone* <input type="tel" name="telephone" required></label>
+      <label>Email* <input type="email" name="email" required></label>
+      <label>Formule :
+        <select name="formule">
+          <?php foreach ($formules as $key => $formule): ?>
+            <option value="<?= $key ?>"><?= $formule['description'] ?></option>
+          <?php endforeach; ?>
+        </select>
+      </label>
+      <p class="italic-note">💡 Je fournis un RIB à la première séance pour les autres échéances.</p>
+      <button type="submit">Payer le premier mois</button>
+    </form>
+  </div>
+</body>
+</html>
 
 
 

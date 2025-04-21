@@ -14,7 +14,6 @@ define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_aquavelo.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
-// Formules proposées
 $formules = [
     '20'  => ['nom' => '20 séances', 'prix' => 95.00, 'description' => '20 seances'],
     '45'  => ['nom' => '45 séances', 'prix' => 63.00, 'description' => '45 seances'],
@@ -175,6 +174,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <div class="container">
     <h1>Choisissez votre formule</h1>
+    <?php if (isset($error)): ?>
+      <p style="color:red; text-align:center;"><?= $error ?></p>
+    <?php endif; ?>
     <form method="post">
       <label>Prénom* <input type="text" name="prenom" required></label>
       <label>Nom* <input type="text" name="nom" required></label>
@@ -193,7 +195,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
-
 
 
 

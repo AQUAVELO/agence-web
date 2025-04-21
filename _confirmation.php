@@ -125,10 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
-    // Ne pas rediriger, simplement terminer proprement
-    http_response_code(403);
-    echo "Accès non autorisé.";
-    ob_end_flush();
+    ob_end_clean();
+    header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
 

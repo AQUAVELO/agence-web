@@ -18,7 +18,7 @@ $formules = [
     ['nom' => 'Formule 2', 'prix' => 63.00, 'description' => 'Les 45 séances soit la séance à 14 €, payable en 10 x 63 €, je paie la premiére échéance 63 €'],
     ['nom' => 'Formule 3', 'prix' => 79.00, 'description' => 'Les 88 séances soit la séance à 11 €, payable en 12 x 79 €, je paie la premiére échéance 79 €'],
     ['nom' => 'Formule 4', 'prix' => 97.00, 'description' => 'Les 114 séances soit la séance à 10 €, payable en 12 x 97 €, je paie la premiére échéance 97 €'],
-    ['nom' => 'Formule 4', 'prix' => 99.00, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €, je paie la premiére échéance 99 €']
+    ['nom' => 'Formule 5', 'prix' => 99.00, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €, je paie la premiére échéance 99 €']
 ];
 
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);

@@ -117,14 +117,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Choisissez votre formule</title>
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f4f8fb;
       margin: 0;
       padding: 0;
+      color: #333;
     }
-    .container {
+    .section {
       max-width: 800px;
       margin: 40px auto;
       background: white;
@@ -132,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
-    h1 {
+    h1, h2 {
       color: #104e8b;
       text-align: center;
     }
@@ -161,13 +165,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     button:hover {
       background-color: #0d3e70;
     }
+    .error {
+      color: red;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <?php include 'header.php'; ?>
+  <div class="section">
     <h1>Choisissez votre formule</h1>
     <?php if (isset($error)): ?>
-      <p style="color:red; text-align:center;"><?= $error ?></p>
+      <p class="error"><?= $error ?></p>
     <?php endif; ?>
     <form method="post">
       <label>Prénom* <input type="text" name="prenom" required></label>
@@ -176,8 +185,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label>Email* <input type="email" name="email" required></label>
       <label>Formule :
         <select name="formule">
-          <?php foreach ($formules as $index => $formule): ?>
-            <option value="<?= $index ?>"><?= $formule['description'] ?></option>
+          <?php foreach (\$formules as \$index => \$formule): ?>
+            <option value="<?= \$index ?>"><?= \$formule['description'] ?></option>
           <?php endforeach; ?>
         </select>
       </label>

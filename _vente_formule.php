@@ -14,7 +14,7 @@ define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
-    ['nom' => 'Formule 1', 'prix' => 95.00, 'description' => 'Formule 1 - 95€'],
+    ['nom' => 'Formule 1', 'prix' => 95.00, 'description' => 'Les 20 séances à 380 € soit la séance à 19 €, payable en 4 x 95 €'],
     ['nom' => 'Formule 2', 'prix' => 63.00, 'description' => 'Formule 2 - 63€'],
     ['nom' => 'Formule 3', 'prix' => 79.00, 'description' => 'Formule 3 - 79€'],
     ['nom' => 'Formule 4', 'prix' => 97.00, 'description' => 'Formule 4 - 97€']
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Choisissez votre formule</title>
+  <title>Choisissez votre formule et inscrivez vous :</title>
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">

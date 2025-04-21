@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require 'vendor/autoload.php';
-
+require 'settings.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -88,6 +88,7 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    ob_clean();
     file_put_contents('confirmation_debug.txt', "POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
     if (validateMAC($_POST, MONETICO_KEY)) {
@@ -115,18 +116,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header('Content-Type: text/plain; charset=utf-8');
         echo "version=2\ncdr=0\n";
-        ob_end_flush();
         exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         header('Content-Type: text/plain; charset=utf-8');
         echo "version=2\ncdr=1\n";
-        ob_end_flush();
         exit;
     }
 } else {
-    ob_end_clean();
-    echo "<script>window.location.href='https://www.aquavelo.com/centres/Cannes';</script>";
+    header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
 

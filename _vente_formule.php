@@ -1,11 +1,17 @@
 
 <?php
+require 'vendor/autoload.php';
+require 'settings.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
+define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $produit = [
@@ -57,7 +63,7 @@ $fields = [
     'date'              => $dateCommande,
     'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
     'reference'         => $reference,
-    'texte-libre'       => $produit['description'], // sera modifié plus bas avec email
+    'texte-libre'       => $produit['description'],
     'version'           => '3.0',
     'lgue'              => 'FR',
     'societe'           => MONETICO_COMPANY,
@@ -67,124 +73,242 @@ $fields = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-        $fields['mail'] = $_POST['email'];
-        $fields['texte-libre'] .= ';email=' . $_POST['email'];
-        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
-        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
+    $nom     = trim($_POST['nom'] ?? '');
+    $prenom  = trim($_POST['prenom'] ?? '');
+    $email   = trim($_POST['email'] ?? '');
+    $tel     = trim($_POST['telephone'] ?? '');
 
-        echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
-        echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
-        echo '<div style="margin-top:20px;">';
-        echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
-        echo '</div>';
-        echo '</div>';
+    if (
+        $nom !== '' && $prenom !== '' &&
+        filter_var($email, FILTER_VALIDATE_EMAIL) &&
+        preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
+    ) {
+        // Anti-double soumission : on stocke la soumission dans Redis
+        $key = 'vente_' . md5($email . $produit['description']);
+        $cacheItem = $redis->getItem($key);
+        if (!$cacheItem->isHit()) {
+            try {
+                $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
+                $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+
+                $cacheItem->set(true)->expiresAfter(600);
+                $redis->save($cacheItem);
+            } catch (PDOException $e) {
+                file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
+            }
+        }
+
+        // Affichage du message de remerciement dans tous les cas
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
+
+        $texteLibreInfos = [
+            'email'     => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
+            'telephone' => $tel,
+            'achat'     => $produit['description'],
+            'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
+        ];
+
+        $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
+        $fields['mail'] = $email;
+        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
+        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
 
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
             echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
         }
         echo '</form>';
-        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
+        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 2000);</script>';
         exit;
     } else {
-        $error = "Veuillez saisir une adresse email valide";
+        $error = "Tous les champs doivent être remplis correctement.";
     }
 }
+?>
+
+
+
+
+
+<?php
+// ... PHP code unchanged (see above)
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <title>Séance de Cryolipolyse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Séance Cryo - 60 minutes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fff0f5;
+            background: #f4f8fb;
             margin: 0;
             padding: 0;
             color: #333;
         }
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 12px;
+        .section {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #cc3366;
+        h1, h2 {
+            color: #104e8b;
             text-align: center;
         }
-        .product-image {
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto;
-            display: block;
-            border-radius: 10px;
-        }
-        .description {
-            text-align: center;
+        p {
             font-size: 1.1em;
-            margin: 20px 0;
         }
-        .form-group {
-            margin-bottom: 20px;
+        ul {
+            padding-left: 20px;
+        }
+        .form-section, .image-section, .avis-section {
+            margin-top: 40px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
         }
         label {
-            display: block;
+            margin-top: 10px;
             font-weight: bold;
-            margin-bottom: 5px;
         }
-        input[type="email"] {
-            width: 100%;
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
             padding: 10px;
-            border: 1px solid #ccc;
+            margin-top: 5px;
             border-radius: 5px;
+            border: 1px solid #ccc;
         }
-        .btn {
-            background-color: #cc3366;
-            color: #fff;
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #104e8b;
+            color: white;
             border: none;
-            padding: 12px 20px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            display: block;
-            width: 100%;
         }
-        .btn:hover {
-            background-color: #b02e5c;
+        button:hover {
+            background-color: #0d3e70;
         }
         .error {
             color: red;
             text-align: center;
         }
+        .image-section img {
+            width: 75%;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .avis-section {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .avis {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        .avis strong {
+            display: block;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Séance Cryo - 60 minutes</h1>
-        <img src="images/cryo.jpg" alt="Séance Cryo" class="product-image">
-        <p class="description">
-            La cryolipolyse est une technique non invasive qui élimine les graisses localisées par le froid.<br>
-            Elle cible les cellules adipeuses, qui sont cristallisées puis éliminées naturellement par l'organisme.
-        </p>
-        <?php if (isset($error)): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="email">Votre adresse email :</label>
-                <input type="email" id="email" name="email" required placeholder="ex: votre@email.com">
-            </div>
-            <button type="submit" class="btn">Réserver et payer 99€</button>
-        </form>
+    <div class="section">
+        <h1>Vous souhaitez mincir ou perdre du poids ?</h1>
+        <h2>Découvrez l'amincissement par cryolipolyse à 99€</h2>
+
+        <div class="image-section">
+            <img src="images/cryolipolyse.jpg" alt="Séance de cryolipolyse">
+        </div>
+
+        <h2>Qu’est-ce que la Cryolipolyse ?</h2>
+        <p>La Cryolipolyse est une méthode d’amincissement qui permet :</p>
+        <ul>
+            <li>De sculpter la silhouette grâce à l’application de plaques de froid</li>
+            <li>De tonifier les zones traitées</li>
+            <li>De traiter de nombreuses zones : ventre, cuisses, hanches, bras…</li>
+            <li>De réduire les cellules graisseuses de manière naturelle</li>
+        </ul>
+
+        <div class="avis-section">
+            <h2>Ce qu’en pensent nos clients</h2>
+            <div class="avis">"Très satisfaite de ma séance, j’ai vu une vraie différence au bout de 3 semaines."<br><strong>— Julie R.</strong></div>
+            <div class="avis">"Accueil chaleureux, protocole bien expliqué. Je recommande vivement."<br><strong>— Caroline B.</strong></div>
+            <div class="avis">"Top ! Le centre est propre, l'appareil est moderne et surtout efficace."<br><strong>— Nathalie D.</strong></div>
+        </div>
+
+        <div class="form-section">
+            <h2>Réservez votre séance de Cryolipolyse</h2>
+            <?php if (isset($error)): ?>
+                <p class="error"><?= $error ?></p>
+            <?php endif; ?>
+            <form method="post" action="">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" required>
+
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" name="nom" required>
+
+                <label for="telephone">Téléphone *</label>
+                <input type="tel" id="telephone" name="telephone" required>
+
+                <label for="email">Adresse email *</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Réserver ma séance à 99€</button>
+            </form>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">
+            📍 <strong>AQUAVELO</strong><br>
+            <a href="https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes" target="_blank">60 avenue du Docteur Raymond Picaud à CANNES</a><br>
+            ☎️ <strong>04 93 93 05 65</strong>
+        </div>
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

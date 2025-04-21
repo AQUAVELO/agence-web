@@ -172,7 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </style>
 </head>
 <body>
-  <?php include 'header.php'; ?>
   <div class="section">
     <h1>Choisissez votre formule</h1>
     <?php if (isset($error)): ?>

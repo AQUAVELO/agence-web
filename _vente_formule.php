@@ -115,16 +115,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Choisissez votre formule</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f4f8fb;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
     }
     .container {
-      max-width: 700px;
-      margin: auto;
+      max-width: 800px;
+      margin: 40px auto;
       background: white;
       padding: 30px;
       border-radius: 12px;
@@ -185,6 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
+
 
 
 

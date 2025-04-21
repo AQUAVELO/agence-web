@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require 'vendor/autoload.php';
 require 'settings.php';
 
@@ -112,26 +113,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        // Répondre systématiquement en texte brut pour les appels CGI, sans redirection
         if (empty($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'InetCPT') !== false) {
             header('Content-Type: text/plain; charset=utf-8');
             echo "version=2\ncdr=0\n";
+            file_put_contents('confirmation_output.txt', ob_get_clean());
             exit;
         }
 
-        // Redirection normale pour utilisateur humain
-        header('Location: merci.php');
+        file_put_contents('confirmation_output.txt', ob_get_clean());
         exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         header('Content-Type: text/plain; charset=utf-8');
         echo "version=2\ncdr=1\n";
+        file_put_contents('confirmation_output.txt', ob_get_clean());
         exit;
     }
 } else {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
+
 
 
 

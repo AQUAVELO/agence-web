@@ -93,12 +93,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telephone = $infos['telephone'] ?? '';
         $achat     = $infos['achat']     ?? '';
         $montant   = $infos['montant']   ?? '';
+        $detail    = $infos['detail']    ?? $achat;
 
         if ($email) {
-            $stmt = $conn->prepare("SELECT detail FROM formule WHERE email = :email ORDER BY id DESC LIMIT 1");
-            $stmt->execute(['email' => $email]);
-            $detail = $stmt->fetchColumn() ?: $achat;
-
             $codeValidation = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
             sendEmails($email, $prenom, $nom, $telephone, $detail, $montant, $codeValidation);
 
@@ -118,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
 
 
 

@@ -43,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $isFormule1 = stripos($detail, '20 s') !== false;
 
         $customDetail = $isFormule1
-            ? '20 séances payable en 4 x 95 €'
+            ? '20 séances payable en 4 x 95 €, vous avez payé la premiére échéance 95 €'
             : $detail;
 
         $messageClient = $isFormule1
             ? "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$customDetail</strong>.</p><p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p><p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>"
-           
+            : "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$customDetail</strong> pour un montant de <strong>$montant</strong>.</p><p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p>";
+
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
@@ -123,7 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
-
 
 
 

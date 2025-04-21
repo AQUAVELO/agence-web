@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $detail = $produit['description'];
         $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
         $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email, $detail]);
-
+        
         $texteLibreInfos = [
             'email'     => $email,
             'nom'       => $nom,
@@ -83,14 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'achat'     => $produit['description'],
             'montant'   => number_format($produit['prix'], 2, '.', '') . 'EUR'
         ];
-
+        
         $fields = [
             'TPE'               => MONETICO_TPE,
             'contexte_commande' => $contexteCommande,
             'date'              => $dateCommande,
             'montant'           => sprintf('%012.2f', $produit['prix']) . 'EUR',
             'reference'         => $reference,
-            'texte-libre'       => $produit['description'] . ';' . http_build_query($texteLibreInfos, '', ';'),
+            'texte-libre'       => http_build_query(array_merge(['detail' => $detail], $texteLibreInfos), '', ';'),
             'version'           => '3.0',
             'lgue'              => 'FR',
             'societe'           => MONETICO_COMPANY,
@@ -98,6 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'url_retour_ok'     => MONETICO_RETURN_URL,
             'url_retour_err'    => MONETICO_CANCEL_URL
         ];
+
+
+       
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
 
         echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';

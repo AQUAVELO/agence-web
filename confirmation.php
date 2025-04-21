@@ -42,8 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     function sendEmails($toEmail, $prenom, $nom, $telephone, $detail, $montant, $codeValidation) {
         $parts = explode('.', $detail);
         $description = trim($parts[0]);
+        $descriptionSansLes = preg_replace('/^\s*(Les|les)\s+/u', '', $description);
 
-        $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$description</strong>.</p><p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p><p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
+        $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$descriptionSansLes</strong>.</p><p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p><p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
 
         $mail = new PHPMailer(true);
         try {
@@ -118,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
 
 
 

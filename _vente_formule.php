@@ -71,8 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ) {
         $produit = $formules[$choix];
 
-        $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
-        $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+        $detail = $produit['description'];
+        $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
+        $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email, $detail]);
 
         $texteLibreInfos = [
             'email'     => $email,

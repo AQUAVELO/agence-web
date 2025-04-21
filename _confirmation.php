@@ -1,7 +1,7 @@
 <?php
 ob_start();
 require 'vendor/autoload.php';
-require 'settings.php';
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

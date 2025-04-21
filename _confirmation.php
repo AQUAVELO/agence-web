@@ -113,26 +113,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents('confirmation_debug.txt', "❌ Email manquant, pas d'envoi\n", FILE_APPEND);
         }
 
-        if (empty($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'InetCPT') !== false) {
-            header('Content-Type: text/plain; charset=utf-8');
-            echo "version=2\ncdr=0\n";
-            file_put_contents('confirmation_output.txt', ob_get_clean());
-            exit;
-        }
-
-        file_put_contents('confirmation_output.txt', ob_get_clean());
+        header('Content-Type: text/plain; charset=utf-8');
+        echo "version=2\ncdr=0\n";
+        ob_end_flush();
         exit;
     } else {
         file_put_contents('confirmation_debug.txt', "❌ MAC invalide\n", FILE_APPEND);
         header('Content-Type: text/plain; charset=utf-8');
         echo "version=2\ncdr=1\n";
-        file_put_contents('confirmation_output.txt', ob_get_clean());
+        ob_end_flush();
         exit;
     }
 } else {
-    header('Location: https://www.aquavelo.com/centres/Cannes');
+    // Ne pas rediriger, simplement terminer proprement
+    http_response_code(403);
+    echo "Accès non autorisé.";
+    ob_end_flush();
     exit;
 }
+
 
 
 

@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <div class="section">
-    <h1>Choisissez votre formule et inscrivez vous :</h1>
+    <h1>Choisissez votre formule et inscrivez vous</h1>
     <?php if (isset($error)): ?>
       <p class="error"><?= $error ?></p>
     <?php endif; ?>

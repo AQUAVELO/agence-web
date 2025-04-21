@@ -185,8 +185,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label>Email* <input type="email" name="email" required></label>
       <label>Formule :
         <select name="formule">
-          <?php foreach (\$formules as \$index => \$formule): ?>
-            <option value="<?= \$index ?>"><?= \$formule['description'] ?></option>
+          <?php foreach ($formules as $index => $formule): ?>
+            <option value="<?= $index ?>"><?= $formule['description'] ?></option>
           <?php endforeach; ?>
         </select>
       </label>
@@ -196,6 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
+
 
 
 

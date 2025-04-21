@@ -63,6 +63,7 @@ try {
                 <th>Téléphone</th>
                 <th>Email</th>
                 <th>Prix</th>
+                <th>Détail</th>
                 <th>Date</th>
                 <th>Vente</th>
             </tr>
@@ -76,6 +77,7 @@ try {
                     <td><?= htmlspecialchars($f['tel']) ?></td>
                     <td><?= htmlspecialchars($f['email']) ?></td>
                     <td><?= number_format($f['prix'], 2, ',', ' ') ?> €</td>
+                    <td><?= htmlspecialchars($f['detail']) ?></td>
                     <td><?= date('d/m/Y H:i', strtotime($f['date'])) ?></td>
                     <td class="<?= $f['vente'] ? 'ok' : 'enattente' ?>">
                         <?= $f['vente'] ? '✅ Payé' : '⏳ En attente' ?>

@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->isHTML(true);
             $mail->Subject = 'Merci pour votre achat';
-            $mail->Body = $messageClient . "<hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $detail</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue. Venez avec maillot de bain, serviette de bain, un gel douche, une bouteille d'eau, un cadenas pour les vestiaires, et des chaussures de piscine (nous vous en prêterons si vous n'en avez pas).</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
+            $mail->Body = $messageClient . "<hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $descriptionSansLes</p><p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue. Venez avec maillot de bain, serviette de bain, un gel douche, une bouteille d'eau, un cadenas pour les vestiaires, et des chaussures de piscine (nous vous en prêterons si vous n'en avez pas).</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
             $mail->send();
 
             $admin = new PHPMailer(true);
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $admin->addAddress('aqua.cannes@gmail.com');
             $admin->isHTML(true);
             $admin->Subject = "Nouvel achat – $prenom $nom";
-            $admin->Body = "<p>Achat effectué :</p><ul><li>Nom et prénom : $nom $prenom</li><li>Email : $toEmail</li><li>Téléphone : $telephone</li><li>Détail : $detail</li><li>Montant : $montant</li><li>Code : $codeValidation</li></ul>";
+            $admin->Body = "<p>Achat effectué :</p><ul><li>Nom et prénom : $nom $prenom</li><li>Email : $toEmail</li><li>Téléphone : $telephone</li><li>Détail : $descriptionSansLes</li><li>Montant : $montant</li><li>Code : $codeValidation</li></ul>";
             $admin->send();
 
         } catch (Exception $e) {

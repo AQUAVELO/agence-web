@@ -14,10 +14,10 @@ define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
-    ['nom' => 'Formule 1', 'prix' => 99.00, 'description' => 'Les 25 séances soit la séance à 16 €, payable en 4 x 99 €. Je paie la première échéance 99 €.'],
-    ['nom' => 'Formule 2', 'prix' => 58.50, 'description' => 'Les 40 séances soit la séance à 14 €, payable en 10 x 58,5 €. Je paie la première échéance 58,5 €.'],
-    ['nom' => 'Formule 3', 'prix' => 75.00, 'description' => 'Les 80 séances soit la séance à 11 €, payable en 12 x 75 €. Je paie la première échéance 75 €.'],
-    ['nom' => 'Formule 4', 'prix' => 89.10, 'description' => 'Les 104 séances soit la séance à 10 €, payable en 12 x 89,1 €. Je paie la première échéance 89,1 €.'],
+    ['nom' => 'Formule 1', 'prix' => 99.00, 'description' => 'Les 25 séances payable en 4 x 99 € soit la séance à 16 €. Je paie la première échéance 99 €.'],
+    ['nom' => 'Formule 2', 'prix' => 58.50, 'description' => 'Les 40 séances payable en 10 x 58,5 € soit la séance à 14 €. Je paie la première échéance 58,5 €.'],
+    ['nom' => 'Formule 3', 'prix' => 75.00, 'description' => 'Les 80 séances payable en 12 x 75 € soit la séance à 11 €. Je paie la première échéance 75 €.'],
+    ['nom' => 'Formule 4', 'prix' => 89.10, 'description' => 'Les 104 séances payable en 12 x 89,1 € soit la séance à 10 €. Je paie la première échéance 89,1 €.'],
     ['nom' => 'Formule 5', 'prix' => 99.00, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €. Je paie la première échéance 99 €.']
 ];
 
@@ -184,7 +184,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
   <div class="section">
     <!-- Image harmonieuse en-tête -->
-    <img src="/aquavelo/images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
+    <img src="/images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
     <h1>Choisissez votre formule et inscrivez-vous</h1>
     <?php if (isset($error)): ?>
       <p class="error"><?= $error ?></p>

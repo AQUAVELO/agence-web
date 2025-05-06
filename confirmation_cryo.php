@@ -54,13 +54,6 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
         $mail->addAddress($toEmail);
         $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
 
-        $prenom = htmlspecialchars($prenom);
-        $nom = htmlspecialchars($nom);
-        $achat = htmlspecialchars($achat);
-        $telephone = htmlspecialchars($telephone);
-        $toEmail = htmlspecialchars($toEmail);
-        $montant = htmlspecialchars($montant);
-
         $mail->isHTML(true);
         $mail->Subject = 'Merci pour votre achat';
         $mail->Body = "<p>Bonjour <strong>$prenom $nom</strong>,</p><p>Merci pour votre achat de <strong>$achat</strong> pour un montant de <strong>$montant</strong>.</p><p>Pour prendre rendez-vous, veuillez envoyer un message WhatsApp à <strong>Loredana</strong> au <strong>07 55 00 73 87</strong>.</p><hr><div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'><h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation - Séance Cryo</h2><p><strong>Nom :</strong> $prenom $nom</p><p><strong>Téléphone :</strong> $telephone</p><p><strong>Email :</strong> $toEmail</p><p><strong>Offre :</strong> $achat</p><p><strong>Montant :</strong> $montant</p><p><strong>Centre :</strong> AQUAVELO - <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></p><p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p><p style='text-align:center; margin-top:15px;'>📍 Veuillez présenter ce bon lors de votre venue.</p></div><p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
@@ -69,44 +62,44 @@ function sendThankYouEmail($toEmail, $prenom, $nom, $telephone, $achat, $montant
 
         $mail->send();
 
-        // Envoi admin
+        // Mail admin
         $adminMail = clone $mail;
         $adminMail->clearAddresses();
         $adminMail->addAddress('aqua.cannes@gmail.com');
-
         $adminMail->Subject = "Nouvel achat – $prenom $nom";
         $adminMail->Body = "<p>Un achat vient d'être effectué :</p><ul><li>Nom et prénom : <strong>$nom $prenom</strong></li><li>Email : $toEmail</li><li>Téléphone : $telephone</li><li>Produit : <strong>$achat</strong></li><li>Montant : <strong>$montant</strong></li><li>Code de validation : $codeValidation</li><li>Centre : <a href='https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes' target='_blank'>60 avenue du Docteur Raymond Picaud à CANNES</a></li><li>Tél. du centre : 04 93 93 05 65</li></ul>";
         $adminMail->send();
 
         return $codeValidation;
     } catch (Exception $e) {
-        file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] ❌ Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);
+        file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] ❌ Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
+    file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] POST reçu :\n" . print_r($_POST, true), FILE_APPEND);
 
     try {
+        if (!isset($_POST['MAC'])) {
+            throw new Exception("MAC non fourni.");
+        }
+
         if (validateMAC($_POST, MONETICO_KEY)) {
-            $infos = [];
-            if (isset($_POST['texte-libre'])) {
-                parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
-            }
+            parse_str(str_replace(';', '&', $_POST['texte-libre'] ?? ''), $infos);
 
-            $email     = $infos['email']     ?? null;
-            $prenom    = $infos['prenom']    ?? '';
-            $nom       = $infos['nom']       ?? '';
-            $telephone = $infos['telephone'] ?? '';
-            $achat     = $infos['achat']     ?? 'Inconnu';
-            $montant   = $infos['montant']   ?? '0.00 EUR';
+            $email     = trim($infos['email']     ?? '');
+            $prenom    = trim($infos['prenom']    ?? '');
+            $nom       = trim($infos['nom']       ?? '');
+            $telephone = trim($infos['telephone'] ?? '');
+            $achat     = trim($infos['achat']     ?? 'Inconnu');
+            $montant   = trim($infos['montant']   ?? ($_POST['montant'] ?? '0.00 EUR'));
 
-            file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] Infos client :\n" . print_r($infos, true), FILE_APPEND);
+            file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] Infos client :\n" . print_r($infos, true), FILE_APPEND);
 
-            if ($email) {
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $codeValidation = sendThankYouEmail($email, $prenom, $nom, $telephone, $achat, $montant);
 
-                // ✅ Mise à jour de la vente
+                // Mise à jour de la vente
                 $stmt = $conn->prepare("
                     UPDATE formule 
                     SET vente = 1 
@@ -118,23 +111,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ");
                 $stmt->execute(['email' => $email]);
             } else {
-                file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] ❌ Email manquant, pas d'envoi\n", FILE_APPEND);
+                file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] ❌ Email invalide ou manquant\n", FILE_APPEND);
             }
 
-            // ✅ Répond correctement à Monetico si appel CGI
-            if (php_sapi_name() !== 'cli' && empty($_SERVER['HTTP_USER_AGENT'])) {
+            // Réponse pour appel CGI
+            if (empty($_SERVER['HTTP_USER_AGENT'])) {
+                header("Content-Type: text/plain");
                 echo "version=2\ncdr=0\n";
                 exit;
             }
 
+            // Sinon redirection
             header('Location: merci.php');
             exit;
         } else {
-            file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] ❌ MAC invalide\n", FILE_APPEND);
+            file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] ❌ MAC invalide\n", FILE_APPEND);
+            header("Content-Type: text/plain");
             echo "version=2\ncdr=1\n";
         }
     } catch (Exception $e) {
-        file_put_contents('confirmation_debug.txt', "[".date('Y-m-d H:i:s')."] ❌ Exception générale : " . $e->getMessage() . "\n", FILE_APPEND);
+        file_put_contents('confirmation_debug.txt', "[" . date('Y-m-d H:i:s') . "] ❌ Exception : " . $e->getMessage() . "\n", FILE_APPEND);
+        header("Content-Type: text/plain");
         echo "version=2\ncdr=1\n";
     }
 } else {
@@ -142,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
 
 
 

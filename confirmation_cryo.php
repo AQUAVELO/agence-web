@@ -131,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    // Extraction infos depuis texte-libre
     parse_str(str_replace(';','&', $_POST['texte-libre'] ?? ''), $infos);
     $email     = trim($infos['email']     ?? '');
     $prenom    = trim($infos['prenom']    ?? '');
@@ -159,6 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['email' => $email]);
     }
 
+    // Réponse pour CGI2
     if (empty($_SERVER['HTTP_USER_AGENT'])) {
         header('Content-Type: text/plain');
         echo "version=2\ncdr=0\n"; // OK
@@ -170,8 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 header('Location: https://www.aquavelo.com/centres/Cannes');
 exit;
-
-
 
 
 

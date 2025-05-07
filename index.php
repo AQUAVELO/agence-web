@@ -12,6 +12,7 @@ if ($page == 'free') $title = 'Séance découverte';
 if ($page == 'partenaires') $title = 'Partenaires';
 if ($page == 'conseilminceur') $title = 'Minceur';
 if ($page == 'vente_formule') $title = 'vente_formule';
+if ($page == 'vente_cryo') $title = 'vente_cryo';
 if ($page == 'confirmation') $title = 'confirmation';
 if ($page == 'natation') $title = 'Natation | Aquavelo';
 if ($page == 'inscription_client') $title = 'Inscription Client | Aquavelo';

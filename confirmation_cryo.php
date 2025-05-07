@@ -6,6 +6,8 @@ require 'settings.php';  // MONETICO_KEY + $conn
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+
 function validateMAC(array $params, string $keyHex): bool {
     $recognizedKeys = [
         'TPE','contexte_commande','date','montant','reference','texte-libre',

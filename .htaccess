@@ -80,10 +80,12 @@ RewriteRule ^mentions-legales$ /?p=mentions [QSA,L]
 RewriteRule ^facebook$ http://www.facebook.com/pages/aquavelo/number?fref=ts [QSA,L]
 RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
 RewriteRule ^vente_formule$ /?p=vente_formule [QSA,L]
+RewriteRule ^vente_cryo$ /?p=vente_cryo [QSA,L]
 RewriteRule ^confirmation$ /?p=confirmation [QSA,L]
 RewriteRule ^natation$ /?p=natation [QSA,L]
 RewriteRule ^inscription_client$ /?p=inscription_client [QSA,L]
 RewriteRule ^inscription_nageur$ /?p=inscription_nageur [QSA,L]
+
 RewriteRule ^traitement_nageur.php$ /traitement_nageur.php [QSA,L]
 
 

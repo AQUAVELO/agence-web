@@ -1,8 +1,7 @@
 <?php
-// vente_cryo.php
-// Page de préparation et redirection vers Monetico
+require 'settings.php';
 
-require 'settings.php';    // Définissez ici :
+// Configuration de Monetico
 define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
 define('MONETICO_COMPANY', 'ALESIAMINCEUR');
@@ -10,100 +9,266 @@ define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_cryo.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_cryo.php');
 
+$produit = [
+    'nom' => 'Séance Cryo',
+    'prix' => 99.00,
+    'devise' => 'EUR',
+    'description' => 'Cryo'
+];
 
-// Si on arrive en POST, on prépare le paiement
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1) Récupération et validation des données client
-    $email     = filter_input(INPUT_POST, 'email',     FILTER_VALIDATE_EMAIL);
-    $prenom    = filter_input(INPUT_POST, 'prenom',    FILTER_SANITIZE_STRING);
-    $nom       = filter_input(INPUT_POST, 'nom',       FILTER_SANITIZE_STRING);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_STRING);
-    $achat     = filter_input(INPUT_POST, 'achat',     FILTER_SANITIZE_STRING);
-    $montant   = filter_input(INPUT_POST, 'montant',   FILTER_SANITIZE_STRING); 
-    if (!$email || !$prenom || !$nom || !$achat || !$montant) {
-        die("Données incomplètes ou invalides.");
-    }
+$reference = 'CMD' . date('YmdHis') . rand(100, 999);
 
-    // 2) Génération d’une référence unique
-    $reference = $TPE . date('YmdHis') . rand(1000,9999);
-
-    // 3) Construction de texte-libre (séparateur ;)
-    $texteLibre = http_build_query([
-        'email'     => $email,
-        'prenom'    => $prenom,
-        'nom'       => $nom,
-        'telephone' => $telephone,
-        'achat'     => $achat,
-        'montant'   => $montant
-    ], '', ';');
-
-    // 4) Paramètres Monetico
-    $params = [
-        'TPE'            => $TPE,
-        'date'           => date('d/m/Y:H:i:s'),
-        'montant'        => $montant,
-        'reference'      => $reference,
-        'texte-libre'    => $texteLibre,
-        'version'        => '2',
-        'url_retour'     => $url_retour,
-        'url_retour_ok'  => $url_retour_ok,
-        'url_retour_err' => $url_retour_err,
+function calculateMAC($fields, $keyHex) {
+    $recognizedKeys = [
+        'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
+        'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
     ];
 
-    // 5) Calcul du MAC HMAC-SHA1
-    ksort($params, SORT_STRING);
-    $data = '';
-    foreach ($params as $k => $v) {
-        $data .= "$k=$v*";
+    $macFields = [];
+    foreach ($recognizedKeys as $key) {
+        $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
     }
-    $data = rtrim($data, '*');
-    $MAC = strtoupper(hash_hmac('sha1', $data, pack('H*', MONETICO_KEY)));
 
-    // 6) Redirection automatique vers Monetico
-    ?>
-    <!DOCTYPE html>
-    <html>
-    <head><meta charset="UTF-8"><title>Redirection paiement</title></head>
-    <body onload="document.forms['monetico'].submit();">
-      <form name="monetico" method="post" action="https://p.monetico-services.com/test/paiement.cgi">
-        <?php foreach ($params as $k => $v): ?>
-          <input type="hidden" name="<?php echo htmlspecialchars($k) ?>"
-                 value="<?php echo htmlspecialchars($v) ?>">
-        <?php endforeach; ?>
-        <input type="hidden" name="MAC" value="<?php echo $MAC ?>">
-        <noscript>
-          <p>Veuillez cliquer sur le bouton ci-dessous pour payer :</p>
-          <button type="submit">Payer <?php echo htmlspecialchars($montant) ?></button>
-        </noscript>
-      </form>
-    </body>
-    </html>
-    <?php
-    exit;
+    ksort($macFields, SORT_STRING);
+    $chaine = '';
+    foreach ($macFields as $k => $v) {
+        $chaine .= "$k=$v*";
+    }
+    $chaine = rtrim($chaine, '*');
+
+    $binaryKey = pack('H*', $keyHex);
+    $mac = strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
+    file_put_contents('monetico_debug.txt', "CHAINE SIGNEE:\n$chaine\n\nMAC:\n$mac\n", FILE_APPEND);
+    return $mac;
 }
 
-// Si on arrive en GET, on affiche le formulaire de collecte
+$dateCommande = date('d/m/Y:H:i:s');
+$contexteCommande = base64_encode(json_encode([
+    'billing' => [
+        'addressLine1' => 'Allée des Mimosas',
+        'city' => 'Mandelieu',
+        'postalCode' => '06400',
+        'country' => 'FR'
+    ]
+], JSON_UNESCAPED_UNICODE));
+
+$fields = [
+    'TPE'               => MONETICO_TPE,
+    'contexte_commande' => $contexteCommande,
+    'date'              => $dateCommande,
+    'montant'           => sprintf('%012.2f', $produit['prix']) . $produit['devise'],
+    'reference'         => $reference,
+    'texte-libre'       => $produit['description'],
+    'version'           => '3.0',
+    'lgue'              => 'FR',
+    'societe'           => MONETICO_COMPANY,
+    'mail'              => '',
+    'url_retour_ok'     => MONETICO_RETURN_URL,
+    'url_retour_err'    => MONETICO_CANCEL_URL
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nom     = trim($_POST['nom'] ?? '');
+    $prenom  = trim($_POST['prenom'] ?? '');
+    $email   = trim($_POST['email'] ?? '');
+    $tel     = trim($_POST['telephone'] ?? '');
+
+    if (
+        $nom !== '' && $prenom !== '' &&
+        filter_var($email, FILTER_VALIDATE_EMAIL) &&
+        preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
+    ) {
+        // Insertion dans la base de données
+        try {
+            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente) VALUES (?, ?, ?, ?, ?, 0)");
+            $stmt->execute([$nom, $prenom, $tel, $produit['prix'], $email]);
+        } catch (PDOException $e) {
+            file_put_contents('monetico_debug.txt', "Erreur DB : " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+
+        $texteLibreInfos = [
+            'email'     => $email,
+            'nom'       => $nom,
+            'prenom'    => $prenom,
+            'telephone' => $tel,
+            'achat'     => $produit['description'],
+            'montant'   => number_format($produit['prix'], 2, '.', '') . $produit['devise']
+        ];
+
+        $fields['texte-libre'] .= ';' . http_build_query($texteLibreInfos, '', ';');
+        $fields['mail'] = $email;
+        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+
+        file_put_contents('monetico_log.txt', print_r($fields, true), FILE_APPEND);
+
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:50px;">';
+        echo '<p style="font-size:1.2em; color:#cc3366;">Chargement en cours... Merci de patienter.</p>';
+        echo '<div style="margin-top:20px;">';
+        echo '<img src="https://i.gifer.com/YCZH.gif" alt="Chargement" width="50" height="50">';
+        echo '</div>';
+        echo '</div>';
+
+        echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
+        foreach ($fields as $name => $value) {
+            echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
+        }
+        echo '</form>';
+        echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 1000);</script>';
+        exit;
+    } else {
+        $error = "Tous les champs doivent être remplis correctement.";
+    }
+}
+?>
+
+
+<?php
+// ... PHP code unchanged (see above)
 ?>
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Achat Cryo</title></head>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Séance de Cryolipolyse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .section {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #104e8b;
+            text-align: center;
+        }
+        p {
+            font-size: 1.1em;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .form-section, .image-section, .avis-section {
+            margin-top: 40px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #104e8b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #0d3e70;
+        }
+        .error {
+            color: red;
+            text-align: center;
+        }
+        .image-section img {
+            width: 75%;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .avis-section {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .avis {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        .avis strong {
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
 <body>
-<h1>Réservez votre séance Cryo</h1>
-<form method="post" action="">
-  <label>Email      : <input type="email"    name="email"     required></label><br>
-  <label>Prénom     : <input type="text"     name="prenom"    required></label><br>
-  <label>Nom        : <input type="text"     name="nom"       required></label><br>
-  <label>Téléphone  : <input type="text"     name="telephone" required></label><br>
-  <label>Offre      :
-    <select name="achat">
-      <option value="Séance Cryo">Séance Cryo – 1 séance</option>
-      <option value="Pack 3 Séances">Pack Cryo – 3 séances</option>
-      <option value="Pack 5 Séances">Pack Cryo – 5 séances</option>
-    </select>
-  </label><br>
-  <label>Montant (ex: 50.00EUR) : <input type="text" name="montant" required></label><br>
-  <button type="submit">Payer maintenant</button>
-</form>
+    <div class="section">
+        <h1>Vous souhaitez mincir ou perdre du poids ?</h1>
+        <h2>Découvrez l'amincissement par cryolipolyse à 99€</h2>
+
+        <div class="image-section">
+            <img src="images/cryolipolyse.jpg" alt="Séance de cryolipolyse">
+        </div>
+
+        <h2>Qu’est-ce que la Cryolipolyse ?</h2>
+        <p>La Cryolipolyse est une méthode d’amincissement qui permet :</p>
+        <ul>
+            <li>De sculpter la silhouette grâce à l’application de plaques de froid</li>
+            <li>De tonifier les zones traitées</li>
+            <li>De traiter de nombreuses zones : ventre, cuisses, hanches, bras…</li>
+            <li>De réduire les cellules graisseuses de manière naturelle</li>
+        </ul>
+
+        <div class="avis-section">
+            <h2>Ce qu’en pensent nos clients</h2>
+            <div class="avis">"Très satisfaite de ma séance, j’ai vu une vraie différence au bout de 3 semaines."<br><strong>— Julie R.</strong></div>
+            <div class="avis">"Accueil chaleureux, protocole bien expliqué. Je recommande vivement."<br><strong>— Caroline B.</strong></div>
+            <div class="avis">"Top ! Le centre est propre, l'appareil est moderne et surtout efficace."<br><strong>— Nathalie D.</strong></div>
+        </div>
+
+        <div class="form-section">
+            <h2>Réservez votre séance de Cryolipolyse</h2>
+            <?php if (isset($error)): ?>
+                <p class="error"><?= $error ?></p>
+            <?php endif; ?>
+            <form method="post" action="">
+                <label for="prenom">Prénom *</label>
+                <input type="text" id="prenom" name="prenom" required>
+
+                <label for="nom">Nom *</label>
+                <input type="text" id="nom" name="nom" required>
+
+                <label for="telephone">Téléphone *</label>
+                <input type="tel" id="telephone" name="telephone" required>
+
+                <label for="email">Adresse email *</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Réserver ma séance à 99€</button>
+            </form>
+        </div>
+        <div style="text-align: center; margin-top: 30px; font-size: 1.1em; color: #333;">
+            📍 <strong>AQUAVELO</strong><br>
+            <a href="https://maps.google.com/?q=60 avenue du Docteur Raymond Picaud, Cannes" target="_blank">60 avenue du Docteur Raymond Picaud à CANNES</a><br>
+            ☎️ <strong>04 93 93 05 65</strong>
+        </div>
+    </div>
 </body>
 </html>
 

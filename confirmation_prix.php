@@ -37,8 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     function sendEmails($toEmail, $prenom, $nom, $telephone, $detail, $montant, $codeValidation) {
+        // Message client
         $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p>
-        <p>Merci pour votre achat de prestation personnalisée d'un montant de <strong>$montant</strong>.</p>
+        <p>Merci pour votre achat de prestation personnalisée.</p>
+        <p><strong>Montant payé : $montant</strong></p>
         <p>Pour toute question ou prise de rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
 
         $mail = new PHPMailer(true);
@@ -64,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p><strong>Nom :</strong> $prenom $nom</p>
                     <p><strong>Téléphone :</strong> $telephone</p>
                     <p><strong>Email :</strong> $toEmail</p>
-                    <p><strong>Montant :</strong> $montant</p>
+                    <p><strong>Montant payé :</strong> $montant</p>
                     <p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p>
                     <p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>
                     <p style='text-align:center; margin-top:15px;'>
@@ -75,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
             $mail->send();
 
+            // Message admin
             $admin = new PHPMailer(true);
             $admin->isSMTP();
             $admin->Host = 'in-v3.mailjet.com';
@@ -93,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li>Nom et prénom : $nom $prenom</li>
                     <li>Email : $toEmail</li>
                     <li>Téléphone : $telephone</li>
-                    <li>Montant : $montant</li>
+                    <li>Montant payé : $montant</li>
                     <li>Code : $codeValidation</li>
                 </ul>";
             $admin->send();

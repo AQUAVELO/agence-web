@@ -36,12 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email   = trim($_POST['email'] ?? '');
     $tel     = trim($_POST['telephone'] ?? '');
     $montant = trim($_POST['montant'] ?? '');
+    $detail  = trim($_POST['detail'] ?? 'Prestation personnalisée');
 
     if (
         $nom !== '' && $prenom !== '' &&
         filter_var($email, FILTER_VALIDATE_EMAIL) &&
         preg_match('/^[0-9\s\-\+\(\)]+$/', $tel) &&
-        is_numeric($montant) && $montant > 0
+        is_numeric($montant) && $montant > 0 &&
+        $detail !== ''
     ) {
         $reference = 'CMD' . date('YmdHis') . rand(100, 999);
         $dateCommande = date('d/m/Y:H:i:s');
@@ -60,11 +62,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'montant'           => sprintf('%012.2f', $montant) . 'EUR',
             'reference'         => $reference,
             'texte-libre'       => http_build_query([
-                'nom' => $nom,
-                'prenom' => $prenom,
-                'telephone' => $tel,
-                'email' => $email,
-                'montant' => number_format($montant, 2, '.', '') . 'EUR'
+                'nom'      => $nom,
+                'prenom'   => $prenom,
+                'telephone'=> $tel,
+                'email'    => $email,
+                'montant'  => number_format($montant, 2, '.', '') . 'EUR',
+                'detail'   => $detail
             ], '', ';'),
             'version'           => '3.0',
             'lgue'              => 'FR',
@@ -118,9 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Téléphone* <input type="tel" name="telephone" required></label>
         <label>Email* <input type="email" name="email" required></label>
         <label>Montant à encaisser (€)* <input type="number" step="0.01" min="1" name="montant" required></label>
+        <label>Intitulé de la prestation* <input type="text" name="detail" required></label>
         <button type="submit">Générer le lien de paiement</button>
       </form>
     <?php endif; ?>
   </div>
 </body>
 </html>
+

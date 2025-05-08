@@ -36,12 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
     }
 
-    function sendEmails($toEmail, $prenom, $nom, $telephone, $detail, $montant, $codeValidation) {
-        // Message client
+    function sendEmails($toEmail, $prenom, $nom, $telephone, $offre, $montant, $codeValidation) {
         $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p>
-        <p>Merci pour votre achat de prestation personnalisée.</p>
+        <p>Merci pour votre achat de <strong>$offre</strong>.</p>
         <p><strong>Montant payé : $montant</strong></p>
-        <p>Pour toute question ou prise de rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
+        <p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p>
+        <p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
 
         $mail = new PHPMailer(true);
         try {
@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p><strong>Nom :</strong> $prenom $nom</p>
                     <p><strong>Téléphone :</strong> $telephone</p>
                     <p><strong>Email :</strong> $toEmail</p>
+                    <p><strong>Offre :</strong> $offre</p>
                     <p><strong>Montant payé :</strong> $montant</p>
                     <p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p>
                     <p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>
@@ -96,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li>Nom et prénom : $nom $prenom</li>
                     <li>Email : $toEmail</li>
                     <li>Téléphone : $telephone</li>
+                    <li>Offre : $offre</li>
                     <li>Montant payé : $montant</li>
                     <li>Code : $codeValidation</li>
                 </ul>";
@@ -109,16 +111,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (validateMAC($_POST, MONETICO_KEY)) {
         parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
 
+        // Log pour debug
+        file_put_contents('debug_infos.txt', print_r($infos, true), FILE_APPEND);
+
         $email     = $infos['email']     ?? null;
         $prenom    = $infos['prenom']    ?? '';
         $nom       = $infos['nom']       ?? '';
         $telephone = $infos['telephone'] ?? '';
         $montant   = $infos['montant']   ?? '';
-        $detail    = $infos['detail']    ?? '';
+
+        // On prend detail, sinon achat, sinon "prestation personnalisée"
+        $offre     = $infos['detail'] ?? ($infos['achat'] ?? 'prestation personnalisée');
 
         if ($email) {
             $codeValidation = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
-            sendEmails($email, $prenom, $nom, $telephone, $detail, $montant, $codeValidation);
+            sendEmails($email, $prenom, $nom, $telephone, $offre, $montant, $codeValidation);
 
             // Si vous avez une table pour enregistrer les achats personnalisés, adaptez la requête :
             $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = :email ORDER BY id DESC LIMIT 1");
@@ -137,3 +144,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+

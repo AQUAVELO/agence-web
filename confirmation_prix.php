@@ -86,18 +86,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     
-       if (validateMAC($_POST, MONETICO_KEY)) {
+     if (validateMAC($_POST, MONETICO_KEY)) {
     parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
 
-    // Log pour debug
+    // Log debug facultatif
     file_put_contents('debug_infos.txt', print_r($infos, true), FILE_APPEND);
 
     $email     = $infos['email']     ?? null;
     $prenom    = $infos['prenom']    ?? '';
     $nom       = $infos['nom']       ?? '';
     $telephone = $infos['telephone'] ?? '';
+    $detail    = $infos['detail']    ?? '';
+    $code      = $infos['code']      ?? '';
     $montant   = $_POST['montant']   ?? '';
-    $date      = $_POST['date']      ?? '';
+
+    $dateAchat = date('d/m/Y'); // Date du jour formatée
 
     if ($email) {
         // EMAIL CLIENT
@@ -119,10 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->isHTML(true);
             $mail->Subject = 'Merci pour votre achat';
             $mail->Body = "<p>Bonjour $prenom $nom,</p>
-                <p>Merci pour votre paiement de <strong>$montant</strong> en date du <strong>$date</strong>.</p>
-                <p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p>
-                <p>Je reste à votre disposition au 04 93 93 05 65.</p>
-                <p>À bientôt,<br>Cordialement Claude – Équipe AQUAVELO</p>";
+                <p>Merci pour votre paiement de \"$detail\" pour un montant de \"$montant\" en date du $dateAchat.</p>
+                <p>Cordialement Claude AQUAVELO (04 93 93 05 65).</p>";
             $mail->send();
 
             // EMAIL ADMIN
@@ -144,8 +145,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <li>Nom et prénom : $nom $prenom</li>
                     <li>Email : $email</li>
                     <li>Téléphone : $telephone</li>
-                    <li>Montant payé : $montant</li>
-                    <li>Date : $date</li>
+                    <li>Détail : $detail</li>
+                    <li>Montant : $montant</li>
+                    <li>Date : $dateAchat</li>
+                    <li>Code : $code</li>
                 </ul>";
             $admin->send();
 
@@ -166,3 +169,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "version=2\ncdr=1\n";
     exit;
 }
+

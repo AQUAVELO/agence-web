@@ -36,12 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
     }
 
-    function sendEmails($toEmail, $prenom, $nom, $telephone, $offre, $montant, $codeValidation) {
-        $messageClient = "<p>Bonjour <strong>$prenom $nom</strong>,</p>
-        <p>Merci pour votre achat de <strong>$offre</strong>.</p>
-        <p><strong>Montant payé : $montant</strong></p>
-        <p>Lors de votre 1ère séance il faudra amener un RIB pour les autres échéances.</p>
-        <p>Pour prendre rendez-vous, veuillez téléphoner à <strong>Claude</strong> au <strong>04 93 93 05 65</strong>.</p>";
+    function sendEmails($email, $montant, $datePaiement) {
+        $message = "<p>Bonjour Claude RODRIGUEZ,</p>
+        <p>Merci pour votre paiement de <strong>$montant</strong> en date du <strong>$datePaiement</strong>.</p>
+       
+        <p>Je reste à votre disposition au 04 93 93 05 65.</p>
+        <p>À bientôt,<br>Cordialement<br>Claude – Équipe AQUAVELO</p>";
 
         $mail = new PHPMailer(true);
         try {
@@ -55,30 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->CharSet    = 'UTF-8';
 
             $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-            $mail->addAddress($toEmail);
+            $mail->addAddress($email);
             $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
 
             $mail->isHTML(true);
-            $mail->Subject = 'Merci pour votre achat';
-            $mail->Body = $messageClient . "<hr>
-                <div style='border: 2px dashed #104e8b; padding: 20px; margin: 20px 0; background: #f4f8fb;'>
-                    <h2 style='text-align:center; color:#104e8b;'>🎟️ Bon de réservation</h2>
-                    <p><strong>Nom :</strong> $prenom $nom</p>
-                    <p><strong>Téléphone :</strong> $telephone</p>
-                    <p><strong>Email :</strong> $toEmail</p>
-                    <p><strong>Offre :</strong> $offre</p>
-                    <p><strong>Montant payé :</strong> $montant</p>
-                    <p><strong>Centre :</strong> AQUAVELO - 60 avenue du Docteur Raymond Picaud à CANNES</p>
-                    <p><strong>Code de validation :</strong> <span style='font-size: 1.3em; color: #cc3366;'>$codeValidation</span></p>
-                    <p style='text-align:center; margin-top:15px;'>
-                        📍 Veuillez présenter ce bon lors de votre venue.<br>
-                        Venez avec maillot de bain, serviette de bain, un gel douche, une bouteille d'eau, un cadenas pour les vestiaires, et des chaussures de piscine (nous vous en prêterons si vous n'en avez pas).
-                    </p>
-                </div>
-                <p>À bientôt,<br>Claude – Équipe AQUAVELO</p>";
+            $mail->Subject = 'Confirmation de votre paiement';
+            $mail->Body = $message;
             $mail->send();
 
-            // Message admin
+            // Copie à Claude
             $admin = new PHPMailer(true);
             $admin->isSMTP();
             $admin->Host = 'in-v3.mailjet.com';
@@ -91,16 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $admin->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
             $admin->addAddress('aqua.cannes@gmail.com');
             $admin->isHTML(true);
-            $admin->Subject = "Nouvel achat – $prenom $nom";
-            $admin->Body = "<p>Achat effectué :</p>
-                <ul>
-                    <li>Nom et prénom : $nom $prenom</li>
-                    <li>Email : $toEmail</li>
-                    <li>Téléphone : $telephone</li>
-                    <li>Offre : $offre</li>
-                    <li>Montant payé : $montant</li>
-                    <li>Code : $codeValidation</li>
-                </ul>";
+            $admin->Subject = "Nouveau paiement reçu - $montant";
+            $admin->Body = $message;
             $admin->send();
 
         } catch (Exception $e) {
@@ -111,25 +88,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (validateMAC($_POST, MONETICO_KEY)) {
         parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
 
-        // Log pour debug
         file_put_contents('debug_infos.txt', print_r($infos, true), FILE_APPEND);
 
-        $email     = $infos['email']     ?? null;
-        $prenom    = $infos['prenom']    ?? '';
-        $nom       = $infos['nom']       ?? '';
-        $telephone = $infos['telephone'] ?? '';
-        $montant   = $infos['montant']   ?? '';
-
-        // On prend detail, sinon achat, sinon "prestation personnalisée"
-        $offre     = $infos['detail'] ?? ($infos['achat'] ?? 'prestation personnalisée');
+        $email   = $infos['email'] ?? null;
+        $montant = $_POST['montant'] ?? '';
+        $datePaiement = $_POST['date'] ?? date('d/m/Y');
 
         if ($email) {
-            $codeValidation = strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
-            sendEmails($email, $prenom, $nom, $telephone, $offre, $montant, $codeValidation);
-
-            // Si vous avez une table pour enregistrer les achats personnalisés, adaptez la requête :
-            $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = :email ORDER BY id DESC LIMIT 1");
-            $stmt->execute(['email' => $email]);
+            sendEmails($email, $montant, $datePaiement);
         }
 
         header('Content-Type: text/plain; charset=utf-8');
@@ -144,4 +110,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: https://www.aquavelo.com/centres/Cannes');
     exit;
 }
+
 

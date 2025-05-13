@@ -36,12 +36,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return isset($params['MAC']) && hash_equals($mac, strtoupper($params['MAC']));
     }
 
-    function sendEmails($email, $montant, $datePaiement) {
-        $message = "<p>Bonjour Claude RODRIGUEZ,</p>
-        <p>Merci pour votre paiement de <strong>$montant</strong> en date du <strong>$datePaiement</strong>.</p>
-       
-        <p>Je reste à votre disposition au 04 93 93 05 65.</p>
-        <p>À bientôt,<br>Cordialement<br>Claude – Équipe AQUAVELO</p>";
+    function sendEmails($infos, $montant, $datePaiement) {
+        $email     = $infos['email']     ?? '';
+        $prenom    = $infos['prenom']    ?? '';
+        $nom       = $infos['nom']       ?? '';
+        $telephone = $infos['telephone'] ?? '';
+        $detail    = $infos['detail']    ?? '';
+
+        $messageClient = "<p>Bonjour $prenom $nom,</p>
+        <p>Merci pour votre paiement de <strong>$montant</strong> pour la prestation suivante :</p>
+        <p><em>$detail</em></p>
+        <p>Effectué le <strong>$datePaiement</strong>.</p>
+        <p>Nous restons à votre disposition au 04 93 93 05 65.</p>
+        <p>À bientôt,<br>Cordialement,<br>Claude – Équipe AQUAVELO</p>";
+
+        $messageAdmin = "<p>Nouveau paiement reçu :</p>
+        <ul>
+            <li>Nom : $prenom $nom</li>
+            <li>Téléphone : $telephone</li>
+            <li>Email : $email</li>
+            <li>Montant : $montant</li>
+            <li>Détail : $detail</li>
+            <li>Date : $datePaiement</li>
+        </ul>";
 
         $mail = new PHPMailer(true);
         try {
@@ -54,16 +71,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Port       = 587;
             $mail->CharSet    = 'UTF-8';
 
+            // Envoi client
             $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
             $mail->addAddress($email);
             $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
-
             $mail->isHTML(true);
             $mail->Subject = 'Confirmation de votre paiement';
-            $mail->Body = $message;
+            $mail->Body = $messageClient;
             $mail->send();
 
-            // Copie à Claude
+            // Envoi admin
             $admin = new PHPMailer(true);
             $admin->isSMTP();
             $admin->Host = 'in-v3.mailjet.com';
@@ -73,11 +90,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $admin->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $admin->Port = 587;
             $admin->CharSet = 'UTF-8';
+
             $admin->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
             $admin->addAddress('aqua.cannes@gmail.com');
             $admin->isHTML(true);
             $admin->Subject = "Nouveau paiement reçu - $montant";
-            $admin->Body = $message;
+            $admin->Body = $messageAdmin;
             $admin->send();
 
         } catch (Exception $e) {
@@ -85,88 +103,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    
-     if (validateMAC($_POST, MONETICO_KEY)) {
-    parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
+    if (validateMAC($_POST, MONETICO_KEY)) {
+        parse_str(str_replace(';', '&', $_POST['texte-libre']), $infos);
 
-    // Log debug facultatif
-    file_put_contents('debug_infos.txt', print_r($infos, true), FILE_APPEND);
+        file_put_contents('confirmation_debug.txt', "Infos décodées :\n" . print_r($infos, true), FILE_APPEND);
 
-    $email     = $infos['email']     ?? null;
-    $prenom    = $infos['prenom']    ?? '';
-    $nom       = $infos['nom']       ?? '';
-    $telephone = $infos['telephone'] ?? '';
-    $detail    = $infos['detail']    ?? '';
-    $code      = $infos['code']      ?? '';
-    $montant   = $_POST['montant']   ?? '';
+        $montant     = $_POST['montant'] ?? '';
+        $datePaiement = date('d/m/Y');
 
-    $dateAchat = date('d/m/Y'); // Date du jour formatée
-
-    if ($email) {
-        // EMAIL CLIENT
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host       = 'in-v3.mailjet.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'adf33e0c77039ed69396e3a8a07400cb';
-            $mail->Password   = '05906e966c8e2933b1dc8b0f8bb1e18b';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
-            $mail->CharSet    = 'UTF-8';
-
-            $mail->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-            $mail->addAddress($email);
-            $mail->addReplyTo('jacquesverdier4@gmail.com', 'Aquavelo');
-
-            $mail->isHTML(true);
-            $mail->Subject = 'Merci pour votre achat';
-            $mail->Body = "<p>Bonjour $prenom $nom,</p>
-                <p>Merci pour votre paiement de \"$detail\" pour un montant de \"$montant\" en date du $dateAchat.</p>
-                <p>Cordialement Claude AQUAVELO (04 93 93 05 65).</p>";
-            $mail->send();
-
-            // EMAIL ADMIN
-            $admin = new PHPMailer(true);
-            $admin->isSMTP();
-            $admin->Host = 'in-v3.mailjet.com';
-            $admin->SMTPAuth = true;
-            $admin->Username = 'adf33e0c77039ed69396e3a8a07400cb';
-            $admin->Password = '05906e966c8e2933b1dc8b0f8bb1e18b';
-            $admin->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $admin->Port = 587;
-            $admin->CharSet = 'UTF-8';
-            $admin->setFrom('jacquesverdier4@gmail.com', 'Aquavelo');
-            $admin->addAddress('aqua.cannes@gmail.com');
-            $admin->isHTML(true);
-            $admin->Subject = "Nouvel achat – $prenom $nom";
-            $admin->Body = "<p>Achat effectué :</p>
-                <ul>
-                    <li>Nom et prénom : $nom $prenom</li>
-                    <li>Email : $email</li>
-                    <li>Téléphone : $telephone</li>
-                    <li>Détail : $detail</li>
-                    <li>Montant : $montant</li>
-                    <li>Date : $dateAchat</li>
-                    <li>Code : $code</li>
-                </ul>";
-            $admin->send();
-
-        } catch (Exception $e) {
-            file_put_contents('confirmation_debug.txt', "Erreur email : " . $mail->ErrorInfo . "\n", FILE_APPEND);
+        if (!empty($infos['email'])) {
+            sendEmails($infos, $montant, $datePaiement);
         }
 
-        // MAJ BASE FORMULE
-        $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = :email ORDER BY id DESC LIMIT 1");
-        $stmt->execute(['email' => $email]);
+        echo "version=2\ncdr=0";
+    } else {
+        file_put_contents('confirmation_debug.txt', "MAC invalide\n", FILE_APPEND);
+        echo "version=2\ncdr=1";
     }
-
-    header('Content-Type: text/plain; charset=utf-8');
-    echo "version=2\ncdr=0\n";
-    exit;
-} else {
-    header('Content-Type: text/plain; charset=utf-8');
-    echo "version=2\ncdr=1\n";
-    exit;
 }
+?>
+
 

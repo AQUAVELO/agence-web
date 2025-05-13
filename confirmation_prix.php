@@ -43,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telephone = $infos['telephone'] ?? '';
         $detail    = $infos['detail']    ?? '';
 
-        $messageClient = "<p>Bonjour $prenom $nom,</p>
+       $messageClient = "<p>Bonjour $prenom $nom,</p>
         <p>Merci pour votre paiement de <strong>$montant</strong> pour la prestation suivante :</p>
         <p><em>$detail</em></p>
-        <p>Effectué le <strong>$datePaiement</strong>.</p>
+        <p>Ce paiement a été effectué le <strong>$datePaiement</strong>.</p>
         <p>Nous restons à votre disposition au 04 93 93 05 65.</p>
-        <p>À bientôt,<br>Cordialement,<br>Claude – Équipe AQUAVELO</p>";
+        <p>Cordialement,<br>Claude – AQUAVELO</p>";
+
 
         $messageAdmin = "<p>Nouveau paiement reçu :</p>
         <ul>

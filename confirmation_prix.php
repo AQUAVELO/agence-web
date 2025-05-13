@@ -50,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>Nous restons à votre disposition au 04 93 93 05 65.</p>
         <p>Cordialement,<br>Claude – AQUAVELO</p>";
 
-
         $messageAdmin = "<p>Nouveau paiement reçu :</p>
         <ul>
             <li>Nom : $prenom $nom</li>
@@ -112,26 +111,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $montant     = $_POST['montant'] ?? '';
         $datePaiement = date('d/m/Y');
 
-         // ✅ Mise à jour de la vente dans la BDD
-    if (!empty($infos['email'])) {
-        try {
-            $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = ? AND vente = 0 ORDER BY id DESC LIMIT 1");
-            $stmt->execute([$infos['email']]);
-        } catch (PDOException $e) {
-            file_put_contents('confirmation_debug.txt', "Erreur MAJ vente : " . $e->getMessage() . "\n", FILE_APPEND);
-        }
-
+        // ✅ Mise à jour de la vente dans la BDD
         if (!empty($infos['email'])) {
-            sendEmails($infos, $montant, $datePaiement);
-        }
+            try {
+                $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = ? AND vente = 0 ORDER BY id DESC LIMIT 1");
+                $stmt->execute([$infos['email']]);
+            } catch (PDOException $e) {
+                file_put_contents('confirmation_debug.txt', "Erreur MAJ vente : " . $e->getMessage() . "\n", FILE_APPEND);
+            }
 
-        echo "version=2\ncdr=0";
+            sendEmails($infos, $montant, $datePaiement);
+            echo "version=2\ncdr=0";
+        } else {
+            file_put_contents('confirmation_debug.txt', "MAC invalide\n", FILE_APPEND);
+            echo "version=2\ncdr=1";
+        }
     } else {
         file_put_contents('confirmation_debug.txt', "MAC invalide\n", FILE_APPEND);
         echo "version=2\ncdr=1";
     }
 }
 ?>
+
 
 
 

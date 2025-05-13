@@ -7,6 +7,9 @@ define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');
 
+// Connexion base de données
+$pdo = new PDO('mysql:host=localhost;dbname=XXXX;charset=utf8mb4', 'USER', 'PASSWORD');
+
 // Fonction pour calculer le MAC
 function calculateMAC($fields, $keyHex) {
     $recognizedKeys = [
@@ -55,6 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'country' => 'FR'
             ]
         ], JSON_UNESCAPED_UNICODE));
+
+        // ✅ Insertion en base de données
+        $stmt = $pdo->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
+        $stmt->execute([$nom, $prenom, $tel, $montant, $email, $detail]);
+
+        // ✅ Préparation Monetico
         $fields = [
             'TPE'               => MONETICO_TPE,
             'contexte_commande' => $contexteCommande,
@@ -78,17 +87,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
 
-        // Construction de l'URL de paiement à transmettre au client
+        // ✅ Construction de l'URL de paiement
         $params = [];
         foreach ($fields as $k => $v) {
             $params[] = urlencode($k) . '=' . urlencode($v);
         }
         $urlPaiement = MONETICO_URL . '?' . implode('&', $params);
+
     } else {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

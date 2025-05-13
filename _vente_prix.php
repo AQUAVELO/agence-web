@@ -93,86 +93,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer un lien de paiement Monetico</title>
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+  <title>Paiement Prestation Monetico</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f8fb;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    .section {
-      max-width: 600px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #104e8b;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background-color: #104e8b;
-      color: white;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 20px;
-      width: 100%;
-      font-size: 1.1em;
-    }
-    button:hover {
-      background-color: #0d3e70;
-    }
-    .error {
-      color: red;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .success {
-      color: green;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .url {
-      word-break: break-all;
-      text-align: center;
-      margin-top: 15px;
-      font-size: 1.1em;
-    }
-    .hero-image {
-      display: block;
-      margin: 0 auto 20px;
-      max-width: 100%;
-      border-radius: 12px;
-    }
+    body { font-family: Arial, sans-serif; background: #f4f8fb; }
+    .container { max-width: 500px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    label { display: block; margin-top: 15px; }
+    input { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button { margin-top: 20px; padding: 12px; background: #104e8b; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    .error { color: red; }
+    .success { color: green; }
+    .url { word-break: break-all; }
   </style>
 </head>
 <body>
-  <div class="section">
-    <img src="/images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
-    <h1>Créer un lien de paiement Monetico</h1>
+  <div class="container">
+    <h2>Créer un lien de paiement Monetico</h2>
     <?php if ($error): ?>
       <div class="error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
@@ -193,5 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </body>
 </html>
+
 
 

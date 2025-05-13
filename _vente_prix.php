@@ -2,7 +2,7 @@
 // Configuration Monetico
 define('MONETICO_TPE', '6684349');
 define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
-define('MONETICO_COMPANY', 'AQUACANNES');
+define('MONETICO_COMPANY', 'ALESIAMINCEUR');
 define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');

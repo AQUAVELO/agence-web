@@ -11,8 +11,7 @@ define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');
 
-// Connexion base de données
-$pdo = new PDO('mysql:host=localhost;dbname=XXXX;charset=utf8mb4', 'USER', 'PASSWORD');
+
 
 // Fonction pour calculer le MAC
 function calculateMAC($fields, $keyHex) {

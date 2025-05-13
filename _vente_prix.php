@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ], JSON_UNESCAPED_UNICODE));
 
         // ✅ Enregistrement dans la base de données
-        require_once 'Setting.php';
+     
         try {
             $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
             $stmt->execute([$nom, $prenom, $tel, $montant, $email, $detail]);

@@ -11,8 +11,6 @@ define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
 define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');
 
-
-
 // Fonction pour calculer le MAC
 function calculateMAC($fields, $keyHex) {
     $recognizedKeys = [
@@ -62,9 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]
         ], JSON_UNESCAPED_UNICODE));
 
-        // ✅ Insertion en base de données
-        $stmt = $pdo->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
-        $stmt->execute([$nom, $prenom, $tel, $montant, $email, $detail]);
+        // ✅ Enregistrement dans la base de données
+        require_once 'Setting.php';
+        try {
+            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
+            $stmt->execute([$nom, $prenom, $tel, $montant, $email, $detail]);
+        } catch (PDOException $e) {
+            $error = "Erreur lors de l'enregistrement : " . $e->getMessage();
+        }
 
         // ✅ Préparation Monetico
         $fields = [
@@ -102,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">

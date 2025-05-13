@@ -112,6 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $montant     = $_POST['montant'] ?? '';
         $datePaiement = date('d/m/Y');
 
+         // ✅ Mise à jour de la vente dans la BDD
+    if (!empty($infos['email'])) {
+        try {
+            $stmt = $conn->prepare("UPDATE formule SET vente = 1 WHERE email = ? AND vente = 0 ORDER BY id DESC LIMIT 1");
+            $stmt->execute([$infos['email']]);
+        } catch (PDOException $e) {
+            file_put_contents('confirmation_debug.txt', "Erreur MAJ vente : " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+
         if (!empty($infos['email'])) {
             sendEmails($infos, $montant, $datePaiement);
         }

@@ -14,6 +14,7 @@ define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
+    ['nom' => 'Formule 0', 'prix' => 380.00, 'description' => 'Les 20 séances payable en une fois 380 € soit la séance à 19 €. Je paie 380 €.'],
     ['nom' => 'Formule 1', 'prix' => 63.00, 'description' => 'Les 45 séances payable en 10 x 63 € soit la séance à 14 €. Je paie la première échéance 63 €.'],
     ['nom' => 'Formule 2', 'prix' => 79.16, 'description' => 'Les 88 séances payable en 12 x 79,16 € soit la séance à 11 €. Je paie la première échéance 79.16 €.'],
     ['nom' => 'Formule 3', 'prix' => 97.50, 'description' => 'Les 114 séances payable en 12 x 97,5 € soit la séance à 10 €. Je paie la première échéance 97,5 €.'],

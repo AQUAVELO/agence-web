@@ -95,7 +95,9 @@
       	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
 	<?php endif; ?>
     
-      <form role="form" class="contact-form" method="POST" action="_page.php">
+      <form role="form" class="contact-form" method="POST" 
+      action="<?php echo ($row_center['id'] == 253) ? '_lead_webhook.php' : '_page.php'; ?>">
+
         <div class="form-group">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
           <select class="form-control" id="center" name="center">

@@ -21,7 +21,7 @@ use PHPMailer\PHPMailer\Exception;
     <header class="page-header text-center" id="contact">
       <h1 class="page-title">Besoin d'aide </h1>
       <p class="larger">Vous avez une question ? Utilisez le formulaire ci-dessous en indiquant la ville concernée ou envoyez-nous un e-mail à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </p>
-      <p class="larger">ou contactez nous au 06 22 64 70 95.</p>
+      <p class="larger"></p>
     </header>
 
     <div class="row">

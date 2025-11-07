@@ -452,7 +452,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <a href="mailto:claude@alesiaminceur.com" class="larger">claude@alesiaminceur.com</a>
             <p> 60 avenue du Docteur Picaud<br>
               06150 Cannes</p>
-            <p> T&eacute;l.: +33 (0)4 93 93 05 65</p>
+            
           </aside>
           <aside class="col-md-3 widget">
             <h2 class="widget-title">&nbsp;</h2>

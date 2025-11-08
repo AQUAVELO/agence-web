@@ -96,6 +96,17 @@
 	<?php endif; ?>
     <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
       	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
+
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'AW-17714430375');
+	</script>
+	
 	<?php endif; ?>
     
      <form role="form" class="contact-form" method="POST" action="_page.php">

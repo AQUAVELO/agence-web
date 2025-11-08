@@ -94,6 +94,9 @@
 	<?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
       	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
 	<?php endif; ?>
+    <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+      	  	<p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
+	<?php endif; ?>
     
      <form role="form" class="contact-form" method="POST" action="_page.php">
 

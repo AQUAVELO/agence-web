@@ -134,17 +134,10 @@
           <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
         </div>
 		 
-       <div class="form-group" style="position: relative; margin-bottom: 20px;">
-		  <label for="phone" style="font-weight: bold; color: #00acdc;">📞 Téléphone</label>
-		  <input type="tel"
-		         class="form-control phone-bold"
-		         id="phone"
-		         name="phone"
-		         placeholder="Entrez votre numéro de téléphone"
-		         value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-		         style="font-weight: bold; padding-left: 40px; border: 2px solid #00acdc; border-radius: 8px; height: 45px;">
-		  <span style="position: absolute; left: 10px; top: 35px; font-size: 18px; color: #00acdc;">📱</span>
-		</div>
+         <div class="form-group">
+          <label for="phone">Téléphone</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        </div>
 
         <input type="hidden" name="reason" id="reason">
         <input type="hidden" name="segment" id="segment">

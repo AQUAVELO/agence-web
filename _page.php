@@ -169,7 +169,7 @@
         <dt>Adresse</dt>
         <dd><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
         <dt>Téléphone</dt>
-        <dd><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+        <dd><strong><?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?></strong></dd>
         <dt>Horaires</dt>
         <dd><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
 

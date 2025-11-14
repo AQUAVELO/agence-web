@@ -4,22 +4,87 @@
 if (isset($_GET['p']) && is_file('_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
-if ($page == 'home') $title = 'Aquabiking collectif en piscine';
-if ($page == 'aquabiking') $title = 'Aquabiking : les bienfaits du vélo dans l\'eau';
-if ($page == 'centers') $title = 'Centres d\'aquabiking';
-if ($page == 'concept') $title = 'Concept Aquavelo';
-if ($page == 'free') $title = 'Séance découverte';
-if ($page == 'partenaires') $title = 'Partenaires';
-if ($page == 'conseilminceur') $title = 'Minceur';
-if ($page == 'vente_formule') $title = 'vente_formule';
-if ($page == 'vente_cryo') $title = 'vente_cryo';
-if ($page == 'vente_cryoprod') $title = 'vente_cryoprod';
-if ($page == 'vente_prix') $title = 'vente_prix';
-if ($page == 'confirmation') $title = 'confirmation';
-if ($page == 'natation') $title = 'Natation | Aquavelo';
-if ($page == 'inscription_client') $title = 'Inscription Client | Aquavelo';
-if ($page == 'inscription_nageur') $title = 'Inscription Maître-Nageur | Aquavelo';
-if ($page == 'contact') $title = 'Contactez-nous';
+// ===== TITRES ET META DESCRIPTIONS OPTIMISÉS SEO =====
+
+if ($page == 'home') {
+    $title = 'Aquabiking Collectif en Piscine avec Coach';
+    $meta_description = 'Cours d\'aquabiking collectif animés par un coach professionnel. Éliminez la cellulite, perdez du poids et affinez votre silhouette rapidement. Centres ouverts 7j/7 partout en France.';
+}
+
+if ($page == 'aquabiking') {
+    $title = 'Aquabiking : Bienfaits du Vélo Aquatique pour Maigrir';
+    $meta_description = 'Découvrez les bienfaits de l\'aquabiking : perte de poids rapide, réduction de la cellulite, tonification musculaire sans douleur. Sport complet dans l\'eau avec coaching personnalisé.';
+}
+
+if ($page == 'centers') {
+    $title = 'Centres Aquabiking en France : Trouvez le Plus Proche';
+    $meta_description = 'Trouvez votre centre d\'aquabiking Aquavelo près de chez vous. Plus de 15 centres en France avec piscines privées, coaching professionnel et cours collectifs adaptés à tous niveaux.';
+}
+
+if ($page == 'concept') {
+    $title = 'Concept Aquavelo : Ouvrir un Centre d\'Aquabiking Clé en Main';
+    $meta_description = 'Rejoignez le réseau Aquavelo et ouvrez votre centre d\'aquabiking. Concept clé en main, formation complète, accompagnement marketing et matériel professionnel inclus.';
+}
+
+if ($page == 'free') {
+    $title = 'Séance Découverte Gratuite d\'Aquabiking | Essayez Aquavelo';
+    $meta_description = 'Profitez d\'une séance découverte gratuite d\'aquabiking dans votre centre Aquavelo. Testez les bienfaits du vélo aquatique avec un coach sans engagement.';
+}
+
+if ($page == 'partenaires') {
+    $title = 'Nos Partenaires Bien-être et Minceur';
+    $meta_description = 'Découvrez nos partenaires spécialisés en bien-être, minceur et remise en forme. Des professionnels sélectionnés pour compléter votre programme aquabiking.';
+}
+
+if ($page == 'conseilminceur') {
+    $title = 'Conseils Minceur & Nutrition | Menu du Jour';
+    $meta_description = 'Recettes minceur quotidiennes, menus équilibrés et conseils nutrition pour accompagner vos séances d\'aquabiking. Programme perte de poids complet avec coaching alimentaire.';
+}
+
+if ($page == 'vente_formule') {
+    $title = 'Formules et Tarifs Aquabiking | Abonnements';
+    $meta_description = 'Découvrez nos formules d\'abonnement aquabiking : séances à l\'unité, cartes 10 séances ou abonnements mensuels illimités. Tarifs dégressifs et offres promotionnelles.';
+}
+
+if ($page == 'vente_cryo') {
+    $title = 'Cryothérapie Corps Entier : Complément Aquabiking';
+    $meta_description = 'Associez cryothérapie et aquabiking pour des résultats optimaux. Récupération musculaire accélérée, brûlage de calories et réduction de la cellulite amplifiés.';
+}
+
+if ($page == 'vente_cryoprod') {
+    $title = 'Produits Cryothérapie et Récupération Sportive';
+    $meta_description = 'Boutique de produits cryothérapie professionnels : gels rafraîchissants, compléments alimentaires et accessoires pour optimiser votre récupération après l\'aquabiking.';
+}
+
+if ($page == 'vente_prix') {
+    $title = 'Prix et Tarifs Détaillés Aquabiking | Grille Tarifaire';
+    $meta_description = 'Consultez nos prix transparents pour l\'aquabiking : séances individuelles, forfaits, abonnements mensuels. Tarifs dégressifs et réductions pour étudiants et seniors.';
+}
+
+if ($page == 'confirmation') {
+    $title = 'Réservation Confirmée';
+    $meta_description = 'Votre réservation de séance d\'aquabiking est confirmée. Retrouvez tous les détails de votre cours et préparez-vous à profiter des bienfaits du vélo aquatique.';
+}
+
+if ($page == 'natation') {
+    $title = 'Cours de Natation avec Maître-Nageur | Aquavelo';
+    $meta_description = 'Cours de natation individuels ou collectifs encadrés par des maîtres-nageurs diplômés. Apprentissage, perfectionnement et natation sportive pour tous âges.';
+}
+
+if ($page == 'inscription_client') {
+    $title = 'Inscription Client : Créez Votre Compte | Aquavelo';
+    $meta_description = 'Inscrivez-vous sur Aquavelo pour réserver vos séances d\'aquabiking, suivre votre progression et accéder à vos conseils minceur personnalisés.';
+}
+
+if ($page == 'inscription_nageur') {
+    $title = 'Recrutement Maître-Nageur : Rejoignez l\'Équipe | Aquavelo';
+    $meta_description = 'Vous êtes maître-nageur diplômé ? Rejoignez notre équipe de coachs aquabiking. Déposez votre candidature et enseignez dans nos centres partout en France.';
+}
+
+if ($page == 'contact') {
+    $title = 'Contact & Emploi : Contactez-nous';
+    $meta_description = 'Contactez-nous pour toute question sur l\'aquabiking ou consultez nos offres d\'emploi. Équipe disponible par téléphone, email ou formulaire en ligne.';
+}
 
 
 #nav

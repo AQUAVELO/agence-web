@@ -188,7 +188,12 @@ if (isset($_GET['city'])) {
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];
-  $title = "Aquavelo $city";
+  $title = "Aquabiking $city - Centre Aquavelo $department | Cours & Tarifs";
+  
+  // AJOUTEZ ICI LES META KEYWORDS DYNAMIQUES
+  $meta_description = "Centre d'aquabiking Aquavelo à $city ($department). Cours collectifs avec coach, piscine privée chauffée. Première séance découverte offerte. Réservez en ligne !";
+  $meta_keywords = "aquavelo, aquabiking, waterbike, aquabike, aquagym, anti cellulite, amincissement, perte de poids, aquabiking $city, centre aquabiking $city, cours aquabike $city, piscine $city, coach aquabiking $city";
+
 }
 
 ?>

@@ -626,5 +626,105 @@
   }
 </script>
 
+<script>
+// Validation pour iOS Safari et autres navigateurs
+(function() {
+  'use strict';
+  
+  // Fonction pour vérifier si le navigateur supporte la validation HTML5
+  function hasHtml5Validation() {
+    return typeof document.createElement('input').checkValidity === 'function';
+  }
+  
+  // Sélectionner le formulaire
+  var form = document.querySelector('.contact-form');
+  
+  if (form && hasHtml5Validation()) {
+    // Validation au moment de la soumission
+    form.addEventListener('submit', function(e) {
+      // Réinitialiser les messages d'erreur
+      var errorMessages = form.querySelectorAll('.error-message');
+      errorMessages.forEach(function(msg) {
+        msg.style.display = 'none';
+      });
+      
+      // Vérifier la validité du formulaire
+      if (!this.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Ajouter la classe invalid pour le CSS
+        this.classList.add('invalid');
+        
+        // Afficher les messages d'erreur pour chaque champ invalide
+        var inputs = form.querySelectorAll('input[required], select[required]');
+        var firstInvalid = null;
+        
+        inputs.forEach(function(input) {
+          if (!input.validity.valid) {
+            var errorMsg = input.parentElement.querySelector('.error-message');
+            if (errorMsg) {
+              errorMsg.style.display = 'block';
+            }
+            
+            // Marquer le premier champ invalide
+            if (!firstInvalid) {
+              firstInvalid = input;
+            }
+          }
+        });
+        
+        // Faire défiler jusqu'au premier champ invalide
+        if (firstInvalid) {
+          firstInvalid.focus();
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return false;
+      } else {
+        this.classList.remove('invalid');
+      }
+    }, false);
+    
+    // Validation en temps réel pour améliorer l'UX
+    var inputs = form.querySelectorAll('input[required], select[required]');
+    inputs.forEach(function(input) {
+      input.addEventListener('blur', function() {
+        var errorMsg = this.parentElement.querySelector('.error-message');
+        if (errorMsg) {
+          if (!this.validity.valid) {
+            errorMsg.style.display = 'block';
+          } else {
+            errorMsg.style.display = 'none';
+          }
+        }
+      });
+      
+      input.addEventListener('input', function() {
+        var errorMsg = this.parentElement.querySelector('.error-message');
+        if (errorMsg && this.validity.valid) {
+          errorMsg.style.display = 'none';
+        }
+      });
+    });
+  }
+})();
+
+// Votre fonction popup existante
+function ouvre_popup(url) {
+  const width = Math.max(window.innerWidth / 3, 300);
+  const height = Math.max(window.innerHeight / 3, 200);
+  const left = (window.innerWidth - width) / 2;
+  const top = (window.innerHeight - height) / 2;
+  window.open(
+    url, 
+    'popup', 
+    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+  );
+  return false;
+}
+</script>
+
+
 </body>
 </html>

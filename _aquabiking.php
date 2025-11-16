@@ -132,7 +132,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <video controls loop preload="metadata" width="80%" 
+        <video controls loop autoplay muted preload="metadata" width="80%" 
                title="Démonstration aquabiking au centre Aquavélo d'Cannes"
                aria-label="Vidéo de présentation de l'aquabiking à Cannes">
           <source src="https://www.aquavelo.com/Video-aquavelo-de-Cannes.mov" type="video/quicktime">

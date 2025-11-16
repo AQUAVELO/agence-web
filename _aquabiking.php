@@ -7,23 +7,23 @@
     
     <!-- Meta Tags essentiels pour le SEO -->
     <title>Aquabiking Cannes - Les bienfaits du vélo aquatique | Aquavélo</title>
-    <meta name="description" content="Découvrez l'aquabiking à Antibes : vélo aquatique pour perdre du poids, éliminer la cellulite et tonifier votre corps. Séance découverte gratuite ! À partir de 8€/séance.">
-    <meta name="keywords" content="aquabiking, aquavélo, Antibes, fitness aquatique, cellulite, perte de poids, vélo aquatique, sport aquatique">
-    <meta name="author" content="Aquavélo Antibes">
+    <meta name="description" content="Découvrez l'aquabiking à Cannes : vélo aquatique pour perdre du poids, éliminer la cellulite et tonifier votre corps. Séance découverte gratuite ! À partir de 8€/séance.">
+    <meta name="keywords" content="aquabiking, aquavélo, Cannes, fitness aquatique, cellulite, perte de poids, vélo aquatique, sport aquatique">
+    <meta name="author" content="Aquavélo Cannes">
     <link rel="canonical" href="https://www.aquavelo.com/aquabiking">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.aquavelo.com/aquabiking">
-    <meta property="og:title" content="Aquabiking Antibes - Les bienfaits du vélo aquatique">
-    <meta property="og:description" content="Découvrez l'aquabiking à Antibes : perdez du poids, éliminez la cellulite et tonifiez votre corps. Séance découverte gratuite !">
+    <meta property="og:title" content="Aquabiking Cannes - Les bienfaits du vélo aquatique">
+    <meta property="og:description" content="Découvrez l'aquabiking à Cannes : perdez du poids, éliminez la cellulite et tonifiez votre corps. Séance découverte gratuite !">
     <meta property="og:image" content="https://www.aquavelo.com/images/aquabiking-og.jpg">
     <meta property="og:locale" content="fr_FR">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Aquabiking Antibes - Les bienfaits du vélo aquatique">
-    <meta name="twitter:description" content="Découvrez l'aquabiking à Antibes : perdez du poids, éliminez la cellulite et tonifiez votre corps.">
+    <meta name="twitter:title" content="Aquabiking Cannes - Les bienfaits du vélo aquatique">
+    <meta name="twitter:description" content="Découvrez l'aquabiking à Cannes : perdez du poids, éliminez la cellulite et tonifiez votre corps.">
     <meta name="twitter:image" content="https://www.aquavelo.com/images/aquabiking-og.jpg">
     
     <!-- Données structurées JSON-LD pour LocalBusiness -->
@@ -31,12 +31,12 @@
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "name": "Aquavélo Antibes",
-      "description": "Centre d'aquabiking et de vélo aquatique à Antibes",
+      "name": "Aquavélo Cannes",
+      "description": "Centre d'aquabiking et de vélo aquatique à Cannes",
       "image": "https://www.aquavelo.com/images/aquabiking-og.jpg",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Antibes",
+        "addressLocality": "Cannes",
         "addressRegion": "Provence-Alpes-Côte d'Azur",
         "addressCountry": "FR"
       },
@@ -133,14 +133,14 @@
     <div class="row">
       <div class="col-md-6">
         <video controls loop preload="metadata" width="80%" 
-               title="Démonstration aquabiking au centre Aquavélo d'Antibes"
-               aria-label="Vidéo de présentation de l'aquabiking à Antibes">
-          <source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov" type="video/quicktime">
+               title="Démonstration aquabiking au centre Aquavélo d'Cannes"
+               aria-label="Vidéo de présentation de l'aquabiking à Cannes">
+          <source src="https://www.aquavelo.com/Video-aquavelo-de-Cannes.mov" type="video/quicktime">
           <p>Votre navigateur ne supporte pas la lecture de vidéos HTML5. Veuillez utiliser un navigateur moderne.</p>
         </video>
-        <a href="/seance-decouverte/Antibes" 
+        <a href="/seance-decouverte/Cannes" 
            class="btn btn-default" 
-           title="Réservez votre séance d'essai gratuite d'aquabiking à Antibes"
+           title="Réservez votre séance d'essai gratuite d'aquabiking à Cannes"
            style="margin-top: 30px; color: #0f38be;">
           J'essaie une séance Gratuite
         </a>

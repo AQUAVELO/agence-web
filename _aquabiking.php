@@ -135,7 +135,7 @@
         <video controls loop autoplay muted preload="metadata" width="80%" 
                title="Démonstration aquabiking au centre Aquavélo d'Cannes"
                aria-label="Vidéo de présentation de l'aquabiking à Cannes">
-          <source src="https://www.aquavelo.com/Video-aquavelo-de-Cannes.mov" type="video/quicktime">
+          <source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov" type="video/quicktime">
           <p>Votre navigateur ne supporte pas la lecture de vidéos HTML5. Veuillez utiliser un navigateur moderne.</p>
         </video>
         <a href="/seance-decouverte/Cannes" 

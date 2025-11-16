@@ -491,6 +491,62 @@
       </dl>
       
       <!-- ============================================
+           CARTE GOOGLE MAPS - LOCALISATION
+           ============================================ -->
+      
+      <div style="margin-top: 40px;">
+        <h3>📍 Comment nous trouver</h3>
+        <p><strong>Adresse :</strong> <?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
+        
+        <?php 
+        // Préparer l'adresse pour Google Maps
+        $map_address = urlencode($row_center['address'] ?? '');
+        $map_city = urlencode($city ?? '');
+        
+        // Option 1 : Si vous avez les coordonnées GPS dans la base de données
+        if (!empty($row_center['latitude']) && !empty($row_center['longitude'])) {
+            $map_query = $row_center['latitude'] . ',' . $row_center['longitude'];
+        } 
+        // Option 2 : Utiliser l'adresse complète
+        else {
+            $map_query = $map_address . ',+' . $map_city . ',+France';
+        }
+        ?>
+        
+        <!-- Carte Google Maps en iframe -->
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <iframe 
+            src="https://www.google.com/maps?q=<?= $map_query ?>&hl=fr&z=15&output=embed"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Localisation du centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> sur Google Maps"
+            aria-label="Carte interactive montrant l'emplacement du centre Aquavélo">
+          </iframe>
+        </div>
+        
+        <!-- Informations d'accès -->
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #00acdc; border-radius: 4px;">
+          <h4 style="margin-top: 0; color: #00acdc;">🚗 Accès et parking</h4>
+          <p><strong>En voiture :</strong> Parking gratuit disponible à proximité du centre.</p>
+          <p><strong>En transports en commun :</strong> Consultez les horaires de bus et tramway locaux pour rejoindre facilement notre centre.</p>
+          
+          <!-- Bouton d'itinéraire Google Maps -->
+          <p style="margin-top: 15px;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=<?= $map_query ?>" 
+               target="_blank" 
+               rel="noopener"
+               class="btn btn-default"
+               style="display: inline-block; padding: 10px 20px; background: #00acdc; color: white; text-decoration: none; border-radius: 4px;"
+               title="Obtenir l'itinéraire vers le centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+              🧭 Calculer mon itinéraire
+            </a>
+          </p>
+        </div>
+      </div>
+      
+      <!-- ============================================
            SECTION SEO SUPPLÉMENTAIRE : Maillage interne
            ============================================ -->
       

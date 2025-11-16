@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Meta Tags essentiels pour le SEO -->
-    <title>Aquabiking Antibes - Les bienfaits du vélo aquatique | Aquavélo</title>
+    <title>Aquabiking Cannes - Les bienfaits du vélo aquatique | Aquavélo</title>
     <meta name="description" content="Découvrez l'aquabiking à Antibes : vélo aquatique pour perdre du poids, éliminer la cellulite et tonifier votre corps. Séance découverte gratuite ! À partir de 8€/séance.">
     <meta name="keywords" content="aquabiking, aquavélo, Antibes, fitness aquatique, cellulite, perte de poids, vélo aquatique, sport aquatique">
     <meta name="author" content="Aquavélo Antibes">

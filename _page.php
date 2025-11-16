@@ -279,11 +279,13 @@
       <?php endif; ?>
     
       <!-- FORMULAIRE ORIGINAL - NON MODIFIÉ -->
-      <form role="form" class="contact-form" method="POST" action="_page.php">
+      <!-- FORMULAIRE CORRIGÉ AVEC VALIDATION -->
+      <form role="form" class="contact-form validate-form" method="POST" action="_page.php" novalidate>
         <div class="form-group">
-          <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
-          <select class="form-control" id="center" name="center">
+          <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
+          <select class="form-control" id="center" name="center" required aria-required="true">
             <?php if (isset($centers_list_d)) : ?>
+              <option value="">-- Sélectionnez un centre --</option>
               <?php foreach ($centers_list_d as $free_d) : ?>
                 <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
                   <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
@@ -291,27 +293,62 @@
               <?php endforeach; ?>
             <?php endif; ?>
           </select>
+          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
         </div>
         
         <div class="form-group">
-          <label for="nom">Nom et prénom</label>
-          <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom et prénom" value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <label for="nom">Nom et prénom <span style="color: red;">*</span></label>
+          <input type="text" 
+                 class="form-control" 
+                 id="nom" 
+                 name="nom" 
+                 placeholder="Nom et prénom" 
+                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                 required 
+                 aria-required="true"
+                 minlength="2">
+          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
         </div>
         
         <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <label for="email">Email <span style="color: red;">*</span></label>
+          <input type="email" 
+                 class="form-control" 
+                 id="email" 
+                 name="email" 
+                 placeholder="exemple@email.com" 
+                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                 required 
+                 aria-required="true"
+                 pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                 title="Veuillez entrer une adresse email valide">
+          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
         </div>
          
         <div class="form-group">
-          <label for="phone">Téléphone</label>
-          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Téléphone" value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <label for="phone">Téléphone <span style="color: red;">*</span></label>
+          <input type="tel" 
+                 class="form-control" 
+                 id="phone" 
+                 name="phone" 
+                 placeholder="06 12 34 56 78" 
+                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                 required 
+                 aria-required="true"
+                 pattern="[0-9\s\+\-\(\)]{10,}"
+                 title="Veuillez entrer un numéro de téléphone valide">
+          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
         </div>
-
+      
         <input type="hidden" name="reason" id="reason">
         <input type="hidden" name="segment" id="segment">
-        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">Recevoir mon bon par email</button>
+        
+        <!-- Important : bouton de type submit visible (pas display:none) -->
+        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
+          Recevoir mon bon par email
+        </button>
       </form>
+
       <!-- FIN DU FORMULAIRE ORIGINAL -->
 
       <!-- Planning des cours avec alt optimisé -->

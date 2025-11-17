@@ -1,32 +1,18 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- ============================================
-       BALISES SEO OPTIMISÉES
-       ============================================ -->
-  
-  <!-- Title optimisé (50-60 caractères) -->
   <title>Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Gratuite 45min | Aquabiking</title>
   
-  <!-- Meta Description (150-160 caractères) -->
   <meta name="description" content="Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>. Essayez gratuitement l'aquabiking + aquagym 45min. Affinez votre silhouette rapidement. Réservez maintenant !">
-  
-  <!-- Meta Keywords -->
   <meta name="keywords" content="aquavélo, aquabiking, aquagym, <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>, sport aquatique, perte de poids, raffermissement, cellulite">
-  
-  <!-- Robots -->
   <meta name="robots" content="index, follow">
   <meta name="author" content="Aquavélo">
   
-  <!-- Canonical URL -->
   <link rel="canonical" href="https://www.aquavelo.com/centres/<?= htmlspecialchars(strtolower($city ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
   
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.aquavelo.com/centres/<?= htmlspecialchars(strtolower($city ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
   <meta property="og:title" content="Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Découverte Gratuite">
@@ -34,21 +20,14 @@
   <meta property="og:image" content="https://www.aquavelo.com/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg">
   <meta property="og:locale" content="fr_FR">
   
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Gratuite">
   <meta name="twitter:description" content="Essayez l'aquabiking gratuitement pendant 45min à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>.">
   <meta name="twitter:image" content="https://www.aquavelo.com/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg">
   
-  <!-- Vos CSS existants -->
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   
-  <!-- ============================================
-       DONNÉES STRUCTURÉES SCHEMA.ORG
-       ============================================ -->
-  
-  <!-- LocalBusiness Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -92,7 +71,6 @@
   }
   </script>
 
-  <!-- Breadcrumb Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -115,7 +93,6 @@
   }
   </script>
 
-  <!-- FAQ Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -144,7 +121,6 @@
     }]
   }
   </script>
-
 </head>
 <body>
 
@@ -160,7 +136,6 @@
   </div>
 
   <?php if (isset($row_center['id']) && $row_center['id'] == 253) : ?>
-    <!-- Facebook Pixel Code -->
     <script>
       !function(f,b,e,v,n,t,s) {
         if(f.fbq)return;
@@ -181,15 +156,12 @@
       fbq('init', '259009481449831');
       fbq('track', 'PageView');
     </script>
-    <!-- End Facebook Pixel Code -->
-  <?php endif; ?>
- 
+    <?php endif; ?>
 </header>
 
 <section class="content-area bg1">
   <div class="container">
     <div class="row mt-3">
-      <!-- Image principale avec alt optimisé -->
       <div class="col-md-3 col-6 text-center">
         <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
              alt="Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques" 
@@ -199,7 +171,6 @@
              loading="eager">
       </div>
 
-      <!-- Image secondaire avec alt optimisé -->
       <div class="col-md-3 col-6 text-center">
         <?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
@@ -218,7 +189,6 @@
         <?php endif; ?>
       </div>
 
-      <!-- Image supplémentaire avec alt optimisé -->
       <?php if (isset($row_center['id']) && !in_array($row_center['id'], [305, 347, 349])) : ?>
         <div class="col-md-3 col-6 text-center">
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
@@ -230,7 +200,6 @@
         </div>
       <?php endif; ?>
 
-      <!-- Image promotionnelle avec alt optimisé -->
       <?php 
       $promotions = [
           305 => "Cannes",
@@ -256,10 +225,8 @@
   </div>
 </section>
 
-<!-- Formulaire et Informations supplémentaires -->
 <div class="container">
   <div class="row">
-    <!-- Formulaire - CONSERVÉ TEL QUEL -->
     <div class="col-md-6">
       <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
       
@@ -270,7 +237,6 @@
       <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
         <p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
 
-        <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
@@ -280,8 +246,6 @@
         </script>
       <?php endif; ?>
     
-      <!-- FORMULAIRE ORIGINAL - NON MODIFIÉ -->
-      <!-- FORMULAIRE CORRIGÉ AVEC VALIDATION -->
       <form role="form" class="contact-form validate-form" method="POST" action="_page.php" novalidate>
         <div class="form-group">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
@@ -326,7 +290,7 @@
                  title="Veuillez entrer une adresse email valide">
           <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
         </div>
-         
+          
         <div class="form-group">
           <label for="phone">Téléphone <span style="color: red;">*</span></label>
           <input type="tel" 
@@ -345,15 +309,11 @@
         <input type="hidden" name="reason" id="reason">
         <input type="hidden" name="segment" id="segment">
         
-        <!-- Important : bouton de type submit visible (pas display:none) -->
         <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
           Recevoir mon bon par email
         </button>
       </form>
 
-      <!-- FIN DU FORMULAIRE ORIGINAL -->
-
-      <!-- Planning des cours avec alt optimisé -->
       <?php if (isset($row_center['id'])) : ?>
         <?php if ($row_center['id'] == 253) : ?>
           <div class="text-center mt-4">
@@ -382,17 +342,11 @@
         <?php endif; ?>
       <?php endif; ?>
       
-      <!-- ============================================
-           CONTENU SEO ENRICHI AJOUTÉ
-           ============================================ -->
-      
       <div style="margin-top: 40px;">
         <h3>Pourquoi choisir l'aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
-        
         <p>Notre <strong>centre d'aquabiking à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></strong> vous propose une méthode innovante pour <strong>affiner votre silhouette</strong> et <strong>perdre du poids</strong> efficacement. L'aquavélo combine les bienfaits du vélo et de l'aquagym dans une eau chauffée entre 28 et 32°C.</p>
 
         <h4>Les bienfaits de l'aquabiking</h4>
-        <p>L'<strong>aquabiking</strong>, aussi appelé aquavélo ou aquacycling, offre de nombreux avantages pour votre corps :</p>
         <ul>
           <li><strong>Brûlez jusqu'à 600 calories</strong> par séance de 45 minutes</li>
           <li><strong>Réduisez la cellulite</strong> grâce à l'effet drainant de l'eau</li>
@@ -406,19 +360,14 @@
         <p>L'aquabiking convient à <strong>tous les âges et tous les niveaux</strong> : débutants, sportifs confirmés, personnes en surpoids, seniors, femmes enceintes (avec accord médical). <strong>Pas besoin de savoir nager</strong> - l'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
 
         <h4>Une séance d'aquavélo, comment ça se passe ?</h4>
-        <p>Chaque <strong>séance de 45 minutes</strong> comprend :</p>
         <ol>
           <li>Échauffement progressif sur le vélo aquatique (5 min)</li>
           <li>Exercices variés avec changements de rythme (30 min)</li>
           <li>Renforcement bras et buste avec accessoires (5 min)</li>
           <li>Étirements et relaxation dans l'eau (5 min)</li>
         </ol>
-
-        <h4>Nos équipements à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></h4>
-        <p>Notre centre dispose de <strong>vélos aquatiques dernière génération</strong>, d'un <strong>bassin chauffé</strong>, de vestiaires spacieux avec douches, et de tout le matériel nécessaire. Ambiance musicale motivante et cours collectifs encadrés par des coachs diplômés.</p>
       </div>
 
-      <!-- Section FAQ pour le SEO -->
       <div style="margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
         <h3>Questions fréquentes sur l'aquavélo</h3>
         
@@ -437,22 +386,17 @@
         <h4 style="color: #00acdc; margin-top: 15px;">Y a-t-il des contre-indications ?</h4>
         <p>L'aquavélo est une activité douce, mais en cas de <strong>problèmes cardiaques, grossesse à risque ou blessures récentes</strong>, consultez votre médecin avant de commencer.</p>
       </div>
-
     </div>
 
-    <!-- Informations supplémentaires -->
     <div class="col-md-6">
       <dl style="margin-top:30px;">
-        <!-- Adresse avec données structurées -->
         <dt>Adresse</dt>
         <dd itemprop="address"><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
         
-        <!-- Téléphone cliquable -->
         <dt>Téléphone</dt>
         <dd>
           <strong>
-            <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" 
-               style="color: inherit; text-decoration: none;">
+            <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" style="color: inherit; text-decoration: none;">
               <?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
             </a>
           </strong>
@@ -461,7 +405,6 @@
         <dt>Horaires</dt>
         <dd itemprop="openingHours"><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
 
-        <!-- Agenda avec rel noopener pour sécurité -->
         <dt>Agenda pour les adhérents</dt>
         <dd>
           <a href="<?php 
@@ -478,7 +421,6 @@
           class="btn btn-default">Réserver en ligne</a>
         </dd>
 
-        <!-- Facebook avec rel noopener -->
         <dt>Découvrez la vie de votre centre</dt>
         <dd>
           <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
@@ -491,7 +433,6 @@
           </a>
         </dd>
 
-        <!-- Résultats Minceurs -->
         <dt>Résultats Minceurs Rapides</dt>
         <dd>
           <button type="button" class="btn btn-default" onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
@@ -501,7 +442,6 @@
           </button>
         </dd>
 
-        <!-- Calculateur avec button au lieu de link -->
         <dt>Calculateur calories avec conseils minceur</dt>
         <dd>
           <button type="button" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
@@ -511,7 +451,6 @@
           </button>
         </dd>
         
-        <!-- Menu Perte de Poids -->
         <dt>Menu perte de poids</dt>
         <dd>
           <a href="https://www.aquavelo.com/conseilminceur" class="btn btn-default" 
@@ -521,38 +460,27 @@
            </a>
         </dd>
 
-        <!-- Description -->
         <dt>Description</dt>
         <dd>
           <p><?= $row_center['description'] ?? '' ?></p>
         </dd>
-        
       </dl>
-      
-      <!-- ============================================
-           CARTE GOOGLE MAPS - LOCALISATION
-           ============================================ -->
       
       <div style="margin-top: 40px;">
         <h3>📍 Comment nous trouver</h3>
         <p><strong>Adresse :</strong> <?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
         
         <?php 
-        // Préparer l'adresse pour Google Maps
         $map_address = urlencode($row_center['address'] ?? '');
         $map_city = urlencode($city ?? '');
         
-        // Option 1 : Si vous avez les coordonnées GPS dans la base de données
         if (!empty($row_center['latitude']) && !empty($row_center['longitude'])) {
             $map_query = $row_center['latitude'] . ',' . $row_center['longitude'];
-        } 
-        // Option 2 : Utiliser l'adresse complète
-        else {
+        } else {
             $map_query = $map_address . ',+' . $map_city . ',+France';
         }
         ?>
         
-        <!-- Carte Google Maps en iframe -->
         <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
           <iframe 
             src="https://www.google.com/maps?q=<?= $map_query ?>&hl=fr&z=15&output=embed"
@@ -565,13 +493,11 @@
           </iframe>
         </div>
         
-        <!-- Informations d'accès -->
         <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #00acdc; border-radius: 4px;">
           <h4 style="margin-top: 0; color: #00acdc;">🚗 Accès et parking</h4>
           <p><strong>En voiture :</strong> Parking gratuit disponible à proximité du centre.</p>
           <p><strong>En transports en commun :</strong> Consultez les horaires de bus et tramway locaux pour rejoindre facilement notre centre.</p>
           
-          <!-- Bouton d'itinéraire Google Maps -->
           <p style="margin-top: 15px;">
             <a href="https://www.google.com/maps/dir/?api=1&destination=<?= $map_query ?>" 
                target="_blank" 
@@ -584,10 +510,6 @@
           </p>
         </div>
       </div>
-      
-      <!-- ============================================
-           SECTION SEO SUPPLÉMENTAIRE : Maillage interne
-           ============================================ -->
       
       <div style="margin-top: 40px; padding: 20px; background: #f0f8ff; border-radius: 8px;">
         <h3>Découvrez nos autres centres Aquavélo</h3>
@@ -607,201 +529,103 @@
           <?php endif; ?>
         </ul>
       </div>
-      
     </div>
   </div>
 </div>
 
-
-  <div class="container">
-  <div class="row">
-        <div class="col-md-6">
-      <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
-      
-      <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-        <p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
-      <?php endif; ?>
-      
-      <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-        <p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
-
-                <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'AW-17714430375');
-        </script>
-      <?php endif; ?>
-    
-            <form role="form" class="contact-form validate-form" method="POST" action="_page.php" novalidate>
-        <div class="form-group">
-          <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
-          <select class="form-control" id="center" name="center" required aria-required="true">
-            <?php if (isset($centers_list_d)) : ?>
-              <option value="">-- Sélectionnez un centre --</option>
-              <?php foreach ($centers_list_d as $free_d) : ?>
-                <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                  <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
-                </option>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </select>
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
-        </div>
-        
-        <div class="form-group">
-          <label for="nom">Nom et prénom <span style="color: red;">*</span></label>
-          <input type="text" 
-                 class="form-control" 
-                 id="nom" 
-                 name="nom" 
-                 placeholder="Nom et prénom" 
-                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 minlength="2">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email <span style="color: red;">*</span></label>
-          <input type="email" 
-                 class="form-control" 
-                 id="email" 
-                 name="email" 
-                 placeholder="exemple@email.com" 
-                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                 title="Veuillez entrer une adresse email valide">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
-        </div>
-         
-        <div class="form-group">
-          <label for="phone">Téléphone <span style="color: red;">*</span></label>
-          <input type="tel" 
-                 class="form-control" 
-                 id="phone" 
-                 name="phone" 
-                 placeholder="06 12 34 56 78" 
-                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 pattern="[0-9\s\+\-\(\)]{10,}"
-                 title="Veuillez entrer un numéro de téléphone valide">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
-        </div>
-      
-        <input type="hidden" name="reason" id="reason">
-        <input type="hidden" name="segment" id="segment">
-        
-                <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
-          Recevoir mon bon par email
-        </button>
-      </form>
 <script>
-  function ouvre_popup(url) {
-    const width = Math.max(window.innerWidth / 3, 300);
-    const height = Math.max(window.innerHeight / 3, 200);
-    const left = (window.innerWidth - width) / 2;
-    const top = (window.innerHeight - height) / 2;
-    window.open(
-      url, 
-      'popup', 
-      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-    );
-    return false;
-  }
+  function ouvre_popup(url) {
+    const width = Math.max(window.innerWidth / 3, 300);
+    const height = Math.max(window.innerHeight / 3, 200);
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    window.open(
+      url, 
+      'popup', 
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+    );
+    return false;
+  }
 </script>
 
 <script>
-// Validation pour iOS Safari et autres navigateurs
-(function() {
-  'use strict';
-  
-  // Fonction pour vérifier si le navigateur supporte la validation HTML5
-  function hasHtml5Validation() {
-    return typeof document.createElement('input').checkValidity === 'function';
-  }
-  
-  // Sélectionner le formulaire
-  var form = document.querySelector('.contact-form');
-  
-  if (form && hasHtml5Validation()) {
-    // Validation au moment de la soumission
-    form.addEventListener('submit', function(e) {
-      // Réinitialiser les messages d'erreur
-      var errorMessages = form.querySelectorAll('.error-message');
-      errorMessages.forEach(function(msg) {
-        msg.style.display = 'none';
-      });
-      
-      // Vérifier la validité du formulaire
-      if (!this.checkValidity()) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Ajouter la classe invalid pour le CSS
-        this.classList.add('invalid');
-        
-        // Afficher les messages d'erreur pour chaque champ invalide
-        var inputs = form.querySelectorAll('input[required], select[required]');
-        var firstInvalid = null;
-        
-        inputs.forEach(function(input) {
-          if (!input.validity.valid) {
-            var errorMsg = input.parentElement.querySelector('.error-message');
-            if (errorMsg) {
-              errorMsg.style.display = 'block';
-            }
-            
-            // Marquer le premier champ invalide
-            if (!firstInvalid) {
-              firstInvalid = input;
-            }
-          }
-        });
-        
-        // Faire défiler jusqu'au premier champ invalide
-        if (firstInvalid) {
-          firstInvalid.focus();
-          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        
-        return false;
-      } else {
-        this.classList.remove('invalid');
-        // Laisse la soumission du formulaire se faire normalement vers l'action '_page.php'
-      }
-    }, false);
-    
-    // Validation en temps réel pour améliorer l'UX
-    var inputs = form.querySelectorAll('input[required], select[required]');
-    inputs.forEach(function(input) {
-      input.addEventListener('blur', function() {
-        var errorMsg = this.parentElement.querySelector('.error-message');
-        if (errorMsg) {
-          if (!this.validity.valid) {
-            errorMsg.style.display = 'block';
-          } else {
-            errorMsg.style.display = 'none';
-          }
-        }
-      });
-      
-      input.addEventListener('input', function() {
-        var errorMsg = this.parentElement.querySelector('.error-message');
-        if (errorMsg && this.validity.valid) {
-          errorMsg.style.display = 'none';
-        }
-      });
-    });
-  }
-})();
-</script>
+document.addEventListener('DOMContentLoaded', function() {
+    'use strict';
 
+    // Sélectionner le formulaire
+    var forms = document.querySelectorAll('.validate-form');
+
+    // Boucle sur chaque formulaire trouvé (sécurité si doublon)
+    Array.prototype.slice.call(forms).forEach(function(form) {
+        
+        // Désactiver la validation HTML5 native pour gérer nous-mêmes
+        form.setAttribute('novalidate', true);
+
+        // Écoute de la soumission
+        form.addEventListener('submit', function(event) {
+            var isValid = true;
+            var firstError = null;
+
+            // Gestion des erreurs (Compatible Safari)
+            var inputs = form.querySelectorAll('input, select');
+            
+            inputs.forEach(function(input) {
+                // Trouver le message d'erreur associé
+                var group = input.closest('.form-group');
+                var errorMsg = group ? group.querySelector('.error-message') : null;
+
+                if (!input.checkValidity()) {
+                    // Champ invalide
+                    if (errorMsg) errorMsg.style.display = 'block';
+                    isValid = false;
+                    
+                    // Mémoriser le premier champ en erreur
+                    if (!firstError) firstError = input;
+                } else {
+                    // Champ valide
+                    if (errorMsg) errorMsg.style.display = 'none';
+                }
+            });
+
+            // Si invalide, on bloque et on focus
+            if (!isValid) {
+                event.preventDefault();
+                event.stopPropagation();
+                
+                if (firstError) {
+                    firstError.focus();
+                    // Scroll doux pour mobile
+                    firstError.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            }
+        }, false);
+
+        // Validation en temps réel (quand l'utilisateur tape)
+        var inputs = form.querySelectorAll('input, select');
+        inputs.forEach(function(input) {
+            // Événement 'input' pour la frappe
+            input.addEventListener('input', function() {
+                 var group = input.closest('.form-group');
+                 var errorMsg = group ? group.querySelector('.error-message') : null;
+                 
+                 if (input.checkValidity()) {
+                     if (errorMsg) errorMsg.style.display = 'none';
+                 }
+            });
+            
+            // Événement 'blur' pour la perte de focus
+            input.addEventListener('blur', function() {
+                 var group = input.closest('.form-group');
+                 var errorMsg = group ? group.querySelector('.error-message') : null;
+                 
+                 if (!input.checkValidity()) {
+                     if (errorMsg) errorMsg.style.display = 'block';
+                 }
+            });
+        });
+    });
+});
+</script>
 
 </body>
 </html>

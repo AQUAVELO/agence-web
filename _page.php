@@ -542,76 +542,77 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!form) return;
 
-    function validateForm(e) {
+    form.addEventListener('submit', function(e) {
         var isValid = true;
         var firstError = null;
 
-        // 1. Centre
+        // 1. Validation du CENTRE
         var centerSelect = document.getElementById('center');
-        var centerError = centerSelect.nextElementSibling;
-        if (centerSelect.value === "") {
+        var centerError = centerSelect ? centerSelect.nextElementSibling : null;
+        if (centerSelect && centerSelect.value === "") {
             if(centerError) centerError.style.display = 'block';
-            centerSelect.style.borderColor = 'red';
+            if(centerSelect) centerSelect.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = centerSelect;
         } else {
             if(centerError) centerError.style.display = 'none';
-            centerSelect.style.borderColor = '';
+            if(centerSelect) centerSelect.style.borderColor = '';
         }
 
-        // 2. Nom
+        // 2. Validation du NOM
         var nomInput = document.getElementById('nom');
-        var nomError = nomInput.nextElementSibling;
-        if (nomInput.value.trim().length < 2) {
+        var nomError = nomInput ? nomInput.nextElementSibling : null;
+        if (nomInput && nomInput.value.trim().length < 2) {
             if(nomError) nomError.style.display = 'block';
-            nomInput.style.borderColor = 'red';
+            if(nomInput) nomInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = nomInput;
         } else {
             if(nomError) nomError.style.display = 'none';
-            nomInput.style.borderColor = '';
+            if(nomInput) nomInput.style.borderColor = '';
         }
 
-        // 3. Email
+        // 3. Validation EMAIL
         var emailInput = document.getElementById('email');
-        var emailError = emailInput.nextElementSibling;
+        var emailError = emailInput ? emailInput.nextElementSibling : null;
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailInput.value)) {
+        if (emailInput && !emailRegex.test(emailInput.value)) {
             if(emailError) emailError.style.display = 'block';
-            emailInput.style.borderColor = 'red';
+            if(emailInput) emailInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = emailInput;
         } else {
             if(emailError) emailError.style.display = 'none';
-            emailInput.style.borderColor = '';
+            if(emailInput) emailInput.style.borderColor = '';
         }
 
-        // 4. Téléphone
+        // 4. Validation TÉLÉPHONE
         var phoneInput = document.getElementById('phone');
-        var phoneError = phoneInput.nextElementSibling;
-        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/;
+        var phoneError = phoneInput ? phoneInput.nextElementSibling : null;
+        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/; 
         
-        if (!phoneRegex.test(phoneInput.value)) {
+        if (phoneInput && !phoneRegex.test(phoneInput.value)) {
             if(phoneError) phoneError.style.display = 'block';
-            phoneInput.style.borderColor = 'red';
+            if(phoneInput) phoneInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = phoneInput;
         } else {
             if(phoneError) phoneError.style.display = 'none';
-            phoneInput.style.borderColor = '';
+            if(phoneInput) phoneInput.style.borderColor = '';
         }
 
+        // SI INVALIDE : Bloquer la soumission
         if (!isValid) {
-            if (e) {
-                e.preventDefault();
-                e.returnValue = false;
-            }
+            e.preventDefault();
+            e.stopPropagation();
             
             if (firstError) {
                 setTimeout(function() {
                     try {
                         firstError.scrollIntoView({ behavior: 'auto', block: 'center' });
-                        setTimeout(function() { firstError.focus(); }, 100);
+                        setTimeout(function() { 
+                            firstError.focus(); 
+                        }, 100);
                     } catch(err) {
                         firstError.focus();
                     }
@@ -619,12 +620,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return false;
         }
+        
+        // SI VALIDE : Le formulaire se soumet normalement
         return true;
-    }
+    });
 
-    form.addEventListener('submit', validateForm, false);
-    form.onsubmit = validateForm;
-
+    // Effacer les erreurs lors de la saisie
     var inputs = form.querySelectorAll('input, select');
     inputs.forEach(function(input) {
         input.addEventListener('input', function() {
@@ -633,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 error.style.display = 'none';
                 this.style.borderColor = '';
             }
-        }, false);
+        });
         
         input.addEventListener('change', function() {
             var error = this.nextElementSibling;
@@ -641,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 error.style.display = 'none';
                 this.style.borderColor = '';
             }
-        }, false);
+        });
     });
 });
 </script>

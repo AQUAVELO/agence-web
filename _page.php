@@ -246,10 +246,10 @@
         </script>
       <?php endif; ?>
     
-      <form role="form" class="contact-form validate-form" method="POST" action="_page.php" novalidate>
+      <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
         <div class="form-group">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
-          <select class="form-control" id="center" name="center" required aria-required="true">
+          <select class="form-control" id="center" name="center">
             <?php if (isset($centers_list_d)) : ?>
               <option value="">-- Sélectionnez un centre --</option>
               <?php foreach ($centers_list_d as $free_d) : ?>
@@ -269,10 +269,7 @@
                  id="nom" 
                  name="nom" 
                  placeholder="Nom et prénom" 
-                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 minlength="2">
+                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
           <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
         </div>
         
@@ -283,11 +280,7 @@
                  id="email" 
                  name="email" 
                  placeholder="exemple@email.com" 
-                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
-                 title="Veuillez entrer une adresse email valide">
+                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
           <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
         </div>
           
@@ -298,11 +291,7 @@
                  id="phone" 
                  name="phone" 
                  placeholder="06 12 34 56 78" 
-                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 pattern="[0-9\s\+\-\(\)]{10,}"
-                 title="Veuillez entrer un numéro de téléphone valide">
+                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
           <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
         </div>
       
@@ -370,7 +359,6 @@
 
       <div style="margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
         <h3>Questions fréquentes sur l'aquavélo</h3>
-        
         <h4 style="color: #00acdc; margin-top: 15px;">Dois-je savoir nager ?</h4>
         <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable et sécurisé.</p>
 
@@ -550,78 +538,90 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    'use strict';
+    var form = document.getElementById('contactForm');
+    
+    if (!form) return;
 
-    // Sélectionner le formulaire
-    var forms = document.querySelectorAll('.validate-form');
+    form.addEventListener('submit', function(e) {
+        var isValid = true;
+        var firstError = null;
 
-    // Boucle sur chaque formulaire trouvé (sécurité si doublon)
-    Array.prototype.slice.call(forms).forEach(function(form) {
+        // 1. Validation du CENTRE (Select)
+        var centerSelect = document.getElementById('center');
+        var centerError = centerSelect.nextElementSibling; // Le span error-message
+        if (centerSelect.value === "") {
+            if(centerError) centerError.style.display = 'block';
+            isValid = false;
+            if(!firstError) firstError = centerSelect;
+        } else {
+            if(centerError) centerError.style.display = 'none';
+        }
+
+        // 2. Validation du NOM (Input text)
+        var nomInput = document.getElementById('nom');
+        var nomError = nomInput.nextElementSibling;
+        if (nomInput.value.trim().length < 2) {
+            if(nomError) nomError.style.display = 'block';
+            isValid = false;
+            if(!firstError) firstError = nomInput;
+        } else {
+            if(nomError) nomError.style.display = 'none';
+        }
+
+        // 3. Validation EMAIL (Regex simple)
+        var emailInput = document.getElementById('email');
+        var emailError = emailInput.nextElementSibling;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+            if(emailError) emailError.style.display = 'block';
+            isValid = false;
+            if(!firstError) firstError = emailInput;
+        } else {
+            if(emailError) emailError.style.display = 'none';
+        }
+
+        // 4. Validation TÉLÉPHONE (Regex souple pour mobile)
+        var phoneInput = document.getElementById('phone');
+        var phoneError = phoneInput.nextElementSibling;
+        // Accepte chiffres, espaces, tirets, points, parenthèses, min 10 chars
+        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/; 
         
-        // Désactiver la validation HTML5 native pour gérer nous-mêmes
-        form.setAttribute('novalidate', true);
+        if (!phoneRegex.test(phoneInput.value)) {
+            if(phoneError) phoneError.style.display = 'block';
+            isValid = false;
+            if(!firstError) firstError = phoneInput;
+        } else {
+            if(phoneError) phoneError.style.display = 'none';
+        }
 
-        // Écoute de la soumission
-        form.addEventListener('submit', function(event) {
-            var isValid = true;
-            var firstError = null;
-
-            // Gestion des erreurs (Compatible Safari)
-            var inputs = form.querySelectorAll('input, select');
+        // SI INVALIDE : On arrête tout et on scroll vers l'erreur
+        if (!isValid) {
+            e.preventDefault(); // Empêche l'envoi
+            e.stopPropagation();
             
-            inputs.forEach(function(input) {
-                // Trouver le message d'erreur associé
-                var group = input.closest('.form-group');
-                var errorMsg = group ? group.querySelector('.error-message') : null;
-
-                if (!input.checkValidity()) {
-                    // Champ invalide
-                    if (errorMsg) errorMsg.style.display = 'block';
-                    isValid = false;
-                    
-                    // Mémoriser le premier champ en erreur
-                    if (!firstError) firstError = input;
-                } else {
-                    // Champ valide
-                    if (errorMsg) errorMsg.style.display = 'none';
-                }
-            });
-
-            // Si invalide, on bloque et on focus
-            if (!isValid) {
-                event.preventDefault();
-                event.stopPropagation();
-                
-                if (firstError) {
-                    firstError.focus();
-                    // Scroll doux pour mobile
-                    firstError.scrollIntoView({behavior: 'smooth', block: 'center'});
-                }
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstError.focus();
             }
-        }, false);
+        }
+        // SI VALIDE : Le script ne fait rien et laisse le formulaire partir vers _page.php
+    });
 
-        // Validation en temps réel (quand l'utilisateur tape)
-        var inputs = form.querySelectorAll('input, select');
-        inputs.forEach(function(input) {
-            // Événement 'input' pour la frappe
-            input.addEventListener('input', function() {
-                 var group = input.closest('.form-group');
-                 var errorMsg = group ? group.querySelector('.error-message') : null;
-                 
-                 if (input.checkValidity()) {
-                     if (errorMsg) errorMsg.style.display = 'none';
-                 }
-            });
-            
-            // Événement 'blur' pour la perte de focus
-            input.addEventListener('blur', function() {
-                 var group = input.closest('.form-group');
-                 var errorMsg = group ? group.querySelector('.error-message') : null;
-                 
-                 if (!input.checkValidity()) {
-                     if (errorMsg) errorMsg.style.display = 'block';
-                 }
-            });
+    // Effacer les erreurs quand l'utilisateur tape
+    var inputs = form.querySelectorAll('input, select');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            var error = this.nextElementSibling;
+            if (error && error.classList.contains('error-message')) {
+                error.style.display = 'none';
+            }
+        });
+        // Pour le select sur iPhone
+        input.addEventListener('change', function() {
+            var error = this.nextElementSibling;
+            if (error && error.classList.contains('error-message')) {
+                error.style.display = 'none';
+            }
         });
     });
 });

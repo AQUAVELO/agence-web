@@ -282,7 +282,7 @@
     
     
       <!-- FORMULAIRE CORRIGÉ AVEC VALIDATION -->
-      <form role="form" class="contact-form" method="POST" action="_page.php">
+      <form role="form" class="contact-form validate-form" method="POST" action="_page.php">
         <div class="form-group">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
           <select class="form-control" id="center" name="center" required aria-required="true">

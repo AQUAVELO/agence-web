@@ -346,8 +346,8 @@
         <input type="hidden" name="segment" id="segment">
         
         <!-- Important : bouton de type submit visible (pas display:none) -->
-        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
-          Recevoir mon bon par email
+        <button type="button" id="submit-btn" class="btn btn-default" aria-label="Recevoir mon bon par email">
+        Recevoir mon bon par email
         </button>
       </form>
 
@@ -624,89 +624,83 @@ function ouvre_popup(url) {
   return false;
 }
 
-// Validation formulaire iOS
-(function() {
+// Validation au clic du bouton
+document.addEventListener('DOMContentLoaded', function() {
   var form = document.querySelector('.contact-form');
-  if (!form) return;
+  var submitBtn = document.getElementById('submit-btn');
   
-  var isValidating = false;
+  if (!form || !submitBtn) return;
   
-  form.addEventListener('submit', function(e) {
-    // Si on est en train de valider, bloquer
-    if (isValidating) {
-      e.preventDefault();
-      return false;
-    }
-    
-    // Marquer qu'on valide
-    isValidating = true;
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
     
     var valid = true;
     var firstInvalid = null;
     
     // Vérifier centre
     var center = document.getElementById('center');
-    var centerError = center.parentElement.querySelector('.error-message');
-    if (!center.value) {
+    var centerError = center ? center.parentElement.querySelector('.error-message') : null;
+    if (center && !center.value) {
       valid = false;
-      centerError.style.display = 'block';
+      if (centerError) centerError.style.display = 'block';
       if (!firstInvalid) firstInvalid = center;
-    } else {
+    } else if (centerError) {
       centerError.style.display = 'none';
     }
     
     // Vérifier nom
     var nom = document.getElementById('nom');
-    var nomError = nom.parentElement.querySelector('.error-message');
-    if (!nom.value || nom.value.trim().length < 2) {
+    var nomError = nom ? nom.parentElement.querySelector('.error-message') : null;
+    if (nom && (!nom.value || nom.value.trim().length < 2)) {
       valid = false;
-      nomError.style.display = 'block';
+      if (nomError) nomError.style.display = 'block';
       if (!firstInvalid) firstInvalid = nom;
-    } else {
+    } else if (nomError) {
       nomError.style.display = 'none';
     }
     
     // Vérifier email
     var email = document.getElementById('email');
-    var emailError = email.parentElement.querySelector('.error-message');
+    var emailError = email ? email.parentElement.querySelector('.error-message') : null;
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.value || !emailRegex.test(email.value)) {
+    if (email && (!email.value || !emailRegex.test(email.value))) {
       valid = false;
-      emailError.style.display = 'block';
+      if (emailError) emailError.style.display = 'block';
       if (!firstInvalid) firstInvalid = email;
-    } else {
+    } else if (emailError) {
       emailError.style.display = 'none';
     }
     
     // Vérifier téléphone
     var phone = document.getElementById('phone');
-    var phoneError = phone.parentElement.querySelector('.error-message');
-    var phoneClean = phone.value.replace(/\s/g, '');
-    if (!phone.value || phoneClean.length < 10) {
-      valid = false;
-      phoneError.style.display = 'block';
-      if (!firstInvalid) firstInvalid = phone;
-    } else {
-      phoneError.style.display = 'none';
+    var phoneError = phone ? phone.parentElement.querySelector('.error-message') : null;
+    if (phone) {
+      var phoneClean = phone.value.replace(/[\s\-\(\)]/g, '');
+      if (!phone.value || phoneClean.length < 10) {
+        valid = false;
+        if (phoneError) phoneError.style.display = 'block';
+        if (!firstInvalid) firstInvalid = phone;
+      } else if (phoneError) {
+        phoneError.style.display = 'none';
+      }
     }
     
-    // Si invalide
+    // Si invalide, focus sur le premier champ
     if (!valid) {
-      e.preventDefault();
-      isValidating = false;
       if (firstInvalid) {
         firstInvalid.focus();
-        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function() {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
       }
       return false;
     }
     
-    // Si valide, laisser le formulaire se soumettre naturellement
-    isValidating = false;
-    return true;
+    // Si valide, soumettre le formulaire
+    form.submit();
   });
   
-})();
+});
 </script>
 
 

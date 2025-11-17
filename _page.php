@@ -614,101 +614,96 @@
 
 <!-- Script JavaScript à la fin (optimisé) -->
 <script>
-// Fonction popup (conservée)
+// Fonction popup
 function ouvre_popup(url) {
   const width = Math.max(window.innerWidth / 3, 300);
   const height = Math.max(window.innerHeight / 3, 200);
   const left = (window.innerWidth - width) / 2;
   const top = (window.innerHeight - height) / 2;
-  window.open(
-    url, 
-    'popup', 
-    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
-  );
+  window.open(url, 'popup', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes');
   return false;
 }
 
-// Validation formulaire pour iOS Safari
+// Validation formulaire iOS
 (function() {
-  'use strict';
-  
   var form = document.querySelector('.contact-form');
   if (!form) return;
   
-  function validateField(field) {
-    var errorMsg = field.parentElement.querySelector('.error-message');
-    var isValid = true;
-    
-    if (field.hasAttribute('required')) {
-      if (field.tagName === 'SELECT') {
-        isValid = field.value !== '';
-      }
-      else if (field.type === 'email') {
-        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        isValid = field.value.trim() !== '' && emailRegex.test(field.value);
-      }
-      else if (field.type === 'tel') {
-        var phoneValue = field.value.replace(/\s/g, '');
-        isValid = phoneValue.length >= 10;
-      }
-      else {
-        isValid = field.value.trim().length >= 2;
-      }
-    }
-    
-    if (errorMsg) {
-      errorMsg.style.display = isValid ? 'none' : 'block';
-    }
-    
-    return isValid;
-  }
-  
-  function validateForm() {
-    var fields = form.querySelectorAll('input[required], select[required]');
-    var isValid = true;
-    var firstInvalid = null;
-    
-    fields.forEach(function(field) {
-      if (!validateField(field)) {
-        isValid = false;
-        if (!firstInvalid) {
-          firstInvalid = field;
-        }
-      }
-    });
-    
-    if (!isValid && firstInvalid) {
-      firstInvalid.focus();
-      setTimeout(function() {
-        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-    
-    return isValid;
-  }
+  var isValidating = false;
   
   form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      this.submit();
+    // Si on est en train de valider, bloquer
+    if (isValidating) {
+      e.preventDefault();
+      return false;
     }
     
-    return false;
-  });
-  
-  var fields = form.querySelectorAll('input[required], select[required]');
-  fields.forEach(function(field) {
-    field.addEventListener('blur', function() {
-      validateField(this);
-    });
+    // Marquer qu'on valide
+    isValidating = true;
     
-    field.addEventListener('input', function() {
-      var errorMsg = this.parentElement.querySelector('.error-message');
-      if (errorMsg && errorMsg.style.display === 'block') {
-        validateField(this);
+    var valid = true;
+    var firstInvalid = null;
+    
+    // Vérifier centre
+    var center = document.getElementById('center');
+    var centerError = center.parentElement.querySelector('.error-message');
+    if (!center.value) {
+      valid = false;
+      centerError.style.display = 'block';
+      if (!firstInvalid) firstInvalid = center;
+    } else {
+      centerError.style.display = 'none';
+    }
+    
+    // Vérifier nom
+    var nom = document.getElementById('nom');
+    var nomError = nom.parentElement.querySelector('.error-message');
+    if (!nom.value || nom.value.trim().length < 2) {
+      valid = false;
+      nomError.style.display = 'block';
+      if (!firstInvalid) firstInvalid = nom;
+    } else {
+      nomError.style.display = 'none';
+    }
+    
+    // Vérifier email
+    var email = document.getElementById('email');
+    var emailError = email.parentElement.querySelector('.error-message');
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.value || !emailRegex.test(email.value)) {
+      valid = false;
+      emailError.style.display = 'block';
+      if (!firstInvalid) firstInvalid = email;
+    } else {
+      emailError.style.display = 'none';
+    }
+    
+    // Vérifier téléphone
+    var phone = document.getElementById('phone');
+    var phoneError = phone.parentElement.querySelector('.error-message');
+    var phoneClean = phone.value.replace(/\s/g, '');
+    if (!phone.value || phoneClean.length < 10) {
+      valid = false;
+      phoneError.style.display = 'block';
+      if (!firstInvalid) firstInvalid = phone;
+    } else {
+      phoneError.style.display = 'none';
+    }
+    
+    // Si invalide
+    if (!valid) {
+      e.preventDefault();
+      isValidating = false;
+      if (firstInvalid) {
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-    });
+      return false;
+    }
+    
+    // Si valide, laisser le formulaire se soumettre naturellement
+    isValidating = false;
+    return true;
   });
   
 })();

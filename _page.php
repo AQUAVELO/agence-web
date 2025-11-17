@@ -280,9 +280,9 @@
         </script>
       <?php endif; ?>
     
-    
+      <!-- FORMULAIRE ORIGINAL - NON MODIFIÉ -->
       <!-- FORMULAIRE CORRIGÉ AVEC VALIDATION -->
-      <form role="form" class="contact-form validate-form" method="POST" action="_page.php">
+      <form role="form" class="contact-form validate-form" method="POST" action="_page.php" novalidate>
         <div class="form-group">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
           <select class="form-control" id="center" name="center" required aria-required="true">
@@ -346,8 +346,8 @@
         <input type="hidden" name="segment" id="segment">
         
         <!-- Important : bouton de type submit visible (pas display:none) -->
-        <button type="button" id="submit-btn" class="btn btn-default" aria-label="Recevoir mon bon par email">
-        Recevoir mon bon par email
+        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
+          Recevoir mon bon par email
         </button>
       </form>
 
@@ -614,97 +614,122 @@
 
 <!-- Script JavaScript à la fin (optimisé) -->
 <script>
-// Fonction popup
+  function ouvre_popup(url) {
+    const width = Math.max(window.innerWidth / 3, 300);
+    const height = Math.max(window.innerHeight / 3, 200);
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    window.open(
+      url, 
+      'popup', 
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+    );
+    return false;
+  }
+</script>
+
+<script>
+// Validation pour iOS Safari et autres navigateurs
+(function() {
+  'use strict';
+  
+  // Fonction pour vérifier si le navigateur supporte la validation HTML5
+  function hasHtml5Validation() {
+    return typeof document.createElement('input').checkValidity === 'function';
+  }
+  
+  // Sélectionner le formulaire
+  var form = document.querySelector('.contact-form');
+  
+  if (form && hasHtml5Validation()) {
+    // Validation au moment de la soumission
+    form.addEventListener('submit', function(e) {
+      // Réinitialiser les messages d'erreur
+      var errorMessages = form.querySelectorAll('.error-message');
+      errorMessages.forEach(function(msg) {
+        msg.style.display = 'none';
+      });
+      
+      // Vérifier la validité du formulaire
+      if (!this.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Ajouter la classe invalid pour le CSS
+        this.classList.add('invalid');
+        
+        // Afficher les messages d'erreur pour chaque champ invalide
+        var inputs = form.querySelectorAll('input[required], select[required]');
+        var firstInvalid = null;
+        
+        inputs.forEach(function(input) {
+          if (!input.validity.valid) {
+            var errorMsg = input.parentElement.querySelector('.error-message');
+            if (errorMsg) {
+              errorMsg.style.display = 'block';
+            }
+            
+            // Marquer le premier champ invalide
+            if (!firstInvalid) {
+              firstInvalid = input;
+            }
+          }
+        });
+        
+        // Faire défiler jusqu'au premier champ invalide
+        if (firstInvalid) {
+          firstInvalid.focus();
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        return false;
+      } else {
+        this.classList.remove('invalid');
+      }
+    }, false);
+    
+    // Validation en temps réel pour améliorer l'UX
+    var inputs = form.querySelectorAll('input[required], select[required]');
+    inputs.forEach(function(input) {
+      input.addEventListener('blur', function() {
+        var errorMsg = this.parentElement.querySelector('.error-message');
+        if (errorMsg) {
+          if (!this.validity.valid) {
+            errorMsg.style.display = 'block';
+          } else {
+            errorMsg.style.display = 'none';
+          }
+        }
+      });
+      
+      input.addEventListener('input', function() {
+        var errorMsg = this.parentElement.querySelector('.error-message');
+        if (errorMsg && this.validity.valid) {
+          errorMsg.style.display = 'none';
+        }
+      });
+    });
+  }
+})();
+
+// Votre fonction popup existante
 function ouvre_popup(url) {
   const width = Math.max(window.innerWidth / 3, 300);
   const height = Math.max(window.innerHeight / 3, 200);
   const left = (window.innerWidth - width) / 2;
   const top = (window.innerHeight - height) / 2;
-  window.open(url, 'popup', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes');
+  window.open(
+    url, 
+    'popup', 
+    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+  );
   return false;
 }
-
-// Validation au clic du bouton
-document.addEventListener('DOMContentLoaded', function() {
-  var form = document.querySelector('.contact-form');
-  var submitBtn = document.getElementById('submit-btn');
-  
-  if (!form || !submitBtn) return;
-  
-  submitBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    
-    var valid = true;
-    var firstInvalid = null;
-    
-    // Vérifier centre
-    var center = document.getElementById('center');
-    var centerError = center ? center.parentElement.querySelector('.error-message') : null;
-    if (center && !center.value) {
-      valid = false;
-      if (centerError) centerError.style.display = 'block';
-      if (!firstInvalid) firstInvalid = center;
-    } else if (centerError) {
-      centerError.style.display = 'none';
-    }
-    
-    // Vérifier nom
-    var nom = document.getElementById('nom');
-    var nomError = nom ? nom.parentElement.querySelector('.error-message') : null;
-    if (nom && (!nom.value || nom.value.trim().length < 2)) {
-      valid = false;
-      if (nomError) nomError.style.display = 'block';
-      if (!firstInvalid) firstInvalid = nom;
-    } else if (nomError) {
-      nomError.style.display = 'none';
-    }
-    
-    // Vérifier email
-    var email = document.getElementById('email');
-    var emailError = email ? email.parentElement.querySelector('.error-message') : null;
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email && (!email.value || !emailRegex.test(email.value))) {
-      valid = false;
-      if (emailError) emailError.style.display = 'block';
-      if (!firstInvalid) firstInvalid = email;
-    } else if (emailError) {
-      emailError.style.display = 'none';
-    }
-    
-    // Vérifier téléphone
-    var phone = document.getElementById('phone');
-    var phoneError = phone ? phone.parentElement.querySelector('.error-message') : null;
-    if (phone) {
-      var phoneClean = phone.value.replace(/[\s\-\(\)]/g, '');
-      if (!phone.value || phoneClean.length < 10) {
-        valid = false;
-        if (phoneError) phoneError.style.display = 'block';
-        if (!firstInvalid) firstInvalid = phone;
-      } else if (phoneError) {
-        phoneError.style.display = 'none';
-      }
-    }
-    
-    // Si invalide, focus sur le premier champ
-    if (!valid) {
-      if (firstInvalid) {
-        firstInvalid.focus();
-        setTimeout(function() {
-          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
-      return false;
-    }
-    
-    // Si valide, soumettre le formulaire
-    form.submit();
-  });
-  
-});
 </script>
 
 
 </body>
 </html>
+
 
 

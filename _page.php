@@ -542,87 +542,106 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!form) return;
 
-    form.addEventListener('submit', function(e) {
+    function validateForm(e) {
         var isValid = true;
         var firstError = null;
 
-        // 1. Validation du CENTRE (Select)
+        // 1. Centre
         var centerSelect = document.getElementById('center');
-        var centerError = centerSelect.nextElementSibling; // Le span error-message
+        var centerError = centerSelect.nextElementSibling;
         if (centerSelect.value === "") {
             if(centerError) centerError.style.display = 'block';
+            centerSelect.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = centerSelect;
         } else {
             if(centerError) centerError.style.display = 'none';
+            centerSelect.style.borderColor = '';
         }
 
-        // 2. Validation du NOM (Input text)
+        // 2. Nom
         var nomInput = document.getElementById('nom');
         var nomError = nomInput.nextElementSibling;
         if (nomInput.value.trim().length < 2) {
             if(nomError) nomError.style.display = 'block';
+            nomInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = nomInput;
         } else {
             if(nomError) nomError.style.display = 'none';
+            nomInput.style.borderColor = '';
         }
 
-        // 3. Validation EMAIL (Regex simple)
+        // 3. Email
         var emailInput = document.getElementById('email');
         var emailError = emailInput.nextElementSibling;
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailInput.value)) {
             if(emailError) emailError.style.display = 'block';
+            emailInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = emailInput;
         } else {
             if(emailError) emailError.style.display = 'none';
+            emailInput.style.borderColor = '';
         }
 
-        // 4. Validation TÉLÉPHONE (Regex souple pour mobile)
+        // 4. Téléphone
         var phoneInput = document.getElementById('phone');
         var phoneError = phoneInput.nextElementSibling;
-        // Accepte chiffres, espaces, tirets, points, parenthèses, min 10 chars
-        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/; 
+        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/;
         
         if (!phoneRegex.test(phoneInput.value)) {
             if(phoneError) phoneError.style.display = 'block';
+            phoneInput.style.borderColor = 'red';
             isValid = false;
             if(!firstError) firstError = phoneInput;
         } else {
             if(phoneError) phoneError.style.display = 'none';
+            phoneInput.style.borderColor = '';
         }
 
-        // SI INVALIDE : On arrête tout et on scroll vers l'erreur
         if (!isValid) {
-            e.preventDefault(); // Empêche l'envoi
-            e.stopPropagation();
+            if (e) {
+                e.preventDefault();
+                e.returnValue = false;
+            }
             
             if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstError.focus();
+                setTimeout(function() {
+                    try {
+                        firstError.scrollIntoView({ behavior: 'auto', block: 'center' });
+                        setTimeout(function() { firstError.focus(); }, 100);
+                    } catch(err) {
+                        firstError.focus();
+                    }
+                }, 100);
             }
+            return false;
         }
-        // SI VALIDE : Le script ne fait rien et laisse le formulaire partir vers _page.php
-    });
+        return true;
+    }
 
-    // Effacer les erreurs quand l'utilisateur tape
+    form.addEventListener('submit', validateForm, false);
+    form.onsubmit = validateForm;
+
     var inputs = form.querySelectorAll('input, select');
     inputs.forEach(function(input) {
         input.addEventListener('input', function() {
             var error = this.nextElementSibling;
-            if (error && error.classList.contains('error-message')) {
+            if (error && error.classList && error.classList.contains('error-message')) {
                 error.style.display = 'none';
+                this.style.borderColor = '';
             }
-        });
-        // Pour le select sur iPhone
+        }, false);
+        
         input.addEventListener('change', function() {
             var error = this.nextElementSibling;
-            if (error && error.classList.contains('error-message')) {
+            if (error && error.classList && error.classList.contains('error-message')) {
                 error.style.display = 'none';
+                this.style.borderColor = '';
             }
-        });
+        }, false);
     });
 });
 </script>

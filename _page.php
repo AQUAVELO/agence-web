@@ -143,28 +143,47 @@
   }
   </script>
   
-  <!-- CSS POUR LES MESSAGES D'ERREUR -->
+  <!-- CSS POUR LES MESSAGES D'ERREUR ET FORMULAIRE -->
   <style>
     .form-group {
       margin-bottom: 20px;
       position: relative;
     }
+    
+    /* Important pour iOS Safari */
+    .form-control {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border-radius: 4px;
+    }
+    
+    select.form-control {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 20px;
+      padding-right: 40px;
+    }
 
     .error-message {
       display: none;
       color: #dc3545;
-      font-size: 12px;
+      font-size: 13px;
       margin-top: 5px;
       font-weight: 500;
     }
 
     .form-group.has-error .form-control {
-      border-color: #dc3545;
-      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+      border: 2px solid #dc3545 !important;
+      background-color: #fff5f5;
     }
 
     .form-group.has-error .error-message {
-      display: block;
+      display: block !important;
     }
 
     .form-control:focus {
@@ -173,7 +192,26 @@
       outline: none;
     }
 
-    /* Animation pour le bouton lors de la soumission */
+    .btn-default {
+      background-color: #00acdc;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      -webkit-appearance: none;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn-default:hover,
+    .btn-default:active {
+      background-color: #0096c7;
+      color: white;
+    }
+    
     .btn-default:disabled {
       opacity: 0.6;
       cursor: not-allowed;
@@ -192,29 +230,6 @@
       object-fit: cover;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    /* Boutons */
-    .btn-default {
-      background-color: #00acdc;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
-      cursor: pointer;
-    }
-    
-    .btn-default:hover {
-      background-color: #0096c7;
-      color: white;
-      text-decoration: none;
-    }
-    
-    .btn-default:focus {
-      outline: 2px solid #00acdc;
-      outline-offset: 2px;
     }
   </style>
 </head>
@@ -368,20 +383,11 @@
       <?php endif; ?>
     
       <!-- FORMULAIRE OPTIMISÉ POUR iOS SAFARI -->
-      <form role="form" 
-            class="contact-form" 
-            method="POST" 
-            action="_page.php" 
-            id="contactForm">
+      <form method="POST" action="_page.php" id="contactForm">
         
-        <div class="form-group">
+        <div class="form-group" id="centerGroup">
           <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span>*</span></label>
-          <select class="form-control" 
-                  id="center" 
-                  name="center" 
-                  required 
-                  aria-required="true"
-                  data-error="Veuillez sélectionner un centre">
+          <select class="form-control" id="center" name="center">
             <option value="">-- Sélectionnez un centre --</option>
             <?php if (isset($centers_list_d)) : ?>
               <?php foreach ($centers_list_d as $free_d) : ?>
@@ -392,59 +398,46 @@
               <?php endforeach; ?>
             <?php endif; ?>
           </select>
-          <span class="error-message"></span>
+          <span class="error-message">Veuillez sélectionner un centre</span>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" id="nomGroup">
           <label for="nom">Nom et prénom <span>*</span></label>
           <input type="text" 
                  class="form-control" 
                  id="nom" 
                  name="nom" 
                  placeholder="Nom et prénom" 
-                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 minlength="2"
-                 data-error="Veuillez entrer votre nom et prénom">
-          <span class="error-message"></span>
+                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <span class="error-message">Veuillez entrer votre nom et prénom</span>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" id="emailGroup">
           <label for="email">Email <span>*</span></label>
           <input type="email" 
                  class="form-control" 
                  id="email" 
                  name="email" 
                  placeholder="exemple@email.com" 
-                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 data-error="Veuillez entrer un email valide">
-          <span class="error-message"></span>
+                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <span class="error-message">Veuillez entrer un email valide</span>
         </div>
          
-        <div class="form-group">
+        <div class="form-group" id="phoneGroup">
           <label for="phone">Téléphone <span>*</span></label>
           <input type="tel" 
                  class="form-control" 
                  id="phone" 
                  name="phone" 
                  placeholder="06 12 34 56 78" 
-                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-                 required 
-                 aria-required="true"
-                 data-error="Veuillez entrer votre numéro de téléphone">
-          <span class="error-message"></span>
+                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          <span class="error-message">Veuillez entrer votre numéro de téléphone</span>
         </div>
       
-        <input type="hidden" name="reason" id="reason">
-        <input type="hidden" name="segment" id="segment">
+        <input type="hidden" name="reason" id="reason" value="">
+        <input type="hidden" name="segment" id="segment" value="">
         
-        <button type="submit" 
-                class="btn btn-default" 
-                id="submitBtn"
-                aria-label="Recevoir mon bon par email">
+        <button type="button" id="submitBtn" class="btn btn-default">
           Recevoir mon bon par email
         </button>
       </form>
@@ -594,7 +587,7 @@
           aria-label="Cliquez pour réserver en ligne"
           target="_blank"
           rel="noopener"
-          class="btn btn-default">Réserver en ligne</a>
+          class="btn btn-default" style="width: auto; display: inline-block;">Réserver en ligne</a>
         </dd>
         
         <!-- Facebook avec rel noopener -->
@@ -605,6 +598,7 @@
              target="_blank"
              rel="noopener nofollow"
              class="btn btn-default" 
+             style="width: auto; display: inline-block;"
              aria-label="Visitez notre page Facebook">
             Facebook
           </a>
@@ -615,6 +609,7 @@
         <dd>
           <button type="button" 
                   class="btn btn-default" 
+                  style="width: auto; display: inline-block;"
                   onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
                   title="Découvrez les témoignages et résultats minceur de nos clients" 
                   aria-label="Ouvrir les résultats minceurs">
@@ -627,6 +622,7 @@
         <dd>
           <button type="button" 
                   class="btn btn-default" 
+                  style="width: auto; display: inline-block;"
                   onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
                   title="Calculateur de calories personnalisé avec conseils pour perdre du poids" 
                   aria-label="Calculateur calories & conseils minceur">
@@ -639,6 +635,7 @@
         <dd>
           <a href="https://www.aquavelo.com/conseilminceur" 
              class="btn btn-default" 
+             style="width: auto; display: inline-block;"
              title="Découvrez nos menus équilibrés pour perdre du poids" 
              aria-label="Menu Perte de Poids">
             Menu Perte de Poids
@@ -702,7 +699,7 @@
                target="_blank" 
                rel="noopener"
                class="btn btn-default"
-               style="display: inline-block;"
+               style="display: inline-block; width: auto;"
                title="Obtenir l'itinéraire vers le centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>">
               🧭 Calculer mon itinéraire
             </a>
@@ -745,10 +742,10 @@
 // FONCTION POPUP (Votre fonction existante)
 // ===================================
 function ouvre_popup(url) {
-  const width = Math.max(window.innerWidth / 3, 300);
-  const height = Math.max(window.innerHeight / 3, 200);
-  const left = (window.innerWidth - width) / 2;
-  const top = (window.innerHeight - height) / 2;
+  var width = Math.max(window.innerWidth / 3, 300);
+  var height = Math.max(window.innerHeight / 3, 200);
+  var left = (window.innerWidth - width) / 2;
+  var top = (window.innerHeight - height) / 2;
   window.open(
     url, 
     'popup', 
@@ -763,217 +760,127 @@ function ouvre_popup(url) {
 (function() {
   'use strict';
   
-  // Sélectionner le formulaire
   var form = document.getElementById('contactForm');
   var submitBtn = document.getElementById('submitBtn');
   
-  if (!form) return;
+  if (!form || !submitBtn) return;
   
   // ===================================
   // FONCTIONS DE VALIDATION
   // ===================================
   
-  // Fonction de validation email
+  // Validation email
   function isValidEmail(email) {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
   
-  // Fonction de validation téléphone
+  // Validation téléphone
   function isValidPhone(phone) {
-    // Accepte les formats: 06 12 34 56 78, 0612345678, +33612345678
     var cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
-    var re = /^[\+]?[0-9]{10,}$/;
-    return re.test(cleaned);
+    return cleaned.length >= 10;
   }
   
-  // Fonction pour afficher une erreur
-  function showError(input, message) {
-    var formGroup = input.closest('.form-group');
-    if (formGroup) {
-      formGroup.classList.add('has-error');
-      var errorMsg = formGroup.querySelector('.error-message');
-      if (errorMsg) {
-        errorMsg.textContent = message || input.getAttribute('data-error') || 'Ce champ est requis';
-        errorMsg.style.display = 'block';
-      }
+  // Reset toutes les erreurs
+  function resetErrors() {
+    var groups = document.querySelectorAll('.form-group');
+    for (var i = 0; i < groups.length; i++) {
+      groups[i].classList.remove('has-error');
     }
   }
   
-  // Fonction pour masquer une erreur
-  function hideError(input) {
-    var formGroup = input.closest('.form-group');
-    if (formGroup) {
-      formGroup.classList.remove('has-error');
-      var errorMsg = formGroup.querySelector('.error-message');
-      if (errorMsg) {
-        errorMsg.style.display = 'none';
-      }
-    }
-  }
-  
-  // Fonction pour valider un champ
-  function validateField(input) {
-    var value = input.value.trim();
+  // Valider le formulaire
+  function validateForm() {
     var isValid = true;
-    var errorMessage = '';
     
-    // Vérifier si le champ est requis et vide
-    if (input.hasAttribute('required') && !value) {
+    // Reset errors
+    resetErrors();
+    
+    // Centre
+    var center = document.getElementById('center');
+    if (!center.value || center.value === '') {
+      document.getElementById('centerGroup').classList.add('has-error');
       isValid = false;
-      errorMessage = input.getAttribute('data-error') || 'Ce champ est requis';
     }
     
-    // Validation spécifique par type si le champ n'est pas vide
-    if (value) {
-      switch(input.type) {
-        case 'email':
-          if (!isValidEmail(value)) {
-            isValid = false;
-            errorMessage = 'Veuillez entrer un email valide (ex: nom@exemple.com)';
-          }
-          break;
-          
-        case 'tel':
-          if (!isValidPhone(value)) {
-            isValid = false;
-            errorMessage = 'Veuillez entrer un numéro valide (10 chiffres minimum)';
-          }
-          break;
-          
-        case 'text':
-          var minLength = input.getAttribute('minlength');
-          if (minLength && value.length < parseInt(minLength)) {
-            isValid = false;
-            errorMessage = 'Ce champ doit contenir au moins ' + minLength + ' caractères';
-          }
-          break;
-      }
+    // Nom
+    var nom = document.getElementById('nom');
+    if (!nom.value || nom.value.trim().length < 2) {
+      document.getElementById('nomGroup').classList.add('has-error');
+      isValid = false;
     }
     
-    // Validation pour les select
-    if (input.tagName.toLowerCase() === 'select' && input.hasAttribute('required')) {
-      if (!value || value === '') {
-        isValid = false;
-        errorMessage = input.getAttribute('data-error') || 'Veuillez faire un choix';
-      }
+    // Email
+    var email = document.getElementById('email');
+    if (!email.value || !isValidEmail(email.value)) {
+      document.getElementById('emailGroup').classList.add('has-error');
+      isValid = false;
     }
     
-    // Afficher ou masquer l'erreur
-    if (!isValid) {
-      showError(input, errorMessage);
-    } else {
-      hideError(input);
+    // Phone
+    var phone = document.getElementById('phone');
+    if (!phone.value || !isValidPhone(phone.value)) {
+      document.getElementById('phoneGroup').classList.add('has-error');
+      isValid = false;
     }
     
     return isValid;
   }
   
   // ===================================
-  // VALIDATION EN TEMPS RÉEL
+  // SOUMETTRE LE FORMULAIRE
   // ===================================
   
-  var inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-  
-  inputs.forEach(function(input) {
-    // Validation au blur (quand on quitte le champ)
-    input.addEventListener('blur', function() {
-      validateField(this);
-    });
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Masquer l'erreur lors de la saisie
-    input.addEventListener('input', function() {
-      if (this.closest('.form-group').classList.contains('has-error')) {
-        validateField(this);
-      }
-    });
-    
-    // Pour les select, valider au changement
-    if (input.tagName.toLowerCase() === 'select') {
-      input.addEventListener('change', function() {
-        validateField(this);
-      });
-    }
-  });
-  
-  // ===================================
-  // VALIDATION À LA SOUMISSION
-  // ===================================
-  
-  form.addEventListener('submit', function(e) {
-    var isFormValid = true;
-    var firstInvalidInput = null;
-    
-    // Désactiver le bouton pour éviter les doubles soumissions
-    if (submitBtn) {
+    if (validateForm()) {
+      // Désactiver le bouton pour éviter double soumission
       submitBtn.disabled = true;
       submitBtn.textContent = 'Envoi en cours...';
+      
+      // Soumettre le formulaire
+      form.submit();
+    } else {
+      // Scroll vers la première erreur
+      var firstError = document.querySelector('.has-error');
+      if (firstError) {
+        var y = firstError.getBoundingClientRect().top + window.pageYOffset - 100;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
-    
-    // Valider tous les champs requis
-    inputs.forEach(function(input) {
-      if (!validateField(input)) {
-        isFormValid = false;
-        if (!firstInvalidInput) {
-          firstInvalidInput = input;
-        }
-      }
-    });
-    
-    // Si le formulaire n'est pas valide
-    if (!isFormValid) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      // Réactiver le bouton
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Recevoir mon bon par email';
-      }
-      
-      // Scroller vers le premier champ invalide
-      if (firstInvalidInput) {
-        firstInvalidInput.focus();
-        
-        // Scroll smooth compatible iOS
-        var yOffset = -100;
-        var element = firstInvalidInput;
-        var y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        
-        // Pour iOS Safari
-        if ('scrollBehavior' in document.documentElement.style) {
-          window.scrollTo({
-            top: y,
-            behavior: 'smooth'
-          });
-        } else {
-          window.scrollTo(0, y);
-        }
-      }
-      
-      return false;
-    }
-    
-    // Si tout est valide, le formulaire peut être soumis
-    // Le bouton reste désactivé pour éviter les doubles clics
   });
   
   // ===================================
-  // GESTION TOUCHE ENTRÉE
+  // ENLEVER L'ERREUR AU CHANGEMENT
+  // ===================================
+  
+  var inputs = document.querySelectorAll('#center, #nom, #email, #phone');
+  
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('input', function() {
+      var group = this.closest('.form-group');
+      if (group && group.classList.contains('has-error')) {
+        group.classList.remove('has-error');
+      }
+    });
+    
+    inputs[i].addEventListener('change', function() {
+      var group = this.closest('.form-group');
+      if (group && group.classList.contains('has-error')) {
+        group.classList.remove('has-error');
+      }
+    });
+  }
+  
+  // ===================================
+  // PRÉVENIR SUBMIT PAR ENTRÉE
   // ===================================
   
   form.addEventListener('keypress', function(e) {
-    // Si on appuie sur Entrée dans un champ texte
-    if (e.keyCode === 13 && e.target.type !== 'submit' && e.target.tagName.toLowerCase() !== 'textarea') {
+    if (e.keyCode === 13 && e.target.tagName.toLowerCase() !== 'textarea') {
       e.preventDefault();
-      
-      // Passer au champ suivant
-      var inputs = Array.from(form.querySelectorAll('input:not([type=hidden]), select, textarea'));
-      var index = inputs.indexOf(e.target);
-      if (index > -1 && index < inputs.length - 1) {
-        inputs[index + 1].focus();
-      }
-      
       return false;
     }
   });

@@ -302,6 +302,8 @@
           Recevoir mon bon par email
         </button>
       </form>
+      
+      <a id="planning-cours"></a>
 
       <?php if (isset($row_center['id'])) : ?>
         <?php if ($row_center['id'] == 253) : ?>

@@ -14,10 +14,13 @@ define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
 define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
-    ['nom' => 'Formule 1', 'prix' => 63, 'description' => 'Les 40 séances + 5 gratuites payable en 10 x 63 € soit la séance à 14 €, valable 15 mois. Je paie la première échéance 63 €.'],
-    ['nom' => 'Formule 2', 'prix' => 73, 'description' => 'Les 80 séances + 8 gratuites payable en 12 x 79 € soit la séance à 11 €, valable 18 mois. Je paie la première échéance 79 €.'],
-    ['nom' => 'Formule 3', 'prix' => 87, 'description' => 'Les 104 séances + 10 gratuites payable en 12 x 97 € soit la séance à 10 €, valable 20 mois. Je paie la première échéance 97 €.'],
-    ['nom' => 'Formule 4', 'prix' => 99.00, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €. Je paie la première échéance 99 €.']
+     ['nom' => 'Formule 1', 'prix' => 99, 'description' => 'Les 5 séances payable en une fois 99 € soit la séance à 19,5 €, valable 6 mois. Je paie les 5 séances 99 €.'],
+    ['nom' => 'Formule 2', 'prix' => 95, 'description' => 'Les 10 séances à 185 € payable en 95+90 € soit la séance à 18,5 €, valable 9 mois. Je paie la première échéance 95 €.'],
+
+    ['nom' => 'Formule 3', 'prix' => 63, 'description' => 'Les 40 séances + 5 gratuites payable en 10 x 63 € soit la séance à 14 €, valable 15 mois. Je paie la première échéance 63 €.'],
+    ['nom' => 'Formule 4', 'prix' => 73, 'description' => 'Les 80 séances + 8 gratuites payable en 12 x 79 € soit la séance à 11 €, valable 18 mois. Je paie la première échéance 79 €.'],
+    ['nom' => 'Formule 5', 'prix' => 87, 'description' => 'Les 104 séances + 10 gratuites payable en 12 x 97 € soit la séance à 10 €, valable 20 mois. Je paie la première échéance 97 €.'],
+    ['nom' => 'Formule 6', 'prix' => 99.00, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €. Je paie la première échéance 99 €.']
 ];
 
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);

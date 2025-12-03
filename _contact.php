@@ -150,8 +150,7 @@ use PHPMailer\PHPMailer\Exception;
 	  <dd>TVA FR44822269528</dd>
 		
 
-          <dt>Téléphone</dt>
-          <dd>+33 (0)6 22 64 70 95</dd>
+          
 
           <dt>E-mail</dt>
           <dd><a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a></dd>

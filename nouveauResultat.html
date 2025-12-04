@@ -1,54 +1,429 @@
 <!DOCTYPE html>
-<html lang="FR">
-
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="look/resultat.css">
-    <title>Résultats Minceur</title>
-   <script type="text/javascript">
-        function fermerFenetreCourante() {
-            window.close();
-        }
-    </script>
-    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats Minceur Aquavelo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 50%, #0091b3 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 168, 204, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .close-btn:hover {
+            background: white;
+            color: #00a8cc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery {
+            padding: 50px 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 168, 204, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 168, 204, 0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 168, 204, 0.95), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-item-overlay h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .gallery-item-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Badge "Aquavelo" sur chaque image */
+        .aquavelo-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 168, 204, 0.4);
+            z-index: 10;
+        }
+
+        /* Modal pour agrandir les images */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: white;
+            border: none;
+            color: #00a8cc;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close:hover {
+            background: #00d4ff;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Footer avec logo Aquavelo */
+        .footer {
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 0.9rem;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .close-btn {
+                position: static;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                padding: 30px 15px;
+                gap: 20px;
+            }
+
+            .gallery-item img {
+                height: 300px;
+            }
+        }
+
+        /* Loading animation */
+        .gallery-item img {
+            animation: imageLoad 0.6s ease;
+        }
+
+        @keyframes imageLoad {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="header">
+            <button class="close-btn" onclick="window.close()">✕ Fermer</button>
+            <h1>💧 Résultats Minceur Aquavelo</h1>
+            <p>Découvrez les transformations obtenues avec une pratique régulière d'aquabiking</p>
+        </div>
 
-    <button onclick="fermerFenetreCourante()">Fermer fenêtre</button>
+        <div class="gallery">
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/ELISA.jpg" alt="Transformation Elisa">
+                <div class="gallery-item-overlay">
+                    <h3>Elisa</h3>
+                    <p>Résultat remarquable</p>
+                </div>
+            </div>
 
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/AURELIE.jpg" alt="Transformation Aurélie">
+                <div class="gallery-item-overlay">
+                    <h3>Aurélie</h3>
+                    <p>Transformation inspirante</p>
+                </div>
+            </div>
 
-    <table>
-        <caption style="font-family: 'Open Sans', sans-serif" >Voici quelques résultats obtenus avec une pratique réguliére</caption>
-        <thead>
-            <tr>
-                
-            </tr>
-            <tr>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><img src="resultats/ELISA.jpg" alt="Christine a minci" width=60% /></td>
-                <td><img src="resultats/AURELIE.jpg" alt="Christine a minci" width=60% /></td>
-            </tr>
-            <tr>
-                <td><img src="resultats/CHRISTINE.jpg" alt="Christine a minci" width=60% /></td>
-                <td><img src="resultats/PATY.jpg" alt="Christine a minci" width=60% /></td>
-            </tr>
-            <tr>
-                <td><img src="resultats/MEDE.jpg" alt="Christine a minci" width=60% /></td>
-                <td><img src="resultats/SANDRA.jpg" alt="Christine a minci" width=60% /></td>
-            </tr>
-                         <tr>
-                <td><img src="resultats/SOPHIE.jpg" alt="Résultat minceur Elisa" width=60% /></td>
-                <td><img src="resultats/OLIVIA.jpg" alt="Résultat minceur Olivia" width=60% /></td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/CHRISTINE.jpg" alt="Transformation Christine">
+                <div class="gallery-item-overlay">
+                    <h3>Christine</h3>
+                    <p>Objectif atteint</p>
+                </div>
+            </div>
 
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/PATY.jpg" alt="Transformation Paty">
+                <div class="gallery-item-overlay">
+                    <h3>Paty</h3>
+                    <p>Résultat visible</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/MEDE.jpg" alt="Transformation Médé">
+                <div class="gallery-item-overlay">
+                    <h3>Médé</h3>
+                    <p>Succès confirmé</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/SANDRA.jpg" alt="Transformation Sandra">
+                <div class="gallery-item-overlay">
+                    <h3>Sandra</h3>
+                    <p>Progression exceptionnelle</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/SOPHIE.jpg" alt="Transformation Sophie">
+                <div class="gallery-item-overlay">
+                    <h3>Sophie</h3>
+                    <p>Transformation réussie</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/OLIVIA.jpg" alt="Transformation Olivia">
+                <div class="gallery-item-overlay">
+                    <h3>Olivia</h3>
+                    <p>Résultat impressionnant</p>
+                </div>
+            </div>
+
+            <!-- Ajoutez facilement d'autres photos ici -->
+            <!-- 
+            <div class="gallery-item" onclick="openModal(this)">
+                <div class="aquavelo-badge">AQUAVELO</div>
+                <img src="resultats/NOUVEAU.jpg" alt="Transformation Nouveau">
+                <div class="gallery-item-overlay">
+                    <h3>Nom</h3>
+                    <p>Description</p>
+                </div>
+            </div>
+            -->
+        </div>
+
+        <div class="footer">
+            <p><strong>Aquavelo</strong> - Aquabiking collectif en piscine</p>
+            <p>Des résultats visibles dès le premier mois</p>
+            <p><a href="https://www.aquavelo.com" target="_blank">www.aquavelo.com</a></p>
+        </div>
+    </div>
+
+    <!-- Modal pour agrandir les images -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <img class="modal-content" id="modalImage" alt="Image agrandie">
+    </div>
+
+    <script>
+        // Fonction pour ouvrir le modal avec l'image agrandie
+        function openModal(element) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const img = element.querySelector('img');
+            
+            modal.classList.add('active');
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+        }
+
+        // Fonction pour fermer le modal
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Fermer le modal avec la touche Echap
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Animation au scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.6s ease';
+            observer.observe(item);
+        });
+    </script>
 </body>
-
 </html>

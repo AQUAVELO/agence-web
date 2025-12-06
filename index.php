@@ -641,7 +641,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
             <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
             <li class="cta-nav"> 
-              <a href="https://resamania.com/aquavelonice/" target="_blank" class="btn-reserve-nav">
+              <a href="https://www.aquavelo.com/?p=free" target="_blank" class="btn-reserve-nav">
                 <i class="fa fa-calendar"></i> Réserver
               </a> 
             </li>

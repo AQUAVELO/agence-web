@@ -760,7 +760,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="floating-booking-btn">
     <a href="https://www.aquavelo.com/?p=free" target="_blank">
       <i class="fa fa-calendar"></i>
-      <span>Essayer une séance</span>
+      <span>ESSAYER UNE SEANCE</span>
     </a>
   </div>
 

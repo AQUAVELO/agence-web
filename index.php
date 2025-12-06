@@ -733,7 +733,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <ul>
               <li><a href="/free">Séance Découverte Gratuite</a></li>
               <li><a href="/centres">Trouver un Centre</a></li>
-              <li><a href="/franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
+              <li><a href="/concept-aquabiking" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
               <li><a href="/contact">Contact</a></li>
             </ul>
           </aside>

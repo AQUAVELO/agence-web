@@ -648,7 +648,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
             <!-- ⭐ NOUVEAU : Bouton Ouvrir un Centre visible -->
             <li class="cta-franchise hidden-sm"> 
-              <a href="/franchise" class="btn-franchise-nav">
+              <a href="/concept-aquabiking" class="btn-franchise-nav">
                 <i class="fa fa-briefcase"></i> Ouvrir un Centre
               </a> 
             </li>

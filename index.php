@@ -765,7 +765,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ⭐ NOUVEAU : Bouton réservation flottant -->
   <div id="floating-booking-btn">
-    <a href="https://resamania.com/aquavelonice/" target="_blank">
+    <a href="https://www.aquavelo.com/?p=free" target="_blank">
       <i class="fa fa-calendar"></i>
       <span>Réserver</span>
     </a>

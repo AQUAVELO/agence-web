@@ -611,7 +611,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <ul class="dropdown-menu">
                 <li><a href="/concept-aquabiking">Notre Concept</a></li>
                 <li class="divider"></li>
-                <li><a href="/franchise" style="color: #ff9800; font-weight: 600;">
+                <li><a href="/concept-aquabiking" style="color: #ff9800; font-weight: 600;">
                   <i class="fa fa-briefcase"></i> Ouvrir un Centre
                 </a></li>
               </ul>

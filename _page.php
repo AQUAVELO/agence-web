@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   
+  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -121,19 +122,6 @@
     }]
   }
   </script>
-</head>
-<body>
-
-<header class="main-header clearfix">
-  <div class="container">
-    <h1 class="page-title pull-left">AQUAVELO = AQUABIKING + AQUAGYM</h1>
-    <h2 class="page-title pull-left">Excellent pour affiner et raffermir la silhouette, et perdre du poids si besoin.</h2>
-    <ol class="breadcrumb pull-right">
-      <li><a href="./">Accueil</a></li>
-      <li><a href="/centres">Centres</a></li>
-      <li class="active"><?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
-    </ol>
-  </div>
 
   <?php if (isset($row_center['id']) && $row_center['id'] == 253) : ?>
     <script>
@@ -152,20 +140,192 @@
         s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s);
       }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-
       fbq('init', '259009481449831');
       fbq('track', 'PageView');
     </script>
-    <?php endif; ?>
+  <?php endif; ?>
+
+  <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17714430375');
+    </script>
+  <?php endif; ?>
+
+  <style>
+    /* ⭐ Styles améliorés pour la conversion */
+    .promo-banner {
+      background: linear-gradient(135deg, #00d4ff, #00a8cc);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 20px rgba(0, 168, 204, 0.3);
+    }
+
+    .promo-banner h2 {
+      color: white;
+      font-size: 2rem;
+      margin: 0 0 10px 0;
+    }
+
+    .promo-banner p {
+      font-size: 1.2rem;
+      margin: 0;
+      opacity: 0.95;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      border: 3px solid #00d4ff;
+      box-shadow: 0 10px 30px rgba(0, 168, 204, 0.2);
+      margin-bottom: 30px;
+    }
+
+    .form-container h2 {
+      color: #00a8cc;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-control {
+      height: 45px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #00d4ff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #00d4ff, #00a8cc);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      width: 100%;
+      margin-top: 20px;
+      box-shadow: 0 5px 15px rgba(0, 168, 204, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 168, 204, 0.5);
+    }
+
+    .benefits-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+
+    .benefits-list li {
+      padding: 12px 0;
+      font-size: 1.05rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .benefits-list li:before {
+      content: "✓";
+      color: #00d4ff;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+
+    .urgency-box {
+      background: #fff3cd;
+      border-left: 4px solid #ff9800;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .urgency-box strong {
+      color: #ff9800;
+    }
+
+    .trust-badges {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .trust-badge {
+      text-align: center;
+      padding: 15px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .trust-badge i {
+      font-size: 2.5rem;
+      color: #00d4ff;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .promo-banner h2 {
+        font-size: 1.5rem;
+      }
+      
+      .form-container {
+        padding: 20px;
+      }
+
+      .trust-badge {
+        flex: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="main-header clearfix">
+  <div class="container">
+    <h1 class="page-title pull-left">Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></h1>
+    <ol class="breadcrumb pull-right">
+      <li><a href="./">Accueil</a></li>
+      <li><a href="/centres">Centres</a></li>
+      <li class="active"><?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
+    </ol>
+  </div>
 </header>
 
+<!-- Bannière promo -->
 <section class="content-area bg1">
+  <div class="container">
+    <div class="promo-banner">
+      <h2>🎁 Séance Découverte GRATUITE 45min</h2>
+      <p>✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé</p>
+    </div>
+  </div>
+</section>
+
+<!-- Photos du centre -->
+<section class="content-area" style="padding-top: 0;">
   <div class="container">
     <div class="row mt-3">
       <div class="col-md-3 col-6 text-center">
         <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
              alt="Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques" 
              class="img-fluid img-same" 
+             style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
              width="300" 
              height="200"
              loading="eager">
@@ -176,6 +336,7 @@
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
                alt="Espace aquagym centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                class="img-fluid img-same" 
+               style="border-radius: 10px;"
                width="300" 
                height="200"
                loading="lazy">
@@ -183,6 +344,7 @@
           <img src="/images/Cannes1.jpg" 
                alt="Intérieur centre Aquavélo Cannes" 
                class="img-fluid img-same" 
+               style="border-radius: 10px;"
                width="300" 
                height="200"
                loading="lazy">
@@ -194,6 +356,7 @@
           <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
                alt="Équipements vestiaires centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                class="img-fluid img-same" 
+               style="border-radius: 10px;"
                width="300" 
                height="200"
                loading="lazy">
@@ -215,6 +378,7 @@
             <img src="/images/promoJan24.webp" 
                  alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same" 
+                 style="border-radius: 10px; border: 3px solid #ff9800;"
                  width="300" 
                  height="200"
                  loading="lazy">
@@ -225,304 +389,328 @@
   </div>
 </section>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <h2 class="form-group">Essayez une séance gratuite de 45 mn</h2>
+<!-- Contenu principal -->
+<section class="content-area bg1">
+  <div class="container">
+    <div class="row">
       
-      <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-        <p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
-      <?php endif; ?>
-      
-      <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-        <p>en vous inscrivant sur notre <span style="color: #00acdc;"> <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank"><strong>calendrier</strong> (cliquez ici)</a></span> ou en prenant rendez-vous ci-dessous.</p>
-
-        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'AW-17714430375');
-        </script>
-      <?php endif; ?>
-    
-      <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
-        <div class="form-group">
-          <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
-          <select class="form-control" id="center" name="center">
-            <?php if (isset($centers_list_d)) : ?>
-              <option value="">-- Sélectionnez un centre --</option>
-              <?php foreach ($centers_list_d as $free_d) : ?>
-                <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                  <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
-                </option>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </select>
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
-        </div>
+      <!-- Colonne gauche : Formulaire + Contenu -->
+      <div class="col-md-6">
         
-        <div class="form-group">
-          <label for="nom">Nom et prénom <span style="color: red;">*</span></label>
-          <input type="text" 
-                 class="form-control" 
-                 id="nom" 
-                 name="nom" 
-                 placeholder="Nom et prénom" 
-                 value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email <span style="color: red;">*</span></label>
-          <input type="email" 
-                 class="form-control" 
-                 id="email" 
-                 name="email" 
-                 placeholder="exemple@email.com" 
-                 value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
-        </div>
+        <!-- Formulaire de réservation -->
+        <div class="form-container">
+          <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
           
-        <div class="form-group">
-          <label for="phone">Téléphone <span style="color: red;">*</span></label>
-          <input type="tel" 
-                 class="form-control" 
-                 id="phone" 
-                 name="phone" 
-                 placeholder="06 12 34 56 78" 
-                 value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-          <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
-        </div>
-      
-        <input type="hidden" name="reason" id="reason">
-        <input type="hidden" name="segment" id="segment">
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+              <strong><a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc;">
+                calendrier en ligne <i class="fa fa-external-link"></i>
+              </a></strong>
+            </div>
+          <?php endif; ?>
+          
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+              <strong><a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc;">
+                calendrier en ligne <i class="fa fa-external-link"></i>
+              </a></strong>
+            </div>
+          <?php endif; ?>
         
-        <button type="submit" class="btn btn-default" aria-label="Recevoir mon bon par email">
-          Recevoir mon bon par email
-        </button>
-      </form>
-      
-      <a id="planning-cours"></a>
+          <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
+            <div class="form-group">
+              <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
+              <select class="form-control" id="center" name="center">
+                <?php if (isset($centers_list_d)) : ?>
+                  <option value="">-- Sélectionnez un centre --</option>
+                  <?php foreach ($centers_list_d as $free_d) : ?>
+                    <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                      <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </select>
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="nom"><i class="fa fa-user"></i> Nom et Prénom <span style="color: red;">*</span></label>
+              <input type="text" 
+                     class="form-control" 
+                     id="nom" 
+                     name="nom" 
+                     placeholder="Votre nom et prénom" 
+                     value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="email"><i class="fa fa-envelope"></i> Email <span style="color: red;">*</span></label>
+              <input type="email" 
+                     class="form-control" 
+                     id="email" 
+                     name="email" 
+                     placeholder="exemple@email.com" 
+                     value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
+            </div>
+              
+            <div class="form-group">
+              <label for="phone"><i class="fa fa-phone"></i> Téléphone <span style="color: red;">*</span></label>
+              <input type="tel" 
+                     class="form-control" 
+                     id="phone" 
+                     name="phone" 
+                     placeholder="06 12 34 56 78" 
+                     value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
+            </div>
+          
+            <input type="hidden" name="reason" id="reason">
+            <input type="hidden" name="segment" id="segment">
+            
+            <button type="submit" class="btn btn-submit" aria-label="Recevoir mon bon par email">
+              <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
+            </button>
 
-      <?php if (isset($row_center['id'])) : ?>
-        <?php if ($row_center['id'] == 253) : ?>
-          <div class="text-center mt-4">
-            <img src="/images/planningAntibes.jpg" 
-                 alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
-                 class="img-fluid" 
-                 style="max-width: 100%; height: auto;"
-                 loading="lazy">
+            <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+              <i class="fa fa-lock"></i> Vos données sont sécurisées • Sans engagement
+            </p>
+          </form>
+        </div>
+
+        <!-- Urgence / Rareté -->
+        <div class="urgency-box">
+          <i class="fa fa-clock-o"></i> <strong>Places limitées !</strong> 
+          Profitez de cette offre découverte gratuite tant qu'elle est disponible.
+        </div>
+
+        <!-- Badges de confiance -->
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <i class="fa fa-shield"></i>
+            <p><strong>100% Sécurisé</strong><br>Données protégées</p>
           </div>
-        <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
-          <div class="text-center mt-4">
-            <img src="/images/PLANNINGCANNES0125.jpg" 
-                 alt="Planning hebdomadaire cours aquabiking aquagym Cannes janvier 2025" 
-                 class="img-fluid" 
-                 style="max-width: 100%; height: auto;"
-                 loading="lazy">
+          <div class="trust-badge">
+            <i class="fa fa-gift"></i>
+            <p><strong>Sans Engagement</strong><br>Aucun frais caché</p>
           </div>
-        <?php elseif ($row_center['id'] == 179) : ?>
-          <div class="text-center mt-4">
-            <img src="/images/planningNice.jpg" 
-                 alt="Planning hebdomadaire cours aquabiking aquagym Nice" 
-                 class="img-fluid" 
-                 style="max-width: 100%; height: auto;"
-                 loading="lazy">
+          <div class="trust-badge">
+            <i class="fa fa-star"></i>
+            <p><strong>Satisfaction</strong><br>98% de clients satisfaits</p>
           </div>
+        </div>
+
+        <!-- Planning -->
+        <a id="planning-cours"></a>
+        <?php if (isset($row_center['id'])) : ?>
+          <?php if ($row_center['id'] == 253) : ?>
+            <div class="text-center mt-4">
+              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+              <img src="/images/planningAntibes.jpg" 
+                   alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
+                   class="img-fluid" 
+                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                   loading="lazy">
+            </div>
+          <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
+            <div class="text-center mt-4">
+              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+              <img src="/images/PLANNINGCANNES0125.jpg" 
+                   alt="Planning hebdomadaire cours aquabiking aquagym Cannes janvier 2025" 
+                   class="img-fluid" 
+                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                   loading="lazy">
+            </div>
+          <?php elseif ($row_center['id'] == 179) : ?>
+            <div class="text-center mt-4">
+              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+              <img src="/images/planningNice.jpg" 
+                   alt="Planning hebdomadaire cours aquabiking aquagym Nice" 
+                   class="img-fluid" 
+                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                   loading="lazy">
+            </div>
+          <?php endif; ?>
         <?php endif; ?>
-      <?php endif; ?>
-      
-      <div style="margin-top: 40px;">
-        <h3>Pourquoi choisir l'aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
-        <p>Notre <strong>centre d'aquabiking à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></strong> vous propose une méthode innovante pour <strong>affiner votre silhouette</strong> et <strong>perdre du poids</strong> efficacement. L'aquavélo combine les bienfaits du vélo et de l'aquagym dans une eau chauffée entre 28 et 32°C.</p>
-
-        <h4>Les bienfaits de l'aquabiking</h4>
-        <ul>
-          <li><strong>Brûlez jusqu'à 600 calories</strong> par séance de 45 minutes</li>
-          <li><strong>Réduisez la cellulite</strong> grâce à l'effet drainant de l'eau</li>
-          <li><strong>Tonifiez vos muscles</strong> sans impact sur les articulations</li>
-          <li><strong>Améliorez votre circulation sanguine</strong> et votre retour veineux</li>
-          <li><strong>Sculptez votre silhouette</strong> : cuisses, fessiers, abdos</li>
-          <li><strong>Détendez-vous</strong> : l'eau a des vertus relaxantes naturelles</li>
-        </ul>
-
-        <h4>Pour qui est fait l'aquavélo ?</h4>
-        <p>L'aquabiking convient à <strong>tous les âges et tous les niveaux</strong> : débutants, sportifs confirmés, personnes en surpoids, seniors, femmes enceintes (avec accord médical). <strong>Pas besoin de savoir nager</strong> - l'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
-
-        <h4>Une séance d'aquavélo, comment ça se passe ?</h4>
-        <ol>
-          <li>Échauffement progressif sur le vélo aquatique (5 min)</li>
-          <li>Exercices variés avec changements de rythme (30 min)</li>
-          <li>Renforcement bras et buste avec accessoires (5 min)</li>
-          <li>Étirements et relaxation dans l'eau (5 min)</li>
-        </ol>
-      </div>
-
-      <div style="margin-top: 40px; background: #f8f9fa; padding: 20px; border-radius: 8px;">
-        <h3>Questions fréquentes sur l'aquavélo</h3>
-        <h4 style="color: #00acdc; margin-top: 15px;">Dois-je savoir nager ?</h4>
-        <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable et sécurisé.</p>
-
-        <h4 style="color: #00acdc; margin-top: 15px;">Que faut-il apporter ?</h4>
-        <p>Un <strong>maillot de bain</strong>, une <strong>serviette</strong> et optionnellement des <strong>chaussures d'eau</strong>. Nous mettons à disposition des casiers sécurisés pour vos affaires.</p>
-
-        <h4 style="color: #00acdc; margin-top: 15px;">Combien de séances par semaine ?</h4>
-        <p>Pour des <strong>résultats optimaux</strong>, nous recommandons <strong>2 à 3 séances par semaine</strong>. Les premiers résultats sont visibles après 8 à 10 séances.</p>
-
-        <h4 style="color: #00acdc; margin-top: 15px;">L'aquavélo fait-il maigrir ?</h4>
-        <p><strong>Oui</strong>, l'aquabiking permet de brûler entre <strong>400 et 600 calories par séance</strong>. Associé à une alimentation équilibrée, c'est très efficace pour la perte de poids.</p>
-
-        <h4 style="color: #00acdc; margin-top: 15px;">Y a-t-il des contre-indications ?</h4>
-        <p>L'aquavélo est une activité douce, mais en cas de <strong>problèmes cardiaques, grossesse à risque ou blessures récentes</strong>, consultez votre médecin avant de commencer.</p>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <dl style="margin-top:30px;">
-        <dt>Adresse</dt>
-        <dd itemprop="address"><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
         
-        <dt>Téléphone</dt>
-        <dd>
-          <strong>
-            <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" style="color: inherit; text-decoration: none;">
-              <?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+        <!-- Section Pourquoi choisir -->
+        <div style="margin-top: 40px;">
+          <h3 style="color: #00a8cc;"><i class="fa fa-star"></i> Pourquoi Choisir l'Aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
+          
+          <ul class="benefits-list">
+            <li><strong>Brûlez jusqu'à 600 calories</strong> par séance de 45 minutes</li>
+            <li><strong>Réduisez la cellulite</strong> grâce à l'effet drainant de l'eau</li>
+            <li><strong>Tonifiez vos muscles</strong> sans impact sur les articulations</li>
+            <li><strong>Améliorez votre circulation sanguine</strong> et votre retour veineux</li>
+            <li><strong>Sculptez votre silhouette</strong> : cuisses, fessiers, abdos</li>
+            <li><strong>Détendez-vous</strong> dans une eau chauffée entre 28 et 32°C</li>
+          </ul>
+
+          <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #00d4ff;">
+            <h4 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-users"></i> Pour Qui ?</h4>
+            <p>L'aquabiking convient à <strong>tous les âges et tous les niveaux</strong> : débutants, sportifs confirmés, personnes en surpoids, seniors, femmes enceintes (avec accord médical). <strong>Pas besoin de savoir nager</strong> - l'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div style="margin-top: 40px; background: #f8f9fa; padding: 25px; border-radius: 10px;">
+          <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-question-circle"></i> Questions Fréquentes</h3>
+          
+          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Dois-je savoir nager ?</h4>
+          <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
+
+          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Que faut-il apporter ?</h4>
+          <p>Un <strong>maillot de bain</strong>, une <strong>serviette</strong> et optionnellement des <strong>chaussures d'eau</strong>. Casiers sécurisés fournis.</p>
+
+          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien de séances par semaine ?</h4>
+          <p>Pour des résultats optimaux : <strong>2 à 3 séances par semaine</strong>. Premiers résultats visibles après 8-10 séances.</p>
+
+          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
+          <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>
+        </div>
+
+      </div>
+
+      <!-- Colonne droite : Infos centre + Map -->
+      <div class="col-md-6">
+        
+        <!-- Informations du centre -->
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+          <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-info-circle"></i> Informations du Centre</h3>
+          
+          <dl style="margin-top: 25px;">
+            <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-map-marker"></i> Adresse</dt>
+            <dd style="margin-bottom: 25px; padding-left: 25px;"><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+            
+            <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-phone"></i> Téléphone</dt>
+            <dd style="margin-bottom: 25px; padding-left: 25px;">
+              <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" 
+                 style="color: #00a8cc; font-weight: 600; font-size: 1.2rem; text-decoration: none;">
+                <?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+              </a>
+            </dd>
+            
+            <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-clock-o"></i> Horaires</dt>
+            <dd style="margin-bottom: 25px; padding-left: 25px;"><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+          </dl>
+
+          <!-- Boutons d'action -->
+          <div style="margin-top: 30px;">
+            <a href="<?php 
+                if (isset($row_center['id']) && $row_center['id'] == 179) {
+                    echo 'https://member.resamania.com/aquavelonice';
+                } else {
+                    echo 'https://member.resamania.com/aquavelo/';
+                }
+            ?>" 
+            title="Réservation en ligne pour adhérents" 
+            target="_blank"
+            rel="noopener"
+            class="btn btn-default btn-block" 
+            style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
+              <i class="fa fa-calendar"></i> Réserver en Ligne (Adhérents)
             </a>
-          </strong>
-        </dd>
-        
-        <dt>Horaires</dt>
-        <dd itemprop="openingHours"><?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
 
-        <dt>Agenda pour les adhérents</dt>
-        <dd>
-          <a href="<?php 
-              if (isset($row_center['id']) && $row_center['id'] == 179) {
-                  echo 'https://member.resamania.com/aquavelonice';
-              } else {
-                  echo 'https://member.resamania.com/aquavelo/';
-              }
-          ?>" 
-          title="Réservation en ligne pour adhérents Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
-          aria-label="Cliquez pour réserver en ligne"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-default">Réserver en ligne</a>
-        </dd>
+            <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+               title="Page Facebook Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+               target="_blank"
+               rel="noopener nofollow"
+               class="btn btn-default btn-block" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
+              <i class="fa fa-facebook"></i> Suivre sur Facebook
+            </a>
 
-        <dt>Découvrez la vie de votre centre</dt>
-        <dd>
-          <a href="https://www.facebook.com/<?= htmlspecialchars($row_center['facebook'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
-             title="Page Facebook Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
-             target="_blank"
-             rel="noopener nofollow"
-             class="btn btn-default" 
-             aria-label="Visitez notre page Facebook">
-            Facebook
-          </a>
-        </dd>
+            <button type="button" class="btn btn-default btn-block" 
+               onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
+              <i class="fa fa-image"></i> Voir les Résultats Minceur
+            </button>
 
-        <dt>Résultats Minceurs Rapides</dt>
-        <dd>
-          <button type="button" class="btn btn-default" onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
-             title="Découvrez les témoignages et résultats minceur de nos clients" 
-             aria-label="Ouvrir les résultats minceurs">
-            Résultats Minceurs
-          </button>
-        </dd>
+            <a href="/conseilminceur" class="btn btn-default btn-block" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
+              <i class="fa fa-cutlery"></i> Menu Perte de Poids
+            </a>
+          </div>
 
-        <dt>Calculateur calories avec conseils minceur</dt>
-        <dd>
-          <button type="button" class="btn btn-default" onclick="ouvre_popup('/resultatMinceur.php'); return false;" 
-             title="Calculateur de calories personnalisé avec conseils pour perdre du poids" 
-             aria-label="Calculateur calories & conseils minceur">
-            Conseils pour perdre du poids
-          </button>
-        </dd>
-        
-        <dt>Menu perte de poids</dt>
-        <dd>
-          <a href="https://www.aquavelo.com/conseilminceur" class="btn btn-default" 
-             title="Découvrez nos menus équilibrés pour perdre du poids" 
-             aria-label="Menu Perte de Poids">
-           Menu Perte de Poids
-           </a>
-        </dd>
-
-        <dt>Description</dt>
-        <dd>
-          <p><?= $row_center['description'] ?? '' ?></p>
-        </dd>
-      </dl>
-      
-      <div style="margin-top: 40px;">
-        <h3>📍 Comment nous trouver</h3>
-        <p><strong>Adresse :</strong> <?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></p>
-        
-        <?php 
-        $map_address = urlencode($row_center['address'] ?? '');
-        $map_city = urlencode($city ?? '');
-        
-        if (!empty($row_center['latitude']) && !empty($row_center['longitude'])) {
-            $map_query = $row_center['latitude'] . ',' . $row_center['longitude'];
-        } else {
-            $map_query = $map_address . ',+' . $map_city . ',+France';
-        }
-        ?>
-        
-        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-          <iframe 
-            src="https://www.google.com/maps?q=<?= $map_query ?>&hl=fr&z=15&output=embed"
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Localisation du centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> sur Google Maps"
-            aria-label="Carte interactive montrant l'emplacement du centre Aquavélo">
-          </iframe>
+          <?php if (!empty($row_center['description'])) : ?>
+          <div style="margin-top: 30px; padding-top: 30px; border-top: 2px solid #f0f0f0;">
+            <h4 style="color: #00a8cc;"><i class="fa fa-home"></i> À Propos du Centre</h4>
+            <p style="line-height: 1.8;"><?= $row_center['description'] ?></p>
+          </div>
+          <?php endif; ?>
         </div>
         
-        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-left: 4px solid #00acdc; border-radius: 4px;">
-          <h4 style="margin-top: 0; color: #00acdc;">🚗 Accès et parking</h4>
-          <p><strong>En voiture :</strong> Parking gratuit disponible à proximité du centre.</p>
-          <p><strong>En transports en commun :</strong> Consultez les horaires de bus et tramway locaux pour rejoindre facilement notre centre.</p>
+        <!-- Carte Google Maps -->
+        <div style="margin-top: 30px;">
+          <h3 style="color: #00a8cc; margin-bottom: 20px;"><i class="fa fa-map"></i> Comment Nous Trouver</h3>
           
-          <p style="margin-top: 15px;">
+          <?php 
+          $map_address = urlencode($row_center['address'] ?? '');
+          $map_city = urlencode($city ?? '');
+          
+          if (!empty($row_center['latitude']) && !empty($row_center['longitude'])) {
+              $map_query = $row_center['latitude'] . ',' . $row_center['longitude'];
+          } else {
+              $map_query = $map_address . ',+' . $map_city . ',+France';
+          }
+          ?>
+          
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <iframe 
+              src="https://www.google.com/maps?q=<?= $map_query ?>&hl=fr&z=15&output=embed"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Localisation du centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+            </iframe>
+          </div>
+          
+          <div style="margin-top: 20px; padding: 20px; background: #f8f9fa; border-left: 4px solid #00d4ff; border-radius: 8px;">
+            <h4 style="margin-top: 0; color: #00a8cc;"><i class="fa fa-car"></i> Accès et Parking</h4>
+            <p><strong>En voiture :</strong> Parking gratuit disponible</p>
+            <p><strong>En transports :</strong> Bus et tramway à proximité</p>
+            
             <a href="https://www.google.com/maps/dir/?api=1&destination=<?= $map_query ?>" 
                target="_blank" 
                rel="noopener"
                class="btn btn-default"
-               style="display: inline-block; padding: 10px 20px; background: #00acdc; color: white; text-decoration: none; border-radius: 4px;"
-               title="Obtenir l'itinéraire vers le centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-              🧭 Calculer mon itinéraire
+               style="margin-top: 15px; padding: 12px 20px; background: #00a8cc; color: white; border: none; border-radius: 8px;">
+              <i class="fa fa-location-arrow"></i> Calculer Mon Itinéraire
             </a>
-          </p>
+          </div>
         </div>
-      </div>
-      
-      <div style="margin-top: 40px; padding: 20px; background: #f0f8ff; border-radius: 8px;">
-        <h3>Découvrez nos autres centres Aquavélo</h3>
-        <p>Retrouvez l'aquabiking et l'aquagym dans toute la France :</p>
-        <ul style="list-style: none; padding: 0;">
-          <?php if (isset($centers_list_d)) : ?>
-            <?php foreach ($centers_list_d as $center) : ?>
-              <?php if ($center['city'] != $city) : ?>
-                <li style="margin-bottom: 8px;">
-                  <a href="/centres/<?= htmlspecialchars(strtolower($center['city']), ENT_QUOTES, 'UTF-8'); ?>" 
-                     title="Centre Aquavélo <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?> - Aquabiking">
-                    ➤ Aquavélo <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?>
-                  </a>
-                </li>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </ul>
+
+        <!-- Autres centres -->
+        <div style="margin-top: 40px; padding: 25px; background: #f0f8ff; border-radius: 10px;">
+          <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-map-marker"></i> Nos Autres Centres</h3>
+          <p>Retrouvez l'aquabiking dans toute la France :</p>
+          <ul style="list-style: none; padding: 0; columns: 2; -webkit-columns: 2; -moz-columns: 2;">
+            <?php if (isset($centers_list_d)) : ?>
+              <?php foreach ($centers_list_d as $center) : ?>
+                <?php if ($center['city'] != $city) : ?>
+                  <li style="margin-bottom: 8px; break-inside: avoid;">
+                    <a href="/centres/<?= htmlspecialchars(strtolower($center['city']), ENT_QUOTES, 'UTF-8'); ?>" 
+                       style="color: #00a8cc; text-decoration: none;"
+                       title="Centre Aquavélo <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?>">
+                      <i class="fa fa-chevron-right" style="font-size: 0.8rem;"></i> <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?>
+                    </a>
+                  </li>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </ul>
+        </div>
+
       </div>
     </div>
   </div>
-</div>
+</section>
 
+<!-- Scripts -->
 <script>
   function ouvre_popup(url) {
     const width = Math.max(window.innerWidth / 3, 300);
@@ -548,7 +736,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var isValid = true;
         var firstError = null;
 
-        // 1. Validation du CENTRE
+        // Validation du CENTRE
         var centerSelect = document.getElementById('center');
         var centerError = centerSelect ? centerSelect.nextElementSibling : null;
         if (centerSelect && centerSelect.value === "") {
@@ -561,7 +749,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(centerSelect) centerSelect.style.borderColor = '';
         }
 
-        // 2. Validation du NOM
+        // Validation du NOM
         var nomInput = document.getElementById('nom');
         var nomError = nomInput ? nomInput.nextElementSibling : null;
         if (nomInput && nomInput.value.trim().length < 2) {
@@ -574,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(nomInput) nomInput.style.borderColor = '';
         }
 
-        // 3. Validation EMAIL
+        // Validation EMAIL
         var emailInput = document.getElementById('email');
         var emailError = emailInput ? emailInput.nextElementSibling : null;
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -588,7 +776,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(emailInput) emailInput.style.borderColor = '';
         }
 
-        // 4. Validation TÉLÉPHONE
+        // Validation TÉLÉPHONE
         var phoneInput = document.getElementById('phone');
         var phoneError = phoneInput ? phoneInput.nextElementSibling : null;
         var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/; 
@@ -603,7 +791,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if(phoneInput) phoneInput.style.borderColor = '';
         }
 
-        // SI INVALIDE : Bloquer la soumission
+        // SI INVALIDE
         if (!isValid) {
             e.preventDefault();
             e.stopPropagation();
@@ -623,7 +811,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // SI VALIDE : Le formulaire se soumet normalement
+        // Track conversion
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submission', {
+                'event_category': 'conversion',
+                'event_label': 'free_trial_center',
+                'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'
+            });
+        }
+        
         return true;
     });
 

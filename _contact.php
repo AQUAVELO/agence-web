@@ -4,10 +4,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 ?>
+
+<!-- Header -->
 <header class="main-header clearfix">
   <div class="container">
     <h1 class="page-title pull-left">Contactez-nous</h1>
-
     <ol class="breadcrumb pull-right">
       <li><a href="./">Accueil</a></li>
       <li class="active">Contact</li>
@@ -15,311 +16,344 @@ use PHPMailer\PHPMailer\Exception;
   </div>
 </header>
 
-<section class="content-area bg1">
+<!-- Bannière Contact -->
+<section class="content-area" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 40px 0; margin-bottom: 0;">
   <div class="container">
-
-    <header class="page-header text-center" id="contact">
-      <h1 class="page-title">Besoin d'aide </h1>
-      <p class="larger">Vous avez une question ? Utilisez le formulaire ci-dessous en indiquant la ville concernée ou envoyez-nous un e-mail à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </p>
-      <p class="larger"></p>
-    </header>
-
     <div class="row">
-      <div class="col-md-8">
-        <div class="contactForm">
-          <div class="successMessage alert alert-success alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Merci! Nous vous répondrons dès que possible.
-          </div>
-          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            Une erreur est survenue.
-          </div>
-
-          <div class="col-sm-6 col-sm-offset-3">
-            <hr>
-
-            <form action="#contact" method="post">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo $_POST['email']; ?>" />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Nom, prénom et ville concernée </label>
-                <input type="text" class="form-control" placeholder="Nom, prénom et la ville concernée" name="nom" value="<?php echo $_POST['nom']; ?>" />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputFile">Message</label>
-                <textarea class="form-control" placeholder="Message" name="message"><?php echo $_POST['message']; ?></textarea>
-              </div>
-              <input type="hidden" name="raison">
-
-              <div class="checkbox">
-
-              </div>
-              <button type="submit" name="send" class="btn btn-default">Envoyer</button>
-            </form>
-
-
-            <?php
-            if (isset($_POST['send']) && empty($_POST['raison'])) {
-
-
-
-
-              $mail = new PHPMailer(true);
-              $mail->IsSMTP();
-              $mail->Host = "in-v3.mailjet.com";
-              // $mail->Host = $settings['mjhost'];
-              $mail->isHTML(true);                                  // Set email format to HTML
-
-              $mail->SMTPAuth = true;
-              $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-              $mail->Port = 587;
-              //$mail->Username = $settings['mjusername'];
-              //$mail->Password = $settings['mjpassword'];
-              $mail->Username = getenv("MAILJET_USERNAME");
-              $mail->Password = getenv("MAILJET_PASSWORD");
-              //Create a new PHPMailer instance
-              $nom = $_POST['nom'];
-              $email = $_POST['email'];
-              $message = $_POST['message'];
-              $err = 0;
-
-              if (empty($nom) or empty($email) or empty($message)) {
-                $vide = '<br />Un des champs est vide.';
-                $err++;
-              }
-              $errors = $vide;
-
-              if ($err == 0) {
-
-                $mail->setFrom('contact@aquavelo.com', 'Aquavelo');
-                $mail->addReplyTo('contact@aquavelo.com', 'Aquavelo');
-
-                $destinataire = "Aquavelo <claude@alesiaminceur.com>";
-                $mail->addAddress('franchise@alesiaminceur.com', 'Claude Rodriguez');
-
-                $object = "Contact sur le site Aquavelo";
-                $mail->Subject = $object;
-
-                $message = 'La personne ' . $nom . ' avec le mail ' . $email . ' vous a envoy&eacute; ce message :
-		<br /><br />' . $message;
-
-                $mail->msgHTML($message);
-
-                //send the message, check for errors
-                if (!$mail->send()) {
-                  echo '<div class="error">Votre message n\'a pas &eacute;t&eacute; envoy&eacute;.</div>';
-                } else {
-                  echo '<div class="error">Votre message a bien &eacute;t&eacute; envoy&eacute;.</div>';
-                }
-
-
-                echo '<div class="error">Votre message a bien &eacute;t&eacute; envoy&eacute;.</div>';
-              } else {
-                echo '<div class="error"><span class="underline">Il y a ' . $err . ' erreur';
-                if ($err > 1) {
-                  echo 's';
-                }
-                echo ' dans le formulaire :</span>' . $errors . '</div>';
-              }
-            }
-
-
-
-            ?>
-
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" id="emploi">
-
-        <dl>
-          <dt>Recrutement</dt>
-          <dd>Nous recherchons des maîtres nageurs pour notre développement national sur toute la France envoyer CV + photo à <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a> </dd>
-          <dd></dd>
-          <dd></dd>
-          <dt>Gestionnaire du site internet</dt>
-          <dd>Aqua Cannes</dd>
-          <dd>60 avenue du Docteur Raymond Picaud</dd>
-	  <dd>06150 Cannes</dd>
-	  <dd>Capital 15000 €</dd>	
-	  <dd>RCS 822 269 528</dd>
-	  <dd>TVA FR44822269528</dd>
-		
-
-          
-
-          <dt>E-mail</dt>
-          <dd><a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a></dd>
-        </dl>
-        <dl>
-	<button type="button" data-toggle="modal" data-target="#infos" class="btn btn-primary">Informations</button>
-<div class="modal" id="infos">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Plus d'informations</h4>
-      </div>
-      <div class="modal-body">
-	      
-	
-	      
-
-	      
-        <!doctype html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Contact</title>
-</head>
-
-<body>
-<div>
-  <div></div>
-</div>
-<p><strong>Mentions Légales</strong> </p>
-<p> </p>
-<h3>1. Présentation du site.</h3>
-<p>En vertu de l&rsquo;article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&rsquo;économie numérique, il est précisé aux utilisateurs du site <a href="https://aquavelo.com/">https://aquavelo.com</a> l&rsquo;identité des différents intervenants dans le cadre de sa réalisation et de son suivi :</p>
-<p><strong>Propriétaire</strong> : AQUA CANNES</p>
-<p><strong>Créateur</strong> : Claude RODRIGUEZ</p>
-<p><strong>Responsable publication</strong> : AQUA CANNES</p>
-<p>Le responsable publication est une personne physique ou une personne morale.</p>
-<p><strong>Webmaster</strong> : Claude RODRIGUEZ 60 avenue du Docteur Raymond Picaud à CANNES</p>
-<p><strong>Hébergeur</strong> : O2switch<br>
-Chemin des Pardiaux, 63000 Clermont-Ferrand, France</p>
-<h3>2. Conditions générales d&rsquo;utilisation du site et des services proposés.</h3>
-<p>L&rsquo;utilisation du site <a href="https://aquavelo.com/">https://aquavelo.com</a> implique l&rsquo;acceptation pleine et entière des conditions générales d&rsquo;utilisation ci-après décrites. Ces conditions d&rsquo;utilisation sont susceptibles d&rsquo;être modifiées ou complétées à tout moment, les utilisateurs du site <a href="https://aquavelo.com/">https://aquavelo.com</a> sont donc invités à les consulter de manière régulière.</p>
-<p>Ce site est normalement accessible à tout moment aux utilisateurs. Une interruption pour raison de maintenance technique peut être toutefois décidée par Julia, qui s&rsquo;efforcera alors de communiquer préalablement aux utilisateurs les dates et heures de l&rsquo;intervention.</p>
-<p>Le site <a href="https://aquavelo.com/">https://aquavelo.com</a> est mis à jour régulièrement par Claude RODRIGUEZ. De la même façon, les mentions légales peuvent être modifiées à tout moment : elles s&rsquo;imposent néanmoins à l&rsquo;utilisateur qui est invité à s&rsquo;y référer le plus souvent possible afin d&rsquo;en prendre connaissance.</p>
-<h3>3. Description des services fournis.</h3>
-<p>Le site <a href="https://aquavelo.com/">https://aquavelo.com</a> a pour objet de fournir des informations concernant des services sur l'Aquavelo destiné aux particuliers.</p>
-<p>Claude RODRIGUEZ s&rsquo;efforce de fournir sur le site <a href="https://aquavelo.com/">https://aquavelo.com</a> des informations aussi précises que possible. Toutefois, il ne pourrait être tenue responsable des omissions, des inexactitudes et des carences dans la mise à jour, qu&rsquo;elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.</p>
-<p>Tous les informations indiquées sur le site <a href="https://aquavelo.com/">https://aquavelo.com</a> sont données à titre indicatif, et sont susceptibles d&rsquo;évoluer. Par ailleurs, les renseignements figurant sur le site <a href="https://aquavelo.com/">https://aquavelo.com</a> ne sont pas exhaustifs. Ils sont donnés sous réserve de modifications ayant été apportées depuis leur mise en ligne.</p>
-<h3>4. Litige avec son centre.</h3>
-En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser les services d’un médiateur gratuitement à condition d’avoir tenté, au préalable, de résoudre son litige directement auprès du centre concerné par une réclamation écrite adressée en recommandé avec accusé de réception contenant l’objet, la description, et les justificatifs de sa réclamation. La saisine du médiateur ne sera possible qu’un mois après réception par le Club du courrier envoyé en recommandé avec accusé de réception et à défaut d’accord amiable intervenu entre l’abonné(e) et son centre. L’abonné(e) peut saisir le médiateur à l’adresse suivante : Médiation de la consommation CM2C 14 rue Saint Jean 75017 Paris ou via le site Internet : https://www.cm2c.net. En tant qu’entrepreneur indépendant, le Club licencié de marque est libre de faire appel à un autre médiateur. Si tel est le cas, les coordonnées seront précisées dans les conditions particulières du Club soumises à l’accord préalable de l’Abonné(e).
-<h3>5. Limitations contractuelles sur les données techniques.</h3>
-<p>Le site utilise la technologie JavaScript.</p>
-<p>Le site Internet ne pourra être tenu responsable de dommages matériels liés à l&rsquo;utilisation du site. De plus, l&rsquo;utilisateur du site s&rsquo;engage à accéder au site en utilisant un matériel récent, ne contenant pas de virus et avec un navigateur de dernière génération mis-à-jour</p>
-<h3>6. Propriété intellectuelle et contrefaçons.</h3>
-<p>AQUAVELO est propriétaire des droits de propriété intellectuelle ou détient les droits d&rsquo;usage sur tous les éléments accessibles sur le site, notamment les textes, images, graphismes, logo, icônes…</p>
-<p>Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de Claude RODRIGUEZ.</p>
-<p>Toute exploitation non autorisée du site ou de l&rsquo;un quelconque des éléments qu&rsquo;il contient sera considérée comme constitutive d&rsquo;une contrefaçon et poursuivie conformément aux dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.</p>
-<h3>7. Limitations de responsabilité.</h3>
-<p>AQUA CANNES ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l&rsquo;utilisateur, lors de l&rsquo;accès au site <a href="https://aquavelo.com/">https://aquavelo.com</a>, et résultant soit de l&rsquo;utilisation d&rsquo;un matériel ne répondant pas aux spécifications indiquées au point 4, soit de l&rsquo;apparition d&rsquo;un bug ou d&rsquo;une incompatibilité.</p>
-<p>AQUA CANNES ne pourra également être tenue responsable des dommages indirects (tels par exemple qu&rsquo;une perte de marché ou perte d&rsquo;une chance) consécutifs à l&rsquo;utilisation du site <a href="https://aquavelo.com/">https://aquavelo.com</a>.</p>
-<p>Des espaces interactifs (possibilité de poser des questions dans l&rsquo;espace contact) sont à la disposition des utilisateurs. AQUA CANNES se réserve le droit de supprimer, sans mise en demeure préalable, tout contenu déposé dans cet espace qui contreviendrait à la législation applicable en France, en particulier aux dispositions relatives à la protection des données. Le cas échéant, AQUA CANNES se réserve également la possibilité de mettre en cause la responsabilité civile et/ou pénale de l&rsquo;utilisateur, notamment en cas de message à caractère raciste, injurieux, diffamant, ou pornographique, quel que soit le support utilisé (texte, photographie…).</p>
-<h3>8. Gestion des données personnelles.</h3>
-<p>En France, les données personnelles sont notamment protégées par la loi n° 78-87 du 6 janvier 1978, la loi n° 2004-801 du 6 août 2004, l&rsquo;article L. 226-13 du Code pénal et la Directive Européenne du 24 octobre 1995.</p>
-<p>A l&rsquo;occasion de l&rsquo;utilisation du site <a href="https://aquavelo.com/">https://aquavelo.com</a>, peuvent êtres recueillies : l&rsquo;URL des liens par l&rsquo;intermédiaire desquels l&rsquo;utilisateur a accédé au site <a href="https://aquavelo.com/">https://aquavelo.com</a> le fournisseur d&rsquo;accès de l&rsquo;utilisateur, l&rsquo;adresse de protocole Internet (IP) de l&rsquo;utilisateur.</p>
-<p>En tout état de cause AQUA CANNES ne collecte des informations personnelles relatives à l&rsquo;utilisateur que pour le besoin de certains services proposés par le site <a href="https://aquavelo.com/">https://aquavelo.com</a>. L&rsquo;utilisateur fournit ces informations en toute connaissance de cause, notamment lorsqu&rsquo;il procède par lui-même à leur saisie. Il est alors précisé à l&rsquo;utilisateur du site <a href="https://aquavelo.com/">https://aquavelo.com</a> l&rsquo;obligation ou non de fournir ces informations.</p>
-<p>Conformément aux dispositions des articles 38 et suivants de la loi 78-17 du 6 janvier 1978 relative à l&rsquo;informatique, aux fichiers et aux libertés, tout utilisateur dispose d&rsquo;un droit d&rsquo;accès, de rectification et d&rsquo;opposition aux données personnelles le concernant, en effectuant sa demande écrite et signée, accompagnée d&rsquo;une copie du titre d&rsquo;identité avec signature du titulaire de la pièce, en précisant l&rsquo;adresse à laquelle la réponse doit être envoyée.</p>
-<p>Aucune information personnelle de l&rsquo;utilisateur du site <a href="https://aquavelo.com/">https://aquavelo.com</a> n&rsquo;est publiée à l&rsquo;insu de l&rsquo;utilisateur, échangée, transférée, cédée ou vendue sur un support quelconque à des tiers. Seule l&rsquo;hypothèse du rachat de AQUA CANNES et de ses droits permettrait la transmission des dites informations à l&rsquo;éventuel acquéreur qui serait à son tour tenu de la même obligation de conservation et de modification des données vis à vis de l&rsquo;utilisateur du site <a href="https://aquavelo.com/">https://aquavelo.com</a>. </p>
-<p>Les bases de données sont protégées par les dispositions de la loi du 1er juillet 1998 transposant la directive 96/9 du 11 mars 1996 relative à la protection juridique des bases de données.</p>
-<h3>9. Liens hypertextes et cookies.</h3>
-<p>Le site <a href="https://aquavelo.com/">https://aquavelo.com</a> contient un certain nombre de liens hypertextes vers d&rsquo;autres sites, mis en place avec l&rsquo;autorisation de AQUA CANNES. Cependant, AQUA CANNES
-	n&rsquo;a pas la possibilité de vérifier le contenu des sites ainsi visités, et n&rsquo;assumera en conséquence aucune responsabilité de ce fait.</p>
-<p>La navigation sur le site <a href="https://aquavelo.com/">https://aquavelo.com</a> est susceptible de provoquer l&rsquo;installation de cookie(s) sur l&rsquo;ordinateur de l&rsquo;utilisateur. Un cookie est un fichier de petite taille, qui ne permet pas l&rsquo;identification de l&rsquo;utilisateur, mais qui enregistre des informations relatives à la navigation d&rsquo;un ordinateur sur un site. Les données ainsi obtenues visent à faciliter la navigation ultérieure sur le site, et ont également vocation à permettre diverses mesures de fréquentation.</p>
-<p>Le refus d&rsquo;installation d&rsquo;un cookie peut entraîner l&rsquo;impossibilité d&rsquo;accéder à certains services. L&rsquo;utilisateur peut toutefois configurer son ordinateur de la manière suivante, pour refuser l&rsquo;installation des cookies :</p>
-<p>Sous Internet Explorer : onglet outil (pictogramme en forme de rouage en haut a droite) / options internet. Cliquez sur Confidentialité et choisissez Bloquer tous les cookies. Validez sur Ok.</p>
-<p>Sous Firefox : en haut de la fenêtre du navigateur, cliquez sur le bouton Firefox, puis aller dans l&rsquo;onglet Options. Cliquer sur l&rsquo;onglet Vie privée.<br>
-  Paramétrez les Règles de conservation sur : utiliser les paramètres personnalisés pour l&rsquo;historique. Enfin décochez-la pour désactiver les cookies.</p>
-<p>Sous Safari : Cliquez en haut à droite du navigateur sur le pictogramme de menu (symbolisé par un rouage). Sélectionnez Paramètres. Cliquez sur Afficher les paramètres avancés. Dans la section « Confidentialité », cliquez sur Paramètres de contenu. Dans la section « Cookies », vous pouvez bloquer les cookies.</p>
-<p>Sous Chrome : Cliquez en haut à droite du navigateur sur le pictogramme de menu (symbolisé par trois lignes horizontales). Sélectionnez Paramètres. Cliquez sur Afficher les paramètres avancés. Dans la section « Confidentialité », cliquez sur préférences. Dans l&rsquo;onglet « Confidentialité », vous pouvez bloquer les cookies.</p>
-<h3>10. Droit applicable et attribution de juridiction.</h3>
-<p>Tout litige en relation avec l&rsquo;utilisation du site <a href="https://aquavelo.com/">https://aquavelo.com </a>est soumis au droit français. Il est fait attribution exclusive de juridiction aux tribunaux compétents de Paris.</p>
-<h3>11. Les principales lois concernées.</h3>
-<p>Loi n° 78-87 du 6 janvier 1978, notamment modifiée par la loi n° 2004-801 du 6 août 2004 relative à l&rsquo;informatique, aux fichiers et aux libertés.</p>
-<p>Loi n° 2004-575 du 21 juin 2004 pour la confiance dans l&rsquo;économie numérique.</p>
-<h3>12. Lexique.</h3>
-<p>Utilisateur : Internaute se connectant, utilisant le site susnommé.</p>
-<p>Informations personnelles : « les informations qui permettent, sous quelque forme que ce soit, directement ou non, l&rsquo;identification des personnes physiques auxquelles elles s&rsquo;appliquent » (article 4 de la loi n° 78-17 du 6 janvier 1978).</p>
-</body>
-</html>
-      </div>
-      <div class="modal-footer">
-        <em>Informations legales</em>
-      </div>
-	    <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+      <div class="col-md-8 col-md-offset-2 text-center" style="color: white;">
+        <h2 style="color: white; font-size: 2rem; margin: 0 0 15px 0;">
+          <i class="fa fa-comments"></i> Besoin d'Aide ou d'Informations ?
+        </h2>
+        <p style="font-size: 1.2rem; margin-bottom: 10px; opacity: 0.95;">
+          Notre équipe vous répond sous 24h • Questions, réservations, franchise
+        </p>
+        <p style="font-size: 1.1rem; opacity: 0.9;">
+          <i class="fa fa-phone"></i> <strong>06 22 64 70 95</strong> • 
+          <i class="fa fa-envelope"></i> <a href="mailto:claude@alesiaminceur.com" style="color: white; text-decoration: underline;">claude@alesiaminceur.com</a>
+        </p>
       </div>
     </div>
   </div>
-</div>
-<br>
-<br>
-		
-    <!-- Bouton pour afficher la politique de confidentialité -->
-    <button type="button" data-toggle="modal" data-target="#politique" class="btn btn-primary">Politique de confidentialité</button>
-		
-    <!-- Modal pour afficher la politique de confidentialité -->
-    <div class="modal" id="politique">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Politique de Confidentialité</h4>
+</section>
+
+<!-- Section Contact Principal -->
+<section class="content-area bg1">
+  <div class="container">
+
+    <!-- Introduction -->
+    <header class="page-header text-center" id="contact">
+      <h2 class="page-title" style="color: #00a8cc; margin-bottom: 20px;">Une Question ? Écrivez-nous !</h2>
+      <p class="larger" style="font-size: 1.1rem; color: #666;">
+        Remplissez le formulaire ci-dessous en indiquant la ville concernée, nous vous répondrons rapidement.
+      </p>
+    </header>
+
+    <div class="row" style="margin-top: 40px;">
+      
+      <!-- Colonne Formulaire -->
+      <div class="col-md-8">
+        <div class="contactForm" style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+          
+          <!-- Messages de succès/erreur -->
+          <div class="successMessage alert alert-success alert-dismissable" style="display: none; border-radius: 10px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-check-circle"></i> <strong>Merci !</strong> Nous vous répondrons dès que possible.
+          </div>
+          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none; border-radius: 10px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-exclamation-triangle"></i> <strong>Erreur :</strong> Une erreur est survenue.
+          </div>
+
+          <!-- Formulaire -->
+          <form action="#contact" method="post">
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nom" style="color: #00a8cc; font-weight: 600;">
+                    <i class="fa fa-user"></i> Nom et Prénom *
+                  </label>
+                  <input type="text" 
+                         class="form-control" 
+                         id="nom"
+                         placeholder="Votre nom complet" 
+                         name="nom" 
+                         value="<?php echo htmlspecialchars($_POST['nom'] ?? ''); ?>"
+                         required
+                         style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;" />
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email" style="color: #00a8cc; font-weight: 600;">
+                    <i class="fa fa-envelope"></i> Email *
+                  </label>
+                  <input type="email" 
+                         class="form-control" 
+                         id="email"
+                         placeholder="votre.email@exemple.com" 
+                         name="email" 
+                         value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>"
+                         required
+                         style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;" />
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <h5>Politique de confidentialité</h5>
-                <p>Devant le développement des nouveaux outils de communication, il est nécessaire de porter une attention particulière à la protection de la vie privée. C’est pourquoi, nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.</p>
-                <h5>Collecte des renseignements personnels</h5>
-                <p>Nous collectons les renseignements suivants :</p>
-                <ul>
-                    <li>Nom – Prénom – Numéro de téléphone – Adresse email</li>
-                </ul>
-                <p>Les renseignements personnels que nous collectons sont recueillis au travers de formulaires et grâce à l’interactivité établie entre vous et le site Web. Nous utilisons également, comme indiqué dans la section suivante, des cookies pour réunir des informations vous concernant.</p>
-                <h5>Formulaires et interactivité</h5>
-                <p>Vos renseignements personnels sont collectés par le biais de formulaire, à savoir : Nom, Prénom, téléphone, adresse mail.</p>
-                <p>Nous utilisons les renseignements ainsi collectés pour les finalités suivantes :</p>
-                <ul>
-                    <li>Prise de contact</li>
-                    <li>Envoie d’emailings marketing</li>
-                </ul>
-                <h5>Cookies</h5>
-                <p>Nous recueillons certaines informations par le biais de cookies. Il s’agit principalement des informations suivantes :</p>
-                <ul>
-                    <li>Adresse IP</li>
-                    <li>Système d’exploitation</li>
-                    <li>Pages visitées et requêtes</li>
-                    <li>Heure et jour de connexion</li>
-                </ul>
-                <p>Le recours à de tels fichiers me permet :</p>
-                <ul>
-                    <li>D’assurer un accueil personnalisé</li>
-                    <li>De proposer des offres adaptées à vos besoins</li>
-                    <li>Statistiques</li>
-                </ul>
-                <h5>Droit d’opposition et de retrait</h5>
-                <p>Nous nous engageons à vous offrir un droit d’opposition et de retrait quant à vos renseignements personnels.</p>
-                <p>Le droit d’opposition s’entend comme étant la possibilité offerte aux internautes de refuser que leurs renseignements personnels soient utilisées à certaines fins mentionnées lors de la collecte.</p>
-                <p>Le droit de retrait s’entend comme étant la possibilité offerte aux internautes de demander à ce que leurs renseignements personnels ne figurent plus, par exemple, dans une liste de diffusion.</p>
-                <p>Pour pouvoir exercer ces droits, vous pouvez m’écrire : claude@alesiaminceur.com</p>
-                <h5>Sécurité</h5>
-                <p>Les renseignements personnels que nous collectons sont conservés dans un environnement sécurisé. Les personnes travaillant pour moi sont tenues de respecter la confidentialité de vos informations.</p>
-                <p>Pour assurer la sécurité de vos renseignements personnels, nous avons recours aux mesures suivantes :</p>
-                <ul>
-                    <li>Protocole SSL (Secure Sockets Layer)</li>
-                    <li>Protocole SET (Secure Electronic Transaction)</li>
-                    <li>Sauvegarde informatique</li>
-                    <li>Pare-feu (Firewalls)</li>
-                </ul>
-                <p>Nous nous engageons à maintenir un haut degré de confidentialité en intégrant les dernières innovations technologiques permettant d’assurer la confidentialité de vos transactions. Toutefois, comme aucun mécanisme n’offre une sécurité maximale, une part de risque est toujours présente lorsque l’on utilise Internet pour transmettre des renseignements personnels.</p>
-                <h5>Législation</h5>
-                <p>Nous nous engageons à respecter les dispositions législatives énoncées dans : <a href="https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees">https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees</a></p>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="ville" style="color: #00a8cc; font-weight: 600;">
+                    <i class="fa fa-map-marker"></i> Ville Concernée
+                  </label>
+                  <input type="text" 
+                         class="form-control" 
+                         id="ville"
+                         placeholder="Ex: Cannes, Nice, Antibes..." 
+                         name="ville" 
+                         value="<?php echo htmlspecialchars($_POST['ville'] ?? ''); ?>"
+                         style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;" />
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sujet" style="color: #00a8cc; font-weight: 600;">
+                    <i class="fa fa-tag"></i> Sujet
+                  </label>
+                  <select class="form-control" 
+                          id="sujet" 
+                          name="sujet"
+                          style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;">
+                    <option value="">Sélectionnez un sujet</option>
+                    <option value="information">Demande d'information</option>
+                    <option value="reservation">Réservation séance gratuite</option>
+                    <option value="tarifs">Question sur les tarifs</option>
+                    <option value="franchise">Ouvrir un centre (Franchise)</option>
+                    <option value="recrutement">Candidature emploi</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+
+            <div class="form-group">
+              <label for="message" style="color: #00a8cc; font-weight: 600;">
+                <i class="fa fa-comment"></i> Message *
+              </label>
+              <textarea class="form-control" 
+                        id="message"
+                        placeholder="Décrivez votre demande en détail..." 
+                        name="message" 
+                        rows="6"
+                        required
+                        style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;"><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
             </div>
+
+            <!-- Champ anti-spam caché -->
+            <input type="hidden" name="raison">
+
+            <!-- Bouton submit -->
+            <button type="submit" 
+                    name="send" 
+                    class="btn btn-lg btn-block" 
+                    style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 18px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0, 168, 204, 0.4); margin-top: 20px;">
+              <i class="fa fa-paper-plane"></i> Envoyer mon Message
+            </button>
+
+            <p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.95rem;">
+              <i class="fa fa-lock"></i> Vos données sont sécurisées et ne seront jamais partagées
+            </p>
+          </form>
+
+          <!-- Traitement PHP -->
+          <?php
+          if (isset($_POST['send']) && empty($_POST['raison'])) {
+            
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->Host = "in-v3.mailjet.com";
+            $mail->isHTML(true);
+            $mail->SMTPAuth = true;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->Username = getenv("MAILJET_USERNAME");
+            $mail->Password = getenv("MAILJET_PASSWORD");
+
+            $nom = trim($_POST['nom'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $ville = trim($_POST['ville'] ?? '');
+            $sujet = trim($_POST['sujet'] ?? '');
+            $message = trim($_POST['message'] ?? '');
+            $err = 0;
+            $errors = '';
+
+            if (empty($nom) || empty($email) || empty($message)) {
+              $errors = '<i class="fa fa-exclamation-circle"></i> Veuillez remplir tous les champs obligatoires (Nom, Email, Message).';
+              $err++;
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+              $errors .= '<br /><i class="fa fa-exclamation-circle"></i> L\'adresse email n\'est pas valide.';
+              $err++;
+            }
+
+            if ($err == 0) {
+              try {
+                $mail->setFrom('contact@aquavelo.com', 'Aquavelo - Contact');
+                $mail->addReplyTo($email, $nom);
+                $mail->addAddress('claude@alesiaminceur.com', 'Claude Rodriguez');
+
+                $object = "Contact Aquavelo.com - " . ($sujet ? ucfirst($sujet) : "Demande générale");
+                $mail->Subject = $object;
+
+                $sujetLabel = $sujet ? "<strong>Sujet :</strong> " . htmlspecialchars(ucfirst($sujet)) . "<br />" : "";
+                $villeLabel = $ville ? "<strong>Ville :</strong> " . htmlspecialchars($ville) . "<br />" : "";
+
+                $messageHTML = '
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                  <div style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 20px; border-radius: 10px 10px 0 0; text-align: center;">
+                    <h2 style="margin: 0;">Nouveau Contact Aquavelo.com</h2>
+                  </div>
+                  <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px;">
+                    <p style="font-size: 16px; color: #333;"><strong>Nom :</strong> ' . htmlspecialchars($nom) . '</p>
+                    <p style="font-size: 16px; color: #333;"><strong>Email :</strong> <a href="mailto:' . htmlspecialchars($email) . '">' . htmlspecialchars($email) . '</a></p>
+                    ' . $villeLabel . '
+                    ' . $sujetLabel . '
+                    <hr style="border: 1px solid #e0e0e0; margin: 20px 0;">
+                    <p style="font-size: 16px; color: #333;"><strong>Message :</strong></p>
+                    <p style="font-size: 15px; color: #666; line-height: 1.6; background: #f8f9fa; padding: 15px; border-radius: 5px;">' 
+                    . nl2br(htmlspecialchars($message)) . 
+                    '</p>
+                  </div>
+                  <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
+                    Message envoyé depuis le formulaire de contact Aquavelo.com
+                  </div>
+                </div>';
+
+                $mail->msgHTML($messageHTML);
+
+                if ($mail->send()) {
+                  echo '<div class="alert alert-success" style="border-radius: 10px; margin-top: 20px; border: 2px solid #00d4ff; background: #e8f8fc;">
+                          <i class="fa fa-check-circle" style="color: #00a8cc; font-size: 1.5rem;"></i> 
+                          <strong>Message envoyé avec succès !</strong><br/>
+                          Nous vous répondrons dans les plus brefs délais. Merci !
+                        </div>';
+                  
+                  // Tracking analytics
+                  echo '<script>
+                    if (typeof gtag !== "undefined") {
+                      gtag("event", "form_submission", {
+                        "event_category": "conversion",
+                        "event_label": "contact_form",
+                        "value": 1
+                      });
+                    }
+                  </script>';
+                } else {
+                  echo '<div class="alert alert-danger" style="border-radius: 10px; margin-top: 20px;">
+                          <i class="fa fa-exclamation-triangle"></i> 
+                          <strong>Erreur :</strong> Votre message n\'a pas pu être envoyé. Veuillez réessayer ou nous contacter directement.
+                        </div>';
+                }
+              } catch (Exception $e) {
+                echo '<div class="alert alert-danger" style="border-radius: 10px; margin-top: 20px;">
+                        <i class="fa fa-exclamation-triangle"></i> 
+                        <strong>Erreur technique :</strong> ' . $mail->ErrorInfo . '
+                      </div>';
+              }
+            } else {
+              echo '<div class="alert alert-danger" style="border-radius: 10px; margin-top: 20px;">
+                      <i class="fa fa-exclamation-triangle"></i> 
+                      <strong>Il y a ' . $err . ' erreur' . ($err > 1 ? 's' : '') . ' dans le formulaire :</strong><br/>' 
+                      . $errors . 
+                    '</div>';
+            }
+          }
+          ?>
+
         </div>
-    </div>
-</div>
+      </div>
 
+      <!-- Colonne Informations -->
+      <div class="col-md-4">
+        
+        <!-- Card Contact Rapide -->
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px;">
+          <h3 style="color: #00a8cc; margin-top: 0; font-size: 1.4rem;">
+            <i class="fa fa-phone-square"></i> Contact Rapide
+          </h3>
+          <p style="font-size: 1.05rem; color: #666; margin-bottom: 20px;">
+            Besoin d'une réponse immédiate ? Appelez-nous !
+          </p>
+          <a href="tel:0622647095" 
+             style="display: block; background: linear-gradient(135deg, #ff9800, #f57c00); color: white; text-align: center; padding: 18px; border-radius: 50px; font-size: 1.3rem; font-weight: 600; text-decoration: none; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);">
+            <i class="fa fa-phone"></i> 06 22 64 70 95
+          </a>
+          <p style="text-align: center; color: #999; font-size: 0.9rem; margin: 0;">
+            <i class="fa fa-clock-o"></i> Lun-Ven : 9h-19h • Sam : 10h-18h
+          </p>
+        </div>
 
-        </dl>
+        <!-- Card Recrutement -->
+        <div id="emploi" style="background: linear-gradient(135deg, #e8f8fc, #d4f1f9); padding: 30px; border-radius: 15px; border: 2px solid #00d4ff; margin-bottom: 25px;">
+          <h3 style="color: #00a8cc; margin-top: 0; font-size: 1.3rem;">
+            <i class="fa fa-briefcase"></i> Recrutement
+          </h3>
+          <p style="font-size: 1rem; color: #666; line-height: 1.6;">
+            Nous recherchons des <strong>maîtres nageurs</strong> pour notre développement national.
+          </p>
+          <p style="margin: 15px 0 0 0;">
+            <a href="mailto:claude@alesiaminceur.com" 
+               style="color: #00a8cc; font-weight: 600; text-decoration: underline;">
+              <i class="fa fa-envelope"></i> Envoyer CV + photo
+            </a>
+          </p>
+        </div>
 
+        <!-- Card Infos Légales -->
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 25px;">
+          <h3 style="color: #00a8cc; margin-top: 0; font-size: 1.3rem;">
+            <i class="fa fa-building"></i> Gestionnaire du Site
+          </h3>
+          <dl style="margin: 0;">
+            <dd style="margin-bottom: 8px;"><strong>Aqua Cannes</strong></dd>
+            <dd style="margin-bottom: 8px; color: #666;">60 avenue du Docteur Raymond Picaud</dd>
+            <dd style="margin-bottom: 8px; color: #666;">06150 Cannes</dd>
+            <dd style="margin-bottom: 8px; color: #666;">Capital 15 000 €</dd>
+            <dd style="margin-bottom: 8px; color: #666;">RCS 822 269 528</dd>
+            <dd style="margin-bottom: 8px; color: #666;">TVA FR44822269528</dd>
+          </dl>
+          
+          <hr style="margin: 20px 0; border-color: #e0e0e0;">
+          
+          <p style="margin: 15px 0 0 0;">
+            <strong style="color: #00a8cc;"><i class="fa fa-envelope"></i> Email :</strong><br/>
+            <a href="mailto:claude@alesiaminceur.com" style="color: #00a8cc; text-decoration: underline;">
+              claude@alesiaminceur.com
+            </a>
+          </p>
+        </div>
+
+        <!-- Boutons Modals -->
+        <div style="text-align: center;">
+          <button type="button" 
+                  data-toggle="modal" 
+                  data-target="#infos" 
+                  class="btn btn-default btn-block"
+                  style="margin-bottom: 15px; padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; color: #00a8cc; font-weight: 600; background: white;">
+            <i class="fa fa-info-circle"></i> Mentions Légales
+          </button>
+          
+          <button type="button" 
+                  data-toggle="modal" 
+                  data-target="#politique" 
+                  class="btn btn-default btn-block"
+                  style="padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; color: #00a8cc; font-weight: 600; background: white;">
+            <i class="fa fa-shield"></i> Politique de Confidentialité
+          </button>
+        </div>
 
       </div>
 
@@ -327,5 +361,194 @@ En cas de litige avec son centre l’abonné(e) a la possibilité d’utiliser l
 
   </div>
 </section>
+
+<!-- CTA Franchise -->
+<section class="content-area bg2" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 60px 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 text-center">
+        <h2 style="color: white; font-size: 2.2rem; margin-bottom: 20px;">
+          <i class="fa fa-lightbulb-o"></i> Vous Souhaitez Ouvrir un Centre Aquavélo ?
+        </h2>
+        <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.95;">
+          Rejoignez notre réseau de 17 centres en France<br/>
+          Investissement maîtrisé • Formation complète • Accompagnement total
+        </p>
+        <a href="/franchise" class="btn btn-lg" style="background: white; color: #ff9800; border: none; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); text-decoration: none;">
+          <i class="fa fa-briefcase"></i> Découvrir la Franchise
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Mentions Légales -->
+<div class="modal fade" id="infos" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-radius: 15px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border-radius: 15px 15px 0 0; padding: 25px;">
+        <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 1;">&times;</button>
+        <h4 class="modal-title" style="color: white; font-size: 1.5rem;">
+          <i class="fa fa-info-circle"></i> Mentions Légales
+        </h4>
+      </div>
+      <div class="modal-body" style="padding: 30px; max-height: 70vh; overflow-y: auto;">
+        <h3>1. Présentation du site</h3>
+        <p>En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site <a href="https://aquavelo.com/">https://aquavelo.com</a> l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi :</p>
+        <p><strong>Propriétaire :</strong> AQUA CANNES</p>
+        <p><strong>Créateur :</strong> Claude RODRIGUEZ</p>
+        <p><strong>Responsable publication :</strong> AQUA CANNES</p>
+        <p><strong>Webmaster :</strong> Claude RODRIGUEZ - 60 avenue du Docteur Raymond Picaud à CANNES</p>
+        <p><strong>Hébergeur :</strong> O2switch - Chemin des Pardiaux, 63000 Clermont-Ferrand, France</p>
+
+        <h3>2. Conditions générales d'utilisation</h3>
+        <p>L'utilisation du site implique l'acceptation pleine et entière des conditions générales d'utilisation ci-après décrites. Ces conditions d'utilisation sont susceptibles d'être modifiées ou complétées à tout moment.</p>
+
+        <h3>3. Description des services fournis</h3>
+        <p>Le site <a href="https://aquavelo.com/">https://aquavelo.com</a> a pour objet de fournir des informations concernant des services sur l'Aquavelo destiné aux particuliers.</p>
+
+        <h3>4. Litige avec son centre</h3>
+        <p>En cas de litige avec son centre, l'abonné(e) a la possibilité d'utiliser les services d'un médiateur gratuitement : <strong>Médiation de la consommation CM2C</strong> - 14 rue Saint Jean 75017 Paris - <a href="https://www.cm2c.net" target="_blank">https://www.cm2c.net</a></p>
+
+        <h3>5. Propriété intellectuelle</h3>
+        <p>AQUAVELO est propriétaire des droits de propriété intellectuelle ou détient les droits d'usage sur tous les éléments accessibles sur le site. Toute reproduction non autorisée sera considérée comme constitutive d'une contrefaçon.</p>
+
+        <h3>6. Gestion des données personnelles</h3>
+        <p>Conformément aux dispositions de la loi 78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés, tout utilisateur dispose d'un droit d'accès, de rectification et d'opposition aux données personnelles le concernant.</p>
+
+        <h3>7. Droit applicable</h3>
+        <p>Tout litige en relation avec l'utilisation du site est soumis au droit français. Attribution exclusive de juridiction aux tribunaux compétents de Paris.</p>
+      </div>
+      <div class="modal-footer" style="padding: 20px;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" style="background: #00a8cc; border: none; padding: 12px 30px; border-radius: 25px;">
+          <i class="fa fa-times"></i> Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Politique de Confidentialité -->
+<div class="modal fade" id="politique" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-radius: 15px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border-radius: 15px 15px 0 0; padding: 25px;">
+        <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 1;">&times;</button>
+        <h4 class="modal-title" style="color: white; font-size: 1.5rem;">
+          <i class="fa fa-shield"></i> Politique de Confidentialité
+        </h4>
+      </div>
+      <div class="modal-body" style="padding: 30px; max-height: 70vh; overflow-y: auto;">
+        <h3>Politique de confidentialité</h3>
+        <p>Nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.</p>
+
+        <h4>Collecte des renseignements personnels</h4>
+        <p>Nous collectons les renseignements suivants :</p>
+        <ul>
+          <li>Nom et Prénom</li>
+          <li>Numéro de téléphone</li>
+          <li>Adresse email</li>
+          <li>Ville de résidence</li>
+        </ul>
+
+        <h4>Finalités</h4>
+        <p>Nous utilisons les renseignements collectés pour :</p>
+        <ul>
+          <li>Prise de contact</li>
+          <li>Répondre à vos demandes</li>
+          <li>Envoi d'emailings marketing (avec consentement)</li>
+        </ul>
+
+        <h4>Cookies</h4>
+        <p>Nous recueillons certaines informations par le biais de cookies :</p>
+        <ul>
+          <li>Adresse IP</li>
+          <li>Système d'exploitation</li>
+          <li>Pages visitées</li>
+          <li>Heure et jour de connexion</li>
+        </ul>
+
+        <h4>Droit d'opposition et de retrait</h4>
+        <p>Vous pouvez exercer vos droits en nous écrivant à : <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a></p>
+
+        <h4>Sécurité</h4>
+        <p>Vos données sont conservées dans un environnement sécurisé. Nous utilisons :</p>
+        <ul>
+          <li>Protocole SSL (Secure Sockets Layer)</li>
+          <li>Sauvegarde informatique</li>
+          <li>Pare-feu (Firewalls)</li>
+        </ul>
+
+        <h4>Législation</h4>
+        <p>Nous respectons les dispositions du RGPD : <a href="https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees" target="_blank">https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees</a></p>
+      </div>
+      <div class="modal-footer" style="padding: 20px;">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" style="background: #00a8cc; border: none; padding: 12px 30px; border-radius: 25px;">
+          <i class="fa fa-times"></i> Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tracking Analytics -->
+<script>
+// Track soumission formulaire
+document.querySelector('form[action="#contact"]').addEventListener('submit', function() {
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'form_start', {
+      'event_category': 'engagement',
+      'event_label': 'contact_form'
+    });
+  }
+});
+
+// Track clic téléphone
+document.querySelectorAll('a[href^="tel:"]').forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'phone_click', {
+        'event_category': 'conversion',
+        'event_label': 'contact_page'
+      });
+    }
+  });
+});
+
+// Track clic email
+document.querySelectorAll('a[href^="mailto:"]').forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'email_click', {
+        'event_category': 'engagement',
+        'event_label': 'contact_page'
+      });
+    }
+  });
+});
+</script>
+
+<style>
+/* Styles spécifiques page contact */
+.form-control:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 168, 204, 0.5) !important;
+}
+
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 10px;
+  }
+  
+  .modal-body {
+    max-height: 60vh !important;
+  }
+}
+</style>
 
 

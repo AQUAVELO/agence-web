@@ -764,12 +764,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
   </div>
 
-  <!-- ⭐ NOUVEAU : Bouton téléphone flottant (mobile uniquement) -->
-  <div id="floating-phone-btn" class="hidden-md hidden-lg">
-    <a href="tel:0622647095">
-      <i class="fa fa-phone"></i>
-    </a>
-  </div>
+ 
 
   <!-- ⭐ NOUVEAU : Pop-up Franchise -->
   <div id="franchise-popup" style="display: none;">

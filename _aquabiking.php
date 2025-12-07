@@ -1,116 +1,8 @@
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Meta Tags essentiels pour le SEO -->
-    <title>Aquabiking Cannes - Les bienfaits du vélo aquatique | Aquavélo</title>
-    <meta name="description" content="Découvrez l'aquabiking à Cannes : vélo aquatique pour perdre du poids, éliminer la cellulite et tonifier votre corps. Séance découverte gratuite ! À partir de 8€/séance.">
-    <meta name="keywords" content="aquabiking, aquavélo, Cannes, fitness aquatique, cellulite, perte de poids, vélo aquatique, sport aquatique">
-    <meta name="author" content="Aquavélo Cannes">
-    <link rel="canonical" href="https://www.aquavelo.com/aquabiking">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.aquavelo.com/aquabiking">
-    <meta property="og:title" content="Aquabiking Cannes - Les bienfaits du vélo aquatique">
-    <meta property="og:description" content="Découvrez l'aquabiking à Cannes : perdez du poids, éliminez la cellulite et tonifiez votre corps. Séance découverte gratuite !">
-    <meta property="og:image" content="https://www.aquavelo.com/images/aquabiking-og.jpg">
-    <meta property="og:locale" content="fr_FR">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Aquabiking Cannes - Les bienfaits du vélo aquatique">
-    <meta name="twitter:description" content="Découvrez l'aquabiking à Cannes : perdez du poids, éliminez la cellulite et tonifiez votre corps.">
-    <meta name="twitter:image" content="https://www.aquavelo.com/images/aquabiking-og.jpg">
-    
-    <!-- Données structurées JSON-LD pour LocalBusiness -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Aquavélo Cannes",
-      "description": "Centre d'aquabiking et de vélo aquatique à Cannes",
-      "image": "https://www.aquavelo.com/images/aquabiking-og.jpg",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Cannes",
-        "addressRegion": "Provence-Alpes-Côte d'Azur",
-        "addressCountry": "FR"
-      },
-      "url": "https://www.aquavelo.com",
-      "telephone": "+33-XX-XX-XX-XX-XX",
-      "priceRange": "€€",
-      "openingHours": "Mo-Su 08:00-20:00"
-    }
-    </script>
-    
-    <!-- Données structurées JSON-LD pour FAQPage -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Combien coûte une séance d'Aquavélo ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Les prix démarrent à partir de 8 € la séance en fonction du nombre de séances souscrites. Nous proposons des formules illimitées mensualisées pour ceux qui veulent pratiquer quotidiennement cette activité."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Que faut-il comme tenue pour pratiquer l'Aquavélo ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Il faut un maillot de bain, une serviette, un gel douche, une bouteille d'eau, un cadenas pour les vestiaires et des chaussures d'aquabiking. Le bonnet de bain n'est pas indispensable car vous ne mettez pas la tête sous l'eau."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Est-ce que je peux pratiquer l'Aquavélo étant enceinte ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Oui bien sûr, l'Aquavélo est fortement conseillé aux femmes enceintes. Il leur permettra de soulager les jambes lourdes, d'éviter de prendre beaucoup de poids durant cette période tout en pratiquant une activité physique."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "À partir et jusqu'à quel âge puis-je pratiquer l'Aquavélo ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Vous pouvez pratiquer à partir de 12 ans et jusqu'à 90 ans. L'aquabiking permet d'entretenir votre potentiel musculaire et de renforcer vos articulations."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "J'ai de l'arthrose, puis-je en faire ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Oui vous pouvez pratiquer car le mouvement des articulations se fera en douceur. Il faudra pédaler en douceur et adapter selon vos possibilités sur les conseils du coach."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Je ne sais pas nager, puis-je faire de l'Aquavélo ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement."
-          }
-        }
-      ]
-    }
-    </script>
-    
-    <link rel="stylesheet" href="path/to/your/styles.css">
-</head>
-<body>
+<!-- Header -->
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Les bienfaits de l'Aquabiking</h1>
+    <h1 class="page-title pull-left">Les Bienfaits de l'Aquabiking</h1>
     <nav aria-label="Fil d'Ariane">
       <ol class="breadcrumb pull-right" itemscope itemtype="https://schema.org/BreadcrumbList">
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -128,97 +20,189 @@
   </div>
 </header>
 
+<!-- Bannière Promo CTA -->
+<section class="content-area" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 40px 0; margin-bottom: 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 text-center" style="color: white;">
+        <h2 style="color: white; font-size: 2rem; margin: 0 0 15px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+          🎁 Testez l'Aquabiking Gratuitement
+        </h2>
+        <p style="font-size: 1.2rem; margin-bottom: 25px; opacity: 0.95;">
+          Brûlez 400-600 calories en 45 minutes • Sans impact sur les articulations
+        </p>
+        <a href="/free" class="btn btn-lg" style="background: white; color: #00a8cc; border: none; padding: 18px 45px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+          <i class="fa fa-gift"></i> Réserver Ma Séance Gratuite
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section Vidéo + Présentation -->
 <section class="content-area bg1" id="velo">
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <video controls loop autoplay muted preload="metadata" width="80%" 
-               title="Démonstration aquabiking au centre Aquavélo d'Cannes"
-               aria-label="Vidéo de présentation de l'aquabiking à Cannes">
+        <video controls loop autoplay muted preload="metadata" width="100%" 
+               style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"
+               title="Démonstration aquabiking au centre Aquavélo"
+               aria-label="Vidéo de présentation de l'aquabiking">
           <source src="https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov" type="video/quicktime">
-          <p>Votre navigateur ne supporte pas la lecture de vidéos HTML5. Veuillez utiliser un navigateur moderne.</p>
+          <p>Votre navigateur ne supporte pas la lecture de vidéos HTML5.</p>
         </video>
-        <a href="/seance-decouverte/Cannes" 
-           class="btn btn-default" 
-           title="Réservez votre séance d'essai gratuite d'aquabiking à Cannes"
-           style="margin-top: 30px; color: #0f38be;">
-          J'essaie une séance Gratuite
-        </a>
+        
+        <div style="margin-top: 30px; text-align: center;">
+          <a href="/free" 
+             class="btn btn-lg" 
+             style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 18px 45px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0, 168, 204, 0.4); display: inline-block; width: 100%;"
+             title="Réservez votre séance d'essai gratuite d'aquabiking">
+            <i class="fa fa-gift"></i> J'Essaie une Séance Gratuite
+          </a>
+          
+          <p style="margin-top: 15px; color: #666; font-size: 0.95rem;">
+            <i class="fa fa-check-circle" style="color: #00d4ff;"></i> Sans engagement • <i class="fa fa-check-circle" style="color: #00d4ff;"></i> Coaching professionnel
+          </p>
+        </div>
       </div>
+      
       <div class="col-md-6">
-        <h2>Des centres dédiés à l'Aquavélo</h2>
-        <p>L'aquavélo ou vélo dans l'eau est une nouvelle discipline de fitness intelligente pour brûler des calories et perdre du poids, chasser la cellulite et éliminer les toxines et par la même occasion tonifier son corps.</p>
-        <p>L'aquavélo est un sport mixte; même si on trouvera sans doute une majorité de femmes dans le bassin : tout simplement parce qu'elles sont les seules à souffrir de la cellulite, et que l'aquavélo est un ennemi redoutable de la peau d'orange. Le pédalage aquatique favorise progressivement la destruction de la cellulite en produisant un massage continu sur les jambes, le bassin et la ceinture abdominale.</p>
-        <p>Pratiqué régulièrement, il permet de prévenir et d'éviter la rétention d'eau et les œdèmes. Ces messieurs ne seront pas en reste! La résistance de l'eau agit sur toute la musculature en garantissant la tonification et le remodelage du corps. Les bras sont également sollicités pour faire travailler les biceps et triceps.</p>
+        <h2 style="color: #00a8cc; margin-bottom: 25px;">
+          <i class="fa fa-bicycle"></i> Des Centres Dédiés à l'Aquavélo
+        </h2>
+        
+        <p style="font-size: 1.05rem; line-height: 1.8; text-align: justify;">
+          L'aquavélo ou <strong>vélo dans l'eau</strong> est une discipline de fitness intelligente pour <strong>brûler des calories</strong>, 
+          <strong>perdre du poids</strong>, <strong>chasser la cellulite</strong> et <strong>éliminer les toxines</strong> tout en tonifiant votre corps.
+        </p>
+        
+        <div style="background: linear-gradient(135deg, #e8f8fc, #d4f1f9); padding: 20px; border-radius: 10px; border-left: 4px solid #00d4ff; margin: 25px 0;">
+          <h3 style="color: #00a8cc; margin-top: 0; font-size: 1.2rem;">
+            <i class="fa fa-star"></i> Pourquoi l'Aquabiking est si Efficace ?
+          </h3>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="padding: 8px 0;"><i class="fa fa-check" style="color: #00d4ff;"></i> Le pédalage aquatique masse continuellement jambes, bassin et abdominaux</li>
+            <li style="padding: 8px 0;"><i class="fa fa-check" style="color: #00d4ff;"></i> Détruit progressivement la cellulite (ennemi redoutable de la peau d'orange)</li>
+            <li style="padding: 8px 0;"><i class="fa fa-check" style="color: #00d4ff;"></i> Prévient la rétention d'eau et les œdèmes</li>
+            <li style="padding: 8px 0;"><i class="fa fa-check" style="color: #00d4ff;"></i> Tonifie et remodelage du corps grâce à la résistance de l'eau</li>
+          </ul>
+        </div>
+        
+        <p style="font-size: 1.05rem; line-height: 1.8; text-align: justify;">
+          L'aquavélo est un <strong>sport mixte</strong>, accessible à tous. Les bras sont également sollicités pour 
+          faire travailler biceps et triceps. C'est un entraînement complet du corps !
+        </p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Section Tout Savoir -->
 <section class="content-area bg2">
   <div class="container">
     <header class="page-header text-center">
-      <h2 class="page-title">Tout savoir sur l'aquabiking</h2>
-      <h3>Mincir en pédalant dans l'eau</h3>
-      <p class="larger">Associer les bienfaits de 4 disciplines : l'aquagym, la course à pied, le cyclisme et le stretching; il fallait y penser!</p>
+      <h2 class="page-title" style="color: #00a8cc;">Tout Savoir sur l'Aquabiking</h2>
+      <h3 style="color: #666; font-weight: 400;">Mincir en Pédalant dans l'Eau</h3>
+      <p class="larger" style="font-size: 1.15rem; color: #666;">
+        Associer les bienfaits de <strong>4 disciplines</strong> : l'aquagym, la course à pied, le cyclisme et le stretching
+      </p>
     </header>
-    <div class="row">
+    
+    <div class="row" style="margin-top: 40px;">
+      <!-- Colonne 1 -->
       <div class="col-md-4">
-        <article class="iconBox type3">
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#naissance" aria-label="En savoir plus sur la naissance de l'aquabiking"><i class="fa fa-star" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#naissance" aria-label="En savoir plus sur la naissance de l'aquabiking">
+              <i class="fa fa-star" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#naissance" title="Histoire de l'aquabiking">Naissance</a></h4>
-              <p>Inventé en Italie par des kinésithérapeutes depuis un peu moins d'une dizaine d'années, l'aquabiking fait déjà un tabac en Allemagne et en Belgique et son succès commence à se faire sentir en France.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#naissance" title="Histoire de l'aquabiking">Naissance</a>
+              </h4>
+              <p>Inventé en Italie par des kinésithérapeutes, l'aquabiking fait un tabac en Allemagne et Belgique. 
+              Son succès se confirme en France avec plus de 17 centres Aquavélo.</p>
             </div>
           </div>
         </article>
-        <article class="iconBox type3">
+        
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#accessible" aria-label="Découvrir l'accessibilité de l'aquabiking"><i class="fa fa-cog" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#accessible" aria-label="Découvrir l'accessibilité de l'aquabiking">
+              <i class="fa fa-users" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#accessible" title="L'aquabiking pour tous">Accessible à tous</a></h4>
-              <p>Ce sport est accessible à toute personne soit de haut niveau sportif ou débutant. Même les personnes avec des capacités de mouvements réduites (surpoids, âge, problèmes d'articulation) peuvent pratiquer avec un effet garanti.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#accessible" title="L'aquabiking pour tous">Accessible à Tous</a>
+              </h4>
+              <p>De <strong>12 à 90 ans</strong>, sportifs ou débutants, personnes en surpoids ou avec problèmes articulaires. 
+              Effet garanti pour tous !</p>
             </div>
           </div>
         </article>
       </div>
+      
+      <!-- Colonne 2 -->
       <div class="col-md-4">
-        <article class="iconBox type3">
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#deroule" aria-label="Comprendre le déroulement d'une séance"><i class="fa fa-asterisk" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#deroule" aria-label="Comprendre le déroulement d'une séance">
+              <i class="fa fa-clock-o" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#deroule" title="Organisation des séances">Déroulé</a></h4>
-              <p>Les cours se déroulent toutes les heures ex: 8h, 9h, ..., 20h, 7 jours sur 7. Vous devrez vous présenter 10 minutes avant le début de votre séance, des vestiaires avec casiers cadenas sont à votre disposition.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#deroule" title="Organisation des séances">Déroulé</a>
+              </h4>
+              <p>Cours toutes les heures (8h, 9h... 20h), <strong>7 jours sur 7</strong>. Arrivez 10 minutes avant. 
+              Vestiaires avec casiers à disposition.</p>
             </div>
           </div>
         </article>
-        <article class="iconBox type3">
+        
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#cours" aria-label="En savoir plus sur les cours"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#cours" aria-label="En savoir plus sur les cours">
+              <i class="fa fa-bicycle" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#cours" title="Format des cours d'aquabiking">Cours</a></h4>
-              <p>Dans votre centre Aquavélo, les cours se pratiquent en petit groupe, sur un vélo immergé dans un bassin.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#cours" title="Format des cours d'aquabiking">Cours</a>
+              </h4>
+              <p>Cours en <strong>petit groupe</strong> (6 à 20 personnes), sur vélo immergé dans bassin chauffé. 
+              Ambiance conviviale et motivante.</p>
             </div>
           </div>
         </article>
       </div>
+      
+      <!-- Colonne 3 -->
       <div class="col-md-4">
-        <article class="iconBox type3">
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#bienetre" aria-label="Découvrir les bienfaits bien-être"><i class="fa fa-trophy" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#bienetre" aria-label="Découvrir les bienfaits bien-être">
+              <i class="fa fa-heart" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#bienetre" title="Bien-être et aquabiking">Bien-être</a></h4>
-              <p>Un véritable exutoire avec une sensation de détente, l'aquabiking est une activité ludique et dynamisante qui diminue la fatigue.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#bienetre" title="Bien-être et aquabiking">Bien-être</a>
+              </h4>
+              <p>Véritable <strong>exutoire</strong> avec sensation de détente. Activité ludique et dynamisante qui 
+              <strong>diminue la fatigue</strong>.</p>
             </div>
           </div>
         </article>
-        <article class="iconBox type3">
+        
+        <article class="iconBox type3" style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 220px;">
           <div class="media">
-            <a class="pull-left" href="#coaching" aria-label="Rencontrer nos coachs"><i class="fa fa-file-text" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#coaching" aria-label="Rencontrer nos coachs">
+              <i class="fa fa-graduation-cap" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#coaching" title="Nos coachs diplômés">Coaching</a></h4>
-              <p>Nos coachs sélectionnés avec le plus grand soin (diplômé BPJEPS AAN) sauront vous guider à travers des musiques rythmées. Les cours se décomposent en plusieurs phases : échauffements, cardio et étirements à la fin.</p>
+              <h4 class="media-heading" style="color: #00a8cc; font-weight: 600;">
+                <a href="#coaching" title="Nos coachs diplômés">Coaching</a>
+              </h4>
+              <p>Coachs <strong>diplômés BPJEPS</strong>, musiques rythmées. Séances en 3 phases : 
+              échauffement, cardio, étirements.</p>
             </div>
           </div>
         </article>
@@ -227,150 +211,242 @@
   </div>
 </section>
 
+<!-- Section Bienfaits -->
 <section class="content-area bg1" id="bienfaits">
   <div class="container">
     <header class="page-header text-center">
-      <h2 class="page-title">Les bienfaits de l'aquabiking</h2>
-      <h3>Une activité sportive bénéfique</h3>
+      <h2 class="page-title" style="color: #00a8cc;">Les Bienfaits de l'Aquabiking</h2>
+      <h3 style="color: #666; font-weight: 400;">Une Activité Sportive Bénéfique</h3>
     </header>
-    <div class="row">
+    
+    <div class="row" style="margin-top: 40px;">
+      <!-- Accordéon -->
       <div class="col-md-6 col-sm-6">
         <div class="panel-group" id="accordion">
-          <article class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#panel1" title="Comprendre les efforts en aquabiking">Des efforts peu ressentis</a></h4>
+          <article class="panel panel-default" style="border-radius: 10px; margin-bottom: 15px; border: 2px solid #e0e0e0;">
+            <div class="panel-heading" style="background: #f8f9fa; border-radius: 10px 10px 0 0;">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#panel1" 
+                   style="display: block; padding: 5px; color: #00a8cc; font-weight: 600; text-decoration: none;"
+                   title="Comprendre les efforts en aquabiking">
+                  <i class="fa fa-water"></i> Des Efforts Peu Ressentis
+                </a>
+              </h4>
             </div>
             <div id="panel1" class="panel-collapse collapse in">
-              <div class="panel-body">
-                <p>Dans l'eau, votre corps est plus léger… mais vos muscles travaillent pourtant bien plus pour repousser le poids de l'eau ! La résistance de l'eau a pour conséquence un effort différent, un massage aux multiples vertus : le cœur bat 10% moins vite que dans l'air et les graisses sont brûlées en priorité.</p>
-                <p>Par rapport à l'exercice physique pratiqué à terre, l'exercice de l'aquavélo évite les stress musculaires et diminue la production d'acide lactique : la séance d'aquavélo même intensive, n'est pas suivie par les si désagréables douleurs musculaires et courbatures !</p>
+              <div class="panel-body" style="padding: 20px; font-size: 1.05rem;">
+                <p>Dans l'eau, votre corps est plus léger… mais vos muscles travaillent pourtant bien plus pour repousser le poids de l'eau !</p>
+                <p><strong>Résultat :</strong> Le cœur bat 10% moins vite que dans l'air et les graisses sont brûlées en priorité. 
+                <strong>Aucune courbature</strong> grâce à la diminution de production d'acide lactique.</p>
               </div>
             </div>
           </article>
-          <article class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title"><a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel2" title="Résultats et efficacité de l'aquabiking">Des effets rapides</a></h4>
+          
+          <article class="panel panel-default" style="border-radius: 10px; margin-bottom: 15px; border: 2px solid #e0e0e0;">
+            <div class="panel-heading" style="background: #f8f9fa; border-radius: 10px 10px 0 0;">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel2" 
+                   style="display: block; padding: 5px; color: #00a8cc; font-weight: 600; text-decoration: none;"
+                   title="Résultats et efficacité de l'aquabiking">
+                  <i class="fa fa-line-chart"></i> Des Effets Rapides
+                </a>
+              </h4>
             </div>
             <div id="panel2" class="panel-collapse collapse">
-              <div class="panel-body">
-                <p>À raison d'une séance hebdomadaire, vous vous sentirez déjà plus ferme au bout de deux mois, soit 8 à 10 séances. Si vous souscrivez un abonnement à l'année, imaginez les bénéfices au bout de 12 mois ! Vous retrouverez à coup sûr des jambes et des fesses bien galbées en un minimum de temps.</p>
-                <p>Pratique pour les jeunes mamans qui n'ont que peu de temps à se consacrer après l'accouchement.</p>
+              <div class="panel-body" style="padding: 20px; font-size: 1.05rem;">
+                <p><strong>À raison d'une séance hebdomadaire</strong>, vous vous sentirez déjà plus ferme au bout de 2 mois (8-10 séances).</p>
+                <p>Avec un abonnement à l'année, imaginez les bénéfices au bout de 12 mois ! 
+                <strong>Jambes et fesses bien galbées</strong> en un minimum de temps. Pratique pour les jeunes mamans !</p>
               </div>
             </div>
           </article>
-          <article class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title"><a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel3" title="Protection des articulations">Un corps respecté</a></h4>
+          
+          <article class="panel panel-default" style="border-radius: 10px; margin-bottom: 15px; border: 2px solid #e0e0e0;">
+            <div class="panel-heading" style="background: #f8f9fa; border-radius: 10px 10px 0 0;">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#panel3" 
+                   style="display: block; padding: 5px; color: #00a8cc; font-weight: 600; text-decoration: none;"
+                   title="Protection des articulations">
+                  <i class="fa fa-shield"></i> Un Corps Respecté
+                </a>
+              </h4>
             </div>
             <div id="panel3" class="panel-collapse collapse">
-              <div class="panel-body">
-                Lors d'une séance d'Aquavélo, le corps ne subit aucun choc (comme c'est le cas lors de la course à pied). En effet, l'eau permet de préserver muscles et articulations : c'est pourquoi, l'Aquavélo est particulièrement recommandé aux personnes fragiles souffrant de rhumatismes, d'arthroses, tendinites et autres problèmes articulaires... L'aquavélo rentre même parfois dans le cadre de la rééducation, après un accident ou une opération : demandez conseil à nos Coachs. L'état d'apesanteur et de flottaison soulage les articulations et la zone lombaire du poids du corps.
+              <div class="panel-body" style="padding: 20px; font-size: 1.05rem;">
+                <p><strong>Aucun choc</strong> contrairement à la course à pied. L'eau préserve muscles et articulations.</p>
+                <p>Particulièrement recommandé aux personnes souffrant de <strong>rhumatismes, arthroses, tendinites</strong>. 
+                Utilisé en <strong>rééducation</strong> après accident ou opération. L'apesanteur soulage les articulations et la zone lombaire.</p>
               </div>
             </div>
           </article>
         </div>
       </div>
+      
+      <!-- Barres de progression -->
       <div class="col-md-6 col-sm-6">
-        <div class="progress">
-          <span class="pro-skill pull-left">Lutter contre la peau d'orange</span>
-          <span class="pro-level pull-right">Excellent</span>
-          <div class="progress-bar" role="progressbar" aria-valuenow="95" data-percentage="95" aria-valuemin="0" aria-valuemax="100" aria-label="Efficacité contre la peau d'orange : 95%"></div>
-        </div>
-        <div class="progress">
-          <span class="pro-skill pull-left">Détruire la cellulite</span>
-          <span class="pro-level pull-right">Très bon</span>
-          <div class="progress-bar" role="progressbar" aria-valuenow="80" data-percentage="80" aria-valuemin="0" aria-valuemax="100" aria-label="Efficacité contre la cellulite : 80%"></div>
-        </div>
-        <div class="progress">
-          <span class="pro-skill pull-left">Protéger les articulations</span>
-          <span class="pro-level pull-right">Bon</span>
-          <div class="progress-bar" role="progressbar" aria-valuenow="70" data-percentage="70" aria-valuemin="0" aria-valuemax="100" aria-label="Protection des articulations : 70%"></div>
-        </div>
-        <div class="progress">
-          <span class="pro-skill pull-left">Effort cardiaque</span>
-          <span class="pro-level pull-right">Moyen</span>
-          <div class="progress-bar" role="progressbar" aria-valuenow="50" data-percentage="50" aria-valuemin="0" aria-valuemax="100" aria-label="Effort cardiaque requis : 50%"></div>
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+          <h3 style="color: #00a8cc; text-align: center; margin-bottom: 30px;">
+            <i class="fa fa-bar-chart"></i> Efficacité Prouvée
+          </h3>
+          
+          <div class="progress" style="height: 35px; margin-bottom: 30px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);">
+            <span class="pro-skill pull-left" style="padding: 8px 0 0 15px; font-weight: 600;">Lutter contre la peau d'orange</span>
+            <span class="pro-level pull-right" style="padding: 8px 15px 0 0; color: #00d4ff; font-weight: 600;">Excellent</span>
+            <div class="progress-bar" role="progressbar" aria-valuenow="95" data-percentage="95" 
+                 aria-valuemin="0" aria-valuemax="100" aria-label="Efficacité contre la peau d'orange : 95%"
+                 style="background: linear-gradient(135deg, #00d4ff, #00a8cc); width: 95%;"></div>
+          </div>
+          
+          <div class="progress" style="height: 35px; margin-bottom: 30px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);">
+            <span class="pro-skill pull-left" style="padding: 8px 0 0 15px; font-weight: 600;">Détruire la cellulite</span>
+            <span class="pro-level pull-right" style="padding: 8px 15px 0 0; color: #00d4ff; font-weight: 600;">Très bon</span>
+            <div class="progress-bar" role="progressbar" aria-valuenow="80" data-percentage="80" 
+                 aria-valuemin="0" aria-valuemax="100" aria-label="Efficacité contre la cellulite : 80%"
+                 style="background: linear-gradient(135deg, #00d4ff, #00a8cc); width: 80%;"></div>
+          </div>
+          
+          <div class="progress" style="height: 35px; margin-bottom: 30px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);">
+            <span class="pro-skill pull-left" style="padding: 8px 0 0 15px; font-weight: 600;">Protéger les articulations</span>
+            <span class="pro-level pull-right" style="padding: 8px 15px 0 0; color: #00d4ff; font-weight: 600;">Bon</span>
+            <div class="progress-bar" role="progressbar" aria-valuenow="70" data-percentage="70" 
+                 aria-valuemin="0" aria-valuemax="100" aria-label="Protection des articulations : 70%"
+                 style="background: linear-gradient(135deg, #00d4ff, #00a8cc); width: 70%;"></div>
+          </div>
+          
+          <div class="progress" style="height: 35px; border-radius: 20px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);">
+            <span class="pro-skill pull-left" style="padding: 8px 0 0 15px; font-weight: 600;">Effort cardiaque</span>
+            <span class="pro-level pull-right" style="padding: 8px 15px 0 0; color: #00d4ff; font-weight: 600;">Modéré</span>
+            <div class="progress-bar" role="progressbar" aria-valuenow="50" data-percentage="50" 
+                 aria-valuemin="0" aria-valuemax="100" aria-label="Effort cardiaque requis : 50%"
+                 style="background: linear-gradient(135deg, #00d4ff, #00a8cc); width: 50%;"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Section FAQ -->
 <section class="content-area bg2" id="questions">
   <div class="container">
     <header class="page-header text-center">
-      <h2 class="page-title">Vos questions sur l'aquabiking</h2>
-      <h3>Vos interrogations pour pratiquer l'Aquavélo</h3>
-      <p class="larger">À partir de quel âge et jusqu'à quel âge, enceinte puis-je pratiquer, est-ce que c'est bon pour les articulations et autres</p>
+      <h2 class="page-title" style="color: #00a8cc;">Vos Questions sur l'Aquabiking</h2>
+      <h3 style="color: #666; font-weight: 400;">Toutes les Réponses pour Bien Démarrer</h3>
+      <p class="larger" style="font-size: 1.15rem; color: #666;">
+        Prix, équipement, grossesse, âge, articulations... On répond à tout !
+      </p>
     </header>
-    <div class="row">
+    
+    <div class="row" style="margin-top: 40px;">
+      <!-- Colonne 1 -->
       <div class="col-md-4">
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#prix" aria-label="Tarifs des séances"><i class="fa fa-star" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#prix" aria-label="Tarifs des séances">
+              <i class="fa fa-eur" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#prix" title="Tarifs et prix de l'aquabiking">Combien coûte une séance d'Aquavélo ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#prix" title="Tarifs et prix de l'aquabiking">Combien coûte une séance d'Aquavélo ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Les prix démarrent à partir de 8 € la séance en fonction du nombre de séances souscrites. Nous proposons des formules illimitées mensualisées pour ceux qui veulent pratiquer quotidiennement cette activité.</p>
+                <p itemprop="text">À partir de <strong>8 € la séance</strong> selon le forfait. Formules illimitées mensualisées disponibles pour pratiquer quotidiennement.</p>
               </div>
             </div>
           </div>
         </article>
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#tenue" aria-label="Équipement nécessaire"><i class="fa fa-cog" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#tenue" aria-label="Équipement nécessaire">
+              <i class="fa fa-shopping-bag" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#tenue" title="Équipement pour l'aquabiking">Que faut-il comme tenue pour pratiquer l'Aquavélo ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#tenue" title="Équipement pour l'aquabiking">Que faut-il comme tenue ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Il faut un maillot (une pièce ou 2 pièces pour les dames), short de bain ou maillot classique pour les messieurs, une serviette de bain, un gel douche, une bouteille d'eau car il faut s'hydrater durant le cours, un cadenas pour les vestiaires et des chaussures d'aquabiking. Le bonnet de bain n'est pas indispensable car vous ne mettez pas la tête sous l'eau.</p>
+                <p itemprop="text"><strong>Maillot de bain</strong>, serviette, gel douche, eau, cadenas et chaussures d'aquabiking. 
+                <strong>Pas besoin de bonnet</strong> (tête hors de l'eau).</p>
               </div>
             </div>
           </div>
         </article>
       </div>
+      
+      <!-- Colonne 2 -->
       <div class="col-md-4">
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#grossesse" aria-label="Aquabiking et grossesse"><i class="fa fa-asterisk" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#grossesse" aria-label="Aquabiking et grossesse">
+              <i class="fa fa-female" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#grossesse" title="Aquabiking pendant la grossesse">Est-ce que je peux pratiquer l'Aquavélo étant enceinte ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#grossesse" title="Aquabiking pendant la grossesse">Puis-je pratiquer enceinte ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Oui bien sûr, l'Aquavélo est fortement conseillé aux femmes enceintes. Il leur permettra de soulager les jambes lourdes, d'éviter de prendre beaucoup de poids durant cette période tout en pratiquant une activité physique. Certaines de nos adhérentes pratiquent quasiment jusqu'au terme.</p>
+                <p itemprop="text"><strong>Oui, fortement conseillé !</strong> Soulage les jambes lourdes, évite la prise de poids excessive. 
+                Certaines pratiquent jusqu'au terme.</p>
               </div>
             </div>
           </div>
         </article>
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#age" aria-label="Âge pour pratiquer"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#age" aria-label="Âge pour pratiquer">
+              <i class="fa fa-birthday-cake" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#age" title="Âge minimum et maximum pour l'aquabiking">À partir et jusqu'à quel âge puis-je pratiquer l'Aquavélo ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#age" title="Âge minimum et maximum pour l'aquabiking">Quel âge pour pratiquer ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Vous pouvez pratiquer à partir de 12 ans car cela fusèle la silhouette, et jusqu'à 90 ans car cela vous permet d'entretenir votre potentiel musculaire, de renforcer vos articulations, et étant aquatique cela est bénéfique globalement pour le corps.</p>
+                <p itemprop="text">De <strong>12 à 90 ans</strong> ! Fusèle la silhouette, entretient le potentiel musculaire, 
+                renforce les articulations.</p>
               </div>
             </div>
           </div>
         </article>
       </div>
+      
+      <!-- Colonne 3 -->
       <div class="col-md-4">
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#arthrose" aria-label="Aquabiking et arthrose"><i class="fa fa-trophy" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#arthrose" aria-label="Aquabiking et arthrose">
+              <i class="fa fa-medkit" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#arthrose" title="Aquabiking pour les personnes souffrant d'arthrose">J'ai de l'arthrose, puis-je en faire ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#arthrose" title="Aquabiking pour les personnes souffrant d'arthrose">J'ai de l'arthrose, puis-je en faire ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Oui vous pouvez pratiquer car le mouvement des articulations se fera en douceur. Il faudra pédaler en douceur et adapter selon vos possibilités sur les conseils du coach.</p>
+                <p itemprop="text"><strong>Oui !</strong> Le mouvement se fait <strong>en douceur</strong>. 
+                Pédalez à votre rythme selon les conseils du coach.</p>
               </div>
             </div>
           </div>
         </article>
-        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question">
+        
+        <article class="iconBox type3" itemscope itemtype="https://schema.org/Question" 
+                 style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 25px; min-height: 240px;">
           <div class="media">
-            <a class="pull-left" href="#natation" aria-label="Savoir nager pour l'aquabiking"><i class="fa fa-file-text" aria-hidden="true"></i></a>
+            <a class="pull-left" href="#natation" aria-label="Savoir nager pour l'aquabiking">
+              <i class="fa fa-life-ring" aria-hidden="true" style="color: #00d4ff; font-size: 2.5rem;"></i>
+            </a>
             <div class="media-body">
-              <h4 class="media-heading" itemprop="name"><a href="#natation" title="Aquabiking sans savoir nager">Je ne sais pas nager, puis-je faire de l'Aquavélo ?</a></h4>
+              <h4 class="media-heading" itemprop="name" style="color: #00a8cc; font-weight: 600;">
+                <a href="#natation" title="Aquabiking sans savoir nager">Je ne sais pas nager, puis-je en faire ?</a>
+              </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">Oui vous n'avez pas besoin de savoir nager, certains ont la phobie de l'eau et pratiquent également progressivement.</p>
+                <p itemprop="text"><strong>Oui, pas besoin de savoir nager !</strong> Même les personnes avec phobie de l'eau pratiquent progressivement.</p>
               </div>
             </div>
           </div>
@@ -380,23 +456,28 @@
   </div>
 </section>
 
+<!-- Section Témoignages -->
 <section class="content-area brightText" data-bg="images/content/testimonials-bg.jpg" data-btmspace="75">
   <div class="container">
     <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true" data-controls="true">
       <ul class="slides">
         <li>
           <blockquote class="huge text-center" itemscope itemtype="https://schema.org/Review">
-            <p itemprop="reviewBody">Après l'avoir essayé, l'Aquavelo est rapidement devenu mon sport favori.</p>
-            <span class="author" itemprop="author">Evy Bringhurst</span>
-            <p>(24 ans)</p>
+            <p itemprop="reviewBody" style="font-size: 1.8rem; font-style: italic; margin-bottom: 20px;">
+              "Après l'avoir essayé, l'Aquavelo est rapidement devenu mon sport favori."
+            </p>
+            <span class="author" itemprop="author" style="font-size: 1.3rem; font-weight: 600;">⭐⭐⭐⭐⭐ Evy Bringhurst</span>
+            <p style="opacity: 0.9;">(24 ans)</p>
             <meta itemprop="reviewRating" content="5">
           </blockquote>
         </li>
         <li>
           <blockquote class="huge text-center" itemscope itemtype="https://schema.org/Review">
-            <p itemprop="reviewBody">Ne vous forcez plus à aller dans une salle de sport, il y a l'Aquavelo, et j'y vais tous les jours !</p>
-            <span class="author" itemprop="author">Corinne Dumas</span>
-            <p>(58 ans)</p>
+            <p itemprop="reviewBody" style="font-size: 1.8rem; font-style: italic; margin-bottom: 20px;">
+              "Ne vous forcez plus à aller dans une salle de sport, il y a l'Aquavelo, et j'y vais tous les jours !"
+            </p>
+            <span class="author" itemprop="author" style="font-size: 1.3rem; font-weight: 600;">⭐⭐⭐⭐⭐ Corinne Dumas</span>
+            <p style="opacity: 0.9;">(58 ans)</p>
             <meta itemprop="reviewRating" content="5">
           </blockquote>
         </li>
@@ -405,17 +486,30 @@
   </div>
 </section>
 
+<!-- CTA Final -->
 <section class="content-area bg1" data-btmspace="45">
   <div class="container">
     <div class="row">
-      <div class="col-md-6 col-md-push-3">
-        <div class="buttonBox table-content">
-          <div class="table-row">
-            <div class="table-cell">
-              <p>Vous aussi, vous voulez essayer ?</p>
-            </div>
-            <div class="table-cell text-right">
-              <a href="/centres" class="btn btn-default btn-lg" title="Trouvez le centre Aquavélo le plus proche de chez vous">Trouver un centre</a>
+      <div class="col-md-8 col-md-offset-2">
+        <div style="background: linear-gradient(135deg, #e8f8fc, #d4f1f9); padding: 40px; border-radius: 15px; border: 3px solid #00d4ff; box-shadow: 0 10px 30px rgba(0, 168, 204, 0.2);">
+          <div class="text-center">
+            <h3 style="color: #00a8cc; font-size: 2rem; margin-bottom: 20px;">
+              <i class="fa fa-check-circle"></i> Prêt(e) à Tester l'Aquabiking ?
+            </h3>
+            <p style="font-size: 1.2rem; margin-bottom: 30px; color: #666;">
+              Trouvez le centre Aquavélo le plus proche de chez vous et profitez de votre séance découverte gratuite !
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+              <a href="/centres" class="btn btn-lg" 
+                 style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 18px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0, 168, 204, 0.4);"
+                 title="Trouvez le centre Aquavélo le plus proche de chez vous">
+                <i class="fa fa-map-marker"></i> Trouver un Centre
+              </a>
+              <a href="/free" class="btn btn-lg" 
+                 style="background: #ff9800; color: white; border: none; padding: 18px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4);"
+                 title="Réserver ma séance gratuite">
+                <i class="fa fa-gift"></i> Séance Gratuite
+              </a>
             </div>
           </div>
         </div>
@@ -424,8 +518,71 @@
   </div>
 </section>
 
-</body>
-</html>
+<!-- Tracking Analytics -->
+<script>
+// Track clics "Séance gratuite"
+document.querySelectorAll('a[href*="/free"]').forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'click_free_trial', {
+        'event_category': 'conversion',
+        'event_label': 'from_aquabiking_page'
+      });
+    }
+  });
+});
+
+// Track clics "Trouver un centre"
+document.querySelectorAll('a[href*="/centres"]').forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'click_find_center', {
+        'event_category': 'engagement',
+        'event_label': 'from_aquabiking_page'
+      });
+    }
+  });
+});
+</script>
+
+<style>
+/* Styles spécifiques page aquabiking */
+.iconBox.type3 {
+  transition: all 0.3s ease;
+}
+
+.iconBox.type3:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 168, 204, 0.3) !important;
+}
+
+.progress-bar {
+  transition: width 1.5s ease;
+}
+
+.panel-title > a {
+  transition: color 0.3s ease;
+}
+
+.panel-title > a:hover {
+  color: #00d4ff !important;
+}
+
+@media (max-width: 768px) {
+  .iconBox.type3 {
+    min-height: auto !important;
+  }
+  
+  div[style*="flex"] {
+    display: block !important;
+  }
+  
+  div[style*="flex"] > a {
+    width: 100%;
+    margin-bottom: 15px !important;
+  }
+}
+</style>
 
 
 

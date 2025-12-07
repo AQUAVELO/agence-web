@@ -76,6 +76,9 @@
                 <textarea name="field[]" class="form-control" id="message" rows="3" placeholder="Votre message..."></textarea>
               </div>
 
+              <input type="hidden" name="reason" value="Séance découverte gratuite">
+              <input type="hidden" name="segment" value="free-trial">
+
               <!-- Bouton submit -->
               <div class="text-center" style="margin-top: 30px;">
                 <button type="submit" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); border: none; padding: 15px 50px; font-size: 1.2rem; border-radius: 50px;">
@@ -83,12 +86,25 @@
                 </button>
               </div>
 
-              <p class="text-center" style="margin-top: 20px; color: #666;">
-                <small>Vous pouvez aussi réserver directement sur notre 
-                <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc; font-weight: 600;">
-                  calendrier en ligne <i class="fa fa-external-link"></i>
-                </a></small>
-              </p>
+              <!-- ⭐ Lien Calendly pour Cannes, Nice, Vallauris (centres 305, 347, 349) -->
+              <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+                <p class="text-center" style="margin-top: 20px; color: #666;">
+                  <small>Vous pouvez aussi réserver directement sur notre 
+                  <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc; font-weight: 600;">
+                    calendrier en ligne <i class="fa fa-external-link"></i>
+                  </a></small>
+                </p>
+              <?php endif; ?>
+
+              <!-- ⭐ Lien SimplyBook pour Mérignac (centre 343) -->
+              <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+                <p class="text-center" style="margin-top: 20px; color: #666;">
+                  <small>Vous pouvez aussi réserver directement sur notre 
+                  <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc; font-weight: 600;">
+                    calendrier en ligne <i class="fa fa-external-link"></i>
+                  </a></small>
+                </p>
+              <?php endif; ?>
 
             </fieldset>
           </form>
@@ -404,6 +420,19 @@
   </div>
 </section>
 
+<!-- Tracking Analytics -->
+<script>
+// Track soumission formulaire
+document.querySelector('.liveForm').addEventListener('submit', function() {
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'form_submission', {
+      'event_category': 'conversion',
+      'event_label': 'free_trial_request'
+    });
+  }
+});
+</script>
+
 <style>
 /* Styles spécifiques pour la page free */
 .well {
@@ -427,6 +456,11 @@
 
 .iconBox.type4 .media .pull-left i {
   font-size: 3rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 168, 204, 0.4) !important;
 }
 
 /* Responsive */

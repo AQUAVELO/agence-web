@@ -165,6 +165,7 @@
       border-radius: 10px;
       margin-bottom: 30px;
       box-shadow: 0 5px 20px rgba(0, 168, 204, 0.3);
+      transition: all 0.3s ease;
     }
 
     .promo-banner h2 {
@@ -286,6 +287,19 @@
 
     /* MOBILE : Ordre + Bouton CTA */
     @media (max-width: 768px) {
+      /* ⭐ Rendre le bandeau promo cliquable sur mobile */
+      .promo-banner {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .promo-banner:hover,
+      .promo-banner:active {
+        transform: scale(0.98);
+        box-shadow: 0 3px 15px rgba(0, 168, 204, 0.4);
+      }
+
       .promo-banner h2 {
         font-size: 1.5rem;
       }
@@ -450,7 +464,7 @@
 <!-- Bannière promo -->
 <section class="content-area bg1">
   <div class="container">
-    <div class="promo-banner">
+    <div class="promo-banner" onclick="openFormMobile()" role="button" tabindex="0" aria-label="Cliquer pour ouvrir le formulaire de réservation">
       <h2>🎁 Séance Découverte GRATUITE 45min</h2>
       <p>✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé</p>
     </div>
@@ -914,6 +928,19 @@
       }
     }
   });
+
+  // ⭐ Support clavier pour le bandeau promo (accessibilité)
+  document.addEventListener('DOMContentLoaded', function() {
+    const promoBanner = document.querySelector('.promo-banner');
+    if (promoBanner) {
+      promoBanner.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openFormMobile();
+        }
+      });
+    }
+  });
 </script>
 
 <script>
@@ -1037,7 +1064,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
-
 
 
 

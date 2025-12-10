@@ -277,18 +277,158 @@
       margin-bottom: 10px;
     }
 
+    /* ⭐⭐⭐ OPTION A : BOUTON CTA MOBILE ⭐⭐⭐ */
+    
+    /* Bouton CTA caché par défaut (desktop) */
+    .mobile-cta-button {
+      display: none;
+    }
+
+    /* MOBILE : Ordre + Bouton CTA */
     @media (max-width: 768px) {
       .promo-banner h2 {
         font-size: 1.5rem;
       }
       
       .form-container {
-        padding: 20px;
+        padding: 20px 15px;
+      }
+
+      /* Container flex pour réorganiser */
+      .mobile-reorder {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* 1. Planning EN PREMIER */
+      .planning-section {
+        order: 1;
+        margin-bottom: 25px;
+      }
+      
+      /* 2. Formulaire/CTA EN DEUXIÈME */
+      .form-section {
+        order: 2;
+        margin-bottom: 25px;
+      }
+      
+      /* 3. Autres contenus */
+      .other-content {
+        order: 3;
+      }
+
+      /* ⭐ Formulaire CACHÉ par défaut sur mobile */
+      .form-container {
+        display: none;
+      }
+
+      /* ⭐ Bouton CTA VISIBLE sur mobile */
+      .mobile-cta-button {
+        display: block;
+        background: linear-gradient(135deg, #00d4ff, #00a8cc);
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 168, 204, 0.4);
+        font-size: 1.3rem;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .mobile-cta-button:active {
+        transform: scale(0.98);
+      }
+
+      .mobile-cta-button .icon {
+        font-size: 2rem;
+        display: block;
+        margin-bottom: 10px;
+        animation: bounce 2s infinite;
+      }
+
+      .mobile-cta-button .subtitle {
+        font-size: 0.9rem;
+        margin-top: 10px;
+        opacity: 0.95;
+        font-weight: 400;
+      }
+
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+      }
+
+      /* ⭐ Quand le formulaire est ouvert */
+      .form-section.form-opened .form-container {
+        display: block;
+        animation: slideDown 0.4s ease;
+      }
+
+      .form-section.form-opened .mobile-cta-button {
+        display: none;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Urgence box et badges simplifiés sur mobile */
+      .urgency-box {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      .trust-badges {
+        flex-direction: column;
+        margin: 20px 0;
       }
 
       .trust-badge {
         flex: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        padding: 10px;
+      }
+
+      .trust-badge i {
+        font-size: 2rem;
+      }
+    }
+
+    /* DESKTOP : Ordre normal */
+    @media (min-width: 769px) {
+      /* Bouton CTA caché sur desktop */
+      .mobile-cta-button {
+        display: none !important;
+      }
+
+      /* Formulaire toujours visible sur desktop */
+      .form-container {
+        display: block !important;
+      }
+
+      /* Ordre desktop : Formulaire d'abord */
+      .form-section {
+        order: 1;
+      }
+      
+      .planning-section {
+        order: 2;
+      }
+      
+      .other-content {
+        order: 3;
       }
     }
   </style>
@@ -394,182 +534,198 @@
   <div class="container">
     <div class="row">
       
-      <!-- Colonne gauche : Formulaire + Contenu -->
-      <div class="col-md-6">
+      <!-- Colonne gauche : Planning + CTA/Formulaire + Contenu -->
+      <div class="col-md-6 mobile-reorder">
         
-        <!-- Formulaire de réservation -->
-        <div class="form-container">
-          <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
-          
-          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
-              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
-              <strong><a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc;">
-                calendrier en ligne <i class="fa fa-external-link"></i>
-              </a></strong>
-            </div>
-          <?php endif; ?>
-          
-          <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
-              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
-              <strong><a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc;">
-                calendrier en ligne <i class="fa fa-external-link"></i>
-              </a></strong>
-            </div>
-          <?php endif; ?>
-        
-          <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
-            <div class="form-group">
-              <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
-              <select class="form-control" id="center" name="center">
-                <?php if (isset($centers_list_d)) : ?>
-                  <option value="">-- Sélectionnez un centre --</option>
-                  <?php foreach ($centers_list_d as $free_d) : ?>
-                    <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                      <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
-                    </option>
-                  <?php endforeach; ?>
-                <?php endif; ?>
-              </select>
-              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
-            </div>
-            
-            <div class="form-group">
-              <label for="nom"><i class="fa fa-user"></i> Nom et Prénom <span style="color: red;">*</span></label>
-              <input type="text" 
-                     class="form-control" 
-                     id="nom" 
-                     name="nom" 
-                     placeholder="Votre nom et prénom" 
-                     value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
-            </div>
-            
-            <div class="form-group">
-              <label for="email"><i class="fa fa-envelope"></i> Email <span style="color: red;">*</span></label>
-              <input type="email" 
-                     class="form-control" 
-                     id="email" 
-                     name="email" 
-                     placeholder="exemple@email.com" 
-                     value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
-            </div>
-              
-            <div class="form-group">
-              <label for="phone"><i class="fa fa-phone"></i> Téléphone <span style="color: red;">*</span></label>
-              <input type="tel" 
-                     class="form-control" 
-                     id="phone" 
-                     name="phone" 
-                     placeholder="06 12 34 56 78" 
-                     value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
-            </div>
-          
-            <input type="hidden" name="reason" id="reason">
-            <input type="hidden" name="segment" id="segment">
-            
-            <button type="submit" class="btn btn-submit" aria-label="Recevoir mon bon par email">
-              <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
-            </button>
-
-            <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
-              <i class="fa fa-lock"></i> Vos données sont sécurisées • Sans engagement
-            </p>
-          </form>
-        </div>
-
-        <!-- Urgence / Rareté -->
-        <div class="urgency-box">
-          <i class="fa fa-clock-o"></i> <strong>Places limitées !</strong> 
-          Profitez de cette offre découverte gratuite tant qu'elle est disponible.
-        </div>
-
-        <!-- Badges de confiance -->
-        <div class="trust-badges">
-          <div class="trust-badge">
-            <i class="fa fa-shield"></i>
-            <p><strong>100% Sécurisé</strong><br>Données protégées</p>
-          </div>
-          <div class="trust-badge">
-            <i class="fa fa-gift"></i>
-            <p><strong>Sans Engagement</strong><br>Aucun frais caché</p>
-          </div>
-          <div class="trust-badge">
-            <i class="fa fa-star"></i>
-            <p><strong>Satisfaction</strong><br>98% de clients satisfaits</p>
-          </div>
-        </div>
-
-        <!-- Planning -->
+        <!-- ⭐ 1. PLANNING (EN PREMIER sur mobile, EN DEUXIÈME sur desktop) -->
         <a id="planning-cours"></a>
-        <?php if (isset($row_center['id'])) : ?>
-          <?php if ($row_center['id'] == 253) : ?>
-            <div class="text-center mt-4">
-              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-              <img src="/images/planningAntibes.jpg" 
-                   alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
-                   class="img-fluid" 
-                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                   loading="lazy">
-            </div>
-          <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
-            <div class="text-center mt-4">
-              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-              <img src="/images/PLANNINGCANNES0125.jpg" 
-                   alt="Planning hebdomadaire cours aquabiking aquagym Cannes janvier 2025" 
-                   class="img-fluid" 
-                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                   loading="lazy">
-            </div>
-          <?php elseif ($row_center['id'] == 179) : ?>
-            <div class="text-center mt-4">
-              <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-              <img src="/images/planningNice.jpg" 
-                   alt="Planning hebdomadaire cours aquabiking aquagym Nice" 
-                   class="img-fluid" 
-                   style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                   loading="lazy">
-            </div>
+        <div class="planning-section">
+          <?php if (isset($row_center['id'])) : ?>
+            <?php if ($row_center['id'] == 253) : ?>
+              <div class="text-center">
+                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+                <img src="/images/planningAntibes.jpg" 
+                     alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
+                     class="img-fluid" 
+                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                     loading="lazy">
+              </div>
+            <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
+              <div class="text-center">
+                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+                <img src="/images/PLANNINGCANNES0125.jpg" 
+                     alt="Planning hebdomadaire cours aquabiking aquagym Cannes janvier 2025" 
+                     class="img-fluid" 
+                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                     loading="lazy">
+              </div>
+            <?php elseif ($row_center['id'] == 179) : ?>
+              <div class="text-center">
+                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+                <img src="/images/planningNice.jpg" 
+                     alt="Planning hebdomadaire cours aquabiking aquagym Nice" 
+                     class="img-fluid" 
+                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                     loading="lazy">
+              </div>
+            <?php endif; ?>
           <?php endif; ?>
-        <?php endif; ?>
+        </div>
         
-        <!-- Section Pourquoi choisir -->
-        <div style="margin-top: 40px;">
-          <h3 style="color: #00a8cc;"><i class="fa fa-star"></i> Pourquoi Choisir l'Aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
+        <!-- ⭐ 2. BOUTON CTA / FORMULAIRE (EN DEUXIÈME sur mobile, EN PREMIER sur desktop) -->
+        <div class="form-section">
           
-          <ul class="benefits-list">
-            <li><strong>Brûlez jusqu'à 600 calories</strong> par séance de 45 minutes</li>
-            <li><strong>Réduisez la cellulite</strong> grâce à l'effet drainant de l'eau</li>
-            <li><strong>Tonifiez vos muscles</strong> sans impact sur les articulations</li>
-            <li><strong>Améliorez votre circulation sanguine</strong> et votre retour veineux</li>
-            <li><strong>Sculptez votre silhouette</strong> : cuisses, fessiers, abdos</li>
-            <li><strong>Détendez-vous</strong> dans une eau chauffée entre 28 et 32°C</li>
-          </ul>
+          <!-- ⭐⭐⭐ BOUTON CTA MOBILE (visible uniquement sur mobile) -->
+          <button type="button" class="mobile-cta-button" onclick="openFormMobile()" aria-label="Ouvrir le formulaire de réservation">
+            <div class="icon">📅</div>
+            <div>Réserver Ma Séance Gratuite</div>
+            <div class="subtitle">👆 Cliquez pour remplir le formulaire</div>
+          </button>
 
-          <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #00d4ff;">
-            <h4 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-users"></i> Pour Qui ?</h4>
-            <p>L'aquabiking convient à <strong>tous les âges et tous les niveaux</strong> : débutants, sportifs confirmés, personnes en surpoids, seniors, femmes enceintes (avec accord médical). <strong>Pas besoin de savoir nager</strong> - l'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
+          <!-- Formulaire de réservation (visible desktop, caché mobile jusqu'au clic) -->
+          <div class="form-container">
+            <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
+            
+            <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+              <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+                <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+                <strong><a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc;">
+                  calendrier en ligne <i class="fa fa-external-link"></i>
+                </a></strong>
+              </div>
+            <?php endif; ?>
+            
+            <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+              <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+                <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+                <strong><a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc;">
+                  calendrier en ligne <i class="fa fa-external-link"></i>
+                </a></strong>
+              </div>
+            <?php endif; ?>
+          
+            <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
+              <div class="form-group">
+                <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
+                <select class="form-control" id="center" name="center">
+                  <?php if (isset($centers_list_d)) : ?>
+                    <option value="">-- Sélectionnez un centre --</option>
+                    <?php foreach ($centers_list_d as $free_d) : ?>
+                      <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                        <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
+                      </option>
+                    <?php endforeach; ?>
+                  <?php endif; ?>
+                </select>
+                <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="nom"><i class="fa fa-user"></i> Nom et Prénom <span style="color: red;">*</span></label>
+                <input type="text" 
+                       class="form-control" 
+                       id="nom" 
+                       name="nom" 
+                       placeholder="Votre nom et prénom" 
+                       value="<?= htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
+              </div>
+              
+              <div class="form-group">
+                <label for="email"><i class="fa fa-envelope"></i> Email <span style="color: red;">*</span></label>
+                <input type="email" 
+                       class="form-control" 
+                       id="email" 
+                       name="email" 
+                       placeholder="exemple@email.com" 
+                       value="<?= htmlspecialchars($_POST['email'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
+              </div>
+                
+              <div class="form-group">
+                <label for="phone"><i class="fa fa-phone"></i> Téléphone <span style="color: red;">*</span></label>
+                <input type="tel" 
+                       class="form-control" 
+                       id="phone" 
+                       name="phone" 
+                       placeholder="06 12 34 56 78" 
+                       value="<?= htmlspecialchars($_POST['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
+              </div>
+            
+              <input type="hidden" name="reason" id="reason">
+              <input type="hidden" name="segment" id="segment">
+              
+              <button type="submit" class="btn btn-submit" aria-label="Recevoir mon bon par email">
+                <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
+              </button>
+
+              <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+                <i class="fa fa-lock"></i> Vos données sont sécurisées • Sans engagement
+              </p>
+            </form>
+          </div>
+
+          <!-- Urgence / Rareté -->
+          <div class="urgency-box">
+            <i class="fa fa-clock-o"></i> <strong>Places limitées !</strong> 
+            Profitez de cette offre découverte gratuite tant qu'elle est disponible.
+          </div>
+
+          <!-- Badges de confiance -->
+          <div class="trust-badges">
+            <div class="trust-badge">
+              <i class="fa fa-shield"></i>
+              <p><strong>100% Sécurisé</strong><br>Données protégées</p>
+            </div>
+            <div class="trust-badge">
+              <i class="fa fa-gift"></i>
+              <p><strong>Sans Engagement</strong><br>Aucun frais caché</p>
+            </div>
+            <div class="trust-badge">
+              <i class="fa fa-star"></i>
+              <p><strong>Satisfaction</strong><br>98% de clients satisfaits</p>
+            </div>
           </div>
         </div>
+        
+        <!-- ⭐ 3. AUTRES CONTENUS -->
+        <div class="other-content">
+          <!-- Section Pourquoi choisir -->
+          <div style="margin-top: 40px;">
+            <h3 style="color: #00a8cc;"><i class="fa fa-star"></i> Pourquoi Choisir l'Aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
+            
+            <ul class="benefits-list">
+              <li><strong>Brûlez jusqu'à 600 calories</strong> par séance de 45 minutes</li>
+              <li><strong>Réduisez la cellulite</strong> grâce à l'effet drainant de l'eau</li>
+              <li><strong>Tonifiez vos muscles</strong> sans impact sur les articulations</li>
+              <li><strong>Améliorez votre circulation sanguine</strong> et votre retour veineux</li>
+              <li><strong>Sculptez votre silhouette</strong> : cuisses, fessiers, abdos</li>
+              <li><strong>Détendez-vous</strong> dans une eau chauffée entre 28 et 32°C</li>
+            </ul>
 
-        <!-- FAQ -->
-        <div style="margin-top: 40px; background: #f8f9fa; padding: 25px; border-radius: 10px;">
-          <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-question-circle"></i> Questions Fréquentes</h3>
-          
-          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Dois-je savoir nager ?</h4>
-          <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
+            <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #00d4ff;">
+              <h4 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-users"></i> Pour Qui ?</h4>
+              <p>L'aquabiking convient à <strong>tous les âges et tous les niveaux</strong> : débutants, sportifs confirmés, personnes en surpoids, seniors, femmes enceintes (avec accord médical). <strong>Pas besoin de savoir nager</strong> - l'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
+            </div>
+          </div>
 
-          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Que faut-il apporter ?</h4>
-          <p>Un <strong>maillot de bain</strong>, une <strong>serviette</strong> et optionnellement des <strong>chaussures d'eau</strong>. Casiers sécurisés fournis.</p>
+          <!-- FAQ -->
+          <div style="margin-top: 40px; background: #f8f9fa; padding: 25px; border-radius: 10px;">
+            <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-question-circle"></i> Questions Fréquentes</h3>
+            
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Dois-je savoir nager ?</h4>
+            <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
 
-          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien de séances par semaine ?</h4>
-          <p>Pour des résultats optimaux : <strong>2 à 3 séances par semaine</strong>. Premiers résultats visibles après 8-10 séances.</p>
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Que faut-il apporter ?</h4>
+            <p>Un <strong>maillot de bain</strong>, une <strong>serviette</strong> et optionnellement des <strong>chaussures d'eau</strong>. Casiers sécurisés fournis.</p>
 
-          <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
-          <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien de séances par semaine ?</h4>
+            <p>Pour des résultats optimaux : <strong>2 à 3 séances par semaine</strong>. Premiers résultats visibles après 8-10 séances.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
+            <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>
+          </div>
         </div>
 
       </div>
@@ -724,6 +880,40 @@
     );
     return false;
   }
+
+  /* ⭐⭐⭐ FONCTION POUR OUVRIR LE FORMULAIRE SUR MOBILE ⭐⭐⭐ */
+  function openFormMobile() {
+    if (window.innerWidth <= 768) {
+      const formSection = document.querySelector('.form-section');
+      if (formSection) {
+        // Ajouter la classe pour afficher le formulaire
+        formSection.classList.add('form-opened');
+        
+        // Scroll vers le formulaire après un court délai
+        setTimeout(function() {
+          formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          
+          // Focus sur le premier champ après le scroll
+          setTimeout(function() {
+            const firstInput = document.getElementById('center');
+            if (firstInput) {
+              firstInput.focus();
+            }
+          }, 500);
+        }, 100);
+      }
+    }
+  }
+
+  // Réinitialiser au redimensionnement de fenêtre
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      const formSection = document.querySelector('.form-section');
+      if (formSection) {
+        formSection.classList.remove('form-opened');
+      }
+    }
+  });
 </script>
 
 <script>

@@ -3,37 +3,523 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique Aquavelo</title>
+    <title>Boutique Officielle Aquavelo | Accessoires Aquabiking</title>
+    <meta name="description" content="D&eacute;couvrez notre boutique officielle Aquavelo : accessoires, cartes cadeaux et produits exclusifs pour votre pratique d'aquabiking.">
+    
+    <!-- Font Awesome pour les ic&ocirc;nes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9f2f9 100%);
+        }
+
+        /* ===== HEADER BOUTIQUE ===== */
+        .shop-header {
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 168, 204, 0.3);
+        }
+
+        .shop-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: wave 15s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .shop-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .shop-header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .shop-header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .shop-header .icon-gift {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ===== FEATURES BADGES ===== */
+        .features-section {
+            max-width: 1200px;
+            margin: -30px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 168, 204, 0.15);
+            transition: all 0.3s ease;
+            border-top: 4px solid #00d4ff;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 168, 204, 0.25);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: #00a8cc;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ===== INTRODUCTION SECTION ===== */
+        .store-introduction {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 50px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .store-introduction h2 {
+            color: #00a8cc;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .store-introduction h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4ff, #00a8cc);
+            border-radius: 2px;
+        }
+
+        .store-introduction p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .intro-highlight {
+            background: linear-gradient(135deg, #e3f8ff 0%, #f0f9ff 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #00d4ff;
+            margin: 30px 0;
+        }
+
+        .intro-highlight p {
+            text-align: left;
+            margin: 0;
+            font-size: 1.1rem;
+            color: #00a8cc;
+            font-weight: 500;
+        }
+
+        /* ===== CATEGORIES SECTION ===== */
+        .categories-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #00a8cc;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #00a8cc);
+            border-radius: 2px;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: #00d4ff;
+        }
+
+        /* ===== ECWID CONTAINERS ===== */
+        #my-categories-127422514,
+        .ec-cart-widget,
+        #my-search-127422514 {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 168, 204, 0.3);
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: white;
+            color: #00a8cc;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            background: #f0f9ff;
+        }
+
+        .cta-button i {
+            margin-left: 10px;
+        }
+
+        /* ===== FOOTER INFO ===== */
+        .shop-footer {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .footer-item i {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .footer-item h3 {
+            color: #00a8cc;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .footer-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .divider {
+            margin: 50px 0;
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .shop-header h1 {
+                font-size: 2rem;
+            }
+
+            .shop-header .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .shop-header .icon-gift {
+                font-size: 3rem;
+            }
+
+            .store-introduction h2 {
+                font-size: 1.8rem;
+            }
+
+            .store-introduction p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-section h2 {
+                font-size: 1.6rem;
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="store-introduction">
-    <h2>Bienvenue dans la Boutique Officielle Aquavelo !</h2>
-    <p>Découvrez notre sélection exclusive de produits conçus pour optimiser votre expérience aquabiking et prolonger les bienfaits de vos séances.</p>
-    <p>Que vous recherchiez des accessoires pratiques pour vos cours, des cartes cadeaux pour faire plaisir, ou des produits dérivés de votre centre Aquavelo, vous trouverez tout ce dont vous avez besoin ci-dessous. Faites-vous plaisir et vivez pleinement votre passion !</p>
-    
-    <hr style="margin: 40px 0;">
-</div>
+    <!-- HEADER -->
+    <header class="shop-header">
+        <div class="shop-header-content">
+            <div class="icon-gift">
+                <i class="fas fa-gift"></i>
+            </div>
+            <h1><i class="fas fa-store"></i> Boutique Officielle Aquavelo</h1>
+            <p class="subtitle">Votre destination exclusive pour l'aquabiking et le bien-&ecirc;tre</p>
+        </div>
+    </header>
 
-<div id="my-categories-127422514"></div>
-<div>
-<script data-cfasync="false" type="text/javascript" src="https://app.ecwid.com/script.js?127422514&data_platform=code&data_date=2025-12-11" charset="utf-8"></script>
-<script type="text/javascript"> xCategoriesV2("id=my-categories-127422514"); </script>
-</div>
+    <!-- FEATURES BADGES -->
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-shipping-fast"></i>
+                <h3>Livraison Rapide</h3>
+                <p>Recevez vos commandes rapidement partout en France</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Paiement S&eacute;curis&eacute;</h3>
+                <p>Vos transactions sont 100% s&eacute;curis&eacute;es</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-star"></i>
+                <h3>Qualit&eacute; Premium</h3>
+                <p>Des produits test&eacute;s et approuv&eacute;s par nos coachs</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>Service Client</h3>
+                <p>Une &eacute;quipe &agrave; votre &eacute;coute 7j/7</p>
+            </div>
+        </div>
+    </section>
 
-<div class="ec-cart-widget"></div>
-<div>
-<script data-cfasync="false" type="text/javascript" src="https://app.ecwid.com/script.js?127422514&data_platform=code&data_date=2025-12-11" charset="utf-8"></script>
-<script type="text/javascript">Ecwid.init();</script>
-</div>
+    <!-- INTRODUCTION -->
+    <section class="store-introduction fade-in">
+        <h2><i class="fas fa-water"></i> Bienvenue dans la Boutique Officielle Aquavelo&nbsp;!</h2>
+        
+        <p>D&eacute;couvrez notre s&eacute;lection exclusive de produits con&ccedil;us pour optimiser votre exp&eacute;rience aquabiking et prolonger les bienfaits de vos s&eacute;ances.</p>
+        
+        <div class="intro-highlight">
+            <p><i class="fas fa-check-circle" style="color: #00d4ff; margin-right: 10px;"></i> Que vous recherchiez des <strong>accessoires pratiques</strong> pour vos cours, des <strong>cartes cadeaux</strong> pour faire plaisir, ou des <strong>produits d&eacute;riv&eacute;s</strong> de votre centre Aquavelo, vous trouverez tout ce dont vous avez besoin ci-dessous.</p>
+        </div>
 
-<div id="my-search-127422514"></div>
-<div>
-<script data-cfasync="false" type="text/javascript" src="https://app.ecwid.com/script.js?127422514&data_platform=code&data_date=2025-12-11" charset="utf-8"></script>
-<script type="text/javascript"> xSearch("id=my-search-127422514"); </script>
-</div>
+        <p style="font-size: 1.2rem; color: #00a8cc; font-weight: 500;">
+            <i class="fas fa-heart" style="color: #ff6b9d;"></i> Faites-vous plaisir et vivez pleinement votre passion&nbsp;!
+        </p>
+    </section>
+
+    <!-- SEARCH BAR -->
+    <section class="categories-wrapper">
+        <h2 class="section-title"><i class="fas fa-search"></i> Rechercher un Produit</h2>
+        <div id="my-search-127422514"></div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="categories-wrapper">
+        <h2 class="section-title"><i class="fas fa-th-large"></i> Nos Cat&eacute;gories</h2>
+        <div id="my-categories-127422514"></div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <h2><i class="fas fa-gift"></i> Offrez une Exp&eacute;rience Unique&nbsp;!</h2>
+        <p>Nos cartes cadeaux sont le cadeau id&eacute;al pour vos proches</p>
+        <a href="#my-categories-127422514" class="cta-button">
+            D&eacute;couvrir les Cartes Cadeaux <i class="fas fa-arrow-right"></i>
+        </a>
+    </section>
+
+    <!-- CART WIDGET -->
+    <section class="categories-wrapper">
+        <div class="ec-cart-widget"></div>
+    </section>
+
+    <!-- FOOTER INFO -->
+    <section class="shop-footer">
+        <div class="footer-grid">
+            <div class="footer-item">
+                <i class="fas fa-lock"></i>
+                <h3>Paiement 100% S&eacute;curis&eacute;</h3>
+                <p>Toutes vos transactions sont prot&eacute;g&eacute;es par un cryptage SSL</p>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-undo"></i>
+                <h3>Retours Faciles</h3>
+                <p>Satisfait ou rembours&eacute; sous 14 jours</p>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-certificate"></i>
+                <h3>Garantie Qualit&eacute;</h3>
+                <p>Tous nos produits sont garantis et certifi&eacute;s</p>
+            </div>
+            <div class="footer-item">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Besoin d'Aide&nbsp;?</h3>
+                <p>Contactez-nous pour toute question</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ECWID SCRIPTS -->
+    <script data-cfasync="false" type="text/javascript" src="https://app.ecwid.com/script.js?127422514&data_platform=code&data_date=2025-12-11" charset="utf-8"></script>
+    <script type="text/javascript">
+        // Initialize search
+        xSearch("id=my-search-127422514");
+        
+        // Initialize categories
+        xCategoriesV2("id=my-categories-127422514");
+        
+        // Initialize Ecwid store
+        Ecwid.init();
+    </script>
 
 </body>
 </html>
+
 
 

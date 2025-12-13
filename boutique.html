@@ -208,6 +208,34 @@
             font-weight: 500;
         }
 
+        /* ===== PRODUITS VEDETTES SECTION ===== */
+        .featured-products-section {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .featured-products-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff9800 0%, #ff6b00 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(255, 152, 0, 0.3);
+        }
+
+        .featured-badge i {
+            margin-right: 8px;
+        }
+
         /* ===== CATEGORIES SECTION ===== */
         .categories-wrapper {
             max-width: 1200px;
@@ -243,6 +271,7 @@
 
         /* ===== ECWID CONTAINERS ===== */
         #my-categories-127422514,
+        #featured-products-127422514,
         .ec-cart-widget,
         #my-search-127422514 {
             background: white;
@@ -250,6 +279,30 @@
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 30px;
+        }
+
+        /* Style spécial pour les produits vedettes */
+        #featured-products-127422514 {
+            border: 2px solid #ff9800;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #featured-products-127422514::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9800, #ff6b00, #ff9800);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         /* ===== CTA SECTION ===== */
@@ -337,6 +390,34 @@
             border: none;
             height: 2px;
             background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        }
+
+        /* ===== VIEW ALL BUTTON ===== */
+        .view-all-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .view-all-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #00d4ff 0%, #00a8cc 100%);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 168, 204, 0.3);
+        }
+
+        .view-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 168, 204, 0.4);
+        }
+
+        .view-all-btn i {
+            margin-left: 10px;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -451,6 +532,28 @@
         </p>
     </section>
 
+    <!-- ⭐⭐⭐ PRODUITS VEDETTES ⭐⭐⭐ -->
+    <section class="featured-products-section fade-in">
+        <div class="featured-products-header">
+            <span class="featured-badge">
+                <i class="fas fa-fire"></i> PRODUITS VEDETTES
+            </span>
+            <h2 class="section-title" style="margin-top: 10px;">
+                <i class="fas fa-star"></i> Nos Meilleures Ventes
+            </h2>
+        </div>
+        
+        <!-- Widget Ecwid pour afficher les produits vedettes -->
+        <div id="featured-products-127422514"></div>
+        
+        <!-- Bouton Voir Tous les Produits -->
+        <div class="view-all-container">
+            <a href="#my-categories-127422514" class="view-all-btn">
+                Voir Tous les Produits <i class="fas fa-arrow-down"></i>
+            </a>
+        </div>
+    </section>
+
     <!-- SEARCH BAR -->
     <section class="categories-wrapper">
         <h2 class="section-title"><i class="fas fa-search"></i> Rechercher un Produit</h2>
@@ -459,7 +562,7 @@
 
     <!-- CATEGORIES -->
     <section class="categories-wrapper">
-        <h2 class="section-title"><i class="fas fa-th-large"></i> Nos Cat&eacute;gories</h2>
+        <h2 class="section-title"><i class="fas fa-th-large"></i> Toutes Nos Cat&eacute;gories</h2>
         <div id="my-categories-127422514"></div>
     </section>
 
@@ -511,8 +614,31 @@
         // Initialize search
         xSearch("id=my-search-127422514");
         
-        // Initialize categories
+        // Initialize categories (catalogue complet)
         xCategoriesV2("id=my-categories-127422514");
+        
+        // ⭐ Initialize featured products (produits vedettes)
+        // OPTION 1 : Afficher les produits d'une catégorie spécifique
+        // Remplacez CATEGORY_ID par l'ID de votre catégorie de produits vedettes
+        xProductBrowser(
+            "categoriesPerRow=3",
+            "views=grid(20,3) list(60) table(60)",
+            "categoryId=CATEGORY_ID", // ← Remplacez par votre ID de catégorie
+            "searchView=grid",
+            "id=featured-products-127422514"
+        );
+        
+        // OPTION 2 : Si vous préférez afficher tous les produits récents
+        // Décommentez cette ligne et commentez l'option 1 ci-dessus
+        /*
+        xProductBrowser(
+            "categoriesPerRow=3",
+            "views=grid(20,3) list(60) table(60)",
+            "searchView=grid",
+            "defaultProductId=newest",
+            "id=featured-products-127422514"
+        );
+        */
         
         // Initialize Ecwid store
         Ecwid.init();
@@ -520,6 +646,7 @@
 
 </body>
 </html>
+
 
 
 

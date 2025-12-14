@@ -57,8 +57,7 @@
           </ul>
         </div>
         <div class="col-md-4 text-center">
-          <a href="_menu.php" 
-             class="btn btn-lg btn-block" 
+          <a href="/suivi-mensurations" class="btn btn-lg btn-block">
              title="Accéder au suivi des mensurations" 
              aria-label="Suivi des mensurations"
              style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 20px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4); margin-top: 20px; transition: all 0.3s ease;">

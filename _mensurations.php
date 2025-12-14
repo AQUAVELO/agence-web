@@ -155,7 +155,7 @@
           <p style="font-size: 1.1rem; color: #666; margin-bottom: 30px; line-height: 1.6;">
             Connectez-vous pour accéder à votre tableau de bord et consulter vos mensurations.
           </p>
-          <a href="index.php" 
+          <a href="connexion_mensurations.php" 
              class="btn btn-lg" 
              style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 18px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4); text-decoration: none; display: inline-block;">
             <i class="fa fa-sign-in"></i> Se Connecter

@@ -39,6 +39,38 @@
         $date_cache_buster = date('YmdHis');
     ?>
 
+    <!-- ⭐⭐⭐ NOUVEAU : Suivi des Mensurations ⭐⭐⭐ -->
+    <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 30px; border-radius: 15px; border-left: 5px solid #4caf50; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2); transition: all 0.3s ease;">
+      <div class="row">
+        <div class="col-md-8">
+          <h3 style="color: #2e7d32; margin-top: 0; font-size: 1.6rem;">
+            <i class="fa fa-line-chart"></i> Suivez Vos Mensurations
+          </h3>
+          <p style="font-size: 1.1rem; color: #666; margin-bottom: 20px; line-height: 1.6;">
+            Mesurez vos progrès avec précision ! Enregistrez et suivez l'évolution de vos mensurations semaine après semaine.
+          </p>
+          <ul style="list-style: none; padding: 0; margin: 0 0 20px 0;">
+            <li style="padding: 5px 0;"><i class="fa fa-check" style="color: #4caf50;"></i> Suivi détaillé : poids, tour de taille, cuisses, bras...</li>
+            <li style="padding: 5px 0;"><i class="fa fa-check" style="color: #4caf50;"></i> Graphiques de progression</li>
+            <li style="padding: 5px 0;"><i class="fa fa-check" style="color: #4caf50;"></i> Historique complet de vos mesures</li>
+            <li style="padding: 5px 0;"><i class="fa fa-check" style="color: #4caf50;"></i> Visualisez vos résultats en temps réel</li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center">
+          <a href="_menu.php" 
+             class="btn btn-lg btn-block" 
+             title="Accéder au suivi des mensurations" 
+             aria-label="Suivi des mensurations"
+             style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 20px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4); margin-top: 20px; transition: all 0.3s ease;">
+            <i class="fa fa-line-chart"></i> Suivre Mes Progrès
+          </a>
+          <p style="margin-top: 15px; color: #999; font-size: 0.9rem;">
+            <i class="fa fa-lock"></i> Données privées et sécurisées
+          </p>
+        </div>
+      </div>
+    </div>
+
     <!-- Calculateur Calories -->
     <div style="background: linear-gradient(135deg, #fff3cd, #ffe8a1); padding: 30px; border-radius: 15px; border-left: 5px solid #ff9800; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);">
       <div class="row">
@@ -421,6 +453,18 @@ document.querySelectorAll('a[href*="/free"]').forEach(function(link) {
             gtag('event', 'click_free_trial', {
                 'event_category': 'conversion',
                 'event_label': 'from_menus_page'
+            });
+        }
+    });
+});
+
+// ⭐ Track clic suivi mensurations
+document.querySelectorAll('a[href="_menu.php"]').forEach(function(link) {
+    link.addEventListener('click', function() {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'click_measurements', {
+                'event_category': 'engagement',
+                'event_label': 'from_conseilminceur_page'
             });
         }
     });

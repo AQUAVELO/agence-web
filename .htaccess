@@ -1,56 +1,46 @@
 <IfModule mod_rewrite.c>
 Options +FollowSymlinks
 Header set Access-Control-Allow-Origin "*"
-
 # URL rewriting module activation
 RewriteEngine on
 RewriteBase /
-
 # Exclure les fichiers statiques des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
-
 # Redirection vers www.aquavelo.com
 RewriteCond %{HTTP_HOST} !^$
 RewriteCond %{HTTP_HOST} !^www\.aquavelo\.com [NC]
 RewriteCond %{HTTPS}s ^on(s)|
 RewriteRule ^ http%1://www.aquavelo.com%{REQUEST_URI} [R=301,L]
-
 # ===== URL REWRITING RULES =====
-
 # Pages principales
 RewriteRule ^sitemap$ /?p=sitemap [QSA,L]
 RewriteRule ^contact$ /?p=contact [QSA,L]
 RewriteRule ^centres$ /?p=centers [QSA,L]
 RewriteRule ^partenaires$ /?p=partenaires [QSA,L]
 RewriteRule ^aquabiking$ /?p=aquabiking [QSA,L]
-
+# ⭐ NOUVEAU : Page Suivi des Mensurations
+RewriteRule ^suivi-mensurations$ /?p=mensurations [QSA,L]
+RewriteRule ^mensurations$ /?p=mensurations [QSA,L]
 # ⭐ FRANCHISE : Les 2 URLs pointent vers la même page optimisée
 RewriteRule ^concept-aquabiking$ /?p=franchise [QSA,L]
 RewriteRule ^franchise$ /?p=franchise [QSA,L]
-
 # ⭐ Page séance gratuite
 RewriteRule ^free$ /?p=free [QSA,L]
-
 # Pages avec ville
 RewriteRule ^centres/([^/]+)$ /?p=page&city=$1 [QSA,L]
 RewriteRule ^seance-decouverte/([^/]+)$ /?p=free&city=$1 [QSA,L]
-
 # Pages aquabiking
 RewriteRule ^aquabiking/velo-dans-l-eau$ /?p=velo [QSA,L]
 RewriteRule ^aquabiking/bienfaits-minceur$ /?p=bienfaits [QSA,L]
-
 # Blog
 RewriteRule ^blog/([0-9]+)/([0-9]+)/([0-9]+)/([^/]+)$ /?p=blog&name=$4 [QSA,L]
-
 # Pages légales
 RewriteRule ^cgv$ /?p=cgv [QSA,L]
 RewriteRule ^mentions-legales$ /?p=mentions [QSA,L]
-
 # Redirections externes
 RewriteRule ^facebook$ http://www.facebook.com/pages/aquavelo/number?fref=ts [QSA,L]
-
 # Pages diverses
 RewriteRule ^conseilminceur$ /?p=conseilminceur [QSA,L]
 RewriteRule ^vente_formule$ /?p=vente_formule [QSA,L]
@@ -61,8 +51,7 @@ RewriteRule ^confirmation$ /?p=confirmation [QSA,L]
 RewriteRule ^natation$ /?p=natation [QSA,L]
 RewriteRule ^inscription_client$ /?p=inscription_client [QSA,L]
 RewriteRule ^inscription_nageur$ /?p=inscription_nageur [QSA,L]
-
 # Fichiers PHP directs
 RewriteRule ^traitement_nageur.php$ /traitement_nageur.php [QSA,L]
-
 </IfModule>
+

@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $check_stmt->execute([$email]);
             
             if ($check_stmt->rowCount() > 0) {
-                $error_message = "Cette adresse email est déjà utilisée. <a href='index.php'>Se connecter</a>";
+                $error_message = "Cette adresse email est déjà utilisée. <a href='connexion_mensurations.php'>Se connecter</a>";
             } else {
                 // Hash du mot de passe
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
@@ -501,7 +501,7 @@ $conn = null;
 
     <!-- Footer Note -->
     <div class="footer-note">
-        <p>Vous avez déjà un compte ? <a href="index.php"><i class="fa fa-sign-in"></i> Se connecter</a></p>
+        <p>Vous avez déjà un compte ? <a href="connexion_mensurations.php"><i class="fa fa-sign-in"></i> Se connecter</a></p>
         <p style="margin-top: 10px; font-size: 0.85rem;">
             <i class="fa fa-lock"></i> En vous inscrivant, vos données sont chiffrées et sécurisées.<br>
             Service 100% gratuit • Sans engagement • Données privées

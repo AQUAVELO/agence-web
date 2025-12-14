@@ -324,7 +324,7 @@
           <a href="saisieMensurations.php" class="btn btn-lg" style="background: white; color: #4caf50; border: none; padding: 20px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2); text-decoration: none;">
             <i class="fa fa-user-plus"></i> S'Inscrire Gratuitement
           </a>
-          <a href="index.php" class="btn btn-lg" style="background: transparent; color: white; border: 3px solid white; padding: 20px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; text-decoration: none;">
+          <a href="connexion_mensurations.php" class="btn btn-lg" style="background: transparent; color: white; border: 3px solid white; padding: 20px 40px; font-size: 1.2rem; border-radius: 50px; font-weight: 600; text-decoration: none;">
             <i class="fa fa-sign-in"></i> Se Connecter
           </a>
         </div>
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  document.querySelectorAll('a[href="index.php"]').forEach(function(btn) {
+  document.querySelectorAll('a[href="connexion_mensurations.php"]').forEach(function(btn) {
     btn.addEventListener('click', function() {
       if (typeof gtag !== 'undefined') {
         gtag('event', 'click_connexion_mensurations', {

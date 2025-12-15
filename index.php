@@ -759,12 +759,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- boxedWrapper -->
 
   <!-- ⭐ NOUVEAU : Bouton réservation flottant -->
-  <div id="floating-booking-btn">
-    <a href="https://www.aquavelo.com/?p=free" target="_blank">
-      <i class="fa fa-calendar"></i>
-      <span>ESSAYER UNE SEANCE</span>
-    </a>
-  </div>
+  <!-- ✅ VERSION CORRIGÉE -->
+    <div id="floating-booking-btn">
+      <a href="/?p=free">
+        <i class="fa fa-calendar"></i>
+        <span>ESSAYER UNE SEANCE</span>
+      </a>
+    </div>
 
  
 

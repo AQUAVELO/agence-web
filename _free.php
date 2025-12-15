@@ -13,7 +13,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 // Vérifier que c'est bien une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    die('Méthode non autorisée');
+    http_response_code(405) + exit;
 }
 
 // Récupérer les données du formulaire

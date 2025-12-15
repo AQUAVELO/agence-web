@@ -31,127 +31,124 @@
             <i class="fa fa-calendar"></i> Réservez votre séance gratuite
           </h3>
 
-          <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Séance Découverte Gratuite" data-show-errors="true" id="freeTrialForm">
-            <fieldset>
-              
-              <!-- Sélection du centre -->
-              <div class="form-group">
-                <label for="centre">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
-                <select name="field[]" class="form-control" id="centre" required style="font-size: 16px;">
-                  <option value="">Sélectionnez un centre</option>
-                  <?php foreach ($centers_list_d as $row_centers) { ?>
-                    <option value="<?= $row_centers['city']; ?>"><?= $row_centers['city']; ?></option>
-                  <?php } ?>
-                </select>
-              </div>
+          <!-- ⭐ FORMULAIRE ULTRA-SIMPLIFIÉ POUR iOS - AUCUN JS -->
+          <form action="/form/send_simple.php" method="POST" id="aquavelo-free-trial-form-2024">
+            
+            <!-- Sélection du centre -->
+            <div class="form-group">
+              <label for="centre-seance">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
+              <select name="centre" class="form-control" id="centre-seance" required style="font-size: 16px;">
+                <option value="">Sélectionnez un centre</option>
+                <?php foreach ($centers_list_d as $row_centers) { ?>
+                  <option value="<?= $row_centers['city']; ?>"><?= $row_centers['city']; ?></option>
+                <?php } ?>
+              </select>
+            </div>
 
-              <!-- Nom et prénom -->
-              <div class="form-group">
-                <label for="nom">Nom et Prénom <span style="color: red;">*</span></label>
-                <input type="text" 
-                       name="field[]" 
-                       class="form-control" 
-                       id="nom" 
-                       placeholder="Votre nom et prénom" 
-                       required 
-                       autocomplete="name"
-                       style="font-size: 16px;">
-              </div>
+            <!-- Nom et prénom -->
+            <div class="form-group">
+              <label for="nom-seance">Nom et Prénom <span style="color: red;">*</span></label>
+              <input type="text" 
+                     name="nom" 
+                     class="form-control" 
+                     id="nom-seance" 
+                     placeholder="Votre nom et prénom" 
+                     required 
+                     minlength="2"
+                     autocomplete="name"
+                     style="font-size: 16px;">
+            </div>
 
-              <!-- Email -->
-              <div class="form-group">
-                <label for="email">Email <span style="color: red;">*</span></label>
-                <input type="email" 
-                       name="field[]" 
-                       class="form-control" 
-                       id="email" 
-                       placeholder="votre@email.com" 
-                       required 
-                       autocomplete="email"
-                       style="font-size: 16px;">
-              </div>
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email-seance">Email <span style="color: red;">*</span></label>
+              <input type="email" 
+                     name="email" 
+                     class="form-control" 
+                     id="email-seance" 
+                     placeholder="votre@email.com" 
+                     required 
+                     autocomplete="email"
+                     style="font-size: 16px;">
+            </div>
 
-              <!-- Téléphone - CORRIGÉ POUR iOS -->
-              <div class="form-group">
-                <label for="telephone">Téléphone <span style="color: red;">*</span></label>
-                <input type="tel" 
-                       name="field[]" 
-                       class="form-control" 
-                       id="telephone" 
-                       placeholder="06 12 34 56 78" 
-                       required 
-                       pattern="[0-9\s\.\-\+]*"
-                       inputmode="tel"
-                       autocomplete="tel"
-                       style="font-size: 16px;">
-              </div>
+            <!-- Téléphone -->
+            <div class="form-group">
+              <label for="telephone-seance">Téléphone <span style="color: red;">*</span></label>
+              <input type="tel" 
+                     name="telephone" 
+                     class="form-control" 
+                     id="telephone-seance" 
+                     placeholder="06 12 34 56 78" 
+                     required 
+                     minlength="10"
+                     pattern="[0-9\s\.\-\+]*"
+                     inputmode="tel"
+                     autocomplete="tel"
+                     style="font-size: 16px;">
+            </div>
 
-              <!-- Date souhaitée -->
-              <div class="form-group">
-                <label for="date">Date souhaitée (optionnel)</label>
-                <input type="text" 
-                       name="field[]" 
-                       class="form-control" 
-                       id="date" 
-                       placeholder="Ex: Lundi 15 janvier à 10h"
-                       autocomplete="off"
-                       style="font-size: 16px;">
-                <p class="help-block">Notre équipe vous contactera pour confirmer la disponibilité</p>
-              </div>
+            <!-- Date souhaitée -->
+            <div class="form-group">
+              <label for="date-seance">Date souhaitée (optionnel)</label>
+              <input type="text" 
+                     name="date" 
+                     class="form-control" 
+                     id="date-seance" 
+                     placeholder="Ex: Lundi 15 janvier à 10h"
+                     autocomplete="off"
+                     style="font-size: 16px;">
+              <p class="help-block">Notre équipe vous contactera pour confirmer la disponibilité</p>
+            </div>
 
-              <!-- Message -->
-              <div class="form-group">
-                <label for="message">Message (optionnel)</label>
-                <textarea name="field[]" 
-                          class="form-control" 
-                          id="message" 
-                          rows="3" 
-                          placeholder="Votre message..."
-                          autocomplete="off"
-                          style="font-size: 16px;"></textarea>
-              </div>
+            <!-- Message -->
+            <div class="form-group">
+              <label for="message-seance">Message (optionnel)</label>
+              <textarea name="message" 
+                        class="form-control" 
+                        id="message-seance" 
+                        rows="3" 
+                        placeholder="Votre message..."
+                        autocomplete="off"
+                        style="font-size: 16px;"></textarea>
+            </div>
 
-              <input type="hidden" name="reason" value="Séance découverte gratuite">
-              <input type="hidden" name="segment" value="free-trial">
+            <input type="hidden" name="email_subject" value="Séance Découverte Gratuite">
+            <input type="hidden" name="reason" value="Séance découverte gratuite">
+            <input type="hidden" name="segment" value="free-trial">
+            <input type="hidden" name="source_page" value="free_trial_form">
 
-              <!-- Bouton submit -->
-              <div class="text-center" style="margin-top: 30px;">
-                <button type="submit" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); border: none; padding: 15px 50px; font-size: 1.2rem; border-radius: 50px;">
-                  <i class="fa fa-check-circle"></i> Recevoir mon bon par email
-                </button>
-              </div>
+            <!-- Bouton submit -->
+            <div class="text-center" style="margin-top: 30px;">
+              <button type="submit" 
+                      id="submit-free-trial-btn"
+                      class="btn btn-primary btn-lg" 
+                      style="background: linear-gradient(135deg, #00d4ff, #00a8cc); border: none; padding: 15px 50px; font-size: 1.2rem; border-radius: 50px;">
+                <i class="fa fa-check-circle"></i> Recevoir mon bon par email
+              </button>
+            </div>
 
-              <!-- ⭐ Lien Calendly pour Cannes, Nice, Vallauris (centres 305, 347, 349) -->
-              <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-                <p class="text-center" style="margin-top: 20px; color: #666;">
-                  <small>Vous pouvez aussi réserver directement sur notre 
-                  <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc; font-weight: 600;">
-                    calendrier en ligne <i class="fa fa-external-link"></i>
-                  </a></small>
-                </p>
-              <?php endif; ?>
+            <!-- ⭐ Lien Calendly pour Cannes, Nice, Vallauris -->
+            <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+              <p class="text-center" style="margin-top: 20px; color: #666;">
+                <small>Vous pouvez aussi réserver directement sur notre 
+                <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc; font-weight: 600;">
+                  calendrier en ligne <i class="fa fa-external-link"></i>
+                </a></small>
+              </p>
+            <?php endif; ?>
 
-              <!-- ⭐ Lien SimplyBook pour Mérignac (centre 343) -->
-              <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-                <p class="text-center" style="margin-top: 20px; color: #666;">
-                  <small>Vous pouvez aussi réserver directement sur notre 
-                  <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc; font-weight: 600;">
-                    calendrier en ligne <i class="fa fa-external-link"></i>
-                  </a></small>
-                </p>
-              <?php endif; ?>
+            <!-- ⭐ Lien SimplyBook pour Mérignac -->
+            <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+              <p class="text-center" style="margin-top: 20px; color: #666;">
+                <small>Vous pouvez aussi réserver directement sur notre 
+                <a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc; font-weight: 600;">
+                  calendrier en ligne <i class="fa fa-external-link"></i>
+                </a></small>
+              </p>
+            <?php endif; ?>
 
-            </fieldset>
           </form>
-
-          <div class="successMessage alert alert-success alert-dismissable" style="display: none; margin-top: 20px;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Merci !</strong> Votre demande a été envoyée. Nous vous contacterons rapidement pour confirmer votre séance gratuite.
-          </div>
-          <div class="errorMessage alert alert-danger alert-dismissable" style="display: none; margin-top: 20px;">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Erreur !</strong> Une erreur est survenue. Veuillez réessayer ou nous contacter directement au 06 22 64 70 95.
-          </div>
 
         </div>
       </div>
@@ -406,7 +403,7 @@
       <?php 
       $count = 0;
       foreach ($centers_list_d as $row_center_list) { 
-        if ($count >= 6) break; // Afficher seulement 6 centres
+        if ($count >= 6) break;
         $count++;
       ?>
         <div class="col-md-4 col-sm-6" style="margin-bottom: 30px;">
@@ -455,48 +452,8 @@
   </div>
 </section>
 
-<!-- Tracking Analytics -->
-<script>
-// Validation iOS-friendly
-document.addEventListener('DOMContentLoaded', function() {
-  var form = document.getElementById('freeTrialForm');
-  
-  if (form) {
-    form.addEventListener('submit', function(e) {
-      // Vérification basique avant soumission
-      var centre = document.getElementById('centre').value;
-      var nom = document.getElementById('nom').value;
-      var email = document.getElementById('email').value;
-      var telephone = document.getElementById('telephone').value;
-      
-      if (!centre || !nom || !email || !telephone) {
-        e.preventDefault();
-        alert('Veuillez remplir tous les champs obligatoires.');
-        return false;
-      }
-      
-      // Validation email
-      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        e.preventDefault();
-        alert('Veuillez entrer une adresse email valide.');
-        return false;
-      }
-      
-      // Analytics tracking
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'form_submission', {
-          'event_category': 'conversion',
-          'event_label': 'free_trial_request'
-        });
-      }
-      
-      // Laisser le formulaire se soumettre normalement
-      return true;
-    });
-  }
-});
-</script>
+<!-- ⭐ IMPORTANT : AUCUN JavaScript pour éviter tout blocage -->
+<!-- La validation HTML5 native gère tout -->
 
 <style>
 /* Styles spécifiques pour la page free */
@@ -537,6 +494,15 @@ textarea.form-control {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+/* Feedback visuel sur le bouton au hover */
+#submit-free-trial-btn:hover {
+  opacity: 0.9;
+}
+
+#submit-free-trial-btn:active {
+  transform: scale(0.98);
 }
 
 /* Responsive */

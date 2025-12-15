@@ -635,11 +635,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
               
             <li class="cta-nav"> 
-                <a href="javascript:void(0)"
-                   onclick="openFormMobile()"
-                   class="btn-reserve-nav">
-                   <i class="fa fa-calendar"></i> ESSAYER UNE SEANCE
+                <a href="https://www.aquavelo.com/?p=free" 
+                    target="_blank" class="btn-reserve-nav">
+                    <i class="fa fa-calendar"></i> ESSAYER UNE SEANCE
                 </a>
+
  
             </li>
             

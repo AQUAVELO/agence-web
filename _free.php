@@ -31,13 +31,13 @@
             <i class="fa fa-calendar"></i> Réservez votre séance gratuite
           </h3>
 
-          <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Séance Découverte Gratuite" data-show-errors="true">
+          <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Séance Découverte Gratuite" data-show-errors="true" id="freeTrialForm">
             <fieldset>
               
               <!-- Sélection du centre -->
               <div class="form-group">
                 <label for="centre">Dans quel centre souhaitez-vous effectuer votre séance ? <span style="color: red;">*</span></label>
-                <select name="field[]" class="form-control" id="centre" required>
+                <select name="field[]" class="form-control" id="centre" required style="font-size: 16px;">
                   <option value="">Sélectionnez un centre</option>
                   <?php foreach ($centers_list_d as $row_centers) { ?>
                     <option value="<?= $row_centers['city']; ?>"><?= $row_centers['city']; ?></option>
@@ -48,32 +48,67 @@
               <!-- Nom et prénom -->
               <div class="form-group">
                 <label for="nom">Nom et Prénom <span style="color: red;">*</span></label>
-                <input type="text" name="field[]" class="form-control" id="nom" placeholder="Votre nom et prénom" required>
+                <input type="text" 
+                       name="field[]" 
+                       class="form-control" 
+                       id="nom" 
+                       placeholder="Votre nom et prénom" 
+                       required 
+                       autocomplete="name"
+                       style="font-size: 16px;">
               </div>
 
               <!-- Email -->
               <div class="form-group">
                 <label for="email">Email <span style="color: red;">*</span></label>
-                <input type="email" name="field[]" class="form-control" id="email" placeholder="votre@email.com" required>
+                <input type="email" 
+                       name="field[]" 
+                       class="form-control" 
+                       id="email" 
+                       placeholder="votre@email.com" 
+                       required 
+                       autocomplete="email"
+                       style="font-size: 16px;">
               </div>
 
-              <!-- Téléphone -->
+              <!-- Téléphone - CORRIGÉ POUR iOS -->
               <div class="form-group">
                 <label for="telephone">Téléphone <span style="color: red;">*</span></label>
-                <input type="tel" name="field[]" class="form-control" id="telephone" placeholder="06 12 34 56 78" required>
+                <input type="tel" 
+                       name="field[]" 
+                       class="form-control" 
+                       id="telephone" 
+                       placeholder="06 12 34 56 78" 
+                       required 
+                       pattern="[0-9\s\.\-\+]*"
+                       inputmode="tel"
+                       autocomplete="tel"
+                       style="font-size: 16px;">
               </div>
 
               <!-- Date souhaitée -->
               <div class="form-group">
                 <label for="date">Date souhaitée (optionnel)</label>
-                <input type="text" name="field[]" class="form-control" id="date" placeholder="Ex: Lundi 15 janvier à 10h">
+                <input type="text" 
+                       name="field[]" 
+                       class="form-control" 
+                       id="date" 
+                       placeholder="Ex: Lundi 15 janvier à 10h"
+                       autocomplete="off"
+                       style="font-size: 16px;">
                 <p class="help-block">Notre équipe vous contactera pour confirmer la disponibilité</p>
               </div>
 
               <!-- Message -->
               <div class="form-group">
                 <label for="message">Message (optionnel)</label>
-                <textarea name="field[]" class="form-control" id="message" rows="3" placeholder="Votre message..."></textarea>
+                <textarea name="field[]" 
+                          class="form-control" 
+                          id="message" 
+                          rows="3" 
+                          placeholder="Votre message..."
+                          autocomplete="off"
+                          style="font-size: 16px;"></textarea>
               </div>
 
               <input type="hidden" name="reason" value="Séance découverte gratuite">
@@ -370,20 +405,20 @@
     <div class="row" style="margin-top: 40px;">
       <?php 
       $count = 0;
-      foreach ($centers_list_d as $row_center) { 
+      foreach ($centers_list_d as $row_center_list) { 
         if ($count >= 6) break; // Afficher seulement 6 centres
         $count++;
       ?>
         <div class="col-md-4 col-sm-6" style="margin-bottom: 30px;">
           <div class="well" style="background: white; padding: 20px; border-radius: 10px; border-left: 4px solid #00d4ff;">
             <h4 style="color: #00a8cc; margin-bottom: 10px;">
-              <i class="fa fa-map-marker"></i> <?= $row_center['city']; ?>
+              <i class="fa fa-map-marker"></i> <?= $row_center_list['city']; ?>
             </h4>
             <p style="margin-bottom: 10px;">
               <i class="fa fa-clock-o"></i> Ouvert 7j/7<br>
               <i class="fa fa-users"></i> Cours collectifs
             </p>
-            <a href="/centres/<?= $row_center['city']; ?>" class="btn btn-sm" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none;">
+            <a href="/centres/<?= $row_center_list['city']; ?>" class="btn btn-sm" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none;">
               Voir le centre
             </a>
           </div>
@@ -422,12 +457,42 @@
 
 <!-- Tracking Analytics -->
 <script>
-// Track soumission formulaire
-document.querySelector('.liveForm').addEventListener('submit', function() {
-  if (typeof gtag !== 'undefined') {
-    gtag('event', 'form_submission', {
-      'event_category': 'conversion',
-      'event_label': 'free_trial_request'
+// Validation iOS-friendly
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('freeTrialForm');
+  
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      // Vérification basique avant soumission
+      var centre = document.getElementById('centre').value;
+      var nom = document.getElementById('nom').value;
+      var email = document.getElementById('email').value;
+      var telephone = document.getElementById('telephone').value;
+      
+      if (!centre || !nom || !email || !telephone) {
+        e.preventDefault();
+        alert('Veuillez remplir tous les champs obligatoires.');
+        return false;
+      }
+      
+      // Validation email
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        e.preventDefault();
+        alert('Veuillez entrer une adresse email valide.');
+        return false;
+      }
+      
+      // Analytics tracking
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'form_submission', {
+          'event_category': 'conversion',
+          'event_label': 'free_trial_request'
+        });
+      }
+      
+      // Laisser le formulaire se soumettre normalement
+      return true;
     });
   }
 });
@@ -461,6 +526,17 @@ document.querySelector('.liveForm').addEventListener('submit', function() {
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 168, 204, 0.4) !important;
+}
+
+/* ⭐ IMPORTANT iOS : Font-size minimum 16px pour éviter le zoom */
+.form-control, 
+select.form-control,
+input.form-control,
+textarea.form-control {
+  font-size: 16px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 /* Responsive */

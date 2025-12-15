@@ -1,71 +1,60 @@
 <?php
 /**
- * Script simplifié d'envoi de formulaire - Compatible iOS
- * Version sans dépendances complexes
+ * Page Séance Découverte Gratuite
+ * Traitement du formulaire de réservation
  */
 
-// Activer l'affichage des erreurs pour debug (désactiver en production)
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+// Variables pour les messages
+$success_message = '';
+$error_message = '';
 
-// Headers pour éviter les problèmes de cache
-header('Content-Type: text/html; charset=utf-8');
-
-// Vérifier que c'est bien une requête POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    die('Méthode non autorisée');
-}
-
-// Récupérer les données du formulaire
-$centre = isset($_POST['centre']) ? trim($_POST['centre']) : '';
-$nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
-$email = isset($_POST['email']) ? trim($_POST['email']) : '';
-$telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : '';
-$date = isset($_POST['date']) ? trim($_POST['date']) : '';
-$message = isset($_POST['message']) ? trim($_POST['message']) : '';
-$reason = isset($_POST['reason']) ? trim($_POST['reason']) : 'Séance découverte gratuite';
-
-// Validation basique
-$errors = [];
-
-if (empty($centre)) {
-    $errors[] = 'Le centre est obligatoire';
-}
-
-if (empty($nom)) {
-    $errors[] = 'Le nom est obligatoire';
-}
-
-if (empty($email)) {
-    $errors[] = 'L\'email est obligatoire';
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = 'L\'email n\'est pas valide';
-}
-
-if (empty($telephone)) {
-    $errors[] = 'Le téléphone est obligatoire';
-}
-
-// Si erreurs, afficher et arrêter
-if (!empty($errors)) {
-    echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Erreur</title></head><body>';
-    echo '<h2>Erreur dans le formulaire</h2>';
-    echo '<ul>';
-    foreach ($errors as $error) {
-        echo '<li>' . htmlspecialchars($error) . '</li>';
+// Traiter le formulaire si soumis en POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    
+    // Récupérer les données du formulaire
+    $center = isset($_POST['center']) ? trim($_POST['center']) : '';
+    $nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+    $date = isset($_POST['date']) ? trim($_POST['date']) : '';
+    $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+    $reason = isset($_POST['reason']) ? trim($_POST['reason']) : 'Séance découverte gratuite';
+    $segment = isset($_POST['segment']) ? trim($_POST['segment']) : 'free-trial';
+    
+    // Validation basique
+    $errors = [];
+    
+    if (empty($center)) {
+        $errors[] = 'Le centre est obligatoire';
     }
-    echo '</ul>';
-    echo '<p><a href="javascript:history.back()">Retour au formulaire</a></p>';
-    echo '</body></html>';
-    exit;
-}
-
-// Préparer l'email
-$to = 'claude@alesiaminceur.com'; // Email de destination
-$subject = 'Séance Découverte Gratuite - ' . $centre;
-
-// Corps de l'email en HTML
-$email_body = '
+    
+    if (empty($nom) || strlen($nom) < 2) {
+        $errors[] = 'Le nom est obligatoire (minimum 2 caractères)';
+    }
+    
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'L\'email est obligatoire et doit être valide';
+    }
+    
+    if (empty($phone) || strlen($phone) < 10) {
+        $errors[] = 'Le téléphone est obligatoire (minimum 10 caractères)';
+    }
+    
+    // Si pas d'erreurs, envoyer l'email
+    if (empty($errors)) {
+        
+        // Récupérer le nom du centre depuis l'ID
+        $center_query = $database->prepare('SELECT city FROM am_centers WHERE id = ?');
+        $center_query->execute(array($center));
+        $center_data = $center_query->fetch(PDO::FETCH_ASSOC);
+        $center_name = $center_data ? $center_data['city'] : 'Centre non trouvé';
+        
+        // Préparer l'email
+        $to = 'claude@alesiaminceur.com';
+        $subject = 'Séance Découverte Gratuite - ' . $center_name;
+        
+        // Corps de l'email en HTML
+        $email_body = '
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,7 +79,7 @@ $email_body = '
         <div class="content">
             <div class="field">
                 <div class="label">Centre choisi :</div>
-                <div class="value">' . htmlspecialchars($centre) . '</div>
+                <div class="value">' . htmlspecialchars($center_name) . '</div>
             </div>
             
             <div class="field">
@@ -105,7 +94,7 @@ $email_body = '
             
             <div class="field">
                 <div class="label">Téléphone :</div>
-                <div class="value">' . htmlspecialchars($telephone) . '</div>
+                <div class="value">' . htmlspecialchars($phone) . '</div>
             </div>
             
             ' . (!empty($date) ? '
@@ -130,21 +119,21 @@ $email_body = '
     </div>
 </body>
 </html>
-';
-
-// Headers pour l'email HTML
-$headers = "MIME-Version: 1.0" . "\r\n";
-$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-$headers .= "From: noreply@aquavelo.com" . "\r\n";
-$headers .= "Reply-To: " . $email . "\r\n";
-
-// Envoyer l'email
-$sent = mail($to, $subject, $email_body, $headers);
-
-// Email de confirmation au client
-if ($sent) {
-    $client_subject = 'Confirmation - Votre demande de séance gratuite Aquavelo';
-    $client_body = '
+        ';
+        
+        // Headers pour l'email HTML
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $headers .= "From: noreply@aquavelo.com" . "\r\n";
+        $headers .= "Reply-To: " . $email . "\r\n";
+        
+        // Envoyer l'email
+        $sent = mail($to, $subject, $email_body, $headers);
+        
+        if ($sent) {
+            // Email de confirmation au client
+            $client_subject = 'Confirmation - Votre demande de séance gratuite Aquavelo';
+            $client_body = '
 <!DOCTYPE html>
 <html>
 <head>
@@ -167,13 +156,13 @@ if ($sent) {
             <p>Votre demande de séance découverte gratuite a bien été enregistrée.</p>
             
             <div class="highlight">
-                <strong>Centre choisi :</strong> ' . htmlspecialchars($centre) . '<br>
+                <strong>Centre choisi :</strong> ' . htmlspecialchars($center_name) . '<br>
                 ' . (!empty($date) ? '<strong>Date souhaitée :</strong> ' . htmlspecialchars($date) . '<br>' : '') . '
             </div>
             
             <p><strong>Que se passe-t-il maintenant ?</strong></p>
             <ol>
-                <li>Notre équipe du centre de ' . htmlspecialchars($centre) . ' va vous contacter dans les 24h</li>
+                <li>Notre équipe du centre de ' . htmlspecialchars($center_name) . ' va vous contacter dans les 24h</li>
                 <li>Vous conviendrez ensemble d\'un créneau qui vous arrange</li>
                 <li>Vous recevrez votre bon de séance gratuite par email</li>
             </ol>
@@ -192,130 +181,399 @@ if ($sent) {
     </div>
 </body>
 </html>
-    ';
-    
-    $client_headers = "MIME-Version: 1.0" . "\r\n";
-    $client_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $client_headers .= "From: Aquavelo <noreply@aquavelo.com>" . "\r\n";
-    
-    mail($email, $client_subject, $client_body, $client_headers);
+            ';
+            
+            $client_headers = "MIME-Version: 1.0" . "\r\n";
+            $client_headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $client_headers .= "From: Aquavelo <noreply@aquavelo.com>" . "\r\n";
+            
+            mail($email, $client_subject, $client_body, $client_headers);
+            
+            $success_message = 'Votre demande a bien été envoyée ! Vous allez recevoir un email de confirmation.';
+            
+            // Rediriger vers la page de confirmation après 2 secondes
+            header("refresh:2;url=/?p=free&success=1");
+        } else {
+            $error_message = 'Erreur lors de l\'envoi de l\'email. Veuillez réessayer.';
+        }
+        
+    } else {
+        // Afficher les erreurs
+        $error_message = implode('<br>', $errors);
+    }
 }
 
-// Page de confirmation
+// Afficher un message de succès si redirigé depuis le POST
+if (isset($_GET['success']) && $_GET['success'] == '1') {
+    $success_message = 'Votre demande a bien été envoyée ! Vous allez recevoir un email de confirmation.';
+}
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demande envoyée - Aquavelo</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-            padding: 50px 0;
-            font-family: Arial, sans-serif;
-        }
-        .success-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .success-icon {
-            font-size: 5rem;
-            color: #4caf50;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: #2e7d32;
-            margin-bottom: 20px;
-        }
-        .highlight-box {
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 30px 0;
-        }
-        .btn-home {
-            background: linear-gradient(135deg, #00d4ff, #00a8cc);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .btn-home:hover {
-            color: white;
-            text-decoration: none;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 168, 204, 0.4);
-        }
-    </style>
-</head>
-<body>
-    <div class="success-container">
-        <div class="success-icon">
-            <i class="fa fa-check-circle"></i>
-        </div>
-        
-        <h1>Merci <?php echo htmlspecialchars($nom); ?> !</h1>
-        
-        <p style="font-size: 1.2rem; color: #666;">
-            Votre demande de séance découverte gratuite a bien été envoyée.
-        </p>
-        
-        <div class="highlight-box">
-            <p style="margin: 0; font-size: 1.1rem;">
-                <strong>Centre :</strong> <?php echo htmlspecialchars($centre); ?><br>
-                <strong>Email :</strong> <?php echo htmlspecialchars($email); ?><br>
-                <strong>Téléphone :</strong> <?php echo htmlspecialchars($telephone); ?>
+
+<!-- Hero Section avec image de fond -->
+<section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="70" data-btmspace="50">
+  <div class="container">
+    <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true" data-controls="true">
+      <ul class="slides">
+        <li>
+          <blockquote class="huge text-center">
+            <p>🎁 Profitez d'une séance découverte GRATUITE<br>
+              Testez l'aquabiking sans engagement dans le centre de votre choix
             </p>
+          </blockquote>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Section principale -->
+<section class="content-area bg1">
+  <div class="container">
+    <header class="page-header text-center">
+      <h1 class="page-title">Séance Découverte Gratuite</h1>
+      <h2>Essayez l'aquabiking pendant 45 minutes avec un coach professionnel</h2>
+    </header>
+
+    <!-- Message de succès -->
+    <?php if (!empty($success_message)) : ?>
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="alert alert-success" style="padding: 20px; border-radius: 10px; background: #d4edda; border: 2px solid #4caf50;">
+          <h3 style="color: #4caf50; margin-top: 0;"><i class="fa fa-check-circle"></i> <?= $success_message; ?></h3>
+          <p>Notre équipe vous contactera dans les plus brefs délais.</p>
         </div>
-        
-        <div style="text-align: left; margin: 30px 0;">
-            <h3 style="color: #00a8cc;">📧 Et maintenant ?</h3>
-            <ol style="font-size: 1.05rem; line-height: 1.8;">
-                <li>Vous allez recevoir un email de confirmation</li>
-                <li>Notre équipe vous contactera sous 24h</li>
-                <li>Vous choisirez ensemble votre créneau</li>
-                <li>Vous recevrez votre bon de séance gratuite</li>
-            </ol>
+      </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- Message d'erreur -->
+    <?php if (!empty($error_message)) : ?>
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="alert alert-danger" style="padding: 20px; border-radius: 10px;">
+          <h3 style="color: #d32f2f; margin-top: 0;"><i class="fa fa-exclamation-triangle"></i> Erreur</h3>
+          <p><?= $error_message; ?></p>
         </div>
+      </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- Formulaire de réservation -->
+    <div class="row" style="margin-top: 50px;">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-container">
+          <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
+          
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+              <strong><a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc;">
+                calendrier en ligne <i class="fa fa-external-link"></i>
+              </a></strong>
+            </div>
+          <?php endif; ?>
+          
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
+            <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
+              <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
+              <strong><a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc;">
+                calendrier en ligne <i class="fa fa-external-link"></i>
+              </a></strong>
+            </div>
+          <?php endif; ?>
         
-        <p style="color: #666;">
-            <strong>Contact direct :</strong><br>
-            <i class="fa fa-phone"></i> 06 22 64 70 95<br>
-            <i class="fa fa-envelope"></i> claude@alesiaminceur.com
-        </p>
-        
-        <a href="https://www.aquavelo.com" class="btn-home">
-            <i class="fa fa-home"></i> Retour à l'accueil
-        </a>
+          <!-- ⭐ FORMULAIRE BASÉ SUR _page.php -->
+          <form role="form" id="freeTrialForm" class="free-trial-form" method="POST" action="<?php echo $_SERVER['REQUEST_URI']; ?>" novalidate>
+            
+            <div class="form-group">
+              <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
+              <select class="form-control" id="center" name="center" style="font-size: 16px;">
+                <option value="">-- Sélectionnez un centre --</option>
+                <?php foreach ($centers_list_d as $row_centers) { ?>
+                  <option value="<?= $row_centers['id']; ?>"><?= $row_centers['city']; ?></option>
+                <?php } ?>
+              </select>
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez sélectionner un centre</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="nom"><i class="fa fa-user"></i> Nom et Prénom <span style="color: red;">*</span></label>
+              <input type="text" 
+                     class="form-control" 
+                     id="nom" 
+                     name="nom" 
+                     placeholder="Votre nom et prénom"
+                     autocomplete="name"
+                     style="font-size: 16px;">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre nom</span>
+            </div>
+            
+            <div class="form-group">
+              <label for="email"><i class="fa fa-envelope"></i> Email <span style="color: red;">*</span></label>
+              <input type="email" 
+                     class="form-control" 
+                     id="email" 
+                     name="email" 
+                     placeholder="exemple@email.com"
+                     autocomplete="email"
+                     style="font-size: 16px;">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer un email valide</span>
+            </div>
+              
+            <div class="form-group">
+              <label for="phone"><i class="fa fa-phone"></i> Téléphone <span style="color: red;">*</span></label>
+              <input type="tel" 
+                     class="form-control" 
+                     id="phone" 
+                     name="phone" 
+                     placeholder="06 12 34 56 78"
+                     autocomplete="tel"
+                     style="font-size: 16px;">
+              <span class="error-message" style="color: red; font-size: 12px; display: none;">Veuillez entrer votre téléphone</span>
+            </div>
+
+            <div class="form-group">
+              <label for="date"><i class="fa fa-calendar"></i> Date souhaitée (optionnel)</label>
+              <input type="text" 
+                     class="form-control" 
+                     id="date" 
+                     name="date" 
+                     placeholder="Ex: Lundi 15 janvier à 10h"
+                     autocomplete="off"
+                     style="font-size: 16px;">
+              <p class="help-block">Notre équipe vous contactera pour confirmer la disponibilité</p>
+            </div>
+
+            <div class="form-group">
+              <label for="message"><i class="fa fa-comment"></i> Message (optionnel)</label>
+              <textarea class="form-control" 
+                        id="message" 
+                        name="message" 
+                        rows="3" 
+                        placeholder="Votre message..."
+                        autocomplete="off"
+                        style="font-size: 16px;"></textarea>
+            </div>
+          
+            <input type="hidden" name="reason" value="Séance découverte gratuite">
+            <input type="hidden" name="segment" value="free-trial">
+            
+            <button type="submit" class="btn btn-submit" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 15px; font-size: 1.2rem; font-weight: 600; border-radius: 50px; width: 100%; margin-top: 20px;">
+              <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
+            </button>
+
+            <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+              <i class="fa fa-lock"></i> Vos données sont sécurisées • Sans engagement
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
 
-    <!-- Google Analytics Event -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-26LRGBE9X2"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-26LRGBE9X2');
-      
-      // Track conversion
-      gtag('event', 'conversion', {
-        'event_category': 'form',
-        'event_label': 'free_trial_submitted',
-        'value': 1
-      });
-    </script>
-</body>
-</html>
+  </div>
+</section>
+
+<!-- Section Pourquoi essayer -->
+<section class="content-area bg2">
+  <div class="container">
+    <header class="page-header text-center">
+      <h2 class="page-title">Pourquoi essayer une séance gratuite ?</h2>
+    </header>
+
+    <div class="row" style="margin-top: 40px;">
+      <div class="col-md-4">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#"> <i class="fa fa-gift" style="color: #00d4ff; font-size: 3rem;"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">100% Gratuit</a></h4>
+              <p>Aucun engagement, aucun frais. Venez découvrir l'aquabiking en conditions réelles avec un coach professionnel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#"> <i class="fa fa-heart" style="color: #00d4ff; font-size: 3rem;"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Testez les bienfaits</a></h4>
+              <p>Brûlez jusqu'à 500 calories en 45 minutes. Découvrez l'effet drainant et anti-cellulite dès la première séance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="iconBox type4">
+          <div class="media">
+            <a class="pull-left" href="#"> <i class="fa fa-users" style="color: #00d4ff; font-size: 3rem;"></i> </a>
+            <div class="media-body">
+              <h4 class="media-heading"><a href="#">Ambiance conviviale</a></h4>
+              <p>Cours collectifs en petits groupes. Rencontrez nos coachs et découvrez nos installations modernes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Styles -->
+<style>
+.form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  border: 3px solid #00d4ff;
+  box-shadow: 0 10px 30px rgba(0, 168, 204, 0.2);
+}
+
+.form-container h2 {
+  color: #00a8cc;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.form-control {
+  font-size: 16px !important;
+  height: 45px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  -webkit-appearance: none;
+}
+
+.form-control:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 212, 255, 0.25);
+}
+
+textarea.form-control {
+  height: auto;
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 168, 204, 0.5);
+}
+</style>
+
+<!-- JavaScript COPIÉ de _page.php -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('freeTrialForm');
+    
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        var isValid = true;
+        var firstError = null;
+
+        // Validation du CENTRE
+        var centerSelect = document.getElementById('center');
+        var centerError = centerSelect ? centerSelect.nextElementSibling : null;
+        if (centerSelect && centerSelect.value === "") {
+            if(centerError) centerError.style.display = 'block';
+            if(centerSelect) centerSelect.style.borderColor = 'red';
+            isValid = false;
+            if(!firstError) firstError = centerSelect;
+        } else {
+            if(centerError) centerError.style.display = 'none';
+            if(centerSelect) centerSelect.style.borderColor = '';
+        }
+
+        // Validation du NOM
+        var nomInput = document.getElementById('nom');
+        var nomError = nomInput ? nomInput.nextElementSibling : null;
+        if (nomInput && nomInput.value.trim().length < 2) {
+            if(nomError) nomError.style.display = 'block';
+            if(nomInput) nomInput.style.borderColor = 'red';
+            isValid = false;
+            if(!firstError) firstError = nomInput;
+        } else {
+            if(nomError) nomError.style.display = 'none';
+            if(nomInput) nomInput.style.borderColor = '';
+        }
+
+        // Validation EMAIL
+        var emailInput = document.getElementById('email');
+        var emailError = emailInput ? emailInput.nextElementSibling : null;
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailInput && !emailRegex.test(emailInput.value)) {
+            if(emailError) emailError.style.display = 'block';
+            if(emailInput) emailInput.style.borderColor = 'red';
+            isValid = false;
+            if(!firstError) firstError = emailInput;
+        } else {
+            if(emailError) emailError.style.display = 'none';
+            if(emailInput) emailInput.style.borderColor = '';
+        }
+
+        // Validation TÉLÉPHONE
+        var phoneInput = document.getElementById('phone');
+        var phoneError = phoneInput ? phoneInput.nextElementSibling : null;
+        var phoneRegex = /^[\d\s\.\-\+\(\)]{10,}$/; 
+        
+        if (phoneInput && !phoneRegex.test(phoneInput.value)) {
+            if(phoneError) phoneError.style.display = 'block';
+            if(phoneInput) phoneInput.style.borderColor = 'red';
+            isValid = false;
+            if(!firstError) firstError = phoneInput;
+        } else {
+            if(phoneError) phoneError.style.display = 'none';
+            if(phoneInput) phoneInput.style.borderColor = '';
+        }
+
+        // SI INVALIDE
+        if (!isValid) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (firstError) {
+                setTimeout(function() {
+                    try {
+                        firstError.scrollIntoView({ behavior: 'auto', block: 'center' });
+                        setTimeout(function() { 
+                            firstError.focus(); 
+                        }, 100);
+                    } catch(err) {
+                        firstError.focus();
+                    }
+                }, 100);
+            }
+            return false;
+        }
+        
+        // Track conversion
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submission', {
+                'event_category': 'conversion',
+                'event_label': 'free_trial_request'
+            });
+        }
+        
+        return true;
+    });
+
+    // Effacer les erreurs lors de la saisie
+    var inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            var error = this.nextElementSibling;
+            if (error && error.classList && error.classList.contains('error-message')) {
+                error.style.display = 'none';
+                this.style.borderColor = '';
+            }
+        });
+        
+        input.addEventListener('change', function() {
+            var error = this.nextElementSibling;
+            if (error && error.classList && error.classList.contains('error-message')) {
+                error.style.display = 'none';
+                this.style.borderColor = '';
+            }
+        });
+    });
+});
+</script>

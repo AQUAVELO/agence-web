@@ -210,14 +210,14 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 ?>
 
 <!-- Hero Section avec image de fond -->
-<section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="50" data-btmspace="30">
+<section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="70" data-btmspace="50">
   <div class="container">
     <div class="flexslider std-slider center-controls" data-animation="fade" data-loop="true" data-animspeed="600" data-dircontrols="true" data-controls="true">
       <ul class="slides">
         <li>
           <blockquote class="huge text-center">
-            <p style="font-size: 1.5rem; margin: 10px 0;">🎁 Profitez d'une séance découverte GRATUITE<br>
-              Testez l'aquabiking sans engagement
+            <p>🎁 Profitez d'une séance découverte GRATUITE<br>
+              Testez l'aquabiking sans engagement dans le centre de votre choix
             </p>
           </blockquote>
         </li>
@@ -227,11 +227,11 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 </section>
 
 <!-- Section principale -->
-<section class="content-area bg1" style="padding: 30px 0;">
+<section class="content-area bg1">
   <div class="container">
-    <header class="page-header text-center" style="margin-bottom: 20px;">
-      <h1 class="page-title" style="font-size: 1.8rem; margin-bottom: 10px;">Séance Découverte Gratuite</h1>
-      <h2 style="font-size: 1.2rem;">Essayez l'aquabiking pendant 45 minutes avec un coach</h2>
+    <header class="page-header text-center">
+      <h1 class="page-title">Séance Découverte Gratuite</h1>
+      <h2>Essayez l'aquabiking pendant 45 minutes avec un coach professionnel</h2>
     </header>
 
     <!-- Message de succès -->
@@ -341,7 +341,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
                      placeholder="Ex: Lundi 15 janvier à 10h"
                      autocomplete="off"
                      style="font-size: 16px;">
-              <p class="help-block">Notre équipe vous contactera</p>
+              <p class="help-block">Notre équipe vous contactera pour confirmer la disponibilité</p>
             </div>
 
             <div class="form-group">
@@ -349,7 +349,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
               <textarea class="form-control" 
                         id="message" 
                         name="message" 
-                        rows="2" 
+                        rows="3" 
                         placeholder="Votre message..."
                         autocomplete="off"
                         style="font-size: 16px;"></textarea>
@@ -362,8 +362,8 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
               <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
             </button>
 
-            <p style="text-align: center; margin-top: 10px; margin-bottom: 5px; color: #666; font-size: 0.85rem;">
-              <i class="fa fa-lock"></i> Sans engagement
+            <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+              <i class="fa fa-lock"></i> Vos données sont sécurisées • Sans engagement
             </p>
           </form>
         </div>
@@ -428,33 +428,20 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
   border-radius: 15px;
   border: 3px solid #00d4ff;
   box-shadow: 0 10px 30px rgba(0, 168, 204, 0.2);
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 .form-container h2 {
   color: #00a8cc;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  margin-bottom: 5px;
-  font-size: 0.95rem;
+  margin-bottom: 25px;
 }
 
 .form-control {
   font-size: 16px !important;
-  height: 42px;
+  height: 45px;
   border-radius: 8px;
   border: 2px solid #e0e0e0;
   -webkit-appearance: none;
-  padding: 8px 12px;
 }
 
 .form-control:focus {
@@ -464,53 +451,11 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 
 textarea.form-control {
   height: auto;
-  min-height: 80px;
-}
-
-.help-block {
-  margin-top: 5px;
-  margin-bottom: 0;
-  font-size: 0.85rem;
-}
-
-.btn-submit {
-  margin-top: 15px;
-  margin-bottom: 10px;
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 168, 204, 0.5);
-}
-
-/* Mobile : encore plus compact */
-@media (max-width: 768px) {
-  .form-container {
-    padding: 20px 15px;
-    max-height: 85vh;
-  }
-  
-  .form-container h2 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-  }
-  
-  .form-group {
-    margin-bottom: 12px;
-  }
-  
-  .form-control {
-    height: 40px;
-  }
-  
-  textarea.form-control {
-    min-height: 70px;
-  }
-  
-  .btn-submit {
-    padding: 12px;
-    font-size: 1.1rem;
-  }
 }
 </style>
 

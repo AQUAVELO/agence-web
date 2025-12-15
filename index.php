@@ -634,13 +634,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
             <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
               
+            <!-- ✅ VERSION CORRIGÉE -->
             <li class="cta-nav"> 
-                <a href="https://www.aquavelo.com/?p=free" 
-                    target="_blank" class="btn-reserve-nav">
-                    <i class="fa fa-calendar"></i> ESSAYER UNE SEANCE
+                <a href="/?p=free" class="btn-reserve-nav">
+                   <i class="fa fa-calendar"></i> ESSAYER UNE SEANCE
                 </a>
-
- 
             </li>
             
             <!-- ⭐ NOUVEAU : Bouton Ouvrir un Centre visible -->

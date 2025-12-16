@@ -73,7 +73,7 @@
          style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 15px 25px; font-size: 1.1rem; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); text-decoration: none; display: block;">
         <i class="fa fa-user-plus"></i> Commencer
       </a>
-      <a href="/suivi-mensurations/connexion_mensurations.php" 
+      <a href="/suiviReguliers.php" 
          style="color: #4caf50; font-size: 0.95rem; text-decoration: none; font-weight: 600;">
         <i class="fa fa-sign-in"></i> Déjà inscrit
       </a>

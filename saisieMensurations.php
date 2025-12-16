@@ -24,6 +24,17 @@ try {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
 
+// ========== RÉCUPÉRER LA LISTE DES CENTRES ==========
+$centers_list = [];
+try {
+    $centers_query = $conn->prepare('SELECT id, city FROM am_centers WHERE online = 1 AND aquavelo = 1 ORDER BY city ASC');
+    $centers_query->execute();
+    $centers_list = $centers_query->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // En cas d'erreur, continuer sans les centres
+    error_log("Erreur récupération centres: " . $e->getMessage());
+}
+
 // Variables pour les messages
 $success_message = '';
 $error_message = '';
@@ -35,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prenom = trim($_POST['prenom'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
+    $centre = intval($_POST['centre'] ?? 0);  // ⭐ NOUVEAU
     $age = intval($_POST['age'] ?? 0);
     $poids = floatval($_POST['poids'] ?? 0);
     $taille = floatval($_POST['taille'] ?? 0);
@@ -45,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validation des champs obligatoires
     if (empty($nom) || empty($prenom) || empty($email) || empty($password)) {
         $error_message = "Tous les champs marqués * sont obligatoires.";
+    } elseif ($centre <= 0) {  // ⭐ VALIDATION CENTRE
+        $error_message = "Veuillez sélectionner votre centre Aquavelo.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_message = "L'adresse email n'est pas valide.";
     } elseif (strlen($password) < 6) {
@@ -62,17 +76,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Hash du mot de passe
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
-                // Insertion dans la base de données
-                $insert_sql = "INSERT INTO mensurations (Nom, Prenom, email, password, Age, Poids, Taille, Trtaille, Trhanches, Trfesses) 
-                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                // ⭐ INSERTION AVEC CENTRE
+                $insert_sql = "INSERT INTO mensurations (Nom, Prenom, email, password, Centre, Age, Poids, Taille, Trtaille, Trhanches, Trfesses) 
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $insert_stmt = $conn->prepare($insert_sql);
                 
-                if ($insert_stmt->execute([$nom, $prenom, $email, $password_hash, $age, $poids, $taille, $trtaille, $trhanches, $trfesses])) {
+                if ($insert_stmt->execute([$nom, $prenom, $email, $password_hash, $centre, $age, $poids, $taille, $trtaille, $trhanches, $trfesses])) {
                     // Connexion automatique après inscription
                     $_SESSION["loggedin"] = true;
                     $_SESSION["email"] = $email;
                     $_SESSION["nom"] = $nom;
                     $_SESSION["prenom"] = $prenom;
+                    $_SESSION["centre"] = $centre;  // ⭐ STOCKER EN SESSION
+                    
+                    // Tracking Analytics
+                    if (function_exists('gtag')) {
+                        echo "<script>
+                        gtag('event', 'signup_success', {
+                            'event_category': 'conversion',
+                            'event_label': 'mensurations_centre_" . $centre . "'
+                        });
+                        </script>";
+                    }
                     
                     // Redirection vers le dashboard
                     header("Location: _menu.php");
@@ -147,6 +172,32 @@ $conn = null;
             margin-right: 8px;
         }
         
+        /* ⭐ STYLE SPÉCIAL POUR LE CENTRE */
+        .centre-highlight {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            color: white;
+        }
+        
+        .centre-select {
+            border: 3px solid #00d4ff !important;
+            font-size: 1.1rem !important;
+            font-weight: 600;
+        }
+        
+        .centre-info-box {
+            background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
+            border-left: 4px solid #00d4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .centre-info-box i {
+            color: #00a8cc;
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
         .form-group label {
             font-weight: 600;
             color: #333;
@@ -169,6 +220,11 @@ $conn = null;
         .form-control:focus {
             border-color: #4caf50;
             box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+        }
+        
+        select.form-control {
+            height: auto;
+            padding: 12px;
         }
         
         .input-group-addon {
@@ -354,9 +410,38 @@ $conn = null;
     <!-- Formulaire -->
     <form method="POST" action="" id="inscriptionForm">
         
-        <!-- Section 1 : Informations Personnelles -->
+        <!-- ⭐ NOUVELLE SECTION : VOTRE CENTRE AQUAVELO -->
+        <div class="section-title centre-highlight">
+            <i class="fa fa-map-marker"></i> 1. Votre Centre Aquavelo
+        </div>
+
+        <div class="centre-info-box">
+            <i class="fa fa-info-circle"></i>
+            <p><strong>Important :</strong> Sélectionnez le centre Aquavelo où vous pratiquez l'aquabiking. Cela nous permettra de personnaliser votre suivi.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="centre">Centre Aquavelo <span class="required">*</span></label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-building"></i></span>
+                <select class="form-control centre-select" id="centre" name="centre" required>
+                    <option value="">-- Sélectionnez votre centre --</option>
+                    <?php foreach ($centers_list as $center): ?>
+                        <option value="<?= htmlspecialchars($center['id']); ?>" 
+                                <?= (isset($_POST['centre']) && $_POST['centre'] == $center['id']) ? 'selected' : ''; ?>>
+                            <?= htmlspecialchars($center['city']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <small class="help-block">
+                <i class="fa fa-question-circle"></i> Votre centre d'inscription ou celui que vous fréquentez le plus souvent
+            </small>
+        </div>
+
+        <!-- Section 2 : Informations Personnelles -->
         <div class="section-title">
-            <i class="fa fa-user"></i> 1. Informations Personnelles
+            <i class="fa fa-user"></i> 2. Informations Personnelles
         </div>
 
         <div class="row">
@@ -414,9 +499,9 @@ $conn = null;
             </div>
         </div>
 
-        <!-- Section 2 : Mensurations Initiales -->
+        <!-- Section 3 : Mensurations Initiales -->
         <div class="section-title">
-            <i class="fa fa-calculator"></i> 2. Vos Mensurations Actuelles
+            <i class="fa fa-calculator"></i> 3. Vos Mensurations Actuelles
         </div>
 
         <div class="info-box">
@@ -534,8 +619,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Validation du formulaire
     form.addEventListener('submit', function(e) {
+        const centre = document.getElementById('centre').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        
+        // ⭐ VALIDATION CENTRE
+        if (!centre || centre === '') {
+            e.preventDefault();
+            alert('Veuillez sélectionner votre centre Aquavelo.');
+            document.getElementById('centre').focus();
+            return false;
+        }
         
         // Validation email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -552,15 +646,27 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // Analytics tracking
+        // ⭐ Analytics tracking avec centre
         if (typeof gtag !== 'undefined') {
             gtag('event', 'submit_inscription', {
                 'event_category': 'conversion',
-                'event_label': 'mensurations_signup'
+                'event_label': 'mensurations_signup_centre_' + centre
             });
         }
         
         return true;
+    });
+    
+    // ⭐ Highlight du centre quand sélectionné
+    const centreSelect = document.getElementById('centre');
+    centreSelect.addEventListener('change', function() {
+        if (this.value) {
+            this.style.borderColor = '#00d4ff';
+            this.style.backgroundColor = '#e1f5fe';
+        } else {
+            this.style.borderColor = '#e0e0e0';
+            this.style.backgroundColor = 'white';
+        }
     });
     
     // Calcul IMC en temps réel (optionnel)

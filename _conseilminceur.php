@@ -39,6 +39,51 @@
         $date_cache_buster = date('YmdHis');
     ?>
 
+
+    <!-- VERSION ALTERNATIVE - Section Suivi Mensurations (Plus sobre) -->
+<!-- À insérer AVANT l'Étape 1 du calculateur -->
+
+<!-- Option 1 : Banner Horizontal Compact -->
+<div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border: 3px solid #4caf50; border-radius: 12px; padding: 30px; margin-bottom: 35px; box-shadow: 0 5px 15px rgba(76, 175, 80, 0.15);">
+  <div class="row">
+    <div class="col-md-9">
+      <h3 style="color: #2e7d32; margin: 0 0 15px 0; font-size: 1.5rem;">
+        <i class="fa fa-line-chart"></i> Suivez vos mensurations en temps réel
+      </h3>
+      <p style="margin: 0 0 10px 0; color: #555; font-size: 1.05rem; line-height: 1.6;">
+        Créez votre <strong>espace personnel gratuit</strong> pour enregistrer vos mesures (poids, taille, hanches...), 
+        visualiser votre évolution avec des graphiques et calculer automatiquement votre IMC.
+      </p>
+      <div style="margin-top: 15px;">
+        <span style="background: white; padding: 6px 12px; border-radius: 15px; margin-right: 10px; display: inline-block; font-size: 0.9rem; color: #2e7d32;">
+          <i class="fa fa-check"></i> 100% Gratuit
+        </span>
+        <span style="background: white; padding: 6px 12px; border-radius: 15px; margin-right: 10px; display: inline-block; font-size: 0.9rem; color: #2e7d32;">
+          <i class="fa fa-lock"></i> Données sécurisées
+        </span>
+        <span style="background: white; padding: 6px 12px; border-radius: 15px; display: inline-block; font-size: 0.9rem; color: #2e7d32;">
+          <i class="fa fa-mobile"></i> Accessible partout
+        </span>
+      </div>
+    </div>
+    <div class="col-md-3 text-center" style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
+      <a href="/suivi-mensurations" 
+         class="btn btn-lg"
+         onclick="if(typeof gtag !== 'undefined'){gtag('event','click_suivi_mensurations',{event_category:'conversion',event_label:'from_menus_page_compact'});}"
+         style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 15px 25px; font-size: 1.1rem; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); text-decoration: none; display: block;">
+        <i class="fa fa-user-plus"></i> Commencer
+      </a>
+      <a href="/suivi-mensurations/connexion_mensurations.php" 
+         style="color: #4caf50; font-size: 0.95rem; text-decoration: none; font-weight: 600;">
+        <i class="fa fa-sign-in"></i> Déjà inscrit
+      </a>
+    </div>
+  </div>
+</div>
+
+
+    
+
     <!-- Calculateur Calories -->
     <div style="background: linear-gradient(135deg, #fff3cd, #ffe8a1); padding: 30px; border-radius: 15px; border-left: 5px solid #ff9800; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);">
       <div class="row">

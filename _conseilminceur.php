@@ -67,7 +67,7 @@
       </div>
     </div>
     <div class="col-md-3 text-center" style="display: flex; flex-direction: column; justify-content: center; gap: 10px;">
-      <a href="/suivi-mensurations" 
+      <a href="/saisieMensurations.php" 
          class="btn btn-lg"
          onclick="if(typeof gtag !== 'undefined'){gtag('event','click_suivi_mensurations',{event_category:'conversion',event_label:'from_menus_page_compact'});}"
          style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; border: none; padding: 15px 25px; font-size: 1.1rem; border-radius: 25px; font-weight: 600; box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3); text-decoration: none; display: block;">

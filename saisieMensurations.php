@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $mail_center->Username = $settings['mjusername'];
                             $mail_center->Password = $settings['mjpassword'];
                             
-                            $mail_center->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                            $mail_center->setFrom('claude@alesiaminceur.com', 'Suivi Aquavelo');
                             $mail_center->addAddress($email_center, 'Aquavelo ' . $city);
                             $mail_center->addReplyTo($email, $prenom . ' ' . $nom);
                             

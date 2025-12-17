@@ -686,10 +686,10 @@ $conn = null;
     <div class="section-card">
         <div class="empty-state">
             <i class="fa fa-line-chart"></i>
-            <h3>Aucune mensuration enregistrée</h3>
-            <p>Commencez à suivre votre progression en ajoutant votre première mensuration !</p>
+            <h3>Mensurations enregistrées</h3>
+            <p>Commencez à suivre votre progression en ajoutant votre nouvelle mensuration !</p>
             <a href="suivi.php" style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block;">
-                <i class="fa fa-plus-circle"></i> Ajouter une Mensuration
+                <i class="fa fa-plus-circle"></i> Ajouter une nouvelle Mensuration
             </a>
         </div>
     </div>

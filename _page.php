@@ -552,6 +552,9 @@
       <div class="col-md-6 mobile-reorder">
         
         <!-- ⭐ 1. PLANNING (EN PREMIER sur mobile, EN DEUXIÈME sur desktop) -->
+       <!-- Dans la section planning, remplacer la partie existante par : -->
+
+        <!-- ⭐ 1. PLANNING (EN PREMIER sur mobile, EN DEUXIÈME sur desktop) -->
         <a id="planning-cours"></a>
         <div class="planning-section">
           <?php if (isset($row_center['id'])) : ?>
@@ -582,9 +585,21 @@
                      style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
                      loading="lazy">
               </div>
+            <?php elseif ($row_center['id'] == 271) : ?>
+              <div class="text-center">
+                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
+                <img src="/images/planningToulouse.jpg" 
+                     alt="Planning hebdomadaire cours aquabiking aquagym Toulouse" 
+                     class="img-fluid" 
+                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                     loading="lazy">
+              </div>
             <?php endif; ?>
           <?php endif; ?>
         </div>
+
+
+
         
         <!-- ⭐ 2. BOUTON CTA / FORMULAIRE (EN DEUXIÈME sur mobile, EN PREMIER sur desktop) -->
         <div class="form-section">

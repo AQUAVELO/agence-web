@@ -161,6 +161,10 @@ if ($userInfo) {
 // Obtenir l'historique de suivi pour l'utilisateur
 $userSuivi = getUserSuivi($conn, $email);
 
+// DEBUG - À retirer après test
+// echo "<!-- DEBUG: Count userSuivi = " . count($userSuivi) . " -->";
+// echo "<!-- DEBUG: userSuivi = " . print_r($userSuivi, true) . " -->";
+
 // Calculer les statistiques
 $totalMensurations = count($userSuivi);
 $firstMensuration = !empty($userSuivi) ? end($userSuivi) : null;
@@ -636,6 +640,16 @@ $conn = null;
 
     <!-- User Info Section -->
     <?php if ($userInfo): ?>
+    <?php 
+        // Récupérer les dernières mensurations (première ligne du tableau car déjà inversé)
+        $latestMensuration = !empty($userSuivi) ? $userSuivi[0] : null;
+        
+        // Utiliser les dernières valeurs si disponibles, sinon les valeurs initiales
+        $displayPoids = $latestMensuration ? $latestMensuration['Poids'] : $userInfo['Poids'];
+        $displayTrtaille = $latestMensuration ? $latestMensuration['Trtaille'] : $userInfo['Trtaille'];
+        $displayTrhanches = $latestMensuration ? $latestMensuration['Trhanches'] : $userInfo['Trhanches'];
+        $displayTrfesses = $latestMensuration ? $latestMensuration['Trfesses'] : $userInfo['Trfesses'];
+    ?>
     <div class="section-card">
         <h2 class="section-title">
             <i class="fa fa-user"></i> Mes Informations
@@ -666,19 +680,47 @@ $conn = null;
                     </tr>
                     <tr>
                         <td><strong>Poids Actuel</strong></td>
-                        <td><?php echo htmlspecialchars($latestWeight); ?> kg</td>
+                        <td>
+                            <strong style="color: #4caf50; font-size: 1.1rem;"><?php echo htmlspecialchars($displayPoids); ?> kg</strong>
+                            <?php if ($latestMensuration && $latestMensuration['Poids'] != $userInfo['Poids']): ?>
+                                <small style="color: #999; margin-left: 10px;">
+                                    (Initial: <?php echo htmlspecialchars($userInfo['Poids']); ?> kg)
+                                </small>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Tour de Taille</strong></td>
-                        <td><?php echo htmlspecialchars($userInfo["Trtaille"]); ?> cm</td>
+                        <td>
+                            <strong style="color: #ff9800; font-size: 1.1rem;"><?php echo htmlspecialchars($displayTrtaille); ?> cm</strong>
+                            <?php if ($latestMensuration && $latestMensuration['Trtaille'] != $userInfo['Trtaille']): ?>
+                                <small style="color: #999; margin-left: 10px;">
+                                    (Initial: <?php echo htmlspecialchars($userInfo['Trtaille']); ?> cm)
+                                </small>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Tour de Hanches</strong></td>
-                        <td><?php echo htmlspecialchars($userInfo["Trhanches"]); ?> cm</td>
+                        <td>
+                            <strong style="color: #00d4ff; font-size: 1.1rem;"><?php echo htmlspecialchars($displayTrhanches); ?> cm</strong>
+                            <?php if ($latestMensuration && $latestMensuration['Trhanches'] != $userInfo['Trhanches']): ?>
+                                <small style="color: #999; margin-left: 10px;">
+                                    (Initial: <?php echo htmlspecialchars($userInfo['Trhanches']); ?> cm)
+                                </small>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <tr>
                         <td><strong>Tour de Fesses</strong></td>
-                        <td><?php echo htmlspecialchars($userInfo["Trfesses"]); ?> cm</td>
+                        <td>
+                            <strong style="color: #9c27b0; font-size: 1.1rem;"><?php echo htmlspecialchars($displayTrfesses); ?> cm</strong>
+                            <?php if ($latestMensuration && $latestMensuration['Trfesses'] != $userInfo['Trfesses']): ?>
+                                <small style="color: #999; margin-left: 10px;">
+                                    (Initial: <?php echo htmlspecialchars($userInfo['Trfesses']); ?> cm)
+                                </small>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                 </table>
             </div>

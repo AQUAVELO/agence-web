@@ -237,9 +237,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $mail_user->Username = $settings['mjusername'];
                         $mail_user->Password = $settings['mjpassword'];
                         
-                        $mail_user->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                        $mail_user->setFrom('claude@alesiaminceur.com', 'Suivi Aquavelo');
                         $mail_user->addAddress($email, $prenom . ' ' . $nom);
-                        $mail_user->addReplyTo('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                        $mail_user->addReplyTo('claude@alesiaminceur.com', 'Suivi Aquavelo');
                         
                         $mail_user->Subject = 'Bienvenue sur votre espace de suivi Aquavelo !';
                         
@@ -343,7 +343,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;">
                                     
                                     <p style="font-size: 12px; color: #999; text-align: center;">
-                                        Besoin d\'aide ? Contactez-nous à <a href="mailto:service.clients@aquavelo.com" style="color: #4caf50;">service.clients@aquavelo.com</a>
+                                        Besoin d\'aide ? Contactez-nous à <a href="mailto:claude@alesiaminceur.com" style="color: #4caf50;">claude@alesiaminceur.com</a>
                                     </p>
                                 </div>
                             </div>';

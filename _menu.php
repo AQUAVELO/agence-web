@@ -41,16 +41,66 @@ try {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
 
-// Fonction pour obtenir l'historique de suivi des mensurations pour un utilisateur donné
+// Fonction pour obtenir l'historique COMPLET de suivi (mensurations initiales + suivie)
 function getUserSuivi($conn, $email) {
-    $sql = "SELECT * FROM suivie WHERE email = ? ORDER BY Date DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$email]);
-    $suivi = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($suivi as &$row) {
+    $allMensurations = [];
+    
+    // 1. Récupérer les mensurations initiales de la table mensurations
+    $sql_init = "SELECT 
+        'Initial' as id,
+        email,
+        created_at as Date,
+        Poids,
+        Trtaille,
+        Trhanches,
+        Trfesses
+    FROM mensurations 
+    WHERE email = ?";
+    $stmt_init = $conn->prepare($sql_init);
+    $stmt_init->execute([$email]);
+    $mensurationInitiale = $stmt_init->fetch(PDO::FETCH_ASSOC);
+    
+    // Ajouter les mensurations initiales si elles existent
+    if ($mensurationInitiale && $mensurationInitiale['Date']) {
+        $mensurationInitiale['source'] = 'initial';
+        $allMensurations[] = $mensurationInitiale;
+    }
+    
+    // 2. Récupérer l'historique de la table suivie
+    $sql_suivi = "SELECT 
+        id,
+        email,
+        Date,
+        Poids,
+        Trtaille,
+        Trhanches,
+        Trfesses
+    FROM suivie 
+    WHERE email = ? 
+    ORDER BY Date ASC";
+    $stmt_suivi = $conn->prepare($sql_suivi);
+    $stmt_suivi->execute([$email]);
+    $suiviData = $stmt_suivi->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Ajouter les données de suivi
+    foreach ($suiviData as $row) {
+        $row['source'] = 'suivi';
+        $allMensurations[] = $row;
+    }
+    
+    // 3. Trier par date (du plus ancien au plus récent)
+    usort($allMensurations, function($a, $b) {
+        return strtotime($a['Date']) - strtotime($b['Date']);
+    });
+    
+    // 4. Formater les dates pour l'affichage
+    foreach ($allMensurations as &$row) {
+        $row['DateOriginal'] = $row['Date']; // Garder la date originale pour le graphique
         $row['Date'] = date("d/m/Y", strtotime($row['Date']));
     }
-    return $suivi;
+    
+    // Retourner en ordre inverse (plus récent en premier) pour l'affichage du tableau
+    return array_reverse($allMensurations);
 }
 
 // Rechercher les informations de base de l'utilisateur
@@ -640,6 +690,7 @@ $conn = null;
                         <th>Tour Taille (cm)</th>
                         <th>Tour Hanches (cm)</th>
                         <th>Tour Fesses (cm)</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -651,20 +702,38 @@ $conn = null;
                             $suiviIMC = $suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100));
                             $suiviIMC = round($suiviIMC, 2);
                         }
+                        $isInitial = ($suivi['source'] ?? '') === 'initial';
                     ?>
-                    <tr>
+                    <tr style="<?php echo $isInitial ? 'background: #e8f5e9;' : ''; ?>">
                         <td><strong><?php echo htmlspecialchars($suivi["Date"]); ?></strong></td>
                         <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
                         <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
                         <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
                         <td><?php echo htmlspecialchars($suivi["Trfesses"]); ?></td>
                         <td>
-                            <form method="post" style="display:inline;">
-                                <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
-                                <button type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette mensuration ?');">
-                                    <i class="fa fa-trash"></i> Supprimer
-                                </button>
-                            </form>
+                            <?php if ($isInitial): ?>
+                                <span style="background: #4caf50; color: white; padding: 4px 12px; border-radius: 15px; font-size: 0.85rem; font-weight: 600;">
+                                    <i class="fa fa-star"></i> Initial
+                                </span>
+                            <?php else: ?>
+                                <span style="color: #00d4ff; font-size: 0.85rem;">
+                                    <i class="fa fa-check-circle"></i> Suivi
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <?php if ($isInitial): ?>
+                                <span style="color: #999; font-size: 0.85rem;">
+                                    <i class="fa fa-lock"></i> Protégé
+                                </span>
+                            <?php else: ?>
+                                <form method="post" style="display:inline;">
+                                    <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($suivi['id']); ?>">
+                                    <button type="submit" class="delete-button" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette mensuration ?');">
+                                        <i class="fa fa-trash"></i> Supprimer
+                                    </button>
+                                </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -686,10 +755,10 @@ $conn = null;
     <div class="section-card">
         <div class="empty-state">
             <i class="fa fa-line-chart"></i>
-            <h3>Mensurations enregistrées</h3>
-            <p>Commencez à suivre votre progression en ajoutant votre nouvelle mensuration !</p>
+            <h3>Aucune mensuration enregistrée</h3>
+            <p>Commencez à suivre votre progression en ajoutant votre première mensuration !</p>
             <a href="suivi.php" style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; padding: 15px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block;">
-                <i class="fa fa-plus-circle"></i> Ajouter une nouvelle Mensuration
+                <i class="fa fa-plus-circle"></i> Ajouter une Mensuration
             </a>
         </div>
     </div>
@@ -735,12 +804,19 @@ $conn = null;
 <?php if ($userSuivi && !empty($userSuivi)): ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Données PHP vers JavaScript
-    const labels = <?php echo json_encode(array_reverse(array_column($userSuivi, 'Date'))); ?>;
-    const poids = <?php echo json_encode(array_reverse(array_column($userSuivi, 'Poids'))); ?>;
-    const trtaille = <?php echo json_encode(array_reverse(array_column($userSuivi, 'Trtaille'))); ?>;
-    const trhanches = <?php echo json_encode(array_reverse(array_column($userSuivi, 'Trhanches'))); ?>;
-    const trfesses = <?php echo json_encode(array_reverse(array_column($userSuivi, 'Trfesses'))); ?>;
+    // Préparer les données dans l'ordre chronologique (du plus ancien au plus récent)
+    const allData = <?php echo json_encode($userSuivi); ?>;
+    
+    // Inverser car getUserSuivi retourne en ordre inverse (récent → ancien)
+    // On veut chronologique (ancien → récent) pour le graphique
+    const chronologicalData = allData.reverse();
+    
+    // Extraire les données
+    const labels = chronologicalData.map(item => item.Date);
+    const poids = chronologicalData.map(item => parseFloat(item.Poids));
+    const trtaille = chronologicalData.map(item => parseFloat(item.Trtaille));
+    const trhanches = chronologicalData.map(item => parseFloat(item.Trhanches));
+    const trfesses = chronologicalData.map(item => parseFloat(item.Trfesses));
 
     // Configuration du graphique
     const ctx = document.getElementById('myChart').getContext('2d');

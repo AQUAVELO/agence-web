@@ -1,16 +1,29 @@
 <?php
 session_start();
 
+// Si déjà connecté, rediriger vers le menu
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+    header("Location: _menu.php");
+    exit;
+}
+
 // Configuration de la base de données
 require 'vendor/autoload.php';
 
-// Paramètres de configuration
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 $settings = [];
 $settings['dbhost'] = getenv("MYSQL_ADDON_HOST");
 $settings['dbport'] = getenv("MYSQL_ADDON_PORT");
 $settings['dbname'] = getenv("MYSQL_ADDON_DB");
 $settings['dbusername'] = getenv("MYSQL_ADDON_USER");
 $settings['dbpassword'] = getenv("MYSQL_ADDON_PASSWORD");
+$settings['mjhost'] = getenv("MAILJET_HOST") ?: "in-v3.mailjet.com";
+$settings['mjusername'] = getenv("MAILJET_USERNAME");
+$settings['mjpassword'] = getenv("MAILJET_PASSWORD");
+$settings['mjfrom'] = "info@aquavelo.com";
 
 // Connexion à la base de données
 try {
@@ -24,14 +37,13 @@ try {
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
 
-// ========== RÉCUPÉRER LA LISTE DES CENTRES ==========
+// Récupérer la liste des centres Aquavelo
 $centers_list = [];
 try {
     $centers_query = $conn->prepare('SELECT id, city FROM am_centers WHERE online = 1 AND aquavelo = 1 ORDER BY city ASC');
     $centers_query->execute();
     $centers_list = $centers_query->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // En cas d'erreur, continuer sans les centres
     error_log("Erreur récupération centres: " . $e->getMessage());
 }
 
@@ -41,12 +53,11 @@ $error_message = '';
 
 // Traitement du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération et validation des données
     $nom = trim($_POST['nom'] ?? '');
     $prenom = trim($_POST['prenom'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-    $centre = intval($_POST['centre'] ?? 0);  // ⭐ NOUVEAU
+    $centre = intval($_POST['centre'] ?? 0);
     $age = intval($_POST['age'] ?? 0);
     $poids = floatval($_POST['poids'] ?? 0);
     $taille = floatval($_POST['taille'] ?? 0);
@@ -57,12 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validation des champs obligatoires
     if (empty($nom) || empty($prenom) || empty($email) || empty($password)) {
         $error_message = "Tous les champs marqués * sont obligatoires.";
-    } elseif ($centre <= 0) {  // ⭐ VALIDATION CENTRE
+    } elseif ($centre <= 0) {
         $error_message = "Veuillez sélectionner votre centre Aquavelo.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_message = "L'adresse email n'est pas valide.";
     } elseif (strlen($password) < 6) {
         $error_message = "Le mot de passe doit contenir au moins 6 caractères.";
+    } elseif ($age < 16 || $age > 120) {
+        $error_message = "L'âge doit être compris entre 16 et 120 ans.";
+    } elseif ($poids <= 0 || $taille <= 0 || $trtaille <= 0 || $trhanches <= 0 || $trfesses <= 0) {
+        $error_message = "Toutes les mensurations doivent être renseignées et supérieures à 0.";
     } else {
         try {
             // Vérifier si l'email existe déjà
@@ -76,25 +91,284 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Hash du mot de passe
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
-                // ⭐ INSERTION AVEC CENTRE
+                // Insertion dans la base de données
                 $insert_sql = "INSERT INTO mensurations (Nom, Prenom, email, password, Centre, Age, Poids, Taille, Trtaille, Trhanches, Trfesses) 
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $insert_stmt = $conn->prepare($insert_sql);
                 
                 if ($insert_stmt->execute([$nom, $prenom, $email, $password_hash, $centre, $age, $poids, $taille, $trtaille, $trhanches, $trfesses])) {
+                    
+                    // ========== RÉCUPÉRER LES INFOS DU CENTRE ==========
+                    $center_query = $conn->prepare('SELECT * FROM am_centers WHERE id = ? AND online = 1 AND aquavelo = 1');
+                    $center_query->execute([$centre]);
+                    $center_info = $center_query->fetch(PDO::FETCH_ASSOC);
+                    
+                    $city = $center_info['city'] ?? 'Aquavelo';
+                    $email_center = $center_info['email'] ?? '';
+                    $address = $center_info['address'] ?? '';
+                    $hours = $center_info['openhours'] ?? '';
+                    $phone = $center_info['phone'] ?? '';
+                    
+                    // Calculer l'IMC
+                    $imc = 0;
+                    if ($poids > 0 && $taille > 0) {
+                        $imc = $poids / (($taille / 100) * ($taille / 100));
+                        $imc = round($imc, 2);
+                    }
+                    
+                    // ========== EMAIL 1 : AU CENTRE ==========
+                    if (!empty($email_center)) {
+                        try {
+                            $mail_center = new PHPMailer(true);
+                            $mail_center->IsSMTP();
+                            $mail_center->Host = $settings['mjhost'];
+                            $mail_center->isHTML(true);
+                            $mail_center->SMTPAuth = true;
+                            $mail_center->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                            $mail_center->Port = 587;
+                            $mail_center->Username = $settings['mjusername'];
+                            $mail_center->Password = $settings['mjpassword'];
+                            
+                            $mail_center->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                            $mail_center->addAddress($email_center, 'Aquavelo ' . $city);
+                            $mail_center->addReplyTo($email, $prenom . ' ' . $nom);
+                            
+                            $mail_center->Subject = 'Aquavelo - Nouvelle inscription au suivi des mensurations - ' . $city;
+                            
+                            $mail_center->Body = '
+                                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                                    <div style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; padding: 20px; text-align: center;">
+                                        <h2 style="margin: 0;">📊 Nouvelle Inscription - Suivi Mensurations</h2>
+                                    </div>
+                                    
+                                    <div style="padding: 30px; background: #f9f9f9;">
+                                        <p style="font-size: 16px; color: #333;">Bonjour,</p>
+                                        
+                                        <p style="font-size: 16px; color: #333;">Un nouveau membre s\'est inscrit au système de suivi des mensurations pour votre centre de <strong>' . htmlspecialchars($city) . '</strong>.</p>
+                                        
+                                        <div style="background: white; padding: 20px; border-left: 4px solid #4caf50; margin: 20px 0;">
+                                            <h3 style="color: #4caf50; margin-top: 0;">👤 Informations du Membre</h3>
+                                            <table style="width: 100%; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="padding: 8px; font-weight: bold; width: 40%;">Nom :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($nom) . '</td>
+                                                </tr>
+                                                <tr style="background: #f5f5f5;">
+                                                    <td style="padding: 8px; font-weight: bold;">Prénom :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($prenom) . '</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px; font-weight: bold;">Email :</td>
+                                                    <td style="padding: 8px;"><a href="mailto:' . htmlspecialchars($email) . '">' . htmlspecialchars($email) . '</a></td>
+                                                </tr>
+                                                <tr style="background: #f5f5f5;">
+                                                    <td style="padding: 8px; font-weight: bold;">Âge :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($age) . ' ans</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        
+                                        <div style="background: #e8f5e9; padding: 20px; border-left: 4px solid #00d4ff; margin: 20px 0;">
+                                            <h3 style="color: #00a8cc; margin-top: 0;">📏 Mensurations Initiales</h3>
+                                            <table style="width: 100%; border-collapse: collapse;">
+                                                <tr>
+                                                    <td style="padding: 8px; font-weight: bold; width: 40%;">Poids :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($poids) . ' kg</td>
+                                                </tr>
+                                                <tr style="background: rgba(255,255,255,0.5);">
+                                                    <td style="padding: 8px; font-weight: bold;">Taille :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($taille) . ' cm</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px; font-weight: bold;">IMC :</td>
+                                                    <td style="padding: 8px;"><strong style="color: #4caf50;">' . $imc . '</strong></td>
+                                                </tr>
+                                                <tr style="background: rgba(255,255,255,0.5);">
+                                                    <td style="padding: 8px; font-weight: bold;">Tour de Taille :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($trtaille) . ' cm</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 8px; font-weight: bold;">Tour de Hanches :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($trhanches) . ' cm</td>
+                                                </tr>
+                                                <tr style="background: rgba(255,255,255,0.5);">
+                                                    <td style="padding: 8px; font-weight: bold;">Tour de Fesses :</td>
+                                                    <td style="padding: 8px;">' . htmlspecialchars($trfesses) . ' cm</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        
+                                        <div style="background: #fff3e0; padding: 15px; border-left: 4px solid #ff9800; margin: 20px 0;">
+                                            <p style="margin: 0; color: #666;">
+                                                <strong>💡 Note :</strong> Ce membre pourra suivre son évolution et mettre à jour ses mensurations régulièrement via son espace personnel.
+                                            </p>
+                                        </div>
+                                        
+                                        <p style="font-size: 14px; color: #999; margin-top: 30px;">
+                                            <em>Inscription effectuée le ' . date("d/m/Y à H:i") . ' depuis le site aquavelo.com</em>
+                                        </p>
+                                        
+                                        <p style="color: #333;">
+                                            Cordialement,<br>
+                                            <strong>L\'équipe Aquavelo</strong><br>
+                                            <a href="https://www.aquavelo.com" style="color: #4caf50;">www.aquavelo.com</a>
+                                        </p>
+                                    </div>
+                                </div>';
+                            
+                            $mail_center->AltBody = 'Nouvelle inscription au suivi des mensurations - ' . $prenom . ' ' . $nom . ' - Email: ' . $email . ' - Centre: ' . $city;
+                            
+                            $mail_center->send();
+                            
+                        } catch (Exception $e) {
+                            error_log("Erreur envoi email au centre: {$mail_center->ErrorInfo}");
+                        }
+                    }
+                    
+                    // ========== EMAIL 2 : À L'UTILISATEUR ==========
+                    try {
+                        $mail_user = new PHPMailer(true);
+                        $mail_user->IsSMTP();
+                        $mail_user->Host = $settings['mjhost'];
+                        $mail_user->isHTML(true);
+                        $mail_user->SMTPAuth = true;
+                        $mail_user->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail_user->Port = 587;
+                        $mail_user->Username = $settings['mjusername'];
+                        $mail_user->Password = $settings['mjpassword'];
+                        
+                        $mail_user->setFrom('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                        $mail_user->addAddress($email, $prenom . ' ' . $nom);
+                        $mail_user->addReplyTo('service.clients@aquavelo.com', 'Service clients Aquavelo');
+                        
+                        $mail_user->Subject = 'Bienvenue sur votre espace de suivi Aquavelo !';
+                        
+                        $mail_user->Body = '
+                            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                                <div style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white; padding: 30px; text-align: center;">
+                                    <h1 style="margin: 0; font-size: 28px;">🎉 Bienvenue ' . htmlspecialchars($prenom) . ' !</h1>
+                                    <p style="margin: 10px 0 0 0; font-size: 16px;">Votre espace de suivi des mensurations est prêt</p>
+                                </div>
+                                
+                                <div style="padding: 30px; background: #f9f9f9;">
+                                    <p style="font-size: 16px; color: #333;">Bonjour <strong>' . htmlspecialchars($prenom) . '</strong>,</p>
+                                    
+                                    <p style="font-size: 16px; color: #333;">Nous sommes ravis de vous accueillir dans votre espace personnel de suivi des mensurations Aquavelo ! 🌊</p>
+                                    
+                                    <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                        <h3 style="color: #2e7d32; margin-top: 0;">✅ Votre compte est activé</h3>
+                                        <p style="margin: 0; color: #333;">Vous pouvez dès maintenant accéder à votre tableau de bord pour suivre vos progrès !</p>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 20px; border-left: 4px solid #00d4ff; margin: 20px 0;">
+                                        <h3 style="color: #00a8cc; margin-top: 0;">📊 Vos Mensurations Initiales</h3>
+                                        <table style="width: 100%; border-collapse: collapse;">
+                                            <tr>
+                                                <td style="padding: 8px; font-weight: bold;">Poids :</td>
+                                                <td style="padding: 8px; text-align: right;"><strong style="color: #4caf50;">' . htmlspecialchars($poids) . ' kg</strong></td>
+                                            </tr>
+                                            <tr style="background: #f5f5f5;">
+                                                <td style="padding: 8px; font-weight: bold;">IMC :</td>
+                                                <td style="padding: 8px; text-align: right;"><strong style="color: #00d4ff;">' . $imc . '</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px; font-weight: bold;">Tour de Taille :</td>
+                                                <td style="padding: 8px; text-align: right;">' . htmlspecialchars($trtaille) . ' cm</td>
+                                            </tr>
+                                            <tr style="background: #f5f5f5;">
+                                                <td style="padding: 8px; font-weight: bold;">Tour de Hanches :</td>
+                                                <td style="padding: 8px; text-align: right;">' . htmlspecialchars($trhanches) . ' cm</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 8px; font-weight: bold;">Tour de Fesses :</td>
+                                                <td style="padding: 8px; text-align: right;">' . htmlspecialchars($trfesses) . ' cm</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                                        <h3 style="color: #1976d2; margin-top: 0;">🎯 Prochaines Étapes</h3>
+                                        <ul style="color: #333; line-height: 1.8;">
+                                            <li>Connectez-vous à votre espace pour voir votre tableau de bord</li>
+                                            <li>Ajoutez de nouvelles mensurations après chaque séance</li>
+                                            <li>Suivez votre progression avec des graphiques</li>
+                                            <li>Atteignez vos objectifs forme et bien-être !</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div style="text-align: center; margin: 30px 0;">
+                                        <a href="https://www.aquavelo.com/suivi-mensurations" 
+                                           style="display: inline-block; background: linear-gradient(135deg, #4caf50, #388e3c); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;">
+                                            Accéder à Mon Espace
+                                        </a>
+                                    </div>';
+                        
+                        // Ajouter les infos du centre si disponibles
+                        if (!empty($phone) || !empty($address)) {
+                            $mail_user->Body .= '
+                                    <div style="background: white; padding: 20px; border-left: 4px solid #ff9800; margin: 20px 0;">
+                                        <h3 style="color: #ff9800; margin-top: 0;">📍 Votre Centre ' . htmlspecialchars($city) . '</h3>';
+                            
+                            if (!empty($address)) {
+                                $mail_user->Body .= '<p style="margin: 5px 0; color: #333;"><strong>Adresse :</strong> ' . htmlspecialchars($address) . '</p>';
+                            }
+                            if (!empty($phone)) {
+                                $mail_user->Body .= '<p style="margin: 5px 0; color: #333;"><strong>Téléphone :</strong> ' . htmlspecialchars($phone) . '</p>';
+                            }
+                            if (!empty($hours)) {
+                                $mail_user->Body .= '<p style="margin: 5px 0; color: #333;"><strong>Horaires :</strong> ' . htmlspecialchars($hours) . '</p>';
+                            }
+                            
+                            $mail_user->Body .= '
+                                    </div>';
+                        }
+                        
+                        $mail_user->Body .= '
+                                    <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                                        <p style="margin: 0; color: #666; font-size: 14px;">
+                                            💡 <strong>Conseil :</strong> Prenez vos mesures à la même heure, de préférence le matin à jeun, pour un suivi plus précis.
+                                        </p>
+                                    </div>
+                                    
+                                    <p style="color: #333; font-size: 16px; margin-top: 30px;">
+                                        Nous vous souhaitons beaucoup de succès dans l\'atteinte de vos objectifs ! 💪
+                                    </p>
+                                    
+                                    <p style="color: #333;">
+                                        Sportivement,<br>
+                                        <strong>L\'équipe Aquavelo</strong><br>
+                                        <a href="https://www.aquavelo.com" style="color: #4caf50;">www.aquavelo.com</a>
+                                    </p>
+                                    
+                                    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 30px 0;">
+                                    
+                                    <p style="font-size: 12px; color: #999; text-align: center;">
+                                        Besoin d\'aide ? Contactez-nous à <a href="mailto:service.clients@aquavelo.com" style="color: #4caf50;">service.clients@aquavelo.com</a>
+                                    </p>
+                                </div>
+                            </div>';
+                        
+                        $mail_user->AltBody = 'Bienvenue ' . $prenom . ' ! Votre espace de suivi des mensurations Aquavelo est prêt. Connectez-vous sur https://www.aquavelo.com/suivi-mensurations pour accéder à votre tableau de bord.';
+                        
+                        $mail_user->send();
+                        
+                    } catch (Exception $e) {
+                        error_log("Erreur envoi email à l'utilisateur: {$mail_user->ErrorInfo}");
+                    }
+                    
                     // Connexion automatique après inscription
                     $_SESSION["loggedin"] = true;
                     $_SESSION["email"] = $email;
                     $_SESSION["nom"] = $nom;
                     $_SESSION["prenom"] = $prenom;
-                    $_SESSION["centre"] = $centre;  // ⭐ STOCKER EN SESSION
+                    $_SESSION["centre"] = $centre;
                     
-                    // Tracking Analytics
+                    // Analytics tracking
                     if (function_exists('gtag')) {
                         echo "<script>
                         gtag('event', 'signup_success', {
                             'event_category': 'conversion',
-                            'event_label': 'mensurations_centre_" . $centre . "'
+                            'event_label': 'mensurations_registration_centre_" . $centre . "'
                         });
                         </script>";
                     }
@@ -172,7 +446,6 @@ $conn = null;
             margin-right: 8px;
         }
         
-        /* ⭐ STYLE SPÉCIAL POUR LE CENTRE */
         .centre-highlight {
             background: linear-gradient(135deg, #00d4ff, #00a8cc);
             color: white;
@@ -276,6 +549,12 @@ $conn = null;
             background: #ffebee;
             border: 2px solid #f44336;
             color: #c62828;
+        }
+        
+        .alert-danger a {
+            color: #c62828;
+            text-decoration: underline;
+            font-weight: 600;
         }
         
         .alert-success {
@@ -410,7 +689,7 @@ $conn = null;
     <!-- Formulaire -->
     <form method="POST" action="" id="inscriptionForm">
         
-        <!-- ⭐ NOUVELLE SECTION : VOTRE CENTRE AQUAVELO -->
+        <!-- Section 1 : Votre Centre Aquavelo -->
         <div class="section-title centre-highlight">
             <i class="fa fa-map-marker"></i> 1. Votre Centre Aquavelo
         </div>
@@ -570,6 +849,12 @@ $conn = null;
             </div>
         </div>
 
+        <!-- Aperçu IMC -->
+        <div id="imc-preview" style="display:none;" class="info-box">
+            <p><strong><i class="fa fa-calculator"></i> IMC estimé :</strong> <span id="imc-value">0</span></p>
+            <p id="imc-message"></p>
+        </div>
+
         <!-- Bouton de soumission -->
         <div style="margin-top: 40px;">
             <button type="submit" class="btn btn-inscription">
@@ -578,8 +863,8 @@ $conn = null;
         </div>
 
         <div style="text-align: center;">
-            <a href="/suivi-mensurations" class="btn-retour">
-                <i class="fa fa-arrow-left"></i> Retour
+            <a href="connexion_mensurations.php" class="btn-retour">
+                <i class="fa fa-arrow-left"></i> Retour à la Connexion
             </a>
         </div>
     </form>
@@ -606,7 +891,6 @@ $conn = null;
   gtag('js', new Date());
   gtag('config', 'G-26LRGBE9X2');
   
-  // Track page view
   gtag('event', 'page_view', {
     'page_title': 'Inscription Mensurations',
     'page_location': window.location.href
@@ -616,6 +900,45 @@ $conn = null;
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('inscriptionForm');
+    const poidsInput = document.getElementById('poids');
+    const tailleInput = document.getElementById('taille');
+    const imcPreview = document.getElementById('imc-preview');
+    const imcValue = document.getElementById('imc-value');
+    const imcMessage = document.getElementById('imc-message');
+    
+    // Calcul IMC en temps réel
+    function calculateIMC() {
+        const poids = parseFloat(poidsInput.value);
+        const taille = parseFloat(tailleInput.value) / 100;
+        
+        if (poids > 0 && taille > 0) {
+            const imc = (poids / (taille * taille)).toFixed(2);
+            imcValue.textContent = imc;
+            
+            let message = '';
+            let color = '';
+            
+            if (imc < 20) {
+                message = 'Vous êtes en insuffisance pondérale.';
+                color = '#ff9800';
+            } else if (imc > 25) {
+                message = 'Vous êtes en surcharge pondérale.';
+                color = '#ff5722';
+            } else {
+                message = 'Félicitations ! Vous avez un IMC normal.';
+                color = '#4caf50';
+            }
+            
+            imcMessage.textContent = message;
+            imcMessage.style.color = color;
+            imcPreview.style.display = 'block';
+        } else {
+            imcPreview.style.display = 'none';
+        }
+    }
+    
+    poidsInput.addEventListener('input', calculateIMC);
+    tailleInput.addEventListener('input', calculateIMC);
     
     // Validation du formulaire
     form.addEventListener('submit', function(e) {
@@ -623,7 +946,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         
-        // ⭐ VALIDATION CENTRE
         if (!centre || centre === '') {
             e.preventDefault();
             alert('Veuillez sélectionner votre centre Aquavelo.');
@@ -631,7 +953,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // Validation email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             e.preventDefault();
@@ -639,14 +960,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // Validation mot de passe
         if (password.length < 6) {
             e.preventDefault();
             alert('Le mot de passe doit contenir au moins 6 caractères.');
             return false;
         }
         
-        // ⭐ Analytics tracking avec centre
         if (typeof gtag !== 'undefined') {
             gtag('event', 'submit_inscription', {
                 'event_category': 'conversion',
@@ -657,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     });
     
-    // ⭐ Highlight du centre quand sélectionné
+    // Highlight du centre quand sélectionné
     const centreSelect = document.getElementById('centre');
     centreSelect.addEventListener('change', function() {
         if (this.value) {
@@ -668,23 +987,6 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.backgroundColor = 'white';
         }
     });
-    
-    // Calcul IMC en temps réel (optionnel)
-    const poidsInput = document.getElementById('poids');
-    const tailleInput = document.getElementById('taille');
-    
-    function calculateIMC() {
-        const poids = parseFloat(poidsInput.value);
-        const taille = parseFloat(tailleInput.value) / 100; // Convertir en mètres
-        
-        if (poids > 0 && taille > 0) {
-            const imc = (poids / (taille * taille)).toFixed(2);
-            console.log('IMC estimé:', imc);
-        }
-    }
-    
-    poidsInput.addEventListener('input', calculateIMC);
-    tailleInput.addEventListener('input', calculateIMC);
 });
 </script>
 

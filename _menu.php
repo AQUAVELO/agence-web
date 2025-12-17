@@ -1,9 +1,13 @@
 <?php
+// Activer l'affichage des erreurs pour débugger
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
 // Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-    header("Location: connexion_mensurations.php");
+    header("Location: /suiviReguliers.php");
     exit;
 }
 
@@ -45,62 +49,74 @@ try {
 function getUserSuivi($conn, $email) {
     $allMensurations = [];
     
-    // 1. Récupérer les mensurations initiales de la table mensurations
-    $sql_init = "SELECT 
-        'Initial' as id,
-        email,
-        created_at as Date,
-        Poids,
-        Trtaille,
-        Trhanches,
-        Trfesses
-    FROM mensurations 
-    WHERE email = ?";
-    $stmt_init = $conn->prepare($sql_init);
-    $stmt_init->execute([$email]);
-    $mensurationInitiale = $stmt_init->fetch(PDO::FETCH_ASSOC);
-    
-    // Ajouter les mensurations initiales si elles existent
-    if ($mensurationInitiale && $mensurationInitiale['Date']) {
-        $mensurationInitiale['source'] = 'initial';
-        $allMensurations[] = $mensurationInitiale;
+    try {
+        // 1. Récupérer les mensurations initiales de la table mensurations
+        $sql_init = "SELECT 
+            email,
+            created_at as Date,
+            Poids,
+            Trtaille,
+            Trhanches,
+            Trfesses
+        FROM mensurations 
+        WHERE email = ?";
+        
+        $stmt_init = $conn->prepare($sql_init);
+        $stmt_init->execute([$email]);
+        $mensurationInitiale = $stmt_init->fetch(PDO::FETCH_ASSOC);
+        
+        // Ajouter les mensurations initiales si elles existent
+        if ($mensurationInitiale && $mensurationInitiale['Date']) {
+            $mensurationInitiale['id'] = 'Initial';
+            $mensurationInitiale['source'] = 'initial';
+            $allMensurations[] = $mensurationInitiale;
+        }
+        
+        // 2. Récupérer l'historique de la table suivie
+        $sql_suivi = "SELECT 
+            id,
+            email,
+            Date,
+            Poids,
+            Trtaille,
+            Trhanches,
+            Trfesses
+        FROM suivie 
+        WHERE email = ? 
+        ORDER BY Date ASC";
+        
+        $stmt_suivi = $conn->prepare($sql_suivi);
+        $stmt_suivi->execute([$email]);
+        $suiviData = $stmt_suivi->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Ajouter les données de suivi avec le marqueur source
+        foreach ($suiviData as $row) {
+            $row['source'] = 'suivi';
+            $allMensurations[] = $row;
+        }
+        
+        // 3. Trier par date (du plus ancien au plus récent)
+        if (count($allMensurations) > 0) {
+            usort($allMensurations, function($a, $b) {
+                $dateA = strtotime($a['Date']);
+                $dateB = strtotime($b['Date']);
+                return $dateA - $dateB;
+            });
+        }
+        
+        // 4. Formater les dates pour l'affichage
+        foreach ($allMensurations as $key => $row) {
+            $allMensurations[$key]['DateOriginal'] = $row['Date']; // Garder la date originale
+            $allMensurations[$key]['DateFormatted'] = date("d/m/Y", strtotime($row['Date'])); // Pour affichage
+        }
+        
+        // Retourner en ordre inverse (plus récent en premier) pour l'affichage du tableau
+        return array_reverse($allMensurations);
+        
+    } catch (Exception $e) {
+        error_log("Erreur dans getUserSuivi: " . $e->getMessage());
+        return [];
     }
-    
-    // 2. Récupérer l'historique de la table suivie
-    $sql_suivi = "SELECT 
-        id,
-        email,
-        Date,
-        Poids,
-        Trtaille,
-        Trhanches,
-        Trfesses
-    FROM suivie 
-    WHERE email = ? 
-    ORDER BY Date ASC";
-    $stmt_suivi = $conn->prepare($sql_suivi);
-    $stmt_suivi->execute([$email]);
-    $suiviData = $stmt_suivi->fetchAll(PDO::FETCH_ASSOC);
-    
-    // Ajouter les données de suivi
-    foreach ($suiviData as $row) {
-        $row['source'] = 'suivi';
-        $allMensurations[] = $row;
-    }
-    
-    // 3. Trier par date (du plus ancien au plus récent)
-    usort($allMensurations, function($a, $b) {
-        return strtotime($a['Date']) - strtotime($b['Date']);
-    });
-    
-    // 4. Formater les dates pour l'affichage
-    foreach ($allMensurations as &$row) {
-        $row['DateOriginal'] = $row['Date']; // Garder la date originale pour le graphique
-        $row['Date'] = date("d/m/Y", strtotime($row['Date']));
-    }
-    
-    // Retourner en ordre inverse (plus récent en premier) pour l'affichage du tableau
-    return array_reverse($allMensurations);
 }
 
 // Rechercher les informations de base de l'utilisateur
@@ -156,13 +172,16 @@ if ($firstMensuration && $latestWeight > 0) {
 // Si une demande de suppression est effectuée
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["delete_id"])) {
     $delete_id = $_POST["delete_id"];
-    $delete_sql = "DELETE FROM suivie WHERE id = ?";
-    $delete_stmt = $conn->prepare($delete_sql);
-    if ($delete_stmt->execute([$delete_id])) {
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit;
-    } else {
-        $error_message = "Erreur lors de la suppression de l'enregistrement.";
+    // Sécurité : ne supprimer que si l'ID n'est pas "Initial"
+    if ($delete_id !== 'Initial') {
+        $delete_sql = "DELETE FROM suivie WHERE id = ?";
+        $delete_stmt = $conn->prepare($delete_sql);
+        if ($delete_stmt->execute([$delete_id])) {
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit;
+        } else {
+            $error_message = "Erreur lors de la suppression de l'enregistrement.";
+        }
     }
 }
 
@@ -423,6 +442,10 @@ $conn = null;
         
         .history-table tr:hover {
             background: #f5f5f5;
+        }
+        
+        .history-table tr.row-initial {
+            background: #e8f5e9 !important;
         }
         
         .delete-button {
@@ -696,16 +719,11 @@ $conn = null;
                 </thead>
                 <tbody>
                     <?php foreach ($userSuivi as $suivi): 
-                        // Calculer IMC pour chaque ligne
-                        $suiviIMC = 0;
-                        if ($suivi["Poids"] > 0 && $userInfo["Taille"] > 0) {
-                            $suiviIMC = $suivi["Poids"] / (($userInfo["Taille"] / 100) * ($userInfo["Taille"] / 100));
-                            $suiviIMC = round($suiviIMC, 2);
-                        }
-                        $isInitial = ($suivi['source'] ?? '') === 'initial';
+                        $isInitial = isset($suivi['source']) && $suivi['source'] === 'initial';
+                        $displayDate = isset($suivi['DateFormatted']) ? $suivi['DateFormatted'] : $suivi['Date'];
                     ?>
-                    <tr style="<?php echo $isInitial ? 'background: #e8f5e9;' : ''; ?>">
-                        <td><strong><?php echo htmlspecialchars($suivi["Date"]); ?></strong></td>
+                    <tr class="<?php echo $isInitial ? 'row-initial' : ''; ?>">
+                        <td><strong><?php echo htmlspecialchars($displayDate); ?></strong></td>
                         <td><?php echo htmlspecialchars($suivi["Poids"]); ?></td>
                         <td><?php echo htmlspecialchars($suivi["Trtaille"]); ?></td>
                         <td><?php echo htmlspecialchars($suivi["Trhanches"]); ?></td>
@@ -716,7 +734,7 @@ $conn = null;
                                     <i class="fa fa-star"></i> Initial
                                 </span>
                             <?php else: ?>
-                                <span style="color: #00d4ff; font-size: 0.85rem;">
+                                <span style="color: #00d4ff; font-size: 0.85rem; font-weight: 600;">
                                     <i class="fa fa-check-circle"></i> Suivi
                                 </span>
                             <?php endif; ?>
@@ -804,23 +822,46 @@ $conn = null;
 <?php if ($userSuivi && !empty($userSuivi)): ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Préparer les données dans l'ordre chronologique (du plus ancien au plus récent)
+    // Préparer les données dans l'ordre chronologique
     const allData = <?php echo json_encode($userSuivi); ?>;
     
-    // Inverser car getUserSuivi retourne en ordre inverse (récent → ancien)
-    // On veut chronologique (ancien → récent) pour le graphique
+    if (!allData || allData.length === 0) {
+        console.error('Aucune donnée disponible pour le graphique');
+        return;
+    }
+    
+    // Inverser pour avoir ordre chronologique (ancien → récent)
     const chronologicalData = allData.reverse();
     
     // Extraire les données
-    const labels = chronologicalData.map(item => item.Date);
-    const poids = chronologicalData.map(item => parseFloat(item.Poids));
-    const trtaille = chronologicalData.map(item => parseFloat(item.Trtaille));
-    const trhanches = chronologicalData.map(item => parseFloat(item.Trhanches));
-    const trfesses = chronologicalData.map(item => parseFloat(item.Trfesses));
+    const labels = chronologicalData.map(function(item) {
+        return item.DateFormatted || item.Date;
+    });
+    
+    const poids = chronologicalData.map(function(item) {
+        return parseFloat(item.Poids) || 0;
+    });
+    
+    const trtaille = chronologicalData.map(function(item) {
+        return parseFloat(item.Trtaille) || 0;
+    });
+    
+    const trhanches = chronologicalData.map(function(item) {
+        return parseFloat(item.Trhanches) || 0;
+    });
+    
+    const trfesses = chronologicalData.map(function(item) {
+        return parseFloat(item.Trfesses) || 0;
+    });
 
     // Configuration du graphique
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, {
+    const ctx = document.getElementById('myChart');
+    if (!ctx) {
+        console.error('Canvas element not found');
+        return;
+    }
+    
+    const myChart = new Chart(ctx.getContext('2d'), {
         type: 'line',
         data: {
             labels: labels,

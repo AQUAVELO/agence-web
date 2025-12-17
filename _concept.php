@@ -419,7 +419,7 @@
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">17</span>
-                    <span class="stat-desc">Centres ouverts</span>
+                    <span class="stat-desc">Centres ouverts en France</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">25<sup>ans</sup></span>
@@ -527,13 +527,12 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.icon-box, .investment-card, .stat-item').forEach(el => {
+        document.querySelectorAll('.icon-box, .investment-card').forEach(el => {
             observer.observe(el);
         });
 
-        // Animation des compteurs
-        const animateCounter = (element) => {
-            const target = parseInt(element.getAttribute('data-target'));
+        // Animation des compteurs (version corrigée)
+        const animateCounter = (element, target, suffix = '') => {
             const duration = 2000;
             const step = target / (duration / 16);
             let current = 0;
@@ -541,10 +540,10 @@
             const updateCounter = () => {
                 current += step;
                 if (current < target) {
-                    element.textContent = Math.floor(current);
+                    element.innerHTML = Math.floor(current) + suffix;
                     requestAnimationFrame(updateCounter);
                 } else {
-                    element.textContent = target;
+                    element.innerHTML = target + suffix;
                 }
             };
 
@@ -555,11 +554,34 @@
         const statsObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const number = entry.target.querySelector('.stat-number');
-                    const value = parseInt(number.textContent);
-                    number.setAttribute('data-target', value);
-                    number.textContent = '0';
-                    animateCounter(number);
+                    const statItem = entry.target;
+                    const number = statItem.querySelector('.stat-number');
+                    
+                    // Extraire le nombre et le suffixe
+                    const text = number.textContent.trim();
+                    let value, suffix;
+                    
+                    if (text.includes('%')) {
+                        value = 98;
+                        suffix = '<sup>%</sup>';
+                    } else if (text.includes('jours')) {
+                        value = 90;
+                        suffix = '<sup>jours</sup>';
+                    } else if (text === '17') {
+                        value = 17;
+                        suffix = '';
+                    } else if (text.includes('ans')) {
+                        value = 25;
+                        suffix = '<sup>ans</sup>';
+                    }
+                    
+                    // Animer seulement une fois
+                    if (!statItem.classList.contains('animated')) {
+                        statItem.classList.add('animated');
+                        number.textContent = '0';
+                        animateCounter(number, value, suffix);
+                    }
+                    
                     statsObserver.unobserve(entry.target);
                 }
             });

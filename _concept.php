@@ -406,23 +406,23 @@
     </section>
 
     <!-- Stats -->
-    <section class="stats-section">
+    <section class="stats-section" id="stats">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-number">98<sup>%</sup></span>
+                    <span class="stat-number" id="counter1">98<sup>%</sup></span>
                     <span class="stat-desc">Taux de satisfaction client</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">90<sup>jours</sup></span>
+                    <span class="stat-number" id="counter2">90<sup>jours</sup></span>
                     <span class="stat-desc">Temps moyen d'ouverture</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">17</span>
+                    <span class="stat-number" id="counter3">17</span>
                     <span class="stat-desc">Centres ouverts en France</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">25<sup>ans</sup></span>
+                    <span class="stat-number" id="counter4">25<sup>ans</sup></span>
                     <span class="stat-desc">Expérience dans l'amincissement</span>
                 </div>
             </div>
@@ -513,82 +513,54 @@
     </section>
 
     <script>
-        // Animation au scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
+        // ===== ANIMATION DES COMPTEURS - VERSION ULTRA-SIMPLE =====
+        
+        // Fonction d'animation simple
+        function countUp(element, start, end, duration, suffix) {
+            let current = start;
+            const increment = (end - start) / (duration / 30); // 30ms par frame
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    current = end;
+                    clearInterval(timer);
                 }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.icon-box, .investment-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Animation des compteurs (version corrigée)
-        const animateCounter = (element, target, suffix = '') => {
-            const duration = 2000;
-            const step = target / (duration / 16);
-            let current = 0;
-
-            const updateCounter = () => {
-                current += step;
-                if (current < target) {
-                    element.innerHTML = Math.floor(current) + suffix;
-                    requestAnimationFrame(updateCounter);
+                
+                if (suffix) {
+                    element.innerHTML = Math.floor(current) + '<sup>' + suffix + '</sup>';
                 } else {
-                    element.innerHTML = target + suffix;
+                    element.textContent = Math.floor(current);
                 }
-            };
-
-            updateCounter();
-        };
-
-        // Déclencher l'animation des compteurs au scroll
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statItem = entry.target;
-                    const number = statItem.querySelector('.stat-number');
-                    
-                    // Extraire le nombre et le suffixe
-                    const text = number.textContent.trim();
-                    let value, suffix;
-                    
-                    if (text.includes('%')) {
-                        value = 98;
-                        suffix = '<sup>%</sup>';
-                    } else if (text.includes('jours')) {
-                        value = 90;
-                        suffix = '<sup>jours</sup>';
-                    } else if (text === '17') {
-                        value = 17;
-                        suffix = '';
-                    } else if (text.includes('ans')) {
-                        value = 25;
-                        suffix = '<sup>ans</sup>';
-                    }
-                    
-                    // Animer seulement une fois
-                    if (!statItem.classList.contains('animated')) {
-                        statItem.classList.add('animated');
-                        number.textContent = '0';
-                        animateCounter(number, value, suffix);
-                    }
-                    
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.stat-item').forEach(stat => {
-            statsObserver.observe(stat);
+            }, 30);
+        }
+        
+        // Démarrer l'animation dès que la section stats est visible
+        let animated = false;
+        
+        window.addEventListener('scroll', function() {
+            if (animated) return;
+            
+            const statsSection = document.getElementById('stats');
+            if (!statsSection) return;
+            
+            const rect = statsSection.getBoundingClientRect();
+            const isVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
+            
+            if (isVisible) {
+                animated = true;
+                
+                // Lancer les animations
+                countUp(document.getElementById('counter1'), 0, 98, 2000, '%');
+                countUp(document.getElementById('counter2'), 0, 90, 2000, 'jours');
+                countUp(document.getElementById('counter3'), 0, 17, 2000, '');
+                countUp(document.getElementById('counter4'), 0, 25, 2000, 'ans');
+            }
+        });
+        
+        // Vérifier aussi au chargement (au cas où la section est déjà visible)
+        window.addEventListener('load', function() {
+            window.dispatchEvent(new Event('scroll'));
         });
     </script>
 </body>

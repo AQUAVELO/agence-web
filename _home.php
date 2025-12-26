@@ -7,7 +7,7 @@
           <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-calendar"></i> </span> </a>
             <div class="media-body">
               <h4 class="media-heading"><a href="#">R&eacute;servation en ligne</a></h4>
-              <p>Avec 80 cours par semaine à votre disposition, réservez en ligne où que vous soyez,
+              <p>Avec 85 cours par semaine à votre disposition, réservez en ligne où que vous soyez,
                 votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
             </div>
           </div>

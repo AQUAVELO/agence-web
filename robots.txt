@@ -1,3 +1,69 @@
-User-Agent:  *
-Disallow:
-sitemap:https://www.aquavelo.com/sitemap.xml 
+# Robots.txt pour Aquavelo.com
+# Dernière mise à jour : 26/12/2025
+
+User-Agent: *
+Allow: /
+
+# Interdire l'accès aux fichiers sensibles
+Disallow: /_settings.php
+Disallow: /_config.php
+Disallow: /config.php
+Disallow: /Include/
+Disallow: /vendor/
+Disallow: /cache/
+Disallow: /form/vendor/
+Disallow: /*.sql$
+Disallow: /composer.json
+Disallow: /composer.lock
+
+# Interdire les pages admin et techniques
+Disallow: /Admin.php
+Disallow: /Dashboard.php
+Disallow: /Login-Aquavelo-Blog.php
+Disallow: /Lagout.php
+Disallow: /editpost.php
+Disallow: /deletepost.php
+Disallow: /editCentre.php
+Disallow: /deleteCentre.php
+Disallow: /NewPost.php
+Disallow: /NewCentre.php
+
+# Interdire les pages de test et traitement
+Disallow: /test_*.php
+Disallow: /traitement_*.php
+Disallow: /api_handler.php
+Disallow: /api.php
+Disallow: /envoi.php
+Disallow: /envoi2.php
+
+# Interdire les fichiers temporaires
+Disallow: /*.txt$
+Disallow: /*.log$
+
+# Permettre les fichiers CSS et JS pour le rendu
+Allow: /css/
+Allow: /js/
+Allow: /bootstrap/
+Allow: /images/
+
+# Ralentir les crawlers pour éviter la surcharge
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://www.aquavelo.com/sitemap.xml
+
+# Règles spécifiques pour Google
+User-Agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Règles spécifiques pour Bing
+User-Agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# Règles pour les images
+User-Agent: Googlebot-Image
+Allow: /images/
+Allow: /cloud/
+Allow: /Upload/

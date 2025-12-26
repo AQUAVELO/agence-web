@@ -38,8 +38,9 @@
         <div class="inner">
           <div class="row">
             <div class="col-md-6 animated" data-fx="fadeIn">
-              <h2>Atténuer la cellulite</h2>
-              <p>Saviez-vous qu'une 1/2 heure d'aquabiking équivaut à une heure de fitness avec 3 fois plus de calories brûlées ?</p>
+              <h2>Dites adieu à la cellulite</h2>
+              <p>30 min d'aquabiking = 1h de fitness · <strong>Brûlez 500 calories par séance</strong> grâce à la résistance de l'eau !</p>
+              <a href="/?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> Essai gratuit</a> 
               <a href="/aquabiking" class="btn btn-default btn-lg">Les bienfaits</a> 
             </div>
             <div class="col-md-6"></div>
@@ -53,6 +54,8 @@
           <div class="text-center animated" data-fx="fadeIn">
             <h2 class="page-title">D&eacute;couvrez</h2>
             <h2>LE NOUVEL AQUAVELO</h2>
+            <p style="color: #fff; font-size: 18px;">17 centres en France · Ouverts 7j/7</p>
+            <a href="/?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> 1ère séance offerte</a>
           </div>
         </div>
       </div>
@@ -69,7 +72,7 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
 </script>
 
 <!-- Formulaire -->
-              <h2 class="form-group" style="text-align: center;">Essayez une séance gratuite de 45 mn</h2>
+              <h2 class="form-group" style="text-align: center;">🎁 Votre séance découverte OFFERTE (valeur 45€)</h2>
               <div class="col-md-6">
                 <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
                   <p>Vous pouvez vous réserver sur notre <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
@@ -104,7 +107,12 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                   </div>
                   <input type="hidden" name="reason" id="reason">
                   <input type="hidden" name="segment" id="segment">
-                  <button type="submit" class="btn btn-default">Recevoir mon bon par email</button>
+                  <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; padding: 15px;">
+                    <i class="fa fa-gift"></i> JE RÉSERVE MA SÉANCE GRATUITE
+                  </button>
+                  <p style="text-align: center; color: #999; font-size: 12px; margin-top: 10px;">
+                    ✓ Sans engagement · ✓ Réponse sous 24h · ✓ 100% gratuit
+                  </p>
                 </form>
               </div>
               <!-- Fin du formulaire -->

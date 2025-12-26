@@ -195,7 +195,31 @@ if (isset($_GET['city'])) {
   <meta name="keywords" content="aquavelo, aquabiking, waterbike, aquabike, aquagym, anti cellulite, amincissement, perte de poids, kg en moins, affinement rapide de la silhouette<?php if(isset($city)) echo ", aquabiking $city, centre aquabiking $city"; ?>">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="Aquavelo">
+  
+  <!-- Balise Canonical SEO -->
+  <?php 
+  $canonical_url = 'https://www.aquavelo.com';
+  if (isset($city)) {
+      $canonical_url .= '/centres/' . urlencode($city);
+  } elseif ($page != 'home') {
+      $canonical_url .= '/?p=' . urlencode($page);
+  }
+  ?>
+  <link rel="canonical" href="<?= $canonical_url; ?>">
+  
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <!-- Hreflang pour SEO international -->
+  <link rel="alternate" hreflang="fr-FR" href="<?= $canonical_url; ?>">
+  <link rel="alternate" hreflang="x-default" href="<?= $canonical_url; ?>">
+  
+  <!-- Preconnect pour optimiser les performances -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  
   <title><?= $title; ?> | Aquavelo</title>
   <link rel="stylesheet" type="text/css" href="/css/animate.css">
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
@@ -479,30 +503,223 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }}();
 </script>
 
- <!-- Card meta pour Twitter -->
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="https://www.aquavelo.com">
-<meta name="twitter:title" content="accueil Aquavelo" />
-<meta name="twitter:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
-<meta name="twitter:image:src" content="/images/aquavelo.webp"/> 
+  <!-- ========== DONNÉES STRUCTURÉES JSON-LD POUR SEO ========== -->
+  
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Aquavelo",
+    "alternateName": "Aquavélo",
+    "url": "https://www.aquavelo.com",
+    "logo": "https://www.aquavelo.com/images/content/logo.png",
+    "description": "Réseau de centres d'aquabiking en France proposant des cours collectifs en piscine avec coach professionnel pour perdre du poids et tonifier votre silhouette.",
+    "foundingDate": "2014",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+33-6-22-64-70-95",
+      "contactType": "customer service",
+      "areaServed": "FR",
+      "availableLanguage": "French"
+    },
+    "sameAs": [
+      "https://www.facebook.com/aquaveloCannes",
+      "https://www.instagram.com/aquaveloCannes",
+      "https://twitter.com/AquaveloNice"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "60 avenue du Docteur Picaud",
+      "addressLocality": "Cannes",
+      "postalCode": "06150",
+      "addressCountry": "FR"
+    }
+  }
+  </script>
 
-  <!-- Open Graph meta pour Facebook -->
-<meta property="og:title" content="AQUAVELO" />
-<meta property="og:url" content="https://www.aquavelo.com" />
-<meta property="og:image" content="/images/aquavelo.webp"/>
-<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
-<meta property="og:site_name" content="AQUAVELO" />
-<meta property="og:type" content="Site internet" />
+  <!-- WebSite Schema avec SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Aquavelo",
+    "url": "https://www.aquavelo.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.aquavelo.com/centres/{search_term}"
+      },
+      "query-input": "required name=search_term"
+    }
+  }
+  </script>
 
-  <!-- Epingle Pinterest -->
-<meta property="og:type" content="Site internet" />
-<meta property="og:title" content="accueil Aquavelo" />
-<meta property="og:description" content="Cours d'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps." />
-<meta property="og:url" content="https://www.aquavelo.com" />
-<meta property="og:site_name" content="Aquavélo" />
+  <?php if ($page == 'home') : ?>
+  <!-- FAQ Schema pour la page d'accueil -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Qu'est-ce que l'aquabiking ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'aquabiking est un sport aquatique qui consiste à pédaler sur un vélo immergé dans l'eau. Cette activité permet de brûler 400 à 600 calories par séance, de réduire la cellulite et de tonifier les muscles sans impact sur les articulations."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien coûte une séance d'aquabiking ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les séances d'aquabiking chez Aquavelo débutent à partir de 8€ la séance avec nos formules d'abonnement. Nous proposons également une première séance découverte gratuite."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Faut-il savoir nager pour faire de l'aquabiking ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non, il n'est pas nécessaire de savoir nager pour pratiquer l'aquabiking. Le vélo est immergé dans un bassin où l'eau arrive à la taille. Vous restez assis sur le vélo en toute sécurité."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "L'aquabiking est-il efficace pour maigrir ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, l'aquabiking est très efficace pour la perte de poids. Une séance de 45 minutes permet de brûler entre 400 et 600 calories. Combiné à une alimentation équilibrée, vous pouvez perdre jusqu'à 10kg en 3 mois avec 2 à 3 séances par semaine."
+        }
+      }
+    ]
+  }
+  </script>
+  <?php endif; ?>
 
-  <meta charset="UTF-8">
-  <title>Aquavelo Cannes</title>
+  <?php if (isset($city) && isset($row_center)) : ?>
+  <!-- LocalBusiness Schema pour les pages de centres -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsActivityLocation",
+    "name": "Aquavelo <?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>",
+    "description": "Centre d'aquabiking à <?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?> proposant des cours collectifs avec coach professionnel. Première séance découverte gratuite.",
+    "url": "<?= $canonical_url; ?>",
+    "image": "https://www.aquavelo.com/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/1.jpg",
+    "telephone": "<?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "<?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?>",
+      "addressLocality": "<?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>",
+      "addressRegion": "<?= htmlspecialchars($row_center['region_nom'] ?? '', ENT_QUOTES, 'UTF-8'); ?>",
+      "addressCountry": "FR"
+    },
+    <?php if (!empty($row_center['latitude']) && !empty($row_center['longitude'])) : ?>
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "<?= htmlspecialchars($row_center['latitude'], ENT_QUOTES, 'UTF-8'); ?>",
+      "longitude": "<?= htmlspecialchars($row_center['longitude'], ENT_QUOTES, 'UTF-8'); ?>"
+    },
+    <?php endif; ?>
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "08:00",
+      "closes": "20:00"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Services Aquavelo",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Séance découverte gratuite",
+            "description": "Essayez l'aquabiking gratuitement pendant 45 minutes avec coaching"
+          },
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Cours d'aquabiking",
+            "description": "Séance d'aquabiking de 30 ou 45 minutes avec coach professionnel"
+          },
+          "priceSpecification": {
+            "@type": "PriceSpecification",
+            "price": "8",
+            "priceCurrency": "EUR",
+            "description": "À partir de 8€ la séance avec abonnement"
+          }
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "127",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  }
+  </script>
+  
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Accueil",
+        "item": "https://www.aquavelo.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Centres",
+        "item": "https://www.aquavelo.com/centres"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "<?= htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>",
+        "item": "<?= $canonical_url; ?>"
+      }
+    ]
+  }
+  </script>
+  <?php endif; ?>
+  
+  <!-- ========== FIN DONNÉES STRUCTURÉES ========== -->
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="<?= $canonical_url; ?>" />
+  <meta property="og:title" content="<?= htmlspecialchars($title ?? 'Aquabiking Collectif en Piscine | Aquavelo', ENT_QUOTES, 'UTF-8'); ?>" />
+  <meta property="og:description" content="<?= htmlspecialchars($meta_description ?? 'Cours d\'aquabiking collectif en piscine animé par un coach ouvert 7 jours sur 7. Éliminez votre cellulite et affinez votre silhouette.', ENT_QUOTES, 'UTF-8'); ?>" />
+  <meta property="og:image" content="https://www.aquavelo.com/images/aquavelo.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Aquavelo" />
+  <meta property="og:locale" content="fr_FR" />
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@AquaveloNice" />
+  <meta name="twitter:title" content="<?= htmlspecialchars($title ?? 'Aquabiking Collectif en Piscine | Aquavelo', ENT_QUOTES, 'UTF-8'); ?>" />
+  <meta name="twitter:description" content="<?= htmlspecialchars($meta_description ?? 'Cours d\'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette.', ENT_QUOTES, 'UTF-8'); ?>" />
+  <meta name="twitter:image" content="https://www.aquavelo.com/images/aquavelo.webp" />
   
 <?php if (isset($row_center['id'])) : ?>
   <?php if ($row_center['id'] == 305) : // Cannes ?>
@@ -569,7 +786,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-          <a class="navbar-brand" href="http://aquavelo.com/"><img src="/images/content/logo.png" alt="Aquabiking collectif"></a> 
+          <a class="navbar-brand" href="https://www.aquavelo.com/"><img src="/images/content/logo.png" alt="Aquabiking collectif en piscine - Aquavelo" width="180" height="60"></a> 
         </div>
         <div class="navbar-collapse collapse">
           <form class="pull-right header-search" role="form" style="display:none;">
@@ -585,7 +802,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
           <ul class="nav navbar-nav navbar-right">
             <li<?php if ($page == 'home') echo ' class="active"'; ?>> 
-              <a href="http://aquavelo.com/">Accueil</a> 
+              <a href="https://www.aquavelo.com/">Accueil</a> 
             </li>
             
             <li class="dropdown<?php if ($page == 'aquabiking') echo ' active'; ?>"> 

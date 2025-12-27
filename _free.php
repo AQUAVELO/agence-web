@@ -206,7 +206,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
         
         try {
             $mail2->send();
-            $success_message = 'Appelez vite le centre AQUAVELO pour prendre rendez-vous !';
+            $success_message = '';
             
             // Redirection après 3 secondes
             header("refresh:3;url=/?p=free&success=1");
@@ -250,8 +250,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
     <?php if (!empty($success_message)) : ?>
     <div class="alert" style="margin: 20px auto; max-width: 600px; text-align: center; font-size: 1.4rem; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,168,204,0.4);">
       <h3 style="color: #fff; font-size: 2.2rem; margin-bottom: 15px;"><i class="fa fa-check-circle"></i> Merci !</h3>
-      <p style="color: #fff; font-size: 1.6rem;"><?= $success_message; ?></p>
-      <p style="color: #fff; font-size: 1.5rem; margin-top: 15px;"><strong>Vous allez recevoir un message avec les coordonnées du centre pour prendre rendez-vous.</strong></p>
+      <p style="color: #fff; font-size: 1.7rem; margin-top: 15px;"><strong>Vous allez recevoir un message avec les coordonnées du centre pour prendre rendez-vous.</strong></p>
     </div>
     <?php endif; ?>
 

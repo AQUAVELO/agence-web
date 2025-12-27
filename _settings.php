@@ -1,21 +1,24 @@
 <?php
 // _settings.php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+error_reporting(0);
 
 require __DIR__ . '/vendor/autoload.php';
 use Phpfastcache\CacheManager;
 
 $settings = [];
 $settings['ttl'] = 3600;
+
 // Base URL pour les chemins
-define('BASE_URL', '/aquavelo');
-$settings['base_url'] = '/aquavelo';
-$settings['dbhost'] = '127.0.0.1';
-$settings['dbport'] = '3306';
-$settings['dbname'] = 'alesiaminceur';
-$settings['dbusername'] = 'root';
-$settings['dbpassword'] = 'root';
+define('BASE_URL', '');
+$settings['base_url'] = '';
+
+// ⭐ Variables d'environnement Clever Cloud (avec fallback local)
+$settings['dbhost'] = getenv('MYSQL_ADDON_HOST') ?: '127.0.0.1';
+$settings['dbport'] = getenv('MYSQL_ADDON_PORT') ?: '3306';
+$settings['dbname'] = getenv('MYSQL_ADDON_DB') ?: 'alesiaminceur';
+$settings['dbusername'] = getenv('MYSQL_ADDON_USER') ?: 'root';
+$settings['dbpassword'] = getenv('MYSQL_ADDON_PASSWORD') ?: 'root';
 
 try {
     $conn = new PDO(

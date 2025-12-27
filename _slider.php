@@ -70,7 +70,7 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                 <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
                   <p>Vous pouvez vous réserver sur notre <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
                 <?php endif; ?>
-                <form role="form" class="contact-form" method="POST" action="_page.php">
+                <form role="form" class="contact-form" method="POST" action="/?p=free">
                   <div class="form-group">
                     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
                     <select class="form-control" id="center" name="center">

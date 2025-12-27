@@ -20,6 +20,11 @@ $settings['dbname'] = getenv('MYSQL_ADDON_DB') ?: 'alesiaminceur';
 $settings['dbusername'] = getenv('MYSQL_ADDON_USER') ?: 'root';
 $settings['dbpassword'] = getenv('MYSQL_ADDON_PASSWORD') ?: 'root';
 
+// ⭐ Configuration Mailjet pour l'envoi d'emails
+$settings['mjhost'] = getenv('MAILJET_HOST') ?: 'in-v3.mailjet.com';
+$settings['mjusername'] = getenv('MAILJET_API_KEY') ?: '';
+$settings['mjpassword'] = getenv('MAILJET_SECRET_KEY') ?: '';
+
 try {
     $conn = new PDO(
         "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",

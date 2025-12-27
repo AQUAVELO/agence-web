@@ -1,0 +1,21 @@
+{
+  "name": "Aquavelo Cannes",
+  "short_name": "Aquavélo",
+  "start_url": "/centres/Cannes",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#00ACDC",
+  "icons": [
+    {
+      "src": "/images/Aquavelo_Icon_C.png",
+      "sizes": "92x92",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/Aquavelo_Icon_192_C.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+

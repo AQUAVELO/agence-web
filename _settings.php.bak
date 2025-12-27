@@ -1,0 +1,52 @@
+<?php
+// _settings.php - Configuration pour environnement local
+
+// Charger .env
+if (file_exists(__DIR__ . '/.env')) {
+    $lines = file(__DIR__ . '/.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') === false) continue;
+        list($name, $value) = explode('=', $line, 2);
+        putenv(trim($name) . '=' . trim($value));
+    }
+}
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Phpfastcache\CacheManager;
+
+// Configuration
+$settings = [];
+$settings['ttl'] = 3600;
+$settings['dbhost'] = '127.0.0.1';
+$settings['dbport'] = '3306';
+$settings['dbname'] = 'alesiaminceur';
+$settings['dbusername'] = 'root';
+$settings['dbpassword'] = 'root';
+
+// Connexion MySQL
+try {
+    $conn = new PDO(
+        "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",
+        $settings['dbusername'],
+        $settings['dbpassword']
+    );
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("MySQL Error: " . $e->getMessage());
+}
+
+// Cache Files (pas Redis)
+CacheManager::setDefaultConfig(new \Phpfastcache\Drivers\Files\Config([
+    'path' => __DIR__ . '/cache'
+]));
+
+$redis = CacheManager::getInstance('files');
+?>
+
+// Alias pour compatibilité
+$database = $conn;

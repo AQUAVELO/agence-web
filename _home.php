@@ -4,11 +4,11 @@
     <div class="row">
       <div class="col-md-4">
         <div class="iconBox">
-          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-calendar"></i> </span> </a>
+          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-fire"></i> </span> </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">R&eacute;servation en ligne</a></h4>
-              <p>Avec 85 cours par semaine à votre disposition, réservez en ligne où que vous soyez,
-                votre vélo vous attend selon votre emploi du temps. Pas de stress! </p>
+              <h4 class="media-heading"><a href="#">500 calories brûlées</a></h4>
+              <p>Une séance de 45 min d'aquabiking brûle autant qu'1h30 de course à pied. 
+                <strong>Perdez jusqu'à 10 kg en 3 mois</strong> avec 2 séances par semaine !</p>
             </div>
           </div>
         </div>
@@ -16,10 +16,10 @@
       </div>
       <div class="col-md-4">
         <div class="iconBox">
-          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-male"></i> </span> </a>
+          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-heart"></i> </span> </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Coach sportif</a></h4>
-              <p> Sélectionnés avec le plus grand soin, les coachs diplômés vous motiveront à travers des chorégraphies rythmées pour atteindre rapidement vos objectifs.</p>
+              <h4 class="media-heading"><a href="#">Adieu cellulite</a></h4>
+              <p>L'effet drainant de l'eau combiné au pédalage <strong>réduit visiblement la cellulite</strong>. Vos jambes retrouvent fermeté et légèreté dès les premières séances.</p>
             </div>
           </div>
         </div>
@@ -27,10 +27,10 @@
       </div>
       <div class="col-md-4">
         <div class="iconBox">
-          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-users"></i> </span> </a>
+          <div class="media"> <a class="pull-left" href="#"> <span class="octagon"> <span class="svg-load"></span> <i class="fa fa-smile-o"></i> </span> </a>
             <div class="media-body">
-              <h4 class="media-heading"><a href="#">Cours collectifs</a></h4>
-              <p>Votre cours d'aquabiking dure 30 ou 45 minutes et se déroule en groupe restreint. Pourquoi ne pas proposer à un(e) ami(e) de vous accompagner ?</p>
+              <h4 class="media-heading"><a href="#">Zéro douleur</a></h4>
+              <p><strong>Sport doux pour les articulations</strong> : l'eau porte votre corps. Idéal après une grossesse, une blessure ou pour les seniors. Résultats visibles, zéro courbature !</p>
             </div>
           </div>
         </div>
@@ -44,8 +44,9 @@
 <section class="content-area bg2">
   <div class="container">
     <header class="page-header text-center">
-      <h1 class="page-title">Les centres</h1>
-      <h2>Localisez le centre le plus proche de chez vous</h2>
+      <h1 class="page-title">17 centres en France</h1>
+      <h2>Trouvez le centre Aquavelo le plus proche de chez vous</h2>
+      <p style="color: #666;">Ouverts 7j/7 · Coachs diplômés · 1ère séance gratuite</p>
     </header>
     <div class="flexslider carousel-slider" data-slideshow="false" data-speed="7000" data-animspeed="600" data-loop="true" data-min="1" data-max="3" data-move="1" data-controls="true" data-dircontrols="true">
       <ul class="slides">
@@ -78,7 +79,10 @@
         </li>
       </ul>
     </div>
-    <div class="text-center"> <a href="/centres" class="btn btn-default animated" data-fx="fadeInUp">Tous les centres</a> </div>
+    <div class="text-center"> 
+      <a href="/?p=free" class="btn btn-primary btn-lg animated" data-fx="fadeInUp" style="margin-right: 10px;"><i class="fa fa-gift"></i> Réserver ma séance gratuite</a>
+      <a href="/centres" class="btn btn-default animated" data-fx="fadeInUp">Voir tous les centres</a> 
+    </div>
   </div>
 </section>
 <!-- / section -->
@@ -89,11 +93,11 @@
       <div class="row">
         <div class="col-md-6 col-md-push-6">
           <div class="inner animated" data-fx="fadeInLeft">
-            <h2>Un design contemporain</h2>
-            <p class="larger">Une alliance parfaite entre les matières minérales, l'eau, la pierre et le bois pour vous assurer un véritable hâvre de paix.<br> Qu’attendez-vous pour vous jeter à l'eau ?<br>
-              En pratiquant l'aquabiking, vous êtes immergé seulement jusqu’à la taille, vos cheveux restent secs.
-              Une serviette et des produits de douche sont mis à votre disposition après chaque séance pour vous assurer confort et détente. </p>
-            <a href="/concept-aquabiking" class="btn btn-default">Le concept</a>
+            <h2>Un cadre unique pour vos séances</h2>
+            <p class="larger">Nos centres allient design contemporain et confort : eau chauffée à 28°C, vestiaires privatifs, produits de douche fournis.<br><br>
+              <strong>Immergé jusqu'à la taille, vos cheveux restent secs.</strong> Venez comme vous êtes, repartez transformé(e) !</p>
+            <a href="/?p=free" class="btn btn-primary" style="margin-right: 10px;"><i class="fa fa-gift"></i> Essayer gratuitement</a>
+            <a href="/concept-aquabiking" class="btn btn-default">Découvrir le concept</a>
           </div>
         </div>
         <div class="col-md-6 col-md-pull-6"> <img src="/images/content/home-v1-promo.jpg" alt=" " class="animated" data-fx="fadeInLeft"> </div>

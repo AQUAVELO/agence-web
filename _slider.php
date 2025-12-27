@@ -12,7 +12,7 @@
                   Vitalité, Minceur, Bien-être
                 </h2>
                 <p style="color: #fff; font-size: 22px; text-shadow: 1px 1px 4px rgba(0,0,0,0.7); margin-bottom: 30px;">
-                  <strong>30 min = 500 calories brûlées</strong> · Dans l'eau à 28°C
+                  <strong>30 min = 500 calories brûlées</strong> · Dans l'eau à 29°C
                 </p>
                 <a href="/?p=free" class="btn btn-lg" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: #fff; padding: 18px 40px; font-size: 20px; border-radius: 50px; text-decoration: none; display: inline-block; box-shadow: 0 5px 25px rgba(255,107,53,0.5); animation: pulse-glow 2s ease-in-out infinite;">
                   <i class="fa fa-gift"></i> MA SÉANCE GRATUITE

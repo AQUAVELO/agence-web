@@ -7,27 +7,20 @@
             <div class="col-md-6 pull-left animated" data-fx="fadeIn" style="width: 100%; text-align: center; margin-top:0;">
               
 
-              <h3 class="pa slidertext" style="text-align:center; color: #fff; line-height: 40px !important; text-shadow: -4px 4px 4px black !important; -webkit-text-stroke-width:0px; max-width: 625px;">
-                <a href="/seance-decouverte/Antibes">
-                  <span class="bigger" style="color: #f2e4b3; font-size: 135%; line-height: 40px !important;"></span>
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <br /><span class="bigger" style="color: #e51cb3; font-size: 100%; line-height: 40px !important;"></span>
-                  <br>
-                  <br /> <span class="bigger" style="color: #ffffff; font-size: 100%; line-height: 40px !important;">Vitalité, Minceur,</span>
-                  <br/>
-                  <br/><span class="bigger" style="color: #ffffff; font-size:100%; line-height: 40px !important; ">et Bien-être</span>
+              <div style="margin-top: 180px; text-align: center;">
+                <h2 style="color: #fff; font-size: 48px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; font-weight: 700;">
+                  Vitalité, Minceur, Bien-être
+                </h2>
+                <p style="color: #fff; font-size: 22px; text-shadow: 1px 1px 4px rgba(0,0,0,0.7); margin-bottom: 30px;">
+                  <strong>30 min = 500 calories brûlées</strong> · Dans l'eau à 28°C
+                </p>
+                <a href="/?p=free" class="btn btn-lg" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: #fff; padding: 18px 40px; font-size: 20px; border-radius: 50px; text-decoration: none; display: inline-block; box-shadow: 0 5px 25px rgba(255,107,53,0.5); animation: pulse-glow 2s ease-in-out infinite;">
+                  <i class="fa fa-gift"></i> MA SÉANCE GRATUITE
                 </a>
-              </h3>
-
-              <!-- commentaire 
-              <a href="/seance-decouverte/Cannes" id="sticker-text" style="float:left; clear: both;  background-image: url(/images/sticker1-orange.png); background-repeat: no-repeat; background-size: cover; display: inline-block;  padding: 4.5rem 5rem 2rem; text-decoration:none; margin-top: 100px;">
-                <p class="media-heading">CLIQUEZ POUR<br>ESSAYER<br> UNE SÉANCE<br>GRATUITE<br>DE 45 MN</p>
-              </a> 
-              -->
+                <p style="color: #fff; font-size: 14px; margin-top: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+                  ✓ Sans engagement · ✓ Places limitées
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -107,8 +100,8 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                   </div>
                   <input type="hidden" name="reason" id="reason">
                   <input type="hidden" name="segment" id="segment">
-                  <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; padding: 15px;">
-                    <i class="fa fa-gift"></i> JE RÉSERVE MA SÉANCE GRATUITE
+                  <button type="submit" class="btn btn-lg" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; color: #fff; font-size: 18px; font-weight: 700; border-radius: 50px; box-shadow: 0 5px 20px rgba(255,107,53,0.4); cursor: pointer; transition: all 0.3s ease;">
+                    <i class="fa fa-gift"></i> OUI, JE VEUX MA SÉANCE GRATUITE !
                   </button>
                   <p style="text-align: center; color: #999; font-size: 12px; margin-top: 10px;">
                     ✓ Sans engagement · ✓ Réponse sous 24h · ✓ 100% gratuit

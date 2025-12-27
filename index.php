@@ -237,8 +237,9 @@ if (isset($_GET['city'])) {
     
     /* Bouton Réserver dans le menu */
     .cta-nav .btn-reserve-nav {
-      background: linear-gradient(135deg, #00d4ff, #00a8cc) !important;
+      background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
       color: white !important;
+      animation: pulse-glow 2s ease-in-out infinite;
       padding: 10px 20px !important;
       border-radius: 25px !important;
       margin-left: 10px;
@@ -269,6 +270,39 @@ if (isset($_GET['city'])) {
       box-shadow: 0 5px 15px rgba(255, 152, 0, 0.5);
     }
 
+    /* Animation pulse pour CTA */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4); }
+      50% { box-shadow: 0 4px 25px rgba(255, 107, 53, 0.7); }
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    /* Point pulsant sur bouton flottant */
+    .pulse-dot {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 15px;
+      height: 15px;
+      background: #ff3b30;
+      border-radius: 50%;
+      animation: pulse-ring 1.5s ease-out infinite;
+    }
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 9px;
+      height: 9px;
+      background: #ff3b30;
+      border-radius: 50%;
+    }
+
     /* Bouton flottant Réserver */
     #floating-booking-btn {
       position: fixed;
@@ -278,6 +312,7 @@ if (isset($_GET['city'])) {
     }
 
     #floating-booking-btn a {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -851,10 +886,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             
             <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
               
-            <!-- ✅ VERSION CORRIGÉE -->
+            <!-- CTA Séance gratuite optimisé -->
             <li class="cta-nav"> 
                 <a href="/?p=free" class="btn-reserve-nav">
-                   <i class="fa fa-calendar"></i> ESSAYER UNE SEANCE
+                   <i class="fa fa-gift"></i> 🎁 SÉANCE GRATUITE
                 </a>
             </li>
             
@@ -978,7 +1013,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ⭐ Bouton réservation flottant -->
     <div id="floating-booking-btn">
       <a href="/?p=free">
-        <i class="fa fa-gift"></i>
+        <span class="pulse-dot"></span>
+        <i class="fa fa-gift"></i> 1ère SÉANCE OFFERTE
         <span>🎁 SÉANCE GRATUITE</span>
       </a>
     </div>

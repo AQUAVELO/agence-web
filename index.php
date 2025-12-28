@@ -987,14 +987,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <aside class="col-md-3 widget">
             <h3 class="widget-title">Nos Centres</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-              <a href="/centres/cannes" title="Centre Aquavelo Cannes">
-                <img src="/images/Cannes1.jpg" width="80" height="60" alt="Centre Aquavelo Cannes" style="border-radius: 5px; object-fit: cover;">
+              <a href="/centres/cannes" title="Centre Aquavelo Cannes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="/images/Cannes1.jpg" alt="Centre Aquavelo Cannes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="/centres/antibes" title="Centre Aquavelo Antibes">
-                <img src="/images/content/home-v1-slider-03.webp" width="80" height="60" alt="Centre Aquavelo Antibes" style="border-radius: 5px; object-fit: cover;">
+              <a href="/centres/antibes" title="Centre Aquavelo Antibes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="/images/content/home-v1-slider-03.webp" alt="Centre Aquavelo Antibes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="/centres/nice" title="Centre Aquavelo Nice">
-                <img src="/images/center_179/1.jpg" width="80" height="60" alt="Centre Aquavelo Nice" style="border-radius: 5px; object-fit: cover;">
+              <a href="/centres/nice" title="Centre Aquavelo Nice" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="/images/center_179/1.jpg" alt="Centre Aquavelo Nice" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
               <a href="/?p=free" title="Séance découverte gratuite" style="display: flex; align-items: center; justify-content: center; width: 80px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 5px; color: #fff; font-size: 11px; text-align: center; text-decoration: none; font-weight: 600;">
                 Essai<br>Gratuit

@@ -464,10 +464,10 @@
 <!-- Bannière promo -->
 <section class="content-area bg1">
   <div class="container">
-    <div class="promo-banner" onclick="openFormMobile()" role="button" tabindex="0" aria-label="Cliquer pour ouvrir le formulaire de réservation">
+    <a href="/?p=free" class="promo-banner" style="display: block; text-decoration: none; cursor: pointer;" aria-label="Réserver une séance découverte gratuite">
       <h2>🎁 Séance Découverte GRATUITE 45min</h2>
       <p>✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé</p>
-    </div>
+    </a>
   </div>
 </section>
 

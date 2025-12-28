@@ -207,17 +207,6 @@ unset($_SESSION['message']);
                             06150 Cannes</p>
                        
                     </aside>
-                    <aside class="col-md-3 widget">
-                        <h2 class="widget-title"> </h2>
-                    </aside>
-                    <aside class="col-md-3 widget">
-                        <h3 class="widget-title">Flux de photo</h3>
-                        <div class="flickr_badge">
-                            <div class="flickr_badge_image"> <a href="https://www.flickr.com/photos/124590983@N08/14199424047/" title="IMG_1877 de aquavelo, sur Flickr"><img src="https://farm3.staticflickr.com/2913/14199424047_ace3ffa999.jpg" width="80" alt="IMG_1877"></a></div>
-                            <div class="flickr_badge_image"> <a href="https://www.flickr.com/photos/124590983@N08/14384877104/" title="IMG_1896 de aquavelo, sur Flickr"><img src="https://farm4.staticflickr.com/3894/14384877104_6f08cfe0d0.jpg" width="80" alt="IMG_1896"></a></div>
-                            <div class="flickr_badge_image"> <a href="https://www.flickr.com/photos/124590983@N08/14199323080/" title="IMG_1921 de aquavelo, sur Flickr"><img src="https://farm3.staticflickr.com/2924/14199323080_07f86b8ee9.jpg" width="80" alt="IMG_1921"></a> </div>
-                        </div>
-                    </aside>
                 </div>
             </div>
         </footer>

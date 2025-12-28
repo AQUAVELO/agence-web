@@ -283,6 +283,16 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
             <?php } ?>
           </select>
           <span class="error-center" style="color: red; font-size: 11px; display: none;">Choisissez un centre</span>
+          
+          <!-- Section Calendly pour Cannes/Mandelieu/Vallauris -->
+          <div id="calendrier_section" style="display: none; margin-top: 15px; padding: 15px; background: #e8f8fc; border-radius: 8px; border-left: 4px solid #00d4ff;">
+            <p style="margin: 0; font-size: 0.95rem;">
+              📅 Vous pouvez aussi réserver directement sur notre 
+              <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc; font-weight: 600;">
+                calendrier en ligne <i class="fa fa-external-link"></i>
+              </a>
+            </p>
+          </div>
         </div>
         
         <!-- Nom -->
@@ -474,5 +484,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    // Afficher/masquer section Calendly pour Cannes, Mandelieu, Vallauris
+    var centerSelect = document.getElementById('center');
+    var calendrierSection = document.getElementById('calendrier_section');
+    var centersWithCalendly = [305, 347, 349]; // Cannes, Mandelieu, Vallauris
+
+    function toggleCalendrier() {
+        if (centerSelect && calendrierSection) {
+            var selectedCenter = parseInt(centerSelect.value);
+            if (centersWithCalendly.includes(selectedCenter)) {
+                calendrierSection.style.display = 'block';
+            } else {
+                calendrierSection.style.display = 'none';
+            }
+        }
+    }
+
+    if (centerSelect) {
+        centerSelect.addEventListener('change', toggleCalendrier);
+        // Vérifier au chargement
+        toggleCalendrier();
+    }
 });
 </script>

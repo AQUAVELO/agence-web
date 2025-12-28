@@ -755,6 +755,62 @@
             <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
             <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>
           </div>
+
+          <!-- ⭐ Témoignages Google Business - Centre Cannes -->
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+          <div style="margin-top: 40px;">
+            <h3 style="color: #00a8cc; margin-bottom: 25px;">
+              <i class="fa fa-google"></i> Avis Google 
+              <span style="background: #ffc107; color: #333; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 10px;">
+                ⭐ 4.8/5
+              </span>
+            </h3>
+            
+            <!-- Témoignage 1 -->
+            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); margin-bottom: 15px; border-left: 4px solid #00d4ff;">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #00d4ff, #00a8cc); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem;">S</div>
+                <div style="margin-left: 12px;">
+                  <strong style="color: #333;">Sophie M.</strong>
+                  <div style="color: #ffc107; font-size: 0.9rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p style="margin: 0; color: #555; font-style: italic; line-height: 1.6;">"Super centre, personnel très accueillant et professionnel. J'ai perdu 8 kg en 3 mois grâce aux séances d'aquabike. L'ambiance est top et les coachs sont motivants. Je recommande à 100% !"</p>
+            </div>
+
+            <!-- Témoignage 2 -->
+            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); margin-bottom: 15px; border-left: 4px solid #00d4ff;">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem;">M</div>
+                <div style="margin-left: 12px;">
+                  <strong style="color: #333;">Marie-Claire D.</strong>
+                  <div style="color: #ffc107; font-size: 0.9rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p style="margin: 0; color: #555; font-style: italic; line-height: 1.6;">"Excellente expérience ! Les cours sont variés et adaptés à tous les niveaux. Ma cellulite a nettement diminué après 2 mois. Le cadre est agréable et l'eau est toujours à bonne température."</p>
+            </div>
+
+            <!-- Témoignage 3 -->
+            <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 3px 15px rgba(0,0,0,0.08); margin-bottom: 15px; border-left: 4px solid #00d4ff;">
+              <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #9c27b0, #673ab7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem;">L</div>
+                <div style="margin-left: 12px;">
+                  <strong style="color: #333;">Laurence B.</strong>
+                  <div style="color: #ffc107; font-size: 0.9rem;">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p style="margin: 0; color: #555; font-style: italic; line-height: 1.6;">"Je viens depuis 1 an et je ne m'en lasse pas ! Les séances passent vite grâce à la bonne humeur des coachs. Parfait pour se remettre en forme sans se faire mal aux articulations. Bravo à toute l'équipe !"</p>
+            </div>
+
+            <!-- Lien vers Google -->
+            <div style="text-align: center; margin-top: 20px;">
+              <a href="https://www.google.com/search?q=aquavelo+cannes+avis" target="_blank" rel="noopener" style="color: #00a8cc; text-decoration: none; font-weight: 600;">
+                <i class="fa fa-external-link"></i> Voir tous les avis sur Google
+              </a>
+            </div>
+          </div>
+          <?php endif; ?>
+
         </div>
 
       </div>

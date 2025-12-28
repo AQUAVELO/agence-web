@@ -336,7 +336,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
         <!-- ⭐ BOUTON FIXE EN BAS -->
         <button type="submit" 
                 id="submitBtn"
-                style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 18px; font-size: 1.2rem; font-weight: 600; width: 100%; margin: 0; border-radius: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.2);">
+                style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 20px; font-size: 1.4rem; font-weight: 600; width: 100%; margin: 0; border-radius: 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.2);">
           <i class="fa fa-check-circle"></i> RECEVOIR MON BON GRATUIT
         </button>
 

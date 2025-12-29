@@ -70,7 +70,7 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                 <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
                   <p>Vous pouvez vous réserver sur notre <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
                 <?php endif; ?>
-                <form role="form" class="contact-form" method="POST" action="/?p=free">
+                <form role="form" class="contact-form" id="sliderForm" method="POST" action="/?p=free">
                   <div class="form-group">
                     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
                     <select class="form-control" id="center" name="center">
@@ -100,7 +100,8 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                   </div>
                   <input type="hidden" name="reason" id="reason">
                   <input type="hidden" name="segment" id="segment">
-                  <button type="submit" class="btn btn-lg" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; color: #fff; font-size: 18px; font-weight: 700; border-radius: 50px; box-shadow: 0 5px 20px rgba(255,107,53,0.4); cursor: pointer; transition: all 0.3s ease;">
+                  <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-slider" value="">
+                  <button type="submit" id="submitBtnSlider" class="btn btn-lg" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; color: #fff; font-size: 18px; font-weight: 700; border-radius: 50px; box-shadow: 0 5px 20px rgba(255,107,53,0.4); cursor: pointer; transition: all 0.3s ease;">
                     <i class="fa fa-gift"></i> OUI, JE VEUX MA SÉANCE GRATUITE !
                   </button>
                   <p style="text-align: center; color: #999; font-size: 12px; margin-top: 10px;">
@@ -109,6 +110,9 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                 </form>
               </div>
               <!-- Fin du formulaire -->
+<!-- ⭐ reCAPTCHA v3 Script -->
+<script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const centerSelect = document.getElementById("center");
@@ -130,6 +134,32 @@ document.addEventListener("DOMContentLoaded", function () {
         calendrierSection.style.display = "block";
     } else {
         calendrierSection.style.display = "none";
+    }
+
+    // ⭐ reCAPTCHA v3 pour le formulaire slider
+    const sliderForm = document.getElementById('sliderForm');
+    if (sliderForm) {
+        sliderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtnSlider');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
+            
+            grecaptcha.ready(function() {
+                grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response-slider').value = token;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
+                    sliderForm.submit();
+                }).catch(function(error) {
+                    console.error('reCAPTCHA error:', error);
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    alert('Erreur de vérification. Veuillez réessayer.');
+                });
+            });
+        });
     }
 });
 </script>

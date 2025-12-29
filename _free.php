@@ -18,6 +18,32 @@ $success_message = '';
 $error_message = '';
 $form_submitted = false;
 
+// ⭐ Fonction de vérification reCAPTCHA v3
+function verifyRecaptcha($token, $secret_key) {
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = [
+        'secret' => $secret_key,
+        'response' => $token
+    ];
+    
+    $options = [
+        'http' => [
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data)
+        ]
+    ];
+    
+    $context  = stream_context_create($options);
+    $result = @file_get_contents($url, false, $context);
+    
+    if ($result === false) {
+        return ['success' => false, 'score' => 0, 'error' => 'network_error'];
+    }
+    
+    return json_decode($result, true);
+}
+
 // Traiter le formulaire si soumis en POST
 if (isset($_POST['nom']) && empty($_POST['reason'])) {
     
@@ -25,6 +51,23 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
     
     // Déclarer variable d'erreurs
     $error = [];
+    
+    // ⭐ Vérification reCAPTCHA v3
+    $recaptcha_token = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+    
+    if (empty($recaptcha_token)) {
+        $error['recaptcha'] = 'Erreur de sécurité. Veuillez réessayer.';
+    } else {
+        $recaptcha_response = verifyRecaptcha($recaptcha_token, $settings['recaptcha_secret_key']);
+        
+        if (!$recaptcha_response['success']) {
+            $error['recaptcha'] = 'Vérification de sécurité échouée. Veuillez réessayer.';
+            error_log("reCAPTCHA error: " . json_encode($recaptcha_response));
+        } elseif ($recaptcha_response['score'] < $settings['recaptcha_score_threshold']) {
+            $error['recaptcha'] = 'Activité suspecte détectée. Veuillez contacter le centre par téléphone.';
+            error_log("reCAPTCHA low score: " . $recaptcha_response['score'] . " for IP: " . $_SERVER['REMOTE_ADDR']);
+        }
+    }
     
     // Récupérer les données du formulaire
     $input_nom = strip_tags(utf8_decode($_POST['nom']));
@@ -218,7 +261,8 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
         
     } else {
         // Erreurs trouvées
-        $response = (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
+        $response = (isset($error['recaptcha'])) ? $error['recaptcha'] . "<br /> \n" : null;
+        $response .= (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
         $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
         $response .= (isset($error['spam'])) ? $error['spam'] . "<br /> \n" : null;
         $response .= (isset($error['center'])) ? $error['center'] . "<br /> \n" : null;
@@ -232,6 +276,9 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
     $success_message = 'Votre demande a bien été envoyée !';
 }
 ?>
+
+<!-- ⭐ reCAPTCHA v3 Script -->
+<script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
 
 <!-- Hero Section COMPACTE -->
 <section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="30" data-btmspace="20" style="min-height: 150px;">
@@ -342,6 +389,7 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 
         <input type="hidden" name="reason" value="">
         <input type="hidden" name="segment" value="free-trial">
+        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
         
         <!-- ⭐ BOUTON FIXE EN BAS -->
         <button type="submit" 
@@ -385,7 +433,7 @@ select:focus, input:focus {
 }
 </style>
 
-<!-- JavaScript validation -->
+<!-- JavaScript validation avec reCAPTCHA v3 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var form = document.getElementById('freeTrialForm');
@@ -393,6 +441,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!form) return;
 
     form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Toujours empêcher la soumission par défaut
+        
         var isValid = true;
         var firstError = null;
 
@@ -448,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (!isValid) {
-            e.preventDefault();
             if (firstError) {
                 firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 setTimeout(function() { firstError.focus(); }, 300);
@@ -459,17 +508,35 @@ document.addEventListener('DOMContentLoaded', function() {
         // Désactiver le bouton pendant envoi
         var btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
         
-        // Track conversion
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'form_submission', {
-                'event_category': 'conversion',
-                'event_label': 'free_trial_request'
+        // ⭐ Exécuter reCAPTCHA v3 avant soumission
+        grecaptcha.ready(function() {
+            grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                // Injecter le token dans le formulaire
+                document.getElementById('g-recaptcha-response').value = token;
+                
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+                
+                // Track conversion
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submission', {
+                        'event_category': 'conversion',
+                        'event_label': 'free_trial_request'
+                    });
+                }
+                
+                // Soumettre le formulaire
+                form.submit();
+            }).catch(function(error) {
+                console.error('reCAPTCHA error:', error);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa fa-check-circle"></i> RECEVOIR MON BON GRATUIT';
+                alert('Erreur de vérification. Veuillez réessayer.');
             });
-        }
+        });
         
-        return true;
+        return false;
     });
 
     // Effacer erreurs à la saisie

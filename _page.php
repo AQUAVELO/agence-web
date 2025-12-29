@@ -28,6 +28,9 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   
+  <!-- ⭐ reCAPTCHA v3 Script -->
+  <script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></script>
+  
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
   {
@@ -633,7 +636,7 @@
               </div>
             <?php endif; ?>
           
-            <form role="form" id="contactForm" class="contact-form" method="POST" action="_page.php" novalidate>
+            <form role="form" id="contactForm" class="contact-form" method="POST" action="/?p=free" novalidate>
               <div class="form-group">
                 <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
                 <select class="form-control" id="center" name="center">
@@ -684,8 +687,9 @@
             
               <input type="hidden" name="reason" id="reason">
               <input type="hidden" name="segment" id="segment">
+              <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-page" value="">
               
-              <button type="submit" class="btn btn-submit" aria-label="Recevoir mon bon par email">
+              <button type="submit" id="submitBtnPage" class="btn btn-submit" aria-label="Recevoir mon bon par email">
                 <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
               </button>
 
@@ -1021,6 +1025,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!form) return;
 
     form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Toujours empêcher la soumission par défaut
+        
         var isValid = true;
         var firstError = null;
 
@@ -1081,9 +1087,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // SI INVALIDE
         if (!isValid) {
-            e.preventDefault();
-            e.stopPropagation();
-            
             if (firstError) {
                 setTimeout(function() {
                     try {
@@ -1099,16 +1102,37 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // Track conversion
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'form_submission', {
-                'event_category': 'conversion',
-                'event_label': 'free_trial_center',
-                'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'
-            });
-        }
+        // ⭐ Exécuter reCAPTCHA v3 avant soumission
+        var btn = document.getElementById('submitBtnPage');
+        var originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Vérification...';
         
-        return true;
+        grecaptcha.ready(function() {
+            grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                document.getElementById('g-recaptcha-response-page').value = token;
+                
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi...';
+                
+                // Track conversion
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submission', {
+                        'event_category': 'conversion',
+                        'event_label': 'free_trial_center',
+                        'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'
+                    });
+                }
+                
+                form.submit();
+            }).catch(function(error) {
+                console.error('reCAPTCHA error:', error);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                alert('Erreur de vérification. Veuillez réessayer.');
+            });
+        });
+        
+        return false;
     });
 
     // Effacer les erreurs lors de la saisie

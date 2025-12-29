@@ -25,6 +25,11 @@ $settings['mjhost'] = getenv('MAILJET_HOST') ?: 'in-v3.mailjet.com';
 $settings['mjusername'] = getenv('MAILJET_USERNAME') ?: '';
 $settings['mjpassword'] = getenv('MAILJET_PASSWORD') ?: '';
 
+// ⭐ Configuration reCAPTCHA v3 (anti-spam)
+$settings['recaptcha_site_key'] = getenv('RECAPTCHA_SITE_KEY') ?: '6LfKRjosAAAANiQmJ5BxYnMFVnYU_r-tyP0bMhz';
+$settings['recaptcha_secret_key'] = getenv('RECAPTCHA_SECRET_KEY') ?: '6LfKRjosAAAABUFV-a02SvA2ciHEMS5T-Xnlw3z';
+$settings['recaptcha_score_threshold'] = 0.5; // Seuil de score (0.0 = bot, 1.0 = humain)
+
 try {
     $conn = new PDO(
         "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",

@@ -1,35 +1,57 @@
 <?php
 session_start();
-require 'vendor/autoload.php';
-require 'settings.php';
+require '_settings.php';
 
 use \Mailjet\Resources;
 
 // Fonction pour générer un token unique
 function generateToken() {
-    return bin2hex(random_bytes(50));
+    return bin2hex(random_bytes(32));
 }
 
 // Fonction pour envoyer l'email de réinitialisation
-function sendResetEmail($email, $token) {
-    global $settings;
-
+function sendResetEmail($email, $token, $settings) {
     $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
+    
+    $resetLink = "https://aquavelo.com/new_password.php?token=" . $token;
+    
     $body = [
         'Messages' => [
             [
                 'From' => [
-                    'Email' => $settings['mjfrom'],
+                    'Email' => 'claude@alesiaminceur.com',
                     'Name' => "AQUAVELO"
                 ],
                 'To' => [
                     [
                         'Email' => $email,
-                        'Name' => "User"
+                        'Name' => "Utilisateur"
                     ]
                 ],
-                'Subject' => "Ré-initialisation de mot de passe",
-                'HTMLPart' => "<h3>Bonjour,</h3><br /><p>Pour ré-initialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous :</p><br /><a href='https://votre-site.com/new_password.php?token={$token}'>Ré-initialiser le mot de passe</a>"
+                'Subject' => "🔐 Réinitialisation de votre mot de passe - Aquavelo",
+                'HTMLPart' => "
+                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                        <div style='text-align: center; margin-bottom: 30px;'>
+                            <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
+                        </div>
+                        <h2 style='color: #00a8cc; text-align: center;'>Réinitialisation de mot de passe</h2>
+                        <p style='font-size: 16px; color: #333;'>Bonjour,</p>
+                        <p style='font-size: 16px; color: #333;'>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
+                        <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :</p>
+                        <div style='text-align: center; margin: 30px 0;'>
+                            <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;'>
+                                Réinitialiser mon mot de passe
+                            </a>
+                        </div>
+                        <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
+                        <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.</p>
+                        <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>
+                        <p style='font-size: 12px; color: #999; text-align: center;'>
+                            Cet email a été envoyé automatiquement par Aquavelo.<br>
+                            Ne répondez pas à cet email.
+                        </p>
+                    </div>
+                "
             ]
         ]
     ];
@@ -53,17 +75,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $token = generateToken();
             $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-            // Insérer le token dans la base de données
+            // Supprimer les anciens tokens pour cet email
+            $stmt = $conn->prepare("DELETE FROM password_resets WHERE email = ?");
+            $stmt->execute([$email]);
+
+            // Créer la table si elle n'existe pas
+            $conn->exec("CREATE TABLE IF NOT EXISTS password_resets (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) NOT NULL,
+                token VARCHAR(255) NOT NULL,
+                expiry DATETIME NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+
+            // Insérer le nouveau token
             $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expiry) VALUES (?, ?, ?)");
             $stmt->execute([$email, $token, $expiry]);
 
-            if (sendResetEmail($email, $token)) {
-                $success_message = "Un email de ré-initialisation a été envoyé à votre adresse email.";
+            if (sendResetEmail($email, $token, $settings)) {
+                $success_message = "Un email de réinitialisation a été envoyé à votre adresse email.";
             } else {
                 $error_message = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
             }
         } else {
-            $error_message = "Aucun compte trouvé avec cette adresse email.";
+            // Pour des raisons de sécurité, on affiche le même message
+            $success_message = "Si un compte existe avec cette adresse email, vous recevrez un lien de réinitialisation.";
         }
     } else {
         $error_message = "Adresse email invalide.";
@@ -76,74 +112,207 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ré-initialisation du mot de passe</title>
+    <title>Mot de passe oublié - Aquavelo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            padding: 20px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="email"] {
+        
+        .reset-container {
+            max-width: 450px;
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        button {
-            padding: 10px 15px;
-            background-color: #28a745;
+        
+        .reset-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .reset-header img {
+            max-width: 180px;
+            margin-bottom: 20px;
+        }
+        
+        .reset-header h1 {
+            color: #00a8cc;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+        
+        .reset-header p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+        
+        .input-group-addon {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            padding: 12px 15px;
+        }
+        
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-danger {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            color: #c62828;
+        }
+        
+        .alert-success {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            color: #2e7d32;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .message {
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0, 168, 204, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
             margin-top: 20px;
         }
-        .error {
-            color: red;
+        
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 168, 204, 0.5);
+            color: white;
         }
-        .success {
-            color: green;
+        
+        .footer-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .footer-links a {
+            color: #00a8cc;
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reset-container {
+                margin: 0 15px;
+                padding: 30px 20px;
+            }
+            
+            .reset-header h1 {
+                font-size: 1.4rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Ré-initialisation du mot de passe</h2>
-        <form action="" method="post">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <button type="submit">Envoyer le lien de ré-initialisation</button>
-        </form>
-        <div class="message">
-            <?php
-            if (!empty($error_message)) {
-                echo '<p class="error">' . htmlspecialchars($error_message) . '</p>';
-            }
-            if (!empty($success_message)) {
-                echo '<p class="success">' . htmlspecialchars($success_message) . '</p>';
-            }
-            ?>
-        </div>
+
+<div class="reset-container">
+    <!-- Header -->
+    <div class="reset-header">
+        <a href="https://www.aquavelo.com">
+            <img src="/images/content/logo.png" alt="Aquavelo" onerror="this.style.display='none'">
+        </a>
+        <h1><i class="fa fa-unlock-alt"></i> Mot de passe oublié</h1>
+        <p>Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
     </div>
+
+    <!-- Message d'erreur -->
+    <?php if ($error_message): ?>
+        <div class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i> <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Message de succès -->
+    <?php if ($success_message): ?>
+        <div class="alert alert-success">
+            <i class="fa fa-check-circle"></i> <?php echo htmlspecialchars($success_message); ?>
+        </div>
+    <?php else: ?>
+
+    <!-- Formulaire -->
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="email">Adresse email</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input type="email" class="form-control" id="email" name="email" 
+                       placeholder="votre@email.com" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-reset">
+            <i class="fa fa-paper-plane"></i> Envoyer le lien de réinitialisation
+        </button>
+    </form>
+    <?php endif; ?>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+        <a href="/connexion_mensurations.php">
+            <i class="fa fa-arrow-left"></i> Retour à la connexion
+        </a>
+        <br>
+        <a href="https://www.aquavelo.com">
+            <i class="fa fa-home"></i> Retour au site Aquavelo
+        </a>
+    </div>
+</div>
+
 </body>
 </html>

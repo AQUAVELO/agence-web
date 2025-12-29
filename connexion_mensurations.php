@@ -329,7 +329,7 @@ $conn = null;
                        placeholder="Votre mot de passe" required>
             </div>
             <div class="forgot-password">
-                <a href="#" onclick="alert('Contactez le support : claude@alesiaminceur.com'); return false;">
+                <a href="/reset_password.php">
                     Mot de passe oublié ?
                 </a>
             </div>

@@ -149,25 +149,22 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.disabled = true;
             btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
             
-            <?php if ($settings['recaptcha_enabled']) : ?>
-            if (typeof grecaptcha !== 'undefined') {
+            var recaptchaEnabled = <?= $settings['recaptcha_enabled'] ? 'true' : 'false'; ?>;
+            var recaptchaSiteKey = "<?= htmlspecialchars($settings['recaptcha_site_key'], ENT_QUOTES, 'UTF-8'); ?>";
+            
+            if (recaptchaEnabled && typeof grecaptcha !== 'undefined') {
                 grecaptcha.ready(function() {
-                    grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                    grecaptcha.execute(recaptchaSiteKey, {action: 'submit_free_trial'}).then(function(token) {
                         document.getElementById('g-recaptcha-response-slider').value = token;
                         sliderForm.submit();
                     }).catch(function(error) {
                         console.error('reCAPTCHA error:', error);
-                        sliderForm.submit(); // Soumettre quand même
+                        sliderForm.submit();
                     });
                 });
             } else {
-                console.warn('reCAPTCHA non chargé');
                 sliderForm.submit();
             }
-            <?php else : ?>
-            // Mode local : soumission directe
-            sliderForm.submit();
-            <?php endif; ?>
         });
     }
 });

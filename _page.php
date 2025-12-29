@@ -1111,32 +1111,27 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi...';
         
         // Track conversion
+        var cityValue = "<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>";
         if (typeof gtag !== 'undefined') {
-            gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_center', 'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'});
+            gtag('event', 'form_submission', {event_category: 'conversion', event_label: 'free_trial_center', value: cityValue});
         }
         
-        <?php if (!empty($settings['recaptcha_enabled'])) : ?>
-        // Vérifier si grecaptcha est disponible
-        if (typeof grecaptcha !== 'undefined') {
+        var recaptchaEnabled = <?= !empty($settings['recaptcha_enabled']) ? 'true' : 'false'; ?>;
+        var recaptchaSiteKey = "<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>";
+        
+        if (recaptchaEnabled && typeof grecaptcha !== 'undefined') {
             grecaptcha.ready(function() {
-                grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                grecaptcha.execute(recaptchaSiteKey, {action: 'submit_free_trial'}).then(function(token) {
                     document.getElementById('g-recaptcha-response-page').value = token;
                     form.submit();
                 }).catch(function(error) {
                     console.error('reCAPTCHA error:', error);
-                    // En cas d'erreur, soumettre quand même
                     form.submit();
                 });
             });
         } else {
-            // grecaptcha non chargé, soumettre directement
-            console.warn('reCAPTCHA non chargé');
             form.submit();
         }
-        <?php else : ?>
-        // Mode local : soumission directe sans reCAPTCHA
-        form.submit();
-        <?php endif; ?>
         
         return false;
     });

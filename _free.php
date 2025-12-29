@@ -52,20 +52,22 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
     // Déclarer variable d'erreurs
     $error = [];
     
-    // ⭐ Vérification reCAPTCHA v3
-    $recaptcha_token = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
-    
-    if (empty($recaptcha_token)) {
-        $error['recaptcha'] = 'Erreur de sécurité. Veuillez réessayer.';
-    } else {
-        $recaptcha_response = verifyRecaptcha($recaptcha_token, $settings['recaptcha_secret_key']);
+    // ⭐ Vérification reCAPTCHA v3 (uniquement en production)
+    if ($settings['recaptcha_enabled']) {
+        $recaptcha_token = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
         
-        if (!$recaptcha_response['success']) {
-            $error['recaptcha'] = 'Vérification de sécurité échouée. Veuillez réessayer.';
-            error_log("reCAPTCHA error: " . json_encode($recaptcha_response));
-        } elseif ($recaptcha_response['score'] < $settings['recaptcha_score_threshold']) {
-            $error['recaptcha'] = 'Activité suspecte détectée. Veuillez contacter le centre par téléphone.';
-            error_log("reCAPTCHA low score: " . $recaptcha_response['score'] . " for IP: " . $_SERVER['REMOTE_ADDR']);
+        if (empty($recaptcha_token)) {
+            $error['recaptcha'] = 'Erreur de sécurité. Veuillez réessayer.';
+        } else {
+            $recaptcha_response = verifyRecaptcha($recaptcha_token, $settings['recaptcha_secret_key']);
+            
+            if (!$recaptcha_response['success']) {
+                $error['recaptcha'] = 'Vérification de sécurité échouée. Veuillez réessayer.';
+                error_log("reCAPTCHA error: " . json_encode($recaptcha_response));
+            } elseif ($recaptcha_response['score'] < $settings['recaptcha_score_threshold']) {
+                $error['recaptcha'] = 'Activité suspecte détectée. Veuillez contacter le centre par téléphone.';
+                error_log("reCAPTCHA low score: " . $recaptcha_response['score'] . " for IP: " . $_SERVER['REMOTE_ADDR']);
+            }
         }
     }
     
@@ -277,8 +279,10 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 }
 ?>
 
+<?php if ($settings['recaptcha_enabled']) : ?>
 <!-- ⭐ reCAPTCHA v3 Script -->
 <script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
+<?php endif; ?>
 
 <!-- Hero Section COMPACTE -->
 <section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="30" data-btmspace="20" style="min-height: 150px;">
@@ -510,23 +514,15 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.disabled = true;
         btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
         
-        // ⭐ Exécuter reCAPTCHA v3 avant soumission
+        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
+        <?php if ($settings['recaptcha_enabled']) : ?>
         grecaptcha.ready(function() {
             grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
-                // Injecter le token dans le formulaire
                 document.getElementById('g-recaptcha-response').value = token;
-                
                 btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
-                
-                // Track conversion
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submission', {
-                        'event_category': 'conversion',
-                        'event_label': 'free_trial_request'
-                    });
+                    gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_request'});
                 }
-                
-                // Soumettre le formulaire
                 form.submit();
             }).catch(function(error) {
                 console.error('reCAPTCHA error:', error);
@@ -535,6 +531,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Erreur de vérification. Veuillez réessayer.');
             });
         });
+        <?php else : ?>
+        // Mode local : soumission directe sans reCAPTCHA
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_request'});
+        }
+        form.submit();
+        <?php endif; ?>
         
         return false;
     });

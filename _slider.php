@@ -110,8 +110,10 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                 </form>
               </div>
               <!-- Fin du formulaire -->
+<?php if ($settings['recaptcha_enabled']) : ?>
 <!-- ⭐ reCAPTCHA v3 Script -->
 <script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
+<?php endif; ?>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -145,12 +147,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const btn = document.getElementById('submitBtnSlider');
             const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
             
+            <?php if ($settings['recaptcha_enabled']) : ?>
             grecaptcha.ready(function() {
                 grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
                     document.getElementById('g-recaptcha-response-slider').value = token;
-                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
                     sliderForm.submit();
                 }).catch(function(error) {
                     console.error('reCAPTCHA error:', error);
@@ -159,6 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert('Erreur de vérification. Veuillez réessayer.');
                 });
             });
+            <?php else : ?>
+            // Mode local : soumission directe
+            sliderForm.submit();
+            <?php endif; ?>
         });
     }
 });

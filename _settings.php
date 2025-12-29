@@ -30,6 +30,14 @@ $settings['recaptcha_site_key'] = getenv('RECAPTCHA_SITE_KEY') ?: '6LfKRjosAAAAN
 $settings['recaptcha_secret_key'] = getenv('RECAPTCHA_SECRET_KEY') ?: '6LfKRjosAAAABUFV-a02SvA2ciHEMS5T-Xnlw3z';
 $settings['recaptcha_score_threshold'] = 0.5; // Seuil de score (0.0 = bot, 1.0 = humain)
 
+// ⭐ Détection environnement local (désactive reCAPTCHA en local)
+$is_local = (
+    strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false ||
+    strpos($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1') !== false ||
+    strpos($_SERVER['SERVER_NAME'] ?? '', 'localhost') !== false
+);
+$settings['recaptcha_enabled'] = !$is_local;
+
 try {
     $conn = new PDO(
         "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",

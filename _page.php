@@ -28,8 +28,10 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   
+  <?php if (!empty($settings['recaptcha_enabled'])) : ?>
   <!-- ⭐ reCAPTCHA v3 Script -->
   <script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></script>
+  <?php endif; ?>
   
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -1102,27 +1104,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // ⭐ Exécuter reCAPTCHA v3 avant soumission
+        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
         var btn = document.getElementById('submitBtnPage');
         var originalText = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Vérification...';
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi...';
         
+        <?php if (!empty($settings['recaptcha_enabled'])) : ?>
         grecaptcha.ready(function() {
             grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>', {action: 'submit_free_trial'}).then(function(token) {
                 document.getElementById('g-recaptcha-response-page').value = token;
-                
-                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi...';
-                
-                // Track conversion
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submission', {
-                        'event_category': 'conversion',
-                        'event_label': 'free_trial_center',
-                        'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'
-                    });
+                    gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_center', 'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'});
                 }
-                
                 form.submit();
             }).catch(function(error) {
                 console.error('reCAPTCHA error:', error);
@@ -1131,6 +1125,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Erreur de vérification. Veuillez réessayer.');
             });
         });
+        <?php else : ?>
+        // Mode local : soumission directe sans reCAPTCHA
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_center', 'value': '<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>'});
+        }
+        form.submit();
+        <?php endif; ?>
         
         return false;
     });

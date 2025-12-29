@@ -28,10 +28,6 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   
-  <?php if (!empty($settings['recaptcha_enabled'])) : ?>
-  <!-- ⭐ reCAPTCHA v3 Script -->
-  <script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"></script>
-  <?php endif; ?>
   
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json">
@@ -689,7 +685,6 @@
             
               <input type="hidden" name="reason" id="reason">
               <input type="hidden" name="segment" id="segment">
-              <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-page" value="">
               
               <button type="submit" id="submitBtnPage" class="btn btn-submit" aria-label="Recevoir mon bon par email">
                 <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
@@ -1104,9 +1099,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
+        // Désactiver le bouton et soumettre
         var btn = document.getElementById('submitBtnPage');
-        var originalText = btn.innerHTML;
         btn.disabled = true;
         btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi...';
         
@@ -1116,22 +1110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             gtag('event', 'form_submission', {event_category: 'conversion', event_label: 'free_trial_center', value: cityValue});
         }
         
-        var recaptchaEnabled = <?= !empty($settings['recaptcha_enabled']) ? 'true' : 'false'; ?>;
-        var recaptchaSiteKey = "<?= htmlspecialchars($settings['recaptcha_site_key'] ?? '', ENT_QUOTES, 'UTF-8'); ?>";
-        
-        if (recaptchaEnabled && typeof grecaptcha !== 'undefined') {
-            grecaptcha.ready(function() {
-                grecaptcha.execute(recaptchaSiteKey, {action: 'submit_free_trial'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response-page').value = token;
-                    form.submit();
-                }).catch(function(error) {
-                    console.error('reCAPTCHA error:', error);
-                    form.submit();
-                });
-            });
-        } else {
-            form.submit();
-        }
+        form.submit();
         
         return false;
     });

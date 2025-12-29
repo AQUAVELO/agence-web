@@ -57,13 +57,6 @@
 </section>
    <br />
 
-<script>
-if (typeof centersWithCalendly === "undefined") {
-    var centersWithCalendly = [];
-}
-console.log("centersWithCalendly chargé :", centersWithCalendly);
-</script>
-
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">🎁 Votre séance découverte OFFERTE</h2>
               <div class="col-md-6">
@@ -100,7 +93,6 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                   </div>
                   <input type="hidden" name="reason" id="reason">
                   <input type="hidden" name="segment" id="segment">
-                  <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-slider" value="">
                   <button type="submit" id="submitBtnSlider" class="btn btn-lg" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #ff6b35, #f7931e); border: none; color: #fff; font-size: 18px; font-weight: 700; border-radius: 50px; box-shadow: 0 5px 20px rgba(255,107,53,0.4); cursor: pointer; transition: all 0.3s ease;">
                     <i class="fa fa-gift"></i> OUI, JE VEUX MA SÉANCE GRATUITE !
                   </button>
@@ -110,64 +102,28 @@ console.log("centersWithCalendly chargé :", centersWithCalendly);
                 </form>
               </div>
               <!-- Fin du formulaire -->
-<?php if ($settings['recaptcha_enabled']) : ?>
-<!-- ⭐ reCAPTCHA v3 Script -->
-<script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
-<?php endif; ?>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const centerSelect = document.getElementById("center");
     const calendrierSection = document.getElementById("calendrier_section");
+    const centersWithCalendly = [305, 347, 349];
 
-    centerSelect.addEventListener("change", function () {
-        const selectedCenter = parseInt(this.value);
-        const centersWithCalendly = [305, 347, 349];
-
+    function toggleCalendrier() {
+        if (!centerSelect || !calendrierSection) return;
+        
+        const selectedCenter = parseInt(centerSelect.value);
         if (centersWithCalendly.includes(selectedCenter)) {
             calendrierSection.style.display = "block";
         } else {
             calendrierSection.style.display = "none";
         }
-    });
-
-    // Vérifier si un centre est déjà sélectionné au chargement
-    if (centersWithCalendly.includes(parseInt(centerSelect.value))) {
-        calendrierSection.style.display = "block";
-    } else {
-        calendrierSection.style.display = "none";
     }
 
-    // ⭐ reCAPTCHA v3 pour le formulaire slider
-    const sliderForm = document.getElementById('sliderForm');
-    if (sliderForm) {
-        sliderForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const btn = document.getElementById('submitBtnSlider');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
-            
-            var recaptchaEnabled = <?= $settings['recaptcha_enabled'] ? 'true' : 'false'; ?>;
-            var recaptchaSiteKey = "<?= htmlspecialchars($settings['recaptcha_site_key'], ENT_QUOTES, 'UTF-8'); ?>";
-            
-            if (recaptchaEnabled && typeof grecaptcha !== 'undefined') {
-                grecaptcha.ready(function() {
-                    grecaptcha.execute(recaptchaSiteKey, {action: 'submit_free_trial'}).then(function(token) {
-                        document.getElementById('g-recaptcha-response-slider').value = token;
-                        sliderForm.submit();
-                    }).catch(function(error) {
-                        console.error('reCAPTCHA error:', error);
-                        sliderForm.submit();
-                    });
-                });
-            } else {
-                sliderForm.submit();
-            }
-        });
+    if (centerSelect) {
+        centerSelect.addEventListener("change", toggleCalendrier);
+        toggleCalendrier();
     }
 });
 </script>
-
 

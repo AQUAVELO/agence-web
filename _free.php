@@ -18,32 +18,6 @@ $success_message = '';
 $error_message = '';
 $form_submitted = false;
 
-// ⭐ Fonction de vérification reCAPTCHA v3
-function verifyRecaptcha($token, $secret_key) {
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = [
-        'secret' => $secret_key,
-        'response' => $token
-    ];
-    
-    $options = [
-        'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data)
-        ]
-    ];
-    
-    $context  = stream_context_create($options);
-    $result = @file_get_contents($url, false, $context);
-    
-    if ($result === false) {
-        return ['success' => false, 'score' => 0, 'error' => 'network_error'];
-    }
-    
-    return json_decode($result, true);
-}
-
 // Traiter le formulaire si soumis en POST
 if (isset($_POST['nom']) && empty($_POST['reason'])) {
     
@@ -52,22 +26,22 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
     // Déclarer variable d'erreurs
     $error = [];
     
-    // ⭐ Vérification reCAPTCHA v3 (uniquement en production)
-    if ($settings['recaptcha_enabled']) {
-        $recaptcha_token = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+    // ⭐ Anti-spam question mathématique pour Villebon (centre ID à déterminer)
+    $center_id = isset($_POST['center']) ? intval($_POST['center']) : 0;
+    
+    // Récupérer le nom de la ville pour ce centre
+    $center_check = $database->prepare('SELECT city FROM am_centers WHERE id = ?');
+    $center_check->execute([$center_id]);
+    $center_row = $center_check->fetch();
+    $center_city = $center_row ? strtolower($center_row['city']) : '';
+    
+    // Vérification anti-spam pour Villebon
+    if (strpos($center_city, 'villebon') !== false) {
+        $math_answer = isset($_POST['math_answer']) ? intval($_POST['math_answer']) : 0;
+        $expected_answer = isset($_POST['math_expected']) ? intval($_POST['math_expected']) : 0;
         
-        if (empty($recaptcha_token)) {
-            $error['recaptcha'] = 'Erreur de sécurité. Veuillez réessayer.';
-        } else {
-            $recaptcha_response = verifyRecaptcha($recaptcha_token, $settings['recaptcha_secret_key']);
-            
-            if (!$recaptcha_response['success']) {
-                $error['recaptcha'] = 'Vérification de sécurité échouée. Veuillez réessayer.';
-                error_log("reCAPTCHA error: " . json_encode($recaptcha_response));
-            } elseif ($recaptcha_response['score'] < $settings['recaptcha_score_threshold']) {
-                $error['recaptcha'] = 'Activité suspecte détectée. Veuillez contacter le centre par téléphone.';
-                error_log("reCAPTCHA low score: " . $recaptcha_response['score'] . " for IP: " . $_SERVER['REMOTE_ADDR']);
-            }
+        if ($math_answer !== $expected_answer) {
+            $error['math'] = 'Réponse incorrecte à la question de sécurité.';
         }
     }
     
@@ -263,7 +237,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
         
     } else {
         // Erreurs trouvées
-        $response = (isset($error['recaptcha'])) ? $error['recaptcha'] . "<br /> \n" : null;
+        $response = (isset($error['math'])) ? $error['math'] . "<br /> \n" : null;
         $response .= (isset($error['name'])) ? $error['name'] . "<br /> \n" : null;
         $response .= (isset($error['email'])) ? $error['email'] . "<br /> \n" : null;
         $response .= (isset($error['spam'])) ? $error['spam'] . "<br /> \n" : null;
@@ -279,10 +253,6 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 }
 ?>
 
-<?php if ($settings['recaptcha_enabled']) : ?>
-<!-- ⭐ reCAPTCHA v3 Script -->
-<script src="https://www.google.com/recaptcha/api.js?render=<?= htmlspecialchars($settings['recaptcha_site_key']); ?>"></script>
-<?php endif; ?>
 
 <!-- Hero Section COMPACTE -->
 <section class="content-area brightText" data-bg="images/content/about-v2-title-bg.jpg" data-topspace="30" data-btmspace="20" style="min-height: 150px;">
@@ -393,7 +363,25 @@ if (isset($_GET['success']) && $_GET['success'] == '1') {
 
         <input type="hidden" name="reason" value="">
         <input type="hidden" name="segment" value="free-trial">
-        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" value="">
+        
+        <!-- ⭐ Question anti-spam pour Villebon (affichée dynamiquement) -->
+        <div id="math-question-section" style="display: none; margin-bottom: 12px; padding: 15px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ff9800;">
+          <?php 
+          $num1 = rand(2, 9);
+          $num2 = rand(2, 9);
+          $math_expected = $num1 + $num2;
+          ?>
+          <label style="font-size: 0.9rem; margin-bottom: 5px; display: block; color: #856404;">
+            <i class="fa fa-calculator"></i> Question de sécurité : <strong><?= $num1; ?> + <?= $num2; ?> = ?</strong>
+          </label>
+          <input type="number" 
+                 id="math_answer" 
+                 name="math_answer" 
+                 placeholder="Votre réponse"
+                 style="width: 100%; height: 40px; font-size: 16px; padding: 8px; border: 2px solid #ff9800; border-radius: 5px;">
+          <input type="hidden" name="math_expected" value="<?= $math_expected; ?>">
+          <span class="error-math" style="color: red; font-size: 11px; display: none;">Réponse incorrecte</span>
+        </div>
         
         <!-- ⭐ BOUTON FIXE EN BAS -->
         <button type="submit" 
@@ -509,46 +497,48 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
+        // ⭐ Validation question mathématique pour Villebon
+        var mathSection = document.getElementById('math-question-section');
+        if (mathSection && mathSection.style.display !== 'none') {
+            var mathAnswer = document.getElementById('math_answer');
+            if (mathAnswer && mathAnswer.value.trim() === '') {
+                document.querySelector('.error-math').style.display = 'block';
+                mathAnswer.style.borderColor = 'red';
+                isValid = false;
+                if(!firstError) firstError = mathAnswer;
+            }
+        }
+
+        if (!isValid) {
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(function() { firstError.focus(); }, 300);
+            }
+            return false;
+        }
+        
         // Désactiver le bouton pendant envoi
         var btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
         
         // Track conversion
         if (typeof gtag !== 'undefined') {
             gtag('event', 'form_submission', {event_category: 'conversion', event_label: 'free_trial_request'});
         }
         
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
-        
-        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
-        var recaptchaEnabled = <?= $settings['recaptcha_enabled'] ? 'true' : 'false'; ?>;
-        var recaptchaSiteKey = "<?= htmlspecialchars($settings['recaptcha_site_key'], ENT_QUOTES, 'UTF-8'); ?>";
-        
-        if (recaptchaEnabled && typeof grecaptcha !== 'undefined') {
-            grecaptcha.ready(function() {
-                grecaptcha.execute(recaptchaSiteKey, {action: 'submit_free_trial'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response').value = token;
-                    form.submit();
-                }).catch(function(error) {
-                    console.error('reCAPTCHA error:', error);
-                    form.submit();
-                });
-            });
-        } else {
-            form.submit();
-        }
-        
+        // Soumettre le formulaire
+        form.submit();
         return false;
     });
 
     // Effacer erreurs à la saisie
-    ['center', 'nom', 'email', 'phone'].forEach(function(id) {
+    ['center', 'nom', 'email', 'phone', 'math_answer'].forEach(function(id) {
         var input = document.getElementById(id);
         if(input) {
             input.addEventListener('input', function() {
                 this.style.borderColor = '#e0e0e0';
-                var errorClass = '.error-' + id;
+                var errorClass = '.error-' + id.replace('_answer', '');
                 var error = document.querySelector(errorClass);
                 if(error) error.style.display = 'none';
             });
@@ -558,23 +548,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Afficher/masquer section Calendly pour Cannes, Mandelieu, Vallauris
     var centerSelect = document.getElementById('center');
     var calendrierSection = document.getElementById('calendrier_section');
+    var mathSection = document.getElementById('math-question-section');
     var centersWithCalendly = [305, 347, 349]; // Cannes, Mandelieu, Vallauris
 
-    function toggleCalendrier() {
-        if (centerSelect && calendrierSection) {
-            var selectedCenter = parseInt(centerSelect.value);
+    function toggleSections() {
+        if (!centerSelect) return;
+        
+        var selectedCenter = parseInt(centerSelect.value);
+        var selectedOption = centerSelect.options[centerSelect.selectedIndex];
+        var cityName = selectedOption ? selectedOption.text.toLowerCase() : '';
+        
+        // Calendly pour Cannes, Mandelieu, Vallauris
+        if (calendrierSection) {
             if (centersWithCalendly.includes(selectedCenter)) {
                 calendrierSection.style.display = 'block';
             } else {
                 calendrierSection.style.display = 'none';
             }
         }
+        
+        // Question math pour Villebon
+        if (mathSection) {
+            if (cityName.indexOf('villebon') !== -1) {
+                mathSection.style.display = 'block';
+            } else {
+                mathSection.style.display = 'none';
+            }
+        }
     }
 
     if (centerSelect) {
-        centerSelect.addEventListener('change', toggleCalendrier);
+        centerSelect.addEventListener('change', toggleSections);
         // Vérifier au chargement
-        toggleCalendrier();
+        toggleSections();
     }
 });
 </script>

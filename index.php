@@ -1074,7 +1074,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       console.log('Service Worker enregistré avec succès:', registration);
     })
     .catch(function(error) {
-      console.log('Échec de l'enregistrement du Service Worker:', error);
+      console.log("Échec de l'enregistrement du Service Worker:", error);
     });
   }
   </script>

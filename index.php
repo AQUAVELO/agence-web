@@ -870,9 +870,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </li>
 
             <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 
-              <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Conseils Minceurs</a>
+              <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
               <ul class="dropdown-menu">
-                <li><a href="/conseilminceur">Conseils Minceurs</a></li>
+                <li><a href="/conseilminceur">Amincissement</a></li>
               </ul>
             </li>
 

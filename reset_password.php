@@ -1,69 +1,63 @@
 <?php
-// Afficher les erreurs pour debug
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
 require '_settings.php';
 
-use \Mailjet\Resources;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 // Fonction pour générer un token unique
 function generateToken() {
     return bin2hex(random_bytes(32));
 }
 
-// Fonction pour envoyer l'email de réinitialisation
+// Fonction pour envoyer l'email de réinitialisation avec PHPMailer
 function sendResetEmail($email, $token, $settings) {
     try {
-        $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
+        $mail = new PHPMailer(true);
+        $mail->IsSMTP();
+        $mail->Host = $settings['mjhost'];
+        $mail->isHTML(true);
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        $mail->Username = $settings['mjusername'];
+        $mail->Password = $settings['mjpassword'];
+        $mail->CharSet = 'UTF-8';
+        
+        $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo');
+        $mail->addAddress($email);
+        $mail->Subject = 'Reinitialisation de votre mot de passe - Aquavelo';
         
         $resetLink = "https://aquavelo.com/new_password.php?token=" . $token;
         
-        $body = [
-            'Messages' => [
-                [
-                    'From' => [
-                        'Email' => 'claude@alesiaminceur.com',
-                        'Name' => "AQUAVELO"
-                    ],
-                    'To' => [
-                        [
-                            'Email' => $email,
-                            'Name' => "Utilisateur"
-                        ]
-                    ],
-                    'Subject' => "Reinitialisation de votre mot de passe - Aquavelo",
-                    'HTMLPart' => "
-                        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                            <div style='text-align: center; margin-bottom: 30px;'>
-                                <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
-                            </div>
-                            <h2 style='color: #00a8cc; text-align: center;'>Reinitialisation de mot de passe</h2>
-                            <p style='font-size: 16px; color: #333;'>Bonjour,</p>
-                            <p style='font-size: 16px; color: #333;'>Vous avez demande la reinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
-                            <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour creer un nouveau mot de passe :</p>
-                            <div style='text-align: center; margin: 30px 0;'>
-                                <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;'>
-                                    Reinitialiser mon mot de passe
-                                </a>
-                            </div>
-                            <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
-                            <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demande cette reinitialisation, ignorez simplement cet email.</p>
-                            <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>
-                            <p style='font-size: 12px; color: #999; text-align: center;'>
-                                Cet email a ete envoye automatiquement par Aquavelo.<br>
-                                Ne repondez pas a cet email.
-                            </p>
-                        </div>
-                    "
-                ]
-            ]
-        ];
-
-        $response = $mj->post(Resources::$Email, ['body' => $body]);
-        return $response->success();
+        $mail->Body = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                <div style='text-align: center; margin-bottom: 30px;'>
+                    <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
+                </div>
+                <h2 style='color: #00a8cc; text-align: center;'>Reinitialisation de mot de passe</h2>
+                <p style='font-size: 16px; color: #333;'>Bonjour,</p>
+                <p style='font-size: 16px; color: #333;'>Vous avez demande la reinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
+                <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour creer un nouveau mot de passe :</p>
+                <div style='text-align: center; margin: 30px 0;'>
+                    <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px; display: inline-block;'>
+                        Reinitialiser mon mot de passe
+                    </a>
+                </div>
+                <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
+                <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demande cette reinitialisation, ignorez simplement cet email.</p>
+                <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>
+                <p style='font-size: 12px; color: #999; text-align: center;'>
+                    Cet email a ete envoye automatiquement par Aquavelo.<br>
+                    Ne repondez pas a cet email.
+                </p>
+            </div>
+        ";
+        
+        return $mail->send();
     } catch (Exception $e) {
+        error_log("Erreur envoi email reset password: " . $e->getMessage());
         return false;
     }
 }
@@ -71,7 +65,7 @@ function sendResetEmail($email, $token, $settings) {
 $error_message = "";
 $success_message = "";
 
-// Créer la table password_resets si elle n'existe pas (au chargement de la page)
+// Créer la table password_resets si elle n'existe pas
 try {
     $conn->exec("CREATE TABLE IF NOT EXISTS password_resets (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -104,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt = $conn->prepare("DELETE FROM password_resets WHERE email = ?");
                     $stmt->execute([$email]);
                 } catch (PDOException $e) {
-                    // Ignorer si la table n'existe pas encore
+                    // Ignorer
                 }
 
                 // Insérer le nouveau token
@@ -268,7 +262,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: underline;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .reset-container {
                 margin: 0 15px;
@@ -284,7 +277,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="reset-container">
-    <!-- Header -->
     <div class="reset-header">
         <a href="https://www.aquavelo.com">
             <img src="/images/content/logo.png" alt="Aquavelo" onerror="this.style.display='none'">
@@ -293,14 +285,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
     </div>
 
-    <!-- Message d'erreur -->
     <?php if (!empty($error_message)): ?>
         <div class="alert alert-danger">
             <i class="fa fa-exclamation-triangle"></i> <?php echo htmlspecialchars($error_message); ?>
         </div>
     <?php endif; ?>
 
-    <!-- Message de succès -->
     <?php if (!empty($success_message)): ?>
         <div class="alert alert-success">
             <i class="fa fa-check-circle"></i> <?php echo htmlspecialchars($success_message); ?>
@@ -308,7 +298,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php endif; ?>
 
     <?php if (empty($success_message)): ?>
-    <!-- Formulaire -->
     <form method="POST" action="">
         <div class="form-group">
             <label for="email">Adresse email</label>
@@ -325,7 +314,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
     <?php endif; ?>
 
-    <!-- Footer Links -->
     <div class="footer-links">
         <a href="/connexion_mensurations.php">
             <i class="fa fa-arrow-left"></i> Retour à la connexion

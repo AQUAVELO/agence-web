@@ -244,27 +244,27 @@
     <div class="row text-center">
       <div class="col-md-3 col-sm-6" style="margin-bottom: 30px;">
         <div class="timerCounter">
-          <span class="timerVal" style="font-size: 4rem; color: #00a8cc; font-weight: 700;">98</span>
+          <span class="timerVal" data-from="0" data-to="98" data-speed="3000" data-refresh-interval="50" style="font-size: 4rem; color: #00a8cc; font-weight: 700;"></span>
           <sup style="font-size: 1.5rem; color: #00a8cc;">%</sup>
           <span class="timerDesc" style="display: block; margin-top: 10px; font-size: 1.1rem; color: #666;">Taux de satisfaction client</span>
         </div>
       </div>
       <div class="col-md-3 col-sm-6" style="margin-bottom: 30px;">
         <div class="timerCounter">
-          <span class="timerVal" style="font-size: 4rem; color: #00a8cc; font-weight: 700;">90</span>
+          <span class="timerVal" data-from="0" data-to="90" data-speed="3000" data-refresh-interval="50" style="font-size: 4rem; color: #00a8cc; font-weight: 700;"></span>
           <sup style="font-size: 1.5rem; color: #00a8cc;">jours</sup>
           <span class="timerDesc" style="display: block; margin-top: 10px; font-size: 1.1rem; color: #666;">Temps moyen d'ouverture</span>
         </div>
       </div>
       <div class="col-md-3 col-sm-6" style="margin-bottom: 30px;">
         <div class="timerCounter">
-          <span class="timerVal" style="font-size: 4rem; color: #00a8cc; font-weight: 700;">17</span>
+          <span class="timerVal" data-from="0" data-to="17" data-speed="3000" data-refresh-interval="50" style="font-size: 4rem; color: #00a8cc; font-weight: 700;"></span>
           <span class="timerDesc" style="display: block; margin-top: 10px; font-size: 1.1rem; color: #666;">Centres ouverts en France</span>
         </div>
       </div>
       <div class="col-md-3 col-sm-6" style="margin-bottom: 30px;">
         <div class="timerCounter">
-          <span class="timerVal" style="font-size: 4rem; color: #00a8cc; font-weight: 700;">25</span>
+          <span class="timerVal" data-from="0" data-to="25" data-speed="3000" data-refresh-interval="50" style="font-size: 4rem; color: #00a8cc; font-weight: 700;"></span>
           <sup style="font-size: 1.5rem; color: #00a8cc;">ans</sup>
           <span class="timerDesc" style="display: block; margin-top: 10px; font-size: 1.1rem; color: #666;">Expérience dans l'amincissement</span>
         </div>

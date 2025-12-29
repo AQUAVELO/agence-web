@@ -825,15 +825,6 @@ $conn = null;
         <a href="https://www.aquavelo.com" target="_blank">
             <img src="images/content/LogoAQUASPORTMINCEUR.webp" alt="Logo AQUAVELO" onerror="this.style.display='none'">
         </a>
-        
-        <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=com.resamania.resamaniav2&hl=fr" target="_blank">
-                <i class="fa fa-android"></i> Télécharger sur Android
-            </a>
-            <a href="https://apps.apple.com/lu/app/resamania-v2/id1482410619" target="_blank">
-                <i class="fa fa-apple"></i> Télécharger sur iOS
-            </a>
-        </div>
     </div>
 
 </div>

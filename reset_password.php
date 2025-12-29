@@ -41,10 +41,14 @@ function sendResetEmail($email, $token, $settings) {
                 <p style='font-size: 16px; color: #333;'>Vous avez demande la reinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
                 <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour creer un nouveau mot de passe :</p>
                 <div style='text-align: center; margin: 30px 0;'>
-                    <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px; display: inline-block;'>
-                        Reinitialiser mon mot de passe
+                    <a href='{$resetLink}' style='background: #00a8cc; color: #000000; padding: 20px 50px; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 20px; display: inline-block; border: 3px solid #000000;'>
+                        REINITIALISER MON MOT DE PASSE
                     </a>
                 </div>
+                <p style='text-align: center; margin-top: 20px;'>
+                    <strong style='color: #000000; font-size: 14px;'>Ou copiez ce lien dans votre navigateur :</strong><br>
+                    <span style='color: #00a8cc; font-size: 12px; word-break: break-all;'>{$resetLink}</span>
+                </p>
                 <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
                 <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demande cette reinitialisation, ignorez simplement cet email.</p>
                 <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>

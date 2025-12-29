@@ -150,17 +150,20 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI...';
             
             <?php if ($settings['recaptcha_enabled']) : ?>
-            grecaptcha.ready(function() {
-                grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
-                    document.getElementById('g-recaptcha-response-slider').value = token;
-                    sliderForm.submit();
-                }).catch(function(error) {
-                    console.error('reCAPTCHA error:', error);
-                    btn.disabled = false;
-                    btn.innerHTML = originalText;
-                    alert('Erreur de vérification. Veuillez réessayer.');
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                        document.getElementById('g-recaptcha-response-slider').value = token;
+                        sliderForm.submit();
+                    }).catch(function(error) {
+                        console.error('reCAPTCHA error:', error);
+                        sliderForm.submit(); // Soumettre quand même
+                    });
                 });
-            });
+            } else {
+                console.warn('reCAPTCHA non chargé');
+                sliderForm.submit();
+            }
             <?php else : ?>
             // Mode local : soumission directe
             sliderForm.submit();

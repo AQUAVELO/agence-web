@@ -514,29 +514,32 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.disabled = true;
         btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> VÉRIFICATION...';
         
-        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
-        <?php if ($settings['recaptcha_enabled']) : ?>
-        grecaptcha.ready(function() {
-            grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
-                document.getElementById('g-recaptcha-response').value = token;
-                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_request'});
-                }
-                form.submit();
-            }).catch(function(error) {
-                console.error('reCAPTCHA error:', error);
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa fa-check-circle"></i> RECEVOIR MON BON GRATUIT';
-                alert('Erreur de vérification. Veuillez réessayer.');
-            });
-        });
-        <?php else : ?>
-        // Mode local : soumission directe sans reCAPTCHA
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+        // Track conversion
         if (typeof gtag !== 'undefined') {
             gtag('event', 'form_submission', {'event_category': 'conversion', 'event_label': 'free_trial_request'});
         }
+        
+        // ⭐ Exécuter reCAPTCHA v3 avant soumission (si activé)
+        <?php if ($settings['recaptcha_enabled']) : ?>
+        if (typeof grecaptcha !== 'undefined') {
+            grecaptcha.ready(function() {
+                grecaptcha.execute('<?= htmlspecialchars($settings['recaptcha_site_key']); ?>', {action: 'submit_free_trial'}).then(function(token) {
+                    document.getElementById('g-recaptcha-response').value = token;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+                    form.submit();
+                }).catch(function(error) {
+                    console.error('reCAPTCHA error:', error);
+                    form.submit(); // Soumettre quand même en cas d'erreur
+                });
+            });
+        } else {
+            console.warn('reCAPTCHA non chargé');
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
+            form.submit();
+        }
+        <?php else : ?>
+        // Mode local : soumission directe sans reCAPTCHA
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> ENVOI EN COURS...';
         form.submit();
         <?php endif; ?>
         

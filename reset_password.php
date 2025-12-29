@@ -11,95 +11,113 @@ function generateToken() {
 
 // Fonction pour envoyer l'email de réinitialisation
 function sendResetEmail($email, $token, $settings) {
-    $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
-    
-    $resetLink = "https://aquavelo.com/new_password.php?token=" . $token;
-    
-    $body = [
-        'Messages' => [
-            [
-                'From' => [
-                    'Email' => 'claude@alesiaminceur.com',
-                    'Name' => "AQUAVELO"
-                ],
-                'To' => [
-                    [
-                        'Email' => $email,
-                        'Name' => "Utilisateur"
-                    ]
-                ],
-                'Subject' => "🔐 Réinitialisation de votre mot de passe - Aquavelo",
-                'HTMLPart' => "
-                    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                        <div style='text-align: center; margin-bottom: 30px;'>
-                            <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
+    try {
+        $mj = new \Mailjet\Client($settings['mjusername'], $settings['mjpassword'], true, ['version' => 'v3.1']);
+        
+        $resetLink = "https://aquavelo.com/new_password.php?token=" . $token;
+        
+        $body = [
+            'Messages' => [
+                [
+                    'From' => [
+                        'Email' => 'claude@alesiaminceur.com',
+                        'Name' => "AQUAVELO"
+                    ],
+                    'To' => [
+                        [
+                            'Email' => $email,
+                            'Name' => "Utilisateur"
+                        ]
+                    ],
+                    'Subject' => "Reinitialisation de votre mot de passe - Aquavelo",
+                    'HTMLPart' => "
+                        <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                            <div style='text-align: center; margin-bottom: 30px;'>
+                                <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
+                            </div>
+                            <h2 style='color: #00a8cc; text-align: center;'>Reinitialisation de mot de passe</h2>
+                            <p style='font-size: 16px; color: #333;'>Bonjour,</p>
+                            <p style='font-size: 16px; color: #333;'>Vous avez demande la reinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
+                            <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour creer un nouveau mot de passe :</p>
+                            <div style='text-align: center; margin: 30px 0;'>
+                                <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;'>
+                                    Reinitialiser mon mot de passe
+                                </a>
+                            </div>
+                            <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
+                            <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demande cette reinitialisation, ignorez simplement cet email.</p>
+                            <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>
+                            <p style='font-size: 12px; color: #999; text-align: center;'>
+                                Cet email a ete envoye automatiquement par Aquavelo.<br>
+                                Ne repondez pas a cet email.
+                            </p>
                         </div>
-                        <h2 style='color: #00a8cc; text-align: center;'>Réinitialisation de mot de passe</h2>
-                        <p style='font-size: 16px; color: #333;'>Bonjour,</p>
-                        <p style='font-size: 16px; color: #333;'>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte Aquavelo.</p>
-                        <p style='font-size: 16px; color: #333;'>Cliquez sur le bouton ci-dessous pour créer un nouveau mot de passe :</p>
-                        <div style='text-align: center; margin: 30px 0;'>
-                            <a href='{$resetLink}' style='background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 16px;'>
-                                Réinitialiser mon mot de passe
-                            </a>
-                        </div>
-                        <p style='font-size: 14px; color: #666;'>Ce lien est valide pendant <strong>1 heure</strong>.</p>
-                        <p style='font-size: 14px; color: #666;'>Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.</p>
-                        <hr style='border: none; border-top: 1px solid #eee; margin: 30px 0;'>
-                        <p style='font-size: 12px; color: #999; text-align: center;'>
-                            Cet email a été envoyé automatiquement par Aquavelo.<br>
-                            Ne répondez pas à cet email.
-                        </p>
-                    </div>
-                "
+                    "
+                ]
             ]
-        ]
-    ];
+        ];
 
-    $response = $mj->post(Resources::$Email, ['body' => $body]);
-    return $response->success();
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
+        return $response->success();
+    } catch (Exception $e) {
+        return false;
+    }
 }
 
 $error_message = "";
 $success_message = "";
 
+// Créer la table password_resets si elle n'existe pas (au chargement de la page)
+try {
+    $conn->exec("CREATE TABLE IF NOT EXISTS password_resets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL,
+        token VARCHAR(255) NOT NULL,
+        expiry DATETIME NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_token (token),
+        INDEX idx_email (email)
+    )");
+} catch (PDOException $e) {
+    // Table existe déjà ou autre erreur non bloquante
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+    $email = filter_var($_POST["email"] ?? '', FILTER_SANITIZE_EMAIL);
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        // Vérifier si l'email existe dans la base de données
-        $stmt = $conn->prepare("SELECT * FROM mensurations WHERE email = ?");
-        $stmt->execute([$email]);
-
-        if ($stmt->rowCount() == 1) {
-            $token = generateToken();
-            $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
-
-            // Supprimer les anciens tokens pour cet email
-            $stmt = $conn->prepare("DELETE FROM password_resets WHERE email = ?");
+        try {
+            // Vérifier si l'email existe dans la base de données
+            $stmt = $conn->prepare("SELECT * FROM mensurations WHERE email = ?");
             $stmt->execute([$email]);
 
-            // Créer la table si elle n'existe pas
-            $conn->exec("CREATE TABLE IF NOT EXISTS password_resets (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                email VARCHAR(255) NOT NULL,
-                token VARCHAR(255) NOT NULL,
-                expiry DATETIME NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )");
+            if ($stmt->rowCount() == 1) {
+                $token = generateToken();
+                $expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-            // Insérer le nouveau token
-            $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expiry) VALUES (?, ?, ?)");
-            $stmt->execute([$email, $token, $expiry]);
+                // Supprimer les anciens tokens pour cet email
+                try {
+                    $stmt = $conn->prepare("DELETE FROM password_resets WHERE email = ?");
+                    $stmt->execute([$email]);
+                } catch (PDOException $e) {
+                    // Ignorer si la table n'existe pas encore
+                }
 
-            if (sendResetEmail($email, $token, $settings)) {
-                $success_message = "Un email de réinitialisation a été envoyé à votre adresse email.";
+                // Insérer le nouveau token
+                $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expiry) VALUES (?, ?, ?)");
+                $stmt->execute([$email, $token, $expiry]);
+
+                if (sendResetEmail($email, $token, $settings)) {
+                    $success_message = "Un email de réinitialisation a été envoyé à votre adresse email. Vérifiez également vos spams.";
+                } else {
+                    $error_message = "Erreur lors de l'envoi de l'email. Veuillez réessayer ou contacter le support.";
+                }
             } else {
-                $error_message = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
+                // Pour des raisons de sécurité, on affiche le même message
+                $success_message = "Si un compte existe avec cette adresse email, vous recevrez un lien de réinitialisation.";
             }
-        } else {
-            // Pour des raisons de sécurité, on affiche le même message
-            $success_message = "Si un compte existe avec cette adresse email, vous recevrez un lien de réinitialisation.";
+        } catch (PDOException $e) {
+            $error_message = "Erreur technique. Veuillez réessayer plus tard.";
         }
     } else {
         $error_message = "Adresse email invalide.";
@@ -272,19 +290,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <!-- Message d'erreur -->
-    <?php if ($error_message): ?>
+    <?php if (!empty($error_message)): ?>
         <div class="alert alert-danger">
             <i class="fa fa-exclamation-triangle"></i> <?php echo htmlspecialchars($error_message); ?>
         </div>
     <?php endif; ?>
 
     <!-- Message de succès -->
-    <?php if ($success_message): ?>
+    <?php if (!empty($success_message)): ?>
         <div class="alert alert-success">
             <i class="fa fa-check-circle"></i> <?php echo htmlspecialchars($success_message); ?>
         </div>
-    <?php else: ?>
+    <?php endif; ?>
 
+    <?php if (empty($success_message)): ?>
     <!-- Formulaire -->
     <form method="POST" action="">
         <div class="form-group">

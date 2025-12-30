@@ -28,6 +28,8 @@ RewriteRule ^concept-aquabiking$ /?p=franchise [QSA,L]
 RewriteRule ^franchise$ /?p=franchise [QSA,L]
 # ⭐ Page séance gratuite
 RewriteRule ^free$ /?p=free [QSA,L]
+# ⭐ Page Cryolipolyse promo
+RewriteRule ^cryolipolyse$ /?p=cryolipolyse [QSA,L]
 # Pages avec ville
 RewriteRule ^centres/([^/]+)$ /?p=page&city=$1 [QSA,L]
 RewriteRule ^seance-decouverte/([^/]+)$ /?p=free&city=$1 [QSA,L]

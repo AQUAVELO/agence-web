@@ -875,6 +875,11 @@
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-cutlery"></i> Menu Perte de Poids
             </a>
+
+            <a href="/cryolipolyse" class="btn btn-default btn-block" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none;">
+              <i class="fa fa-snowflake-o"></i> Cryolipolyse - Offre 99€
+            </a>
           </div>
 
           <?php if (!empty($row_center['description'])) : ?>

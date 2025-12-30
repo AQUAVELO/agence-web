@@ -118,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                     <div style='text-align: center; margin-bottom: 30px;'>
                         <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
                     </div>
-                    <div style='background-color: #e0f7fa; padding: 30px; border-radius: 15px; text-align: center; border: 2px solid #00a8cc;'>
-                        <h1 style='color: #00a8cc; margin: 0; font-size: 24px;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</h1>
+                    <div style='background-color: #e0f7fa; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #00a8cc;'>
+                        <p style='color: #00a8cc; margin: 0; font-size: 16px; font-weight: bold;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</p>
                     </div>
                     <div style='padding: 30px 0;'>
                         <h2 style='color: #00a8cc;'>Récapitulatif de votre demande</h2>

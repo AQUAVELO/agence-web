@@ -1,3 +1,156 @@
+<?php
+// ========== TRAITEMENT DU FORMULAIRE CRYOLIPOLYSE ==========
+$cryo_success = false;
+$cryo_error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
+    require_once '_settings.php';
+    
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    
+    // Récupération des données
+    $prenom = htmlspecialchars(trim($_POST['cryo_prenom'] ?? ''));
+    $nom = htmlspecialchars(trim($_POST['cryo_nom'] ?? ''));
+    $email = filter_var(trim($_POST['cryo_email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $telephone = htmlspecialchars(trim($_POST['cryo_telephone'] ?? ''));
+    $zone = htmlspecialchars(trim($_POST['cryo_zone'] ?? ''));
+    $horaire = htmlspecialchars(trim($_POST['cryo_horaire'] ?? ''));
+    $message = htmlspecialchars(trim($_POST['cryo_message'] ?? ''));
+    
+    // Validation
+    if (empty($prenom) || empty($nom) || empty($email) || empty($telephone) || empty($zone) || empty($horaire)) {
+        $cryo_error = "Veuillez remplir tous les champs obligatoires.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $cryo_error = "Veuillez entrer une adresse email valide.";
+    } else {
+        try {
+            // ========== EMAIL 1 : Notification au centre ==========
+            $mailCentre = new PHPMailer(true);
+            $mailCentre->isSMTP();
+            $mailCentre->Host = $settings['mjhost'];
+            $mailCentre->SMTPAuth = true;
+            $mailCentre->Username = $settings['mjusername'];
+            $mailCentre->Password = $settings['mjpassword'];
+            $mailCentre->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailCentre->Port = 587;
+            $mailCentre->CharSet = 'UTF-8';
+            
+            $mailCentre->setFrom('contact@aquavelo.com', 'Aquavelo Cryolipolyse');
+            $mailCentre->addAddress('aqua.cannes@gmail.com');
+            $mailCentre->addReplyTo($email, $prenom . ' ' . $nom);
+            
+            $mailCentre->isHTML(true);
+            $mailCentre->Subject = "🧊 Nouvelle réservation Cryolipolyse - {$prenom} {$nom}";
+            $mailCentre->Body = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                    <div style='background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 30px; border-radius: 15px 15px 0 0; text-align: center;'>
+                        <h1 style='color: white; margin: 0;'>🧊 Nouvelle Réservation Cryolipolyse</h1>
+                        <p style='color: white; opacity: 0.9; margin-top: 10px;'>Offre découverte à 99€</p>
+                    </div>
+                    <div style='background: #f8f9fa; padding: 30px; border-radius: 0 0 15px 15px;'>
+                        <h2 style='color: #00a8cc; margin-top: 0;'>Informations du prospect</h2>
+                        <table style='width: 100%; border-collapse: collapse;'>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Prénom :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$prenom}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Nom :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$nom}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Email :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><a href='mailto:{$email}'>{$email}</a></td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Téléphone :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><a href='tel:{$telephone}'>{$telephone}</a></td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Zone à traiter :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$zone}</td>
+                            </tr>
+                            <tr>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Horaire préféré :</strong></td>
+                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$horaire}</td>
+                            </tr>
+                            " . (!empty($message) ? "<tr>
+                                <td style='padding: 10px;'><strong>Message :</strong></td>
+                                <td style='padding: 10px;'>{$message}</td>
+                            </tr>" : "") . "
+                        </table>
+                        <div style='margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;'>
+                            <p style='margin: 0; color: #856404;'><strong>⚡ Action requise :</strong> Contactez ce prospect rapidement pour confirmer son rendez-vous de cryolipolyse.</p>
+                        </div>
+                    </div>
+                </div>
+            ";
+            $mailCentre->AltBody = "Nouvelle réservation Cryolipolyse\n\nPrénom: {$prenom}\nNom: {$nom}\nEmail: {$email}\nTéléphone: {$telephone}\nZone: {$zone}\nHoraire: {$horaire}\nMessage: {$message}";
+            
+            $mailCentre->send();
+            
+            // ========== EMAIL 2 : Confirmation au prospect ==========
+            $mailProspect = new PHPMailer(true);
+            $mailProspect->isSMTP();
+            $mailProspect->Host = $settings['mjhost'];
+            $mailProspect->SMTPAuth = true;
+            $mailProspect->Username = $settings['mjusername'];
+            $mailProspect->Password = $settings['mjpassword'];
+            $mailProspect->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mailProspect->Port = 587;
+            $mailProspect->CharSet = 'UTF-8';
+            
+            $mailProspect->setFrom('contact@aquavelo.com', 'Aquavelo Cannes');
+            $mailProspect->addAddress($email, $prenom . ' ' . $nom);
+            
+            $mailProspect->isHTML(true);
+            $mailProspect->Subject = "✅ Votre demande de séance Cryolipolyse a bien été reçue !";
+            $mailProspect->Body = "
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
+                    <div style='text-align: center; margin-bottom: 30px;'>
+                        <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
+                    </div>
+                    <div style='background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 30px; border-radius: 15px; text-align: center; color: white;'>
+                        <h1 style='margin: 0 0 15px 0;'>🧊 Demande reçue !</h1>
+                        <p style='font-size: 1.1rem; margin: 0; opacity: 0.95;'>Merci {$prenom} pour votre intérêt pour la Cryolipolyse</p>
+                    </div>
+                    <div style='padding: 30px 0;'>
+                        <h2 style='color: #00a8cc;'>Récapitulatif de votre demande</h2>
+                        <div style='background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;'>
+                            <p><strong>🎯 Zone à traiter :</strong> {$zone}</p>
+                            <p><strong>🕐 Horaire préféré :</strong> {$horaire}</p>
+                            <p><strong>💰 Offre :</strong> Séance découverte à <span style='color: #00a8cc; font-weight: bold;'>99€</span> au lieu de 149€</p>
+                        </div>
+                        <div style='background: #d4edda; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;'>
+                            <h3 style='color: #155724; margin-top: 0;'>📞 Et maintenant ?</h3>
+                            <p style='color: #155724; margin-bottom: 0;'>Notre équipe va vous contacter très rapidement pour confirmer votre rendez-vous et répondre à toutes vos questions.</p>
+                        </div>
+                    </div>
+                    <div style='text-align: center; padding: 20px; border-top: 1px solid #eee;'>
+                        <p style='color: #666; font-size: 0.9rem;'>Une question ? Contactez-nous :</p>
+                        <p style='margin: 10px 0;'>
+                            <a href='tel:0493949590' style='color: #00a8cc; text-decoration: none; font-weight: bold;'>📞 04 93 94 95 90</a>
+                        </p>
+                        <p style='color: #999; font-size: 0.85rem;'>
+                            Aquavelo Cannes - 60 avenue du Docteur Picaud, 06150 Cannes
+                        </p>
+                    </div>
+                </div>
+            ";
+            $mailProspect->AltBody = "Bonjour {$prenom},\n\nMerci pour votre demande de séance Cryolipolyse !\n\nRécapitulatif :\n- Zone à traiter : {$zone}\n- Horaire préféré : {$horaire}\n- Offre : 99€ au lieu de 149€\n\nNotre équipe va vous contacter très rapidement pour confirmer votre rendez-vous.\n\nÀ très bientôt !\nL'équipe Aquavelo Cannes";
+            
+            $mailProspect->send();
+            
+            $cryo_success = true;
+            
+        } catch (Exception $e) {
+            error_log("Erreur envoi email Cryolipolyse: " . $e->getMessage());
+            $cryo_error = "Une erreur est survenue lors de l'envoi. Veuillez nous contacter directement au 04 93 94 95 90.";
+        }
+    }
+}
+?>
 <!-- 
     Landing Page Cryolipolyse - Offre 99€ au lieu de 149€
     Intégrée au site Aquavelo
@@ -982,78 +1135,88 @@
                 <p>Remplissez le formulaire ci-dessous pour réserver votre séance découverte à 99€</p>
             </div>
             
-            <form id="cryoBookingForm" method="post" action="">
+            <?php if (!$cryo_success): ?>
+            <form id="cryoBookingForm" method="post" action="/cryolipolyse#cryo-booking">
+                <input type="hidden" name="cryo_submit" value="1">
+                
+                <?php if ($cryo_error): ?>
+                <div style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+                    <i class="fa fa-exclamation-triangle"></i> <?= $cryo_error ?>
+                </div>
+                <?php endif; ?>
+                
                 <div class="cryo-form-grid">
                     <div class="cryo-form-group">
                         <label for="cryo_prenom">Prénom <span>*</span></label>
-                        <input type="text" id="cryo_prenom" name="prenom" placeholder="Votre prénom" required>
+                        <input type="text" id="cryo_prenom" name="cryo_prenom" placeholder="Votre prénom" required>
                         <span class="error-msg">Veuillez entrer votre prénom</span>
                     </div>
                     
                     <div class="cryo-form-group">
                         <label for="cryo_nom">Nom <span>*</span></label>
-                        <input type="text" id="cryo_nom" name="nom" placeholder="Votre nom" required>
+                        <input type="text" id="cryo_nom" name="cryo_nom" placeholder="Votre nom" required>
                         <span class="error-msg">Veuillez entrer votre nom</span>
                     </div>
                     
                     <div class="cryo-form-group">
                         <label for="cryo_email">Email <span>*</span></label>
-                        <input type="email" id="cryo_email" name="email" placeholder="votre@email.com" required>
+                        <input type="email" id="cryo_email" name="cryo_email" placeholder="votre@email.com" required>
                         <span class="error-msg">Veuillez entrer un email valide</span>
                     </div>
                     
                     <div class="cryo-form-group">
                         <label for="cryo_telephone">Téléphone <span>*</span></label>
-                        <input type="tel" id="cryo_telephone" name="telephone" placeholder="06 12 34 56 78" required>
+                        <input type="tel" id="cryo_telephone" name="cryo_telephone" placeholder="06 12 34 56 78" required>
                         <span class="error-msg">Veuillez entrer votre téléphone</span>
                     </div>
                     
                     <div class="cryo-form-group">
                         <label for="cryo_zone">Zone à traiter <span>*</span></label>
-                        <select id="cryo_zone" name="zone" required>
+                        <select id="cryo_zone" name="cryo_zone" required>
                             <option value="">Sélectionnez une zone</option>
-                            <option value="ventre">Ventre</option>
-                            <option value="poignees-amour">Poignées d'amour</option>
-                            <option value="cuisses">Cuisses</option>
-                            <option value="bras">Bras</option>
-                            <option value="dos">Dos</option>
-                            <option value="double-menton">Double menton</option>
-                            <option value="autre">Autre (préciser)</option>
+                            <option value="Ventre">Ventre</option>
+                            <option value="Poignées d'amour">Poignées d'amour</option>
+                            <option value="Cuisses">Cuisses</option>
+                            <option value="Bras">Bras</option>
+                            <option value="Dos">Dos</option>
+                            <option value="Double menton">Double menton</option>
+                            <option value="Autre">Autre (préciser)</option>
                         </select>
                         <span class="error-msg">Veuillez sélectionner une zone</span>
                     </div>
                     
                     <div class="cryo-form-group">
                         <label for="cryo_horaire">Horaire préféré <span>*</span></label>
-                        <select id="cryo_horaire" name="horaire" required>
+                        <select id="cryo_horaire" name="cryo_horaire" required>
                             <option value="">Sélectionnez un créneau</option>
-                            <option value="matin">Matin (9h - 12h)</option>
-                            <option value="midi">Midi (12h - 14h)</option>
-                            <option value="apres-midi">Après-midi (14h - 18h)</option>
-                            <option value="soir">Soir (18h - 20h)</option>
+                            <option value="Matin (9h - 12h)">Matin (9h - 12h)</option>
+                            <option value="Midi (12h - 14h)">Midi (12h - 14h)</option>
+                            <option value="Après-midi (14h - 18h)">Après-midi (14h - 18h)</option>
+                            <option value="Soir (18h - 20h)">Soir (18h - 20h)</option>
                         </select>
                         <span class="error-msg">Veuillez sélectionner un horaire</span>
                     </div>
                     
                     <div class="cryo-form-group full-width">
                         <label for="cryo_message">Message (optionnel)</label>
-                        <textarea id="cryo_message" name="message" rows="3" placeholder="Précisions ou questions..."></textarea>
+                        <textarea id="cryo_message" name="cryo_message" rows="3" placeholder="Précisions ou questions..."></textarea>
                     </div>
                 </div>
                 
                 <button type="submit" class="cryo-form-submit" id="cryoSubmitBtn">
-                    <i class="fa fa-lock"></i>
-                    Payer 99€ et Réserver
+                    <i class="fa fa-calendar-check-o"></i>
+                    Réserver ma séance à 99€
                 </button>
                 
                 <p class="cryo-form-note">
                     <i class="fa fa-shield"></i>
-                    Paiement 100% sécurisé. Nous vous contacterons rapidement pour confirmer votre RDV.
+                    Nous vous contacterons rapidement pour confirmer votre RDV et procéder au paiement.
                 </p>
             </form>
+            <?php endif; ?>
             
             <!-- Message de confirmation -->
-            <div class="cryo-confirmation" id="cryoConfirmation">
+            <div class="cryo-confirmation <?= $cryo_success ? 'show' : '' ?>" id="cryoConfirmation">
                 <i class="fa fa-check-circle"></i>
                 <h3>Merci pour votre réservation !</h3>
                 <p>Nous avons bien reçu votre demande. Notre équipe va vous recontacter rapidement pour confirmer votre rendez-vous de cryolipolyse.</p>
@@ -1072,8 +1235,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!form) return;
     
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
         let isValid = true;
         const submitBtn = document.getElementById('cryoSubmitBtn');
         
@@ -1113,34 +1274,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        if (isValid) {
-            // Désactiver le bouton
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Traitement en cours...';
-            
-            // Simuler l'envoi
-            setTimeout(function() {
-                // Cacher le formulaire
-                form.style.display = 'none';
-                
-                // Afficher le message de confirmation
-                document.getElementById('cryoConfirmation').classList.add('show');
-                
-                // Scroll vers le message
-                document.getElementById('cryoConfirmation').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
-                });
-                
-                // Analytics
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'cryo_booking_success', {
-                        'event_category': 'conversion',
-                        'event_label': 'cryolipolyse_99'
-                    });
-                }
-            }, 1500);
+        if (!isValid) {
+            e.preventDefault();
+            return false;
         }
+        
+        // Si valide, on soumet le formulaire (pas de preventDefault)
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Envoi en cours...';
+        
+        // Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'cryo_booking_submit', {
+                'event_category': 'conversion',
+                'event_label': 'cryolipolyse_99'
+            });
+        }
+        
+        return true;
     });
     
     // Remove error on input
@@ -1149,6 +1300,14 @@ document.addEventListener('DOMContentLoaded', function() {
             this.parentElement.classList.remove('has-error');
         });
     });
+    
+    // Si la confirmation est affichée, scroll vers elle
+    const confirmation = document.getElementById('cryoConfirmation');
+    if (confirmation && confirmation.classList.contains('show')) {
+        setTimeout(function() {
+            confirmation.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    }
 });
 </script>
 

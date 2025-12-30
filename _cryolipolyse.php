@@ -118,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                     <div style='text-align: center; margin-bottom: 30px;'>
                         <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
                     </div>
-                    <div style='background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 30px; border-radius: 15px; text-align: center; color: white;'>
-                        <h1 style='margin: 0;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</h1>
+                    <div style='background-color: #e0f7fa; padding: 30px; border-radius: 15px; text-align: center; border: 2px solid #00a8cc;'>
+                        <h1 style='color: #00a8cc; margin: 0; font-size: 24px;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</h1>
                     </div>
                     <div style='padding: 30px 0;'>
                         <h2 style='color: #00a8cc;'>Récapitulatif de votre demande</h2>
@@ -1230,6 +1230,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                 <p style="margin-top: 15px; font-weight: 600; color: var(--cryo-primary-dark);">
                     Un email de confirmation vous a été envoyé.
                 </p>
+                <div style="margin-top: 30px;">
+                    <a href="https://aquavelo.com" style="display: inline-block; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 5px 20px rgba(0,168,204,0.3); transition: all 0.3s ease;">
+                        <i class="fa fa-home"></i> Retour au site Aquavelo
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -45,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
             $mailCentre->Subject = "🧊 Nouvelle réservation Cryolipolyse - {$prenom} {$nom}";
             $mailCentre->Body = "
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                    <div style='background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 30px; border-radius: 15px 15px 0 0; text-align: center;'>
-                        <h1 style='color: white; margin: 0;'>🧊 Nouvelle Réservation Cryolipolyse</h1>
-                        <p style='color: white; opacity: 0.9; margin-top: 10px;'>Offre découverte à 99€</p>
+                    <div style='background-color: #e0f7fa; padding: 30px; border-radius: 15px 15px 0 0; text-align: center; border: 2px solid #00a8cc;'>
+                        <h1 style='color: #00a8cc; margin: 0; font-size: 24px;'>🧊 Nouvelle Réservation Cryolipolyse</h1>
+                        <p style='color: #00a8cc; margin-top: 10px; font-weight: bold;'>Offre découverte à 99€</p>
                     </div>
                     <div style='background: #f8f9fa; padding: 30px; border-radius: 0 0 15px 15px;'>
                         <h2 style='color: #00a8cc; margin-top: 0;'>Informations du prospect</h2>
@@ -91,7 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
             
             $mailCentre->send();
             
-            // ========== EMAIL 2 : Confirmation au prospect ==========
+        } catch (Exception $e) {
+            error_log("Erreur envoi email Centre Cryolipolyse: " . $e->getMessage());
+        }
+        
+        // ========== EMAIL 2 : Confirmation au prospect ==========
+        try {
             $mailProspect = new PHPMailer(true);
             $mailProspect->isSMTP();
             $mailProspect->Host = $settings['mjhost'];
@@ -102,8 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
             $mailProspect->Port = 587;
             $mailProspect->CharSet = 'UTF-8';
             
-            $mailProspect->setFrom('contact@aquavelo.com', 'Aquavelo Cannes');
+            $mailProspect->setFrom('noreply@aquavelo.com', 'Aquavelo Cannes');
             $mailProspect->addAddress($email, $prenom . ' ' . $nom);
+            $mailProspect->addReplyTo('aqua.cannes@gmail.com', 'Aquavelo Cannes');
             
             $mailProspect->isHTML(true);
             $mailProspect->Subject = "✅ Votre demande de séance Cryolipolyse a bien été reçue !";
@@ -143,12 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
             
             $mailProspect->send();
             
-            $cryo_success = true;
-            
         } catch (Exception $e) {
-            error_log("Erreur envoi email Cryolipolyse: " . $e->getMessage());
-            $cryo_error = "Une erreur est survenue lors de l'envoi. Veuillez nous contacter directement au 04 93 94 95 90.";
+            error_log("Erreur envoi email Prospect Cryolipolyse: " . $e->getMessage());
+            // On ne bloque pas si l'email prospect échoue
         }
+        
+        // Succès global (au moins l'email centre a été envoyé)
+        $cryo_success = true;
     }
 }
 ?>

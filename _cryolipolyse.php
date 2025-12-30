@@ -1,13 +1,14 @@
 <?php
 // ========== TRAITEMENT DU FORMULAIRE CRYOLIPOLYSE ==========
+require_once '_settings.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $cryo_success = false;
 $cryo_error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
-    require_once '_settings.php';
-    
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
     
     // Récupération des données
     $prenom = htmlspecialchars(trim($_POST['cryo_prenom'] ?? ''));

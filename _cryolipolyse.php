@@ -129,8 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                             <p><strong>💰 Offre :</strong> Séance découverte à <span style='color: #00a8cc; font-weight: bold;'>99€</span> au lieu de 149€</p>
                         </div>
                         <div style='background: #d4edda; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;'>
-                            <h3 style='color: #155724; margin-top: 0;'>📞 Et maintenant ?</h3>
-                            <p style='color: #155724; margin-bottom: 0;'>Notre équipe va vous contacter très rapidement pour confirmer votre rendez-vous et répondre à toutes vos questions.</p>
+                            <p style='color: #155724; margin: 0;'>Notre équipe va vous contacter très rapidement pour confirmer votre rendez-vous et répondre à toutes vos questions.</p>
                         </div>
                     </div>
                     <div style='text-align: center; padding: 20px; border-top: 1px solid #eee;'>

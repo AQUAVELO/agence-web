@@ -119,8 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                         <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
                     </div>
                     <div style='background: linear-gradient(135deg, #00d4ff, #00a8cc); padding: 30px; border-radius: 15px; text-align: center; color: white;'>
-                        <h1 style='margin: 0 0 15px 0;'>🧊 Demande reçue !</h1>
-                        <p style='font-size: 1.1rem; margin: 0; opacity: 0.95;'>Merci {$prenom} pour votre intérêt pour la Cryolipolyse</p>
+                        <h1 style='margin: 0;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</h1>
                     </div>
                     <div style='padding: 30px 0;'>
                         <h2 style='color: #00a8cc;'>Récapitulatif de votre demande</h2>
@@ -137,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                     <div style='text-align: center; padding: 20px; border-top: 1px solid #eee;'>
                         <p style='color: #666; font-size: 0.9rem;'>Une question ? Contactez-nous :</p>
                         <p style='margin: 10px 0;'>
-                            <a href='tel:0493949590' style='color: #00a8cc; text-decoration: none; font-weight: bold;'>📞 04 93 94 95 90</a>
+                            <a href='tel:0493930565' style='color: #00a8cc; text-decoration: none; font-weight: bold;'>📞 04 93 93 05 65</a>
                         </p>
                         <p style='color: #999; font-size: 0.85rem;'>
                             Aquavelo Cannes - 60 avenue du Docteur Picaud, 06150 Cannes

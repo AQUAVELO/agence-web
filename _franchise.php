@@ -62,7 +62,7 @@
     <!-- CTA Télécharger brochure -->
     <div class="row" style="margin-bottom: 50px;">
       <div class="col-md-8 col-md-offset-2 text-center">
-        <a href="/documents/franchise/AQUAVELO_Dossier_Franchise_LUXE_4_pages.pdf" target="_blank" class="btn btn-lg" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border: none; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4); transition: all 0.3s ease;">
+        <a href="/documents/franchise/aquavelo.pdf" target="_blank" class="btn btn-lg" style="background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border: none; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(255, 152, 0, 0.4); transition: all 0.3s ease;">
           <i class="fa fa-download"></i> Télécharger la Brochure Gratuite
         </a>
         <p style="margin-top: 15px; color: #666;">
@@ -380,7 +380,7 @@
       <p style="font-size: 1.3rem; margin-bottom: 30px; opacity: 0.95;">
         Téléchargez la brochure ou contactez-nous pour démarrer votre projet
       </p>
-      <a href="/documents/franchise/AQUAVELO_Dossier_Franchise_LUXE_4_pages.pdf" target="_blank" class="btn btn-lg" style="background: white; color: #ff9800; border: none; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; margin-right: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
+      <a href="/documents/franchise/aquavelo.pdf" target="_blank" class="btn btn-lg" style="background: white; color: #ff9800; border: none; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; margin-right: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
         <i class="fa fa-download"></i> Télécharger la Brochure
       </a>
       <a href="tel:0622647095" class="btn btn-lg" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white; padding: 20px 50px; font-size: 1.3rem; border-radius: 50px; font-weight: 600; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
@@ -393,7 +393,7 @@
 <!-- Tracking Analytics -->
 <script>
 // Track téléchargement brochure
-document.querySelectorAll('a[href*="AQUAVELO_Dossier_Franchise"]').forEach(function(link) {
+document.querySelectorAll('a[href*="aquavelo.pdf"]').forEach(function(link) {
   link.addEventListener('click', function() {
     if (typeof gtag !== 'undefined') {
       gtag('event', 'download_brochure', {

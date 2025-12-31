@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require 'settings.php';
+require '_settings.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -49,10 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
-            $mail->Host       = 'in-v3.mailjet.com';
+            $mail->Host       = $settings['mjhost'];
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'adf33e0c77039ed69396e3a8a07400cb';
-            $mail->Password   = '05906e966c8e2933b1dc8b0f8bb1e18b';
+            $mail->Username   = $settings['mjusername'];
+            $mail->Password   = $settings['mjpassword'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
             $mail->CharSet    = 'UTF-8';
@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $admin = new PHPMailer(true);
             $admin->isSMTP();
-            $admin->Host = 'in-v3.mailjet.com';
+            $admin->Host = $settings['mjhost'];
             $admin->SMTPAuth = true;
-            $admin->Username = 'adf33e0c77039ed69396e3a8a07400cb';
-            $admin->Password = '05906e966c8e2933b1dc8b0f8bb1e18b';
+            $admin->Username = $settings['mjusername'];
+            $admin->Password = $settings['mjpassword'];
             $admin->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $admin->Port = 587;
             $admin->CharSet = 'UTF-8';

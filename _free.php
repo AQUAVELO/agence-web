@@ -168,8 +168,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       L'équipe Aquavélo<br>
                                       <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
                         $mail->send();
-                    } else {
-                        // MODÈLE PAR DÉFAUT POUR TOUS LES AUTRES CENTRES
+                    } elseif (!in_array((int)$center_id, [305, 347, 349])) {
+                        // MODÈLE PAR DÉFAUT POUR TOUS LES AUTRES CENTRES (Sauf Cannes, Mandelieu, Vallauris)
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Votre séance découverte gratuite chez Aquavelo $city";

@@ -615,26 +615,8 @@
           <!-- Formulaire de réservation (visible desktop, caché mobile jusqu'au clic) -->
           <div class="form-container">
             <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
-            
-            <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-              <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
-                <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
-                <strong><a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank" style="color: #00a8cc;">
-                  calendrier en ligne <i class="fa fa-external-link"></i>
-                </a></strong>
-              </div>
-            <?php endif; ?>
-            
-            <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-              <div class="alert alert-info" style="border-radius: 10px; margin-bottom: 20px;">
-                <i class="fa fa-info-circle"></i> Vous pouvez aussi réserver sur notre 
-                <strong><a href="https://aquavelomerignac33.simplybook.it/v2/" target="_blank" style="color: #00a8cc;">
-                  calendrier en ligne <i class="fa fa-external-link"></i>
-                </a></strong>
-              </div>
-            <?php endif; ?>
           
-            <form role="form" id="contactForm" class="contact-form" method="POST" action="/?p=free" novalidate>
+            <form role="form" id="contactForm" class="contact-form-planning" method="POST" action="index.php?p=free" novalidate>
               <div class="form-group">
                 <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
                 <select class="form-control" id="center" name="center">
@@ -687,7 +669,7 @@
               <input type="hidden" name="segment" id="segment">
               
               <button type="submit" id="submitBtnPage" class="btn btn-submit" aria-label="Recevoir mon bon par email">
-                <i class="fa fa-check-circle"></i> Recevoir mon Bon par Email
+                <i class="fa fa-check-circle"></i> <?= in_array($row_center['id'], [305, 347, 349]) ? "RÉSERVER MA SÉANCE OFFERTE" : "Recevoir mon Bon par Email" ?>
               </button>
 
               <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
@@ -871,13 +853,13 @@
               <i class="fa fa-image"></i> Voir les Résultats Minceur
             </button>
 
-            <a href="/conseilminceur" class="btn btn-default btn-block" 
+            <a href="index.php?p=conseilminceur" class="btn btn-default btn-block" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-cutlery"></i> Menu Perte de Poids
             </a>
 
-            <?php if (in_array(strtolower($city ?? ''), ['cannes', 'mandelieu-la-napoule', 'mandelieu', 'vallauris'])) : ?>
-            <a href="/cryolipolyse" class="btn btn-default btn-block" 
+            <?php if (in_array(strtolower($city ?? ''), ['cannes', 'mandelieu-la-napoule', 'mandelieu', 'vallauris', 'nice'])) : ?>
+            <a href="index.php?p=cryolipolyse" class="btn btn-default btn-block" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-snowflake-o"></i> Minceur Cryolipolyse
             </a>

@@ -61,9 +61,9 @@
               <h2 class="form-group" style="text-align: center;">🎁 Votre séance découverte OFFERTE</h2>
               <div class="col-md-6">
                 <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
-                  <p>Vous pouvez vous réserver sur notre <a href="https://calendly.com/aqua-cannes/rdv-aquavelo" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
+                  <p>Vous pouvez vous réserver sur notre <a href="index.php?p=calendrier_cannes" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
                 <?php endif; ?>
-                <form role="form" class="contact-form" id="sliderForm" method="POST" action="/?p=free">
+                <form role="form" class="contact-form-planning" id="sliderForm" method="POST" action="index.php?p=free">
                   <div class="form-group">
                     <label for="center">Dans quel centre souhaitez-vous effectuer votre séance ?</label>
                     <select class="form-control" id="center" name="center">

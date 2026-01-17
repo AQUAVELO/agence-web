@@ -16,6 +16,12 @@
 		});
 		// Do what we need to when form is submitted.
 		$form.on('click', 'button[type=submit]', function(e){
+            
+            // ⭐ EXCEPTION : Si le formulaire pointe vers index.php?p=free, on laisse faire le PHP (pas d'AJAX)
+            var $f_check = $(this).closest('form');
+            if ($f_check.attr('action') && $f_check.attr('action').indexOf('p=free') !== -1) {
+                return; // ON ARRÊTE TOUT ET ON LAISSE LE NAVIGATEUR ENVOYER LE FORMULAIRE
+            }
 
 			// Hide any previous response text and show loader
 			$response.hide().html( $loader ).show();

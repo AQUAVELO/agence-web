@@ -174,7 +174,7 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 		    <p>Nous sommes ravis de vous offrir une <strong>s&eacute;ance d&eacute;couverte gratuite</strong> au centre <strong>Aquav&eacute;lo de Cannes</strong>.</p>
 		    
 		    <p>Lors de votre visite, vous profiterez d&#39;un <strong>cours d&#39;aquabiking coach&eacute;</strong>, encadr&eacute; par nos professeurs de sport dipl&ocirc;m&eacute;s. Nous commencerons par un <strong>bilan personnalis&eacute;</strong> pour mieux comprendre vos besoins et vous aider &agrave; atteindre vos objectifs forme et bien-&ecirc;tre.</p>
-		    <p>Prenez d&egrave;s maintenant rendez-vous directement sur <a href="https://calendly.com/aqua-cannes" target="_blank">https://calendly.com/aqua-cannes</a>, ou en appelant le <strong>' . $phone . '</strong>.</p>
+		    <p>Prenez d&egrave;s maintenant rendez-vous directement sur <a href="index.php?p=calendrier_cannes" target="_blank">notre calendrier en ligne</a>, ou en appelant le <strong>' . $phone . '</strong>.</p>
 		    
 		    <p>N&#39;oubliez pas de venir &eacute;quip&eacute;(e) avec :</p>
 		    <ul>

@@ -837,50 +837,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
           <ul class="nav navbar-nav navbar-right">
             <li<?php if ($page == 'home') echo ' class="active"'; ?>> 
-              <a href="https://www.aquavelo.com/">Accueil</a> 
+              <a href="index.php">Accueil</a> 
             </li>
             
             <li class="dropdown<?php if ($page == 'aquabiking') echo ' active'; ?>"> 
-              <a href="/aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
+              <a href="index.php?p=aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
               <ul class="dropdown-menu">
-                <li><a href="/aquabiking">Le vélo dans l'eau</a></li>
-                <li><a href="/aquabiking#bienfaits">Les bienfaits</a></li>
-                <li><a href="/aquabiking#questions">Vos questions</a></li>
+                <li><a href="index.php?p=aquabiking">Le vélo dans l'eau</a></li>
+                <li><a href="index.php?p=aquabiking#bienfaits">Les bienfaits</a></li>
+                <li><a href="index.php?p=aquabiking#questions">Vos questions</a></li>
               </ul>
             </li>
             
             <li class="dropdown<?php if ($page == 'centres') echo ' active'; ?>"> 
-              <a href="/centres" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
+              <a href="index.php?p=centers" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
               <ul class="dropdown-menu">
                 <?php foreach ($centers_list_d as &$row_centers_list) { ?>
-                  <li><a href="/centres/<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
+                  <li><a href="index.php?p=page&city=<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
                 <?php } ?>
               </ul>
             </li>
             
             <li class="dropdown<?php if ($page == 'concept' || $page == 'franchise') echo ' active'; ?>"> 
-              <a href="/concept-aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
+              <a href="index.php?p=franchise" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
               <ul class="dropdown-menu">
-                <li><a href="/concept-aquabiking">Notre Concept</a></li>
+                <li><a href="index.php?p=franchise">Notre Concept</a></li>
                 <li class="divider"></li>
-                <li><a href="/concept-aquabiking" style="color: #ff9800; font-weight: 600;">
+                <li><a href="index.php?p=franchise" style="color: #ff9800; font-weight: 600;">
                   <i class="fa fa-briefcase"></i> Ouvrir un Centre
                 </a></li>
               </ul>
             </li>
 
             <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 
-              <a href="/conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
+              <a href="index.php?p=conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
               <ul class="dropdown-menu">
-                <li><a href="/conseilminceur">Amincissement</a></li>
+                <li><a href="index.php?p=conseilminceur">Amincissement</a></li>
               </ul>
             </li>
 
             <li <?php if ($page == 'contact') echo ' class="active"'; ?> class="dropdown"> 
-              <a href="/contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
+              <a href="index.php?p=contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
               <ul class="dropdown-menu">
-                <li><a href="/contact#emploi">Emploi</a></li>
-                <li><a href="/contact#contact">Contactez-nous</a></li>
+                <li><a href="index.php?p=contact#emploi">Emploi</a></li>
+                <li><a href="index.php?p=contact#contact">Contactez-nous</a></li>
               </ul>
             </li>
             
@@ -888,14 +888,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               
             <!-- CTA Séance gratuite optimisé -->
             <li class="cta-nav"> 
-                <a href="/?p=free" class="btn-reserve-nav">
+                <a href="index.php?p=free" class="btn-reserve-nav">
                    <i class="fa fa-gift"></i> 🎁 SÉANCE GRATUITE
                 </a>
             </li>
             
             <!-- ⭐ NOUVEAU : Bouton Ouvrir un Centre visible -->
             <li class="cta-franchise hidden-sm"> 
-              <a href="/concept-aquabiking" class="btn-franchise-nav">
+              <a href="index.php?p=franchise" class="btn-franchise-nav">
                 <i class="fa fa-briefcase"></i> Ouvrir un Centre
               </a> 
             </li>
@@ -978,25 +978,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <aside class="col-md-3 widget">
             <h2 class="widget-title">Liens Rapides</h2>
             <ul>
-              <li><a href="/?p=free">Séance Découverte Gratuite</a></li>
-              <li><a href="/centres">Trouver un Centre</a></li>
-              <li><a href="/concept-aquabiking" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
-              <li><a href="/contact">Contact</a></li>
+              <li><a href="index.php?p=free">Séance Découverte Gratuite</a></li>
+              <li><a href="index.php?p=centers">Trouver un Centre</a></li>
+              <li><a href="index.php?p=franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
+              <li><a href="index.php?p=contact">Contact</a></li>
             </ul>
           </aside>
           <aside class="col-md-3 widget">
             <h3 class="widget-title">Nos Centres</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-              <a href="/centres/cannes" title="Centre Aquavelo Cannes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+              <a href="index.php?p=page&city=cannes" title="Centre Aquavelo Cannes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
                 <img src="/images/Cannes1.jpg" alt="Centre Aquavelo Cannes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="/centres/antibes" title="Centre Aquavelo Antibes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+              <a href="index.php?p=page&city=antibes" title="Centre Aquavelo Antibes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
                 <img src="/images/content/home-v1-slider-03.webp" alt="Centre Aquavelo Antibes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="/centres/nice" title="Centre Aquavelo Nice" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+              <a href="index.php?p=page&city=nice" title="Centre Aquavelo Nice" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
                 <img src="/images/center_179/1.jpg" alt="Centre Aquavelo Nice" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="/?p=free" title="Séance découverte gratuite" style="display: flex; align-items: center; justify-content: center; width: 80px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 5px; color: #fff; font-size: 11px; text-align: center; text-decoration: none; font-weight: 600;">
+              <a href="index.php?p=free" title="Séance découverte gratuite" style="display: flex; align-items: center; justify-content: center; width: 80px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 5px; color: #fff; font-size: 11px; text-align: center; text-decoration: none; font-weight: 600;">
                 Essai<br>Gratuit
               </a>
             </div>

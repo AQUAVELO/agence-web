@@ -98,15 +98,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                   <b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
                     $mail->send();
 
-                    // 2. Email pour le CLIENT (si RDV confirmé)
+                    // 2. Email pour le CLIENT
                     if ($date_heure) {
+                        // ... (Code existant pour Cannes/Mandelieu/Vallauris)
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Confirmation de votre séance à Aquavelo $city";
-                        
-                        // Formatage du message plus précis
                         $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
-                        
                         $mail->Body = "Bonjour $input_nom_complet,<br><br>
                                       Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
                                       Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
@@ -119,6 +117,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       ✅ Bouteille d'eau<br>
                                       ✅ Chaussures aquabiking (si vous ne les avez pas nous vous les prêterons)<br><br>
                                       À très bientôt ! Cordialement Claude";
+                        $mail->send();
+                    } elseif ((int)$center_id === 253) {
+                        // MODÈLE SPÉCIFIQUE ANTIBES
+                        $mail->clearAddresses();
+                        $mail->addAddress($email);
+                        $mail->Subject = "Votre séance découverte gratuite chez Aquavelo Antibes";
+                        
+                        $mail->Body = "Bonjour $input_nom_complet,<br><br>
+                                      Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>Antibes</b>.<br><br>
+                                      Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
+                                      <b>Prenez dès maintenant rendez-vous directement sur :</b><br>
+                                      👉 <a href='https://calendly.com/aquavelo-antibes'>https://calendly.com/aquavelo-antibes</a><br>
+                                      ou en appelant le <b>" . $row_center_contact['phone'] . "</b>.<br><br>
+                                      N'oubliez pas de venir équipé(e) avec :<br>
+                                      ✅ Votre maillot de bain,<br>
+                                      ✅ Une serviette,<br>
+                                      ✅ Un gel douche,<br>
+                                      ✅ Une bouteille d'eau,<br>
+                                      ✅ Et des chaussures adaptées à l'aquabiking.<br><br>
+                                      <b>Adresse :</b> " . $row_center_contact['address'] . "<br>
+                                      <i>*Offre non cumulable. Réservez vite, les places sont limitées.</i><br><br>
+                                      Cordialement,<br>
+                                      L'équipe Aquavélo<br>
+                                      <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
                         $mail->send();
                     }
                 } catch (Exception $e) {

@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    // 1. Email pour l'ADMIN (Vous)
+                    // 1. Email pour l'ADMIN (Vous / Dirigeant)
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
@@ -90,12 +90,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     }
                     
                     $mail->Subject = $subject_admin;
-                    $mail->Body = "<h3>" . ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect") . "</h3>
-                                  <b>Nom:</b> $input_nom_complet<br>
-                                  <b>Email:</b> $email<br>
-                                  <b>Tel:</b> $tel<br>
-                                  <b>Centre:</b> $city<br>
-                                  <b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
+
+                    // Choix du modèle selon le centre
+                    $special_centers = [305, 347, 349, 253];
+                    if (in_array((int)$center_id, $special_centers)) {
+                        // Modèle détaillé pour Cannes, Mandelieu, Vallauris, Antibes
+                        $mail->Body = "<h3>" . ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect") . "</h3>
+                                      <b>Nom:</b> $input_nom_complet<br>
+                                      <b>Email:</b> $email<br>
+                                      <b>Tel:</b> $tel<br>
+                                      <b>Centre:</b> $city<br>
+                                      <b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
+                    } else {
+                        // NOUVEAU MODÈLE POUR LES AUTRES DIRIGEANTS
+                        $date_now = date('d-m-Y H:i:s');
+                        $alert_msg = ($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "";
+                        
+                        $mail->Body = "Bonjour,<br><br>
+                                      $alert_msg
+                                      <b>$input_nom_complet</b><br>
+                                      Adresse électronique : <b>$email</b><br>
+                                      Téléphone : <b>$tel</b><br><br>
+                                      La personne ci-dessus a commandée une séance découverte gratuite ainsi qu'un bilan minceur dans votre centre.<br>
+                                      Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>
+                                      Cordialement,<br>
+                                      L'équipe Aquavelo<br><br>
+                                      <small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
+                    }
                     $mail->send();
 
                     // 2. Email pour le CLIENT

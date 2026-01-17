@@ -90,6 +90,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       Votre séance est confirmée pour le <b>$date_heure</b>.<br>
                                       Lieu : " . $row_center_contact['address'] . "<br><br>
                                       <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
+                                      <b>🎒 À prévoir pour votre séance :</b><br>
+                                      ✅ Maillot de bain<br>
+                                      ✅ Serviette de bain<br>
+                                      ✅ Gel douche<br>
+                                      ✅ Bouteille d'eau<br>
+                                      ✅ Chaussures aquabiking (si vous ne les avez pas nous vous les prêterons)<br><br>
                                       À très bientôt !";
                         $mail->send();
                     }

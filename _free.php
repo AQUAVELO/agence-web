@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 echo "<script>window.location.href = '$url';</script>";
                 exit;
             } else {
-                echo "<script>window.location.href = 'index.php?p=free&success=1';</script>";
+                echo "<script>window.location.href = 'index.php?p=free&success=1&cid=$center_id';</script>";
                 exit;
             }
 
@@ -147,7 +147,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     }
 }
 
-if (isset($_GET['success'])) $success_message = "Votre demande a bien été envoyée !";
+if (isset($_GET['success'])) {
+    $success_message = "Votre demande a bien été envoyée !";
+    if (isset($_GET['cid'])) {
+        $cid = intval($_GET['cid']);
+        $stmt = $database->prepare("SELECT city, phone FROM am_centers WHERE id = ?");
+        $stmt->execute([$cid]);
+        $cinfo = $stmt->fetch();
+        if ($cinfo) {
+            $success_message .= "<br><br>Veuillez appeler le centre de <b>" . $cinfo['city'] . "</b> au <b>" . $cinfo['phone'] . "</b> pour confirmer votre rendez-vous.";
+        }
+    }
+}
 ?>
 
 <section class="content-area bg1" style="padding: 40px 0 100px 0;">

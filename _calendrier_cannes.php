@@ -88,7 +88,7 @@ for ($i = 0; $i < 14; $i++) {
     <h1 style="color: white; text-align: center; font-size: 1.5rem; margin: 20px 0;">
       📅 Planning Aquavelo <?= $current_center['city'] ?>
     </h1>
-    <p style="color: white; text-align: center;">Cliquez simplement sur le créneau de votre choix</p>
+    <p style="color: white; text-align: center;">Cliquez simplement sur le créneau de votre choix pour réserver votre séance gratuite</p>
   </div>
 </section>
 

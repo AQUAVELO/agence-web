@@ -59,6 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // C. ENVOI DES EMAILS (uniquement si Mailjet est configuré dans _settings.php)
             if (!empty($settings['mjusername'])) {
                 try {
+                    // Vérification si c'est une 2ème séance (Alerte Admin)
+                    $is_second_session = false;
+                    if ($date_heure) {
+                        $check_double = $database->prepare("SELECT id FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' AND id != ?");
+                        $last_id = $database->lastInsertId();
+                        $check_double->execute([$email, $last_id]);
+                        if ($check_double->rowCount() > 0) {
+                            $is_second_session = true;
+                        }
+                    }
+
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();
                     $mail->Host = $settings['mjhost'];
@@ -72,8 +83,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
-                    $mail->Subject = "Nouveau contact $city - $input_nom_complet";
-                    $mail->Body = "<h3>Nouveau prospect</h3>
+                    
+                    $subject_admin = "Nouveau contact $city - $input_nom_complet";
+                    if ($is_second_session) {
+                        $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
+                    }
+                    
+                    $mail->Subject = $subject_admin;
+                    $mail->Body = "<h3>" . ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect") . "</h3>
                                   <b>Nom:</b> $input_nom_complet<br>
                                   <b>Email:</b> $email<br>
                                   <b>Tel:</b> $tel<br>

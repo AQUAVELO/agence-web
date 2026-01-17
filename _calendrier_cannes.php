@@ -28,13 +28,20 @@ $special_activities = [
     'Samedi'   => ['13:30' => 'AQUAGYM'],
 ];
 
-// Récupérer les réservations pour CE centre spécifique
-$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id = ? AND name LIKE '%(RDV:%'");
-$bookings_query->execute([$center_id]);
+// Récupérer les réservations pour les centres qui partagent le même planning (Cannes, Mandelieu, Vallauris)
+$centers_shared = [305, 347, 349];
+if (in_array($center_id, $centers_shared)) {
+    $bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
+    $bookings_query->execute();
+} else {
+    $bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id = ? AND name LIKE '%(RDV:%'");
+    $bookings_query->execute([$center_id]);
+}
 $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
 
 function isSlotTaken($date, $hour, $existing_bookings) {
-    $search = "(RDV: " . $date . " à " . $hour . ")";
+    // On cherche la date et l'heure dans la chaîne (ex: "20/01/2026 à 13:30")
+    $search = $date . " à " . $hour;
     foreach ($existing_bookings as $booking) {
         if (strpos($booking, $search) !== false) return true;
     }

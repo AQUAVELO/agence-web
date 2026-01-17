@@ -5,6 +5,11 @@
 
 require '_settings.php';
 
+// Inclusion de l'autoloader PHPMailer si nécessaire
+if (file_exists('vendor/autoload.php')) {
+    require_once 'vendor/autoload.php';
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;

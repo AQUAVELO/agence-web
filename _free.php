@@ -142,6 +142,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       L'équipe Aquavélo<br>
                                       <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
                         $mail->send();
+                    } else {
+                        // MODÈLE PAR DÉFAUT POUR TOUS LES AUTRES CENTRES
+                        $mail->clearAddresses();
+                        $mail->addAddress($email);
+                        $mail->Subject = "Votre séance découverte gratuite chez Aquavelo $city";
+                        
+                        $mail->Body = "Bonjour $input_nom_complet,<br><br>
+                                      Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>$city</b>.<br><br>
+                                      Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
+                                      <b>Prenez dès maintenant rendez-vous directement en appelant le :</b><br>
+                                      👉 <b>" . $row_center_contact['phone'] . "</b>.<br><br>
+                                      N'oubliez pas de venir équipé(e) avec :<br>
+                                      ✅ Votre maillot de bain,<br>
+                                      ✅ Une serviette,<br>
+                                      ✅ Un gel douche,<br>
+                                      ✅ Une bouteille d'eau,<br>
+                                      ✅ Et des chaussures adaptées à l'aquabiking.<br><br>
+                                      <b>Adresse :</b> " . $row_center_contact['address'] . "<br>
+                                      <i>*Offre non cumulable. Réservez vite, les places sont limitées.</i><br><br>
+                                      Cordialement,<br>
+                                      L'équipe Aquavélo<br>
+                                      <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
+                        $mail->send();
                     }
                 } catch (Exception $e) {
                     // On ne bloque pas la navigation si l'email échoue

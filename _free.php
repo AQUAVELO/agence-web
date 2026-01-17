@@ -86,9 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Confirmation de votre séance à Aquavelo $city";
+                        
+                        // Formatage du message plus précis
+                        $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
+                        
                         $mail->Body = "Bonjour $input_nom_complet,<br><br>
-                                      Votre séance est confirmée pour le <b>$date_heure</b>.<br>
-                                      Lieu : " . $row_center_contact['address'] . "<br><br>
+                                      Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
+                                      Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
+                                      Bus : arrêt Leader ou Méridien Tél : 04 93 93 05 65<br><br>
                                       <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                       <b>🎒 À prévoir pour votre séance :</b><br>
                                       ✅ Maillot de bain<br>
@@ -96,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       ✅ Gel douche<br>
                                       ✅ Bouteille d'eau<br>
                                       ✅ Chaussures aquabiking (si vous ne les avez pas nous vous les prêterons)<br><br>
-                                      À très bientôt !";
+                                      À très bientôt ! Cordialement Claude";
                         $mail->send();
                     }
                 } catch (Exception $e) {

@@ -8,5 +8,10 @@
     "id": "rappel-3h",
     "command": "php cron_rappel_3h.php",
     "schedule": "10 * * * *"
+  },
+  {
+    "id": "suivi-apres-seance",
+    "command": "php cron_apres_seance.php",
+    "schedule": "20 * * * *"
   }
 ]

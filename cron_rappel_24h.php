@@ -6,6 +6,9 @@
 
 require '_settings.php';
 
+// Force le fuseau horaire de Paris pour la comparaison
+date_default_timezone_set('Europe/Paris');
+
 if (file_exists('vendor/autoload.php')) {
     require_once 'vendor/autoload.php';
 }

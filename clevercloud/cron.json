@@ -1,1 +1,1 @@
-["0 * * * * php /var/www/app/cron_rappel_24h.php"]
+["0 * * * * php cron_rappel_24h.php"]

@@ -43,6 +43,17 @@ $rdv_display = strpos($rdv_brut, '(') !== false ? str_replace(['(', ')'], ['pour
         </div>
       </div>
 
+      <div style="background: #fdfdfd; padding: 25px; border-radius: 15px; text-align: left; margin-bottom: 40px; border: 1px solid #eee;">
+        <h3 style="margin-top: 0; font-size: 1.1rem; color: #333; margin-bottom: 15px;">🎒 N'oubliez pas de venir équipé(e) avec :</h3>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+            <div style="font-size: 0.95rem; color: #555;">✅ Votre maillot de bain,</div>
+            <div style="font-size: 0.95rem; color: #555;">✅ Une serviette,</div>
+            <div style="font-size: 0.95rem; color: #555;">✅ Un gel douche,</div>
+            <div style="font-size: 0.95rem; color: #555;">✅ Une bouteille d'eau,</div>
+            <div style="font-size: 0.95rem; color: #555;">✅ Des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas)</div>
+        </div>
+      </div>
+
       <div style="margin-top: 30px; border-top: 2px solid #f5f5f5; padding-top: 30px;">
           <p style="font-weight: bold; color: #999; text-transform: uppercase; font-size: 0.8rem; margin-bottom: 15px;">Gestion de votre événement :</p>
           <div style="display: flex; gap: 15px; justify-content: center;">

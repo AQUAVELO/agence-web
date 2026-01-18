@@ -12,6 +12,11 @@
     RewriteRule ^aquabiking/?$ index.php?p=aquabiking [QSA,L]
     RewriteRule ^contact/?$ index.php?p=contact [QSA,L]
     RewriteRule ^free/?$ index.php?p=free [QSA,L]
+    RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
+    RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]
+    RewriteRule ^vente_prix/?$ index.php?p=vente_prix [QSA,L]
+    RewriteRule ^vente_prixprod/?$ index.php?p=vente_prixprod [QSA,L]
+    RewriteRule ^vente_cryoprod/?$ index.php?p=vente_cryoprod [QSA,L]
 </IfModule>
 
 # Si mod_rewrite n'est pas là, on redirige manuellement les erreurs 404 vers l'index

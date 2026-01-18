@@ -28,7 +28,7 @@ $settings['mjpassword'] = getenv('MAILJET_PASSWORD') ?: '';
 
 
 // ⭐ Configuration Telegram
-$settings['tg_token'] = getenv('TELEGRAM_BOT_TOKEN') ?: ''; // À remplir dans Clever Cloud
+$settings['tg_token'] = '8517515830:AAFWzlEOlxlrzo01l91836int0n5fTWVOZI';
 $settings['tg_chat_id'] = '6535972843';
 
 function sendTelegram($message) {

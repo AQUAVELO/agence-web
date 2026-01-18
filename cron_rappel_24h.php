@@ -75,8 +75,12 @@ foreach ($bookings as $booking) {
                                   🗓️ <b>$rdv_info</b><br><br>
                                   Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes<br>
                                   Tél : 04 93 93 05 65<br><br>
-                                  <b>🎒 Rappel équipement :</b><br>
-                                  ✅ Maillot, Serviette, Gel douche, Bouteille d'eau.<br><br>
+                                  <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
+                                  ✅ Votre maillot de bain,<br>
+                                  ✅ Une serviette,<br>
+                                  ✅ Un gel douche,<br>
+                                  ✅ Une bouteille d'eau,<br>
+                                  ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
                                   À demain ! Cordialement Claude<br><br>
                                   <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
                                   <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>

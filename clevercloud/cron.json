@@ -1,1 +1,1 @@
-["0 * * * * php cron_rappel_24h.php"]
+["0 * * * * php cron_rappel_24h.php", "5 * * * * php cron_rappel_3h.php"]

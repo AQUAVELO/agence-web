@@ -81,11 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 // Étape 2 : Le rendez-vous vient d'être pris
                 $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" . 
                           "👤 $input_nom_complet\n" . 
+                          "📧 $email\n" .
                           "📞 $tel\n" . 
                           "🗓️ $date_heure";
                 if ($rescheduling_alert) {
                     $tg_msg = "<b>🔄 REPLANIFICATION - $city</b>\n" . 
                               "👤 $input_nom_complet\n" . 
+                              "📧 $email\n" .
                               "📞 $tel\n" .
                               "🗓️ Nouveau : $date_heure\n" .
                               "❌ Ancien : $old_rdv";
@@ -94,10 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 // Étape 1 : Inscription au formulaire (avant planning)
                 $tg_msg = "<b>🎁 NOUVEAU PROSPECT - $city</b>\n" . 
                           "👤 $input_nom_complet\n" . 
+                          "📧 $email\n" .
                           "📞 $tel";
                 if ($is_second_session) {
                     $tg_msg = "<b>⚠️ ALERTE DOUBLE SÉANCE - $city</b>\n" . 
-                              "👤 $input_nom_complet a déjà réservé une séance auparavant.";
+                              "👤 $input_nom_complet ($email) a déjà réservé une séance auparavant.";
                 }
             }
             sendTelegram($tg_msg);

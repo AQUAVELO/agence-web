@@ -59,7 +59,10 @@ if ($email && $rdv) {
                 $mail->send();
                 
                 // NOTIFICATION TELEGRAM (ANNULATION)
-                $tg_msg = "<b>❌ ANNULATION $city</b>\n👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n🗓️ RDV : $rdv";
+                $tg_msg = "<b>❌ ANNULATION $city</b>\n" .
+                          "👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n" .
+                          "📧 " . $email . "\n" .
+                          "🗓️ RDV : $rdv";
                 sendTelegram($tg_msg);
             } catch (Exception $e) {
                 error_log("Erreur Email Annulation: " . $mail->ErrorInfo);

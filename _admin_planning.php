@@ -1,10 +1,9 @@
 <?php
 /**
- * Admin Planning - Version Stable Sécurisée
+ * Admin Planning - Synchronisation Totale avec Nouveau Planning
  */
 
 require '_settings.php';
-// session_start() est maintenant géré par _settings.php pour éviter les sorties avant session
 
 // 1. CONNEXION ET DÉCONNEXION
 if (isset($_GET['logout'])) {
@@ -23,21 +22,19 @@ if (isset($_POST['login_pass'])) {
         $_SESSION['admin_auth'] = true;
         $authenticated = true;
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        // On ne régénère pas l'ID ici car cela cause des pertes de session sur certains serveurs lors des redirections JS
     } else {
         sleep(1);
         $login_error = "Mot de passe incorrect";
     }
 }
 
-// 2. ACTIONS (Suppression individuelle uniquement avec vérification CSRF)
+// 2. ACTIONS
 if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
         if (isset($_GET['token']) && $_GET['token'] === $_SESSION['csrf_token']) {
             $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
         }
     }
-    // Utilisation d'une redirection JS immédiate pour rester dans l'index.php
     echo "<script>window.location.replace('index.php?p=admin_planning');</script>";
     exit;
 }
@@ -56,12 +53,10 @@ if (!$authenticated): ?>
     </section>
 <?php return; endif;
 
-// 3. RÉCUPÉRATION DES DONNÉES
-$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
-$all_free_query->execute();
-$all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
-
-$special_activities = [
+// 3. CONFIGURATION DES PLANNINGS (Même logique que le calendrier client)
+$old_creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
+$old_creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
+$old_special_activities = [
     'Lundi'    => ['13:30' => 'AQUAGYM'],
     'Mardi'    => ['13:30' => 'AQUABOXING', '16:00' => 'AQUAGYM'],
     'Mercredi' => ['14:45' => 'AQUAGYM'],
@@ -70,29 +65,52 @@ $special_activities = [
     'Samedi'   => ['13:30' => 'AQUAGYM'],
 ];
 
-$creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
-$creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
+$new_planning = [
+    'Lundi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAGYM'],
+    'Mardi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Mercredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Jeudi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Vendredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAGYM','18:30' => 'AQUAVELO','19:45' => 'AQUABOXING'],
+    'Samedi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM'],
+    'Dimanche' => ['08:00' => 'AQUAVELO','09:00' => 'AQUAGYM','10:00' => 'AQUAVELO','11:00' => 'AQUAVELO','12:00' => 'AQUAVELO']
+];
+
 $calendar = [];
 $today = new DateTime();
+$switch_date = new DateTime('2026-02-01');
+
 for ($i = 0; $i < 14; $i++) {
     $date = clone $today; $date->modify("+$i day");
+    $day_name_en = $date->format('l');
     $day_num = $date->format('N');
-    if ($day_num <= 6) {
-        $calendar[] = [
-            'full_date' => $date->format('d/m/Y'),
-            'day_name'  => ($day_num == 6) ? 'Samedi' : ($day_num == 1 ? 'Lundi' : ($day_num == 2 ? 'Mardi' : ($day_num == 3 ? 'Mercredi' : ($day_num == 4 ? 'Jeudi' : 'Vendredi')))),
-            'slots'     => ($day_num == 6) ? $creneaux_samedi : $creneaux_semaine
-        ];
+    $days_fr = ['Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'];
+    $day_fr = $days_fr[$day_name_en];
+
+    $current_slots = [];
+    if ($date >= $switch_date) {
+        foreach ($new_planning[$day_fr] as $h => $act) $current_slots[] = ['time' => $h, 'activity' => $act];
+    } else {
+        if ($day_num <= 6) {
+            $times = ($day_num == 6) ? $old_creneaux_samedi : $old_creneaux_semaine;
+            foreach ($times as $t) $current_slots[] = ['time' => $t, 'activity' => ($old_special_activities[$day_fr][$t] ?? 'AQUAVELO')];
+        }
+    }
+    if (!empty($current_slots)) {
+        $calendar[] = ['full_date' => $date->format('d/m/Y'), 'day_name' => $day_fr, 'slots' => $current_slots];
     }
 }
+
+// 4. RÉCUPÉRATION DES RÉSERVATIONS
+$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
+$all_free_query->execute();
+$all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
 
 $bookings_visuel = [];
 foreach ($all_free as $res) {
     foreach ($calendar as $day) {
-        foreach ($day['slots'] as $slot) {
-            $search = $day['full_date'] . " à " . $slot;
-            if (strpos($res['name'], $search) !== false) {
-                $bookings_visuel[$day['full_date'] . '|' . $slot] = $res;
+        foreach ($day['slots'] as $s) {
+            if (strpos($res['name'], $day['full_date'] . " à " . $s['time']) !== false) {
+                $bookings_visuel[$day['full_date'] . '|' . $s['time']] = $res;
             }
         }
     }
@@ -101,9 +119,8 @@ foreach ($all_free as $res) {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h2 style="color: #00a8cc; margin: 0;">🗓️ Planning d'Administration</h2>
+        <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning</h2>
         <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
     </div>
 
@@ -114,21 +131,20 @@ foreach ($all_free as $res) {
             <div style="text-align: center; font-weight: bold; border-bottom: 2px solid #eee; margin-bottom: 12px; padding-bottom: 8px;">
                 <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
             </div>
-            <?php foreach ($day['slots'] as $slot) : 
-                $key = $day['full_date'] . '|' . $slot;
+            <?php foreach ($day['slots'] as $s) : 
+                $key = $day['full_date'] . '|' . $s['time'];
                 $res = $bookings_visuel[$key] ?? null;
             ?>
-                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? '#fff9c4' : '#fff' ?>; border: 1px solid <?= $res ? '#fbc02d' : '#eee' ?>; min-height: 90px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? '#fff9c4' : '#fff' ?>; border: 1px solid <?= $res ? '#fbc02d' : '#eee' ?>; min-height: 95px; display: flex; flex-direction: column; justify-content: space-between;">
                   <div>
-                      <b><?= $slot ?></b>
+                      <b><?= $s['time'] ?></b> <span style="font-size: 0.65rem; color: #999;"><?= $s['activity'] ?></span>
                       <?php if ($res) : ?>
-                        <div style="margin-top: 5px; font-weight: bold; color: #333;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                        <div style="margin-top: 5px; font-weight: bold; color: #333; line-height: 1.1;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
                         <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
                       <?php else : ?>
                         <div style="color: #bbb; margin-top: 5px;">Disponible</div>
                       <?php endif; ?>
                   </div>
-                  
                   <?php if ($res) : ?>
                     <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px;">
                         <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 

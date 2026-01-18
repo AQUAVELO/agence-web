@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Version Finale et Diagnostic
+ * Admin Planning - Synchronisation Totale
  */
 
 require '_settings.php';
@@ -14,15 +14,6 @@ if (isset($_POST['login_pass']) && $_POST['login_pass'] === $password_secret) {
     $authenticated = true;
 }
 
-// 2. ACTIONS
-if ($authenticated && isset($_GET['action'])) {
-    if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
-        $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
-    }
-    echo "<script>window.location.href='index.php?p=admin_planning';</script>";
-    exit;
-}
-
 if (!$authenticated): ?>
     <section class="content-area bg1" style="padding: 100px 0;">
       <div class="container">
@@ -34,26 +25,46 @@ if (!$authenticated): ?>
     </section>
 <?php return; endif;
 
-// 3. DONNÉES
-// On récupère tout de am_free (prospects récents)
-$all_free_query = $database->prepare("SELECT * FROM am_free ORDER BY id DESC LIMIT 100");
+// 2. INJECTION DES BLOCAGES MANUELS (Une seule fois ou si absents)
+$manual_to_inject = [
+    '19/01/2026' => ['09:45', '11:00', '12:15', '14:45', '16:00', '17:15', '18:30'],
+    '20/01/2026' => ['11:00', '13:30', '14:45'],
+    '21/01/2026' => ['17:15'],
+    '22/01/2026' => ['12:15'],
+    '23/01/2026' => ['09:45', '11:00', '14:45', '18:30'],
+    '24/01/2026' => ['09:45', '11:00', '12:15'],
+    '26/01/2026' => ['17:15'],
+    '27/01/2026' => ['13:30'],
+    '30/01/2026' => ['17:15'],
+    '31/01/2026' => ['09:45', '11:00', '12:15']
+];
+
+foreach ($manual_to_inject as $date => $hours) {
+    foreach ($hours as $h) {
+        $search = "%(RDV: $date à $h%";
+        $check = $database->prepare("SELECT id FROM am_free WHERE name LIKE ?");
+        $check->execute([$search]);
+        if (!$check->fetch()) {
+            $name = "RÉSERVÉ (RDV: $date à $h (AQUAVELO))";
+            $ins = $database->prepare("INSERT INTO am_free (reference, center_id, name, email, phone, free) VALUES (?, 305, ?, 'deja@reserve.com', '0000', 3)");
+            $ins->execute(['MANUAL'.rand(100,999), $name]);
+        }
+    }
+}
+
+// 3. ACTIONS
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
+    echo "<script>window.location.href='index.php?p=admin_planning';</script> text-align: center;";
+    exit;
+}
+
+// 4. RÉCUPÉRATION DES DONNÉES
+$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) ORDER BY id DESC");
 $all_free_query->execute();
 $all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
 
-// On récupère tout de client (CRM récent)
-$all_clients_query = $database->prepare("SELECT * FROM client ORDER BY id DESC LIMIT 100");
-$all_clients_query->execute();
-$all_clients = $all_clients_query->fetchAll(PDO::FETCH_ASSOC);
-
-// On récupère les centres pour les noms
-$centers_query = $database->prepare("SELECT id, city FROM am_centers");
-$centers_query->execute();
-$centers_map = [];
-foreach ($centers_query->fetchAll(PDO::FETCH_ASSOC) as $c) {
-    $centers_map[$c['id']] = $c['city'];
-}
-
-// Construction du planning visuel
+// Construction du planning
 $bookings_visuel = [];
 foreach ($all_free as $b) {
     if (strpos($b['name'], '(RDV:') !== false) {
@@ -84,34 +95,30 @@ for ($i = 0; $i < 14; $i++) {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    
-    <div style="text-align: right; margin-bottom: 20px;">
-        <a href="index.php?p=admin_planning&logout=1" class="btn btn-sm btn-default">Déconnexion</a>
-    </div>
-
-    <!-- 1. PLANNING VISUEL -->
-    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); margin-bottom: 40px;">
-      <h2 style="color: #00a8cc; margin-bottom: 20px;">🗓️ Planning des séances gratuites (Cannes/Mandelieu/Vallauris)</h2>
+    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <h2 style="color: #00a8cc; margin-bottom: 20px; text-align: center;">🗓️ Planning d'Administration (Cannes / Mandelieu / Vallauris)</h2>
+      
       <div style="display: flex; overflow-x: auto; gap: 10px; padding-bottom: 20px;">
         <?php foreach ($calendar as $day) : ?>
-          <div style="min-width: 180px; border: 1px solid #f0f0f0; border-radius: 10px; padding: 10px; background: #fafafa;">
-            <div style="text-align: center; font-weight: bold; border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 5px;">
+          <div style="min-width: 180px; border: 1px solid #eee; border-radius: 10px; padding: 10px; background: #fafafa;">
+            <div style="text-align: center; font-weight: bold; border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 5px;">
                 <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
             </div>
             <?php foreach ($day['slots'] as $slot) : 
                 $key = $day['full_date'] . '|' . $slot;
                 $res = $bookings_visuel[$key] ?? null;
+                $is_manual = ($res && $res['email'] == 'deja@reserve.com');
             ?>
-                <div style="padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 0.75rem; background: <?= $res ? '#fff9c4' : '#fff' ?>; border: 1px solid <?= $res ? '#fbc02d' : '#eee' ?>;">
+                <div style="padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 0.75rem; background: <?= $res ? ($is_manual ? '#eceff1' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_manual ? '#b0bec5' : '#fbc02d') : '#eee' ?>;">
                   <b><?= $slot ?></b>
                   <?php if ($res) : ?>
-                    <div style="margin-top: 5px; font-weight: bold;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
-                    <div style="color: #666;"><?= $res['phone'] ?></div>
+                    <div style="margin-top: 5px; font-weight: bold;"><?= $is_manual ? 'BLOCAGE MANUEL' : trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                    <div style="color: #666;"><?= $is_manual ? '' : $res['phone'] ?></div>
                     <div style="margin-top: 5px;">
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ce RDV ?')" style="color: #d32f2f;">❌ Annuler</a>
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ce RDV ou débloquer ce créneau ?')" style="color: #d32f2f;">❌ Débloquer</a>
                     </div>
                   <?php else : ?>
-                    <div style="color: #bbb;">Disponible</div>
+                    <div style="color: #bbb;">Libre</div>
                   <?php endif; ?>
                 </div>
             <?php endforeach; ?>
@@ -119,74 +126,5 @@ for ($i = 0; $i < 14; $i++) {
         <?php endforeach; ?>
       </div>
     </div>
-
-    <!-- 2. TABLE AM_FREE -->
-    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); margin-bottom: 40px;">
-      <h2 style="color: #00a8cc; margin-bottom: 20px;">👤 100 derniers prospects (Table am_free)</h2>
-      <p style="font-size: 0.9rem; color: #666;">C'est ici que sont enregistrées les demandes de séances gratuites.</p>
-      <div class="table-responsive">
-        <table class="table table-hover" style="font-size: 0.85rem;">
-          <thead style="background: #f8f9fa;">
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Centre</th>
-              <th>Nom / RDV</th>
-              <th>Email</th>
-              <th>Téléphone</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($all_free as $p) : ?>
-              <tr>
-                <td><?= $p['id'] ?></td>
-                <td><?= date('d/m/Y H:i', strtotime($p['date'])) ?></td>
-                <td><b><?= $centers_map[$p['center_id']] ?? $p['center_id'] ?></b></td>
-                <td><?= htmlspecialchars($p['name']) ?></td>
-                <td><?= htmlspecialchars($p['email']) ?></td>
-                <td><?= htmlspecialchars($p['phone']) ?></td>
-                <td>
-                  <a href="index.php?p=admin_planning&action=delete&id=<?= $p['id'] ?>" onclick="return confirm('Supprimer ce prospect ?')" class="btn btn-xs btn-danger">Supprimer</a>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 3. TABLE CLIENT -->
-    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
-      <h2 style="color: #00a8cc; margin-bottom: 20px;">📑 100 derniers clients (Table client)</h2>
-      <p style="font-size: 0.9rem; color: #666;">C'est votre base de données CRM générale.</p>
-      <div class="table-responsive">
-        <table class="table table-hover" style="font-size: 0.85rem;">
-          <thead style="background: #f8f9fa;">
-            <tr>
-              <th>ID</th>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Email</th>
-              <th>Tel</th>
-              <th>Ville</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($all_clients as $c) : ?>
-              <tr>
-                <td><?= $c['id'] ?></td>
-                <td><?= htmlspecialchars($c['nom']) ?></td>
-                <td><?= htmlspecialchars($c['prenom']) ?></td>
-                <td><?= htmlspecialchars($c['email']) ?></td>
-                <td><?= htmlspecialchars($c['tel']) ?></td>
-                <td><?= htmlspecialchars($c['ville']) ?></td>
-              </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
 </section>

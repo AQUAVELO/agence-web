@@ -1,5 +1,5 @@
 <?php
-require 'settings.php';
+// require 'settings.php'; // Déjà dans index.php
 
 // Configuration de Monetico
 define('MONETICO_TPE', '6684349');

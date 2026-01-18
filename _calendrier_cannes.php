@@ -121,7 +121,7 @@ for ($i = 0; $i < 14; $i++) {
                         data-activity="<?= $activity ?>"
                         onclick="confirmBooking(this)"
                         style="width: 100%; margin-bottom: 5px; padding: 8px 5px; border: 1px solid <?= $taken ? '#ccc' : '#00a8cc' ?>; background: <?= $taken ? '#eee' : 'white' ?>; color: <?= $taken ? '#999' : '#00a8cc' ?>; border-radius: 5px; cursor: <?= $taken ? 'not-allowed' : 'pointer' ?>; font-size: 0.9rem;">
-                  <?= $slot ?> <?= $taken ? '(Complet)' : '' ?>
+                  <?= $slot ?> <?= $taken ? '(Réservé)' : '' ?>
                   <br><span style="font-size: 10px; font-weight: bold; color: <?= $taken ? '#999' : $act_color ?>;"><?= $activity ?></span>
                 </button>
               <?php endforeach; ?>

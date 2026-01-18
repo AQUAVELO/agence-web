@@ -4,7 +4,7 @@
  */
 
 require '_settings.php';
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
+// session_start() est maintenant géré par _settings.php pour éviter les sorties avant session
 
 // 1. CONNEXION ET DÉCONNEXION
 if (isset($_GET['logout'])) {
@@ -23,7 +23,7 @@ if (isset($_POST['login_pass'])) {
         $_SESSION['admin_auth'] = true;
         $authenticated = true;
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        session_regenerate_id(true);
+        // On ne régénère pas l'ID ici car cela cause des pertes de session sur certains serveurs lors des redirections JS
     } else {
         sleep(1);
         $login_error = "Mot de passe incorrect";
@@ -37,7 +37,8 @@ if ($authenticated && isset($_GET['action'])) {
             $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
         }
     }
-    echo "<script>window.location.href='index.php?p=admin_planning';</script>";
+    // Utilisation d'une redirection JS immédiate pour rester dans l'index.php
+    echo "<script>window.location.replace('index.php?p=admin_planning');</script>";
     exit;
 }
 

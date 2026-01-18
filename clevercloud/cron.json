@@ -1,1 +1,12 @@
-["0 * * * * php cron_rappel_24h.php", "5 * * * * php cron_rappel_3h.php"]
+[
+  {
+    "id": "rappel-24h",
+    "command": "php cron_rappel_24h.php",
+    "schedule": "0 * * * *"
+  },
+  {
+    "id": "rappel-3h",
+    "command": "php cron_rappel_3h.php",
+    "schedule": "10 * * * *"
+  }
+]

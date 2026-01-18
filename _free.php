@@ -74,7 +74,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 $add_client->execute([$nom_db, $prenom_db, $tel, $email, $city]);
             }
 
-            // C. ENVOI DES EMAILS
+            // C. NOTIFICATIONS (Email et Telegram)
+            
+            // 1. Détermination du message Telegram
+            if ($segment == 'calendrier-cannes') {
+                // Étape 2 : Le rendez-vous vient d'être pris
+                $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" . 
+                          "👤 $input_nom_complet\n" . 
+                          "📞 $tel\n" . 
+                          "🗓️ $date_heure";
+                if ($rescheduling_alert) {
+                    $tg_msg = "<b>🔄 REPLANIFICATION - $city</b>\n" . 
+                              "👤 $input_nom_complet\n" . 
+                              "📞 $tel\n" .
+                              "🗓️ Nouveau : $date_heure\n" .
+                              "❌ Ancien : $old_rdv";
+                }
+            } else {
+                // Étape 1 : Inscription au formulaire (avant planning)
+                $tg_msg = "<b>🎁 NOUVEAU PROSPECT - $city</b>\n" . 
+                          "👤 $input_nom_complet\n" . 
+                          "📞 $tel";
+                if ($is_second_session) {
+                    $tg_msg = "<b>⚠️ ALERTE DOUBLE SÉANCE - $city</b>\n" . 
+                              "👤 $input_nom_complet a déjà réservé une séance auparavant.";
+                }
+            }
+            sendTelegram($tg_msg);
+
+            // 2. Envoi des Emails
             if (!empty($settings['mjusername'])) {
                 try {
                     $is_second_session = false;
@@ -94,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    // 1. Email pour l'ADMIN
+                    // Email pour l'ADMIN
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
@@ -119,17 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>Cordialement,<br>L'équipe Aquavelo<br><br><small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
                     }
                     $mail->send();
-                    
-                    // NOTIFICATION TELEGRAM (NOUVEL RDV)
-                    $tg_msg = "<b>🎁 Nouveau prospect $city</b>\n" . 
-                              "👤 $input_nom_complet\n" . 
-                              "📞 $tel\n" . 
-                              "🗓️ " . ($date_heure ?: 'Pas encore choisi');
-                    if ($rescheduling_alert) $tg_msg = "<b>🔄 REPLANIFICATION $city</b>\n👤 $input_nom_complet\n🗓️ Nouveau : $date_heure\n❌ Ancien : $old_rdv";
-                    if ($is_second_session && !$rescheduling_alert) $tg_msg = "<b>⚠️ ALERTE DOUBLE SEANCE</b>\n👤 $input_nom_complet a déjà réservé !";
-                    sendTelegram($tg_msg);
 
-                    // 2. Email pour le CLIENT
+                    // Email pour le CLIENT
                     if ($date_heure) {
                         $mail->clearAddresses();
                         $mail->addAddress($email);

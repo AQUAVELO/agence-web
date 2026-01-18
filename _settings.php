@@ -27,6 +27,17 @@ $settings['mjusername'] = getenv('MAILJET_USERNAME') ?: '';
 $settings['mjpassword'] = getenv('MAILJET_PASSWORD') ?: '';
 
 
+// ⭐ Configuration Telegram
+$settings['tg_token'] = getenv('TELEGRAM_BOT_TOKEN') ?: ''; // À remplir dans Clever Cloud
+$settings['tg_chat_id'] = '6535972843';
+
+function sendTelegram($message) {
+    global $settings;
+    if (empty($settings['tg_token'])) return;
+    $url = "https://api.telegram.org/bot" . $settings['tg_token'] . "/sendMessage?chat_id=" . $settings['tg_chat_id'] . "&text=" . urlencode($message) . "&parse_mode=html";
+    @file_get_contents($url);
+}
+
 try {
     $conn = new PDO(
         "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",

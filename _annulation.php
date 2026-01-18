@@ -58,12 +58,15 @@ if ($email && $rdv) {
                 
                 $mail->send();
                 
-                // NOTIFICATION TELEGRAM (ANNULATION)
-                $tg_msg = "<b>❌ ANNULATION $city</b>\n" .
-                          "👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n" .
-                          "📧 " . $email . "\n" .
-                          "🗓️ RDV : $rdv";
-                sendTelegram($tg_msg);
+                // NOTIFICATION TELEGRAM (ANNULATION) - Uniquement pour Cannes, Mandelieu, Vallauris
+                $planning_centers = [305, 347, 349];
+                if (in_array((int)$booking['center_id'], $planning_centers)) {
+                    $tg_msg = "<b>❌ ANNULATION $city</b>\n" .
+                              "👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n" .
+                              "📧 " . $email . "\n" .
+                              "🗓️ RDV : $rdv";
+                    sendTelegram($tg_msg);
+                }
             } catch (Exception $e) {
                 error_log("Erreur Email Annulation: " . $mail->ErrorInfo);
             }

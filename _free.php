@@ -77,33 +77,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // C. NOTIFICATIONS (Email et Telegram)
             
             // 1. Détermination du message Telegram
-            if ($segment == 'calendrier-cannes') {
-                // Étape 2 : Le rendez-vous vient d'être pris
-                $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" . 
-                          "👤 $input_nom_complet\n" . 
-                          "📧 $email\n" .
-                          "📞 $tel\n" . 
-                          "🗓️ $date_heure";
-                if ($rescheduling_alert) {
-                    $tg_msg = "<b>🔄 REPLANIFICATION - $city</b>\n" . 
+            $planning_centers = [305, 347, 349];
+            if (in_array((int)$center_id, $planning_centers)) {
+                if ($segment == 'calendrier-cannes') {
+                    // Étape 2 : Le rendez-vous vient d'être pris
+                    $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" . 
                               "👤 $input_nom_complet\n" . 
                               "📧 $email\n" .
-                              "📞 $tel\n" .
-                              "🗓️ Nouveau : $date_heure\n" .
-                              "❌ Ancien : $old_rdv";
+                              "📞 $tel\n" . 
+                              "🗓️ $date_heure";
+                    if ($rescheduling_alert) {
+                        $tg_msg = "<b>🔄 REPLANIFICATION - $city</b>\n" . 
+                                  "👤 $input_nom_complet\n" . 
+                                  "📧 $email\n" .
+                                  "📞 $tel\n" . 
+                                  "🗓️ Nouveau : $date_heure\n" .
+                                  "❌ Ancien : $old_rdv";
+                    }
+                } else {
+                    // Étape 1 : Inscription au formulaire (avant planning)
+                    $tg_msg = "<b>🎁 NOUVEAU PROSPECT - $city</b>\n" . 
+                              "👤 $input_nom_complet\n" . 
+                              "📧 $email\n" .
+                              "📞 $tel";
+                    if ($is_second_session) {
+                        $tg_msg = "<b>⚠️ ALERTE DOUBLE SÉANCE - $city</b>\n" . 
+                                  "👤 $input_nom_complet ($email) a déjà réservé une séance auparavant.";
+                    }
                 }
-            } else {
-                // Étape 1 : Inscription au formulaire (avant planning)
-                $tg_msg = "<b>🎁 NOUVEAU PROSPECT - $city</b>\n" . 
-                          "👤 $input_nom_complet\n" . 
-                          "📧 $email\n" .
-                          "📞 $tel";
-                if ($is_second_session) {
-                    $tg_msg = "<b>⚠️ ALERTE DOUBLE SÉANCE - $city</b>\n" . 
-                              "👤 $input_nom_complet ($email) a déjà réservé une séance auparavant.";
-                }
+                sendTelegram($tg_msg);
             }
-            sendTelegram($tg_msg);
 
             // 2. Envoi des Emails
             if (!empty($settings['mjusername'])) {

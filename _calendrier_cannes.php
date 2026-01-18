@@ -39,27 +39,8 @@ if (in_array($center_id, $centers_shared)) {
 }
 $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
 
-// Blocage manuel des créneaux déjà réservés (Demande client)
-$manual_blocks = [
-    '19/01/2026' => ['12:15', '14:45', '16:00', '17:15', '18:30'],
-    '20/01/2026' => ['11:00', '13:30', '14:45'],
-    '21/01/2026' => ['17:15'],
-    '22/01/2026' => ['12:15'],
-    '23/01/2026' => ['09:45', '11:00', '14:45', '18:30'],
-    '24/01/2026' => ['09:45', '11:00', '12:15'],
-    '26/01/2026' => ['17:15'],
-    '27/01/2026' => ['13:30'],
-    '30/01/2026' => ['17:15'],
-    '31/01/2026' => ['09:45', '11:00', '12:15'],
-];
-
-function isSlotTaken($date, $hour, $existing_bookings, $manual_blocks = []) {
-    // 1. Vérification dans les blocages manuels
-    if (isset($manual_blocks[$date]) && in_array($hour, $manual_blocks[$date])) {
-        return true;
-    }
-    
-    // 2. Vérification dans la base de données
+function isSlotTaken($date, $hour, $existing_bookings) {
+    // Vérification dans la base de données uniquement
     $search = $date . " à " . $hour;
     foreach ($existing_bookings as $booking) {
         if (strpos($booking, $search) !== false) return true;
@@ -108,7 +89,7 @@ for ($i = 0; $i < 14; $i++) {
             </div>
             <div class="slots">
               <?php foreach ($day['slots'] as $slot) : 
-                $taken = isSlotTaken($day['full_date'], $slot, $existing_bookings, $manual_blocks);
+                $taken = isSlotTaken($day['full_date'], $slot, $existing_bookings);
                 $activity = isset($special_activities[$day['day_name']][$slot]) ? $special_activities[$day['day_name']][$slot] : 'AQUAVELO';
                 $act_color = ($activity == 'AQUABOXING') ? '#e91e63' : (($activity == 'AQUAGYM') ? '#9c27b0' : '#00a8cc');
               ?>

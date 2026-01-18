@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Nettoyage et Synchronisation Réelle
+ * Admin Planning - Version Stable Sécurisée
  */
 
 require '_settings.php';
@@ -14,29 +14,11 @@ if (isset($_POST['login_pass']) && $_POST['login_pass'] === $password_secret) {
     $authenticated = true;
 }
 
-// 2. ACTIONS
+// 2. ACTIONS (Suppression individuelle uniquement)
 if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
         $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
     }
-    
-    // NETTOYAGE RADICAL DES TESTS
-    if ($_GET['action'] === 'cleanup_tests') {
-        $database->prepare("DELETE FROM am_free WHERE 
-            email = 'deja@reserve.com' OR 
-            email = 'jacquesverdier4@gmail.com' OR 
-            email = 'admin@aquavelo.com' OR
-            name LIKE '%RODRIGO%' OR 
-            name LIKE '%ROLAND%' OR 
-            name LIKE '%Rodriguez%' OR 
-            name LIKE '%TROI%' OR 
-            name LIKE '%Client Web%' OR
-            phone = '0000' OR
-            phone = '0677667766' OR
-            phone = '0877666655'
-        ")->execute();
-    }
-    
     echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
 }
@@ -45,7 +27,7 @@ if (!$authenticated): ?>
     <section class="content-area bg1" style="padding: 100px 0;">
       <div class="container">
         <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center;">
-          <h2>Admin Planning</h2>
+          <h2 style="color: #00a8cc;">Administration Planning</h2>
           <form method="POST"><input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"><button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button></form>
         </div>
       </div>
@@ -97,39 +79,39 @@ foreach ($all_free as $res) {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-        <a href="index.php?p=admin_planning&action=cleanup_tests" onclick="return confirm('Voulez-vous vraiment supprimer TOUS les tests (Rodrigo, Roland, etc.) ?')" class="btn btn-danger" style="background: #d32f2f; border: none; font-weight: bold;">🧹 NETTOYER TOUS LES TESTS</a>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="color: #00a8cc; margin: 0;">🗓️ Planning d'Administration</h2>
         <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
     </div>
 
     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
-      <h3 style="color: #00a8cc; text-align: center; margin-bottom: 20px;">Planning Réel des Inscriptions</h3>
       <div style="display: flex; overflow-x: auto; gap: 10px; padding-bottom: 20px;">
         <?php foreach ($calendar as $day) : ?>
-          <div style="min-width: 195px; border: 1px solid #f0f0f0; border-radius: 10px; padding: 10px; background: #fafafa;">
+          <div style="min-width: 190px; border: 1px solid #f0f0f0; border-radius: 10px; padding: 10px; background: #fafafa;">
             <div style="text-align: center; font-weight: bold; border-bottom: 2px solid #eee; margin-bottom: 12px; padding-bottom: 8px;">
                 <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
             </div>
             <?php foreach ($day['slots'] as $slot) : 
                 $key = $day['full_date'] . '|' . $slot;
                 $res = $bookings_visuel[$key] ?? null;
-                $activity = $special_activities[$day['day_name']][$slot] ?? 'AQUAVELO';
-                $is_test = ($res && (strpos($res['name'], 'RODRIGO') !== false || strpos($res['name'], 'ROLAND') !== false || strpos($res['name'], 'Rodriguez') !== false || strpos($res['name'], 'TROI') !== false || strpos($res['name'], 'Client Web') !== false));
             ?>
-                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_test ? '#ffebee' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_test ? '#ffcdd2' : '#fbc02d') : '#eee' ?>; min-height: 100px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? '#fff9c4' : '#fff' ?>; border: 1px solid <?= $res ? '#fbc02d' : '#eee' ?>; min-height: 90px; display: flex; flex-direction: column; justify-content: space-between;">
                   <div>
-                      <b style="color: #333;"><?= $slot ?></b> <span style="font-size: 0.65rem; color: #999;"><?= $activity ?></span>
+                      <b><?= $slot ?></b>
                       <?php if ($res) : ?>
-                        <div style="margin-top: 5px; font-weight: bold; color: <?= $is_test ? '#d32f2f' : '#333' ?>;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                        <div style="margin-top: 5px; font-weight: bold; color: #333;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
                         <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
                       <?php else : ?>
-                        <div style="color: #ccc; margin-top: 5px;">Disponible</div>
+                        <div style="color: #bbb; margin-top: 5px;">Disponible</div>
                       <?php endif; ?>
                   </div>
                   
                   <?php if ($res) : ?>
                     <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px;">
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ce RDV ?')" style="color: #d32f2f; font-weight: bold; text-decoration: none; font-size: 0.7rem;">❌ ANNULER</a>
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" 
+                           onclick="return confirm('Annuler ce RDV ?')" 
+                           style="color: #d32f2f; font-size: 0.7rem; font-weight: bold; text-decoration: none;">❌ ANNULER</a>
                     </div>
                   <?php endif; ?>
                 </div>

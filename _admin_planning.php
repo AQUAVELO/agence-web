@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Synchronisation Totale et Réelle
+ * Admin Planning - Nettoyage et Synchronisation Réelle
  */
 
 require '_settings.php';
@@ -19,32 +19,24 @@ if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
         $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
     }
-    // Injection des blocages si vous voulez qu'ils apparaissent dans l'admin
-    if ($_GET['action'] === 'sync_blocks') {
-        $manual_blocks = [
-            '19/01/2026' => ['09:45', '11:00', '12:15', '14:45', '16:00', '17:15', '18:30'],
-            '20/01/2026' => ['11:00', '13:30', '14:45'],
-            '21/01/2026' => ['17:15'],
-            '22/01/2026' => ['12:15'],
-            '23/01/2026' => ['09:45', '11:00', '14:45', '18:30'],
-            '24/01/2026' => ['09:45', '11:00', '12:15'],
-            '26/01/2026' => ['17:15'],
-            '27/01/2026' => ['13:30'],
-            '30/01/2026' => ['17:15'],
-            '31/01/2026' => ['09:45', '11:00', '12:15'],
-        ];
-        foreach ($manual_blocks as $date => $hours) {
-            foreach ($hours as $h) {
-                $search = "%(RDV: $date à $h%";
-                $check = $database->prepare("SELECT id FROM am_free WHERE name LIKE ?");
-                $check->execute([$search]);
-                if (!$check->fetch()) {
-                    $name = "RÉSERVÉ (RDV: $date à $h (AQUAVELO))";
-                    $database->prepare("INSERT INTO am_free (reference, center_id, name, email, phone, free) VALUES (?, 305, ?, 'deja@reserve.com', '0000', 3)")->execute(['MANUAL'.rand(10,99), $name]);
-                }
-            }
-        }
+    
+    // NETTOYAGE RADICAL DES TESTS
+    if ($_GET['action'] === 'cleanup_tests') {
+        $database->prepare("DELETE FROM am_free WHERE 
+            email = 'deja@reserve.com' OR 
+            email = 'jacquesverdier4@gmail.com' OR 
+            email = 'admin@aquavelo.com' OR
+            name LIKE '%RODRIGO%' OR 
+            name LIKE '%ROLAND%' OR 
+            name LIKE '%Rodriguez%' OR 
+            name LIKE '%TROI%' OR 
+            name LIKE '%Client Web%' OR
+            phone = '0000' OR
+            phone = '0677667766' OR
+            phone = '0877666655'
+        ")->execute();
     }
+    
     echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
 }
@@ -90,7 +82,6 @@ for ($i = 0; $i < 14; $i++) {
     }
 }
 
-// Mapping robuste
 $bookings_visuel = [];
 foreach ($all_free as $res) {
     foreach ($calendar as $day) {
@@ -107,14 +98,15 @@ foreach ($all_free as $res) {
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
     <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-        <a href="index.php?p=admin_planning&action=sync_blocks" class="btn btn-info">🔄 Synchroniser les blocages</a>
+        <a href="index.php?p=admin_planning&action=cleanup_tests" onclick="return confirm('Voulez-vous vraiment supprimer TOUS les tests (Rodrigo, Roland, etc.) ?')" class="btn btn-danger" style="background: #d32f2f; border: none; font-weight: bold;">🧹 NETTOYER TOUS LES TESTS</a>
         <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
     </div>
 
     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <h3 style="color: #00a8cc; text-align: center; margin-bottom: 20px;">Planning Réel des Inscriptions</h3>
       <div style="display: flex; overflow-x: auto; gap: 10px; padding-bottom: 20px;">
         <?php foreach ($calendar as $day) : ?>
-          <div style="min-width: 190px; border: 1px solid #f0f0f0; border-radius: 10px; padding: 10px; background: #fafafa;">
+          <div style="min-width: 195px; border: 1px solid #f0f0f0; border-radius: 10px; padding: 10px; background: #fafafa;">
             <div style="text-align: center; font-weight: bold; border-bottom: 2px solid #eee; margin-bottom: 12px; padding-bottom: 8px;">
                 <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
             </div>
@@ -122,18 +114,23 @@ foreach ($all_free as $res) {
                 $key = $day['full_date'] . '|' . $slot;
                 $res = $bookings_visuel[$key] ?? null;
                 $activity = $special_activities[$day['day_name']][$slot] ?? 'AQUAVELO';
-                $is_manual = ($res && $res['email'] == 'deja@reserve.com');
+                $is_test = ($res && (strpos($res['name'], 'RODRIGO') !== false || strpos($res['name'], 'ROLAND') !== false || strpos($res['name'], 'Rodriguez') !== false || strpos($res['name'], 'TROI') !== false || strpos($res['name'], 'Client Web') !== false));
             ?>
-                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_manual ? '#eceff1' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_manual ? '#b0bec5' : '#fbc02d') : '#eee' ?>; min-height: 100px;">
-                  <b><?= $slot ?></b> <span style="font-size: 0.65rem; color: #999;"><?= $activity ?></span>
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_test ? '#ffebee' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_test ? '#ffcdd2' : '#fbc02d') : '#eee' ?>; min-height: 100px; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                      <b style="color: #333;"><?= $slot ?></b> <span style="font-size: 0.65rem; color: #999;"><?= $activity ?></span>
+                      <?php if ($res) : ?>
+                        <div style="margin-top: 5px; font-weight: bold; color: <?= $is_test ? '#d32f2f' : '#333' ?>;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                        <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
+                      <?php else : ?>
+                        <div style="color: #ccc; margin-top: 5px;">Disponible</div>
+                      <?php endif; ?>
+                  </div>
+                  
                   <?php if ($res) : ?>
-                    <div style="margin-top: 5px; font-weight: bold; color: #333;"><?= $is_manual ? 'RÉSERVÉ' : trim(explode('(RDV:', $res['name'])[0]) ?></div>
-                    <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
-                    <div style="margin-top: 8px;">
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ?')" style="color: #d32f2f; font-weight: bold;">❌ ANNULER</a>
+                    <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px;">
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ce RDV ?')" style="color: #d32f2f; font-weight: bold; text-decoration: none; font-size: 0.7rem;">❌ ANNULER</a>
                     </div>
-                  <?php else : ?>
-                    <div style="color: #bbb; margin-top: 5px;">Libre</div>
                   <?php endif; ?>
                 </div>
             <?php endforeach; ?>

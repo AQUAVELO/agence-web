@@ -1,33 +1,28 @@
 <?php
 /**
- * Interface d'administration discrète pour le planning - Version Gestion Clientèle
+ * Admin Planning - Vision Globale et Réelle
  */
 
 require '_settings.php';
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-// 1. GESTION DE LA CONNEXION
+// 1. CONNEXION
 $password_secret = "aquavelo2026";
 $authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
-
 if (isset($_POST['login_pass']) && $_POST['login_pass'] === $password_secret) {
     $_SESSION['admin_auth'] = true;
     $authenticated = true;
 }
 
-// 2. LOGIQUE D'ADMINISTRATION
+// 2. ACTIONS (ANNULER / BLOQUER)
 if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
-        $stmt = $database->prepare("DELETE FROM am_free WHERE id = ?");
-        $stmt->execute([intval($_GET['id'])]);
+        $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
     }
     if ($_GET['action'] === 'block' && isset($_GET['date']) && isset($_GET['hour'])) {
         $ref = 'BLOCK' . date('his');
         $name = "BLOCAGE MANUEL (RDV: " . $_GET['date'] . " à " . $_GET['hour'] . ")";
-        $stmt = $database->prepare("INSERT INTO am_free (reference, center_id, name, email, phone, free) VALUES (?, 305, ?, 'admin@aquavelo.com', '0000', 3)");
-        $stmt->execute([$ref, $name]);
+        $database->prepare("INSERT INTO am_free (reference, center_id, name, email, phone, free) VALUES (?, 305, ?, 'admin@aquavelo.com', '0000', 3)")->execute([$ref, $name]);
     }
     echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
@@ -37,46 +32,37 @@ if (!$authenticated): ?>
     <section class="content-area bg1" style="padding: 100px 0;">
       <div class="container">
         <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center;">
-          <h2 style="margin-bottom: 20px;">Accès Privé</h2>
-          <form method="POST" action="index.php?p=admin_planning">
-            <input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;">
-            <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; font-weight: bold; color: white;">CONNEXION</button>
-          </form>
+          <h2>Accès Admin</h2>
+          <form method="POST"><input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"><button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button></form>
         </div>
       </div>
     </section>
 <?php return; endif;
 
-// 3. RÉCUPÉRATION DES DONNÉES (Toutes les clientes Cannes/Mandelieu/Vallauris)
-$bookings_query = $database->prepare("SELECT id, name, email, phone FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
-$bookings_query->execute();
-$raw_bookings = $bookings_query->fetchAll(PDO::FETCH_ASSOC);
+// 3. RÉCUPÉRATION DES DONNÉES
+// On récupère TOUT am_free pour les centres concernés, trié par le plus récent
+$all_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) ORDER BY id DESC LIMIT 100");
+$all_query->execute();
+$all_prospects = $all_query->fetchAll(PDO::FETCH_ASSOC);
 
 $existing_bookings = [];
-foreach ($raw_bookings as $b) {
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $b['name'], $matches);
-    if ($matches) {
-        $key = $matches[1] . '|' . $matches[2];
-        $client_name = trim(explode('(RDV:', $b['name'])[0]);
-        $existing_bookings[$key] = [
-            'id' => $b['id'], 
-            'name' => $client_name,
-            'email' => $b['email'],
-            'phone' => $b['phone'],
-            'rdv_brut' => substr($b['name'], strpos($b['name'], "(RDV:") + 6, -1)
-        ];
+foreach ($all_prospects as $b) {
+    if (strpos($b['name'], '(RDV:') !== false) {
+        preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $b['name'], $matches);
+        if ($matches) {
+            $key = $matches[1] . '|' . $matches[2];
+            $existing_bookings[$key] = $b;
+        }
     }
 }
 
-// Configuration créneaux
+// Config planning
 $creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
 $creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
-
 $calendar = [];
 $today = new DateTime();
 for ($i = 0; $i < 14; $i++) {
-    $date = clone $today;
-    $date->modify("+$i day");
+    $date = clone $today; $date->modify("+$i day");
     $day_num = $date->format('N');
     if ($day_num <= 6) {
         $calendar[] = [
@@ -90,56 +76,67 @@ for ($i = 0; $i < 14; $i++) {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;">
-        <h2 style="margin: 0; color: #00a8cc;"><i class="fa fa-users"></i> Gestion des Clients (Planning)</h2>
-        <a href="index.php" class="btn btn-default">Quitter l'admin</a>
-      </div>
-
-      <div style="display: flex; overflow-x: auto; gap: 15px; padding-bottom: 20px;">
+    
+    <!-- SECTION 1 : PLANNING VISUEL -->
+    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); margin-bottom: 40px;">
+      <h2 style="color: #00a8cc; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 20px;">🗓️ Planning des Rendez-vous</h2>
+      <div style="display: flex; overflow-x: auto; gap: 10px; padding-bottom: 15px;">
         <?php foreach ($calendar as $day) : ?>
-          <div style="min-width: 220px; border: 1px solid #eee; border-radius: 10px; padding: 10px; background: #f9f9f9;">
-            <div style="text-align: center; font-weight: bold; color: #333; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px;">
-                <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
-            </div>
-            <div>
-              <?php foreach ($day['slots'] as $slot) : 
+          <div style="min-width: 200px; border: 1px solid #eee; border-radius: 8px; padding: 10px; background: #fdfdfd;">
+            <div style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px;"><?= $day['day_name'] ?> <?= $day['full_date'] ?></div>
+            <?php foreach ($day['slots'] as $slot) : 
                 $key = $day['full_date'] . '|' . $slot;
-                $is_taken = isset($existing_bookings[$key]);
-              ?>
-                <div style="margin-bottom: 12px; padding: 10px; border-radius: 8px; background: <?= $is_taken ? '#e3f2fd' : 'white' ?>; border: 1px solid <?= $is_taken ? '#bbdefb' : '#eee' ?>; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                  <div style="font-weight: bold; margin-bottom: 5px; color: #00a8cc; border-bottom: 1px solid #f0f0f0;"><?= $slot ?></div>
-                  
-                  <?php if ($is_taken) : 
-                    $b = $existing_bookings[$key];
-                  ?>
-                    <div style="font-weight: bold; margin-bottom: 3px;">👤 <?= $b['name'] ?></div>
-                    <div style="font-size: 0.75rem; color: #666; margin-bottom: 3px;"><i class="fa fa-phone"></i> <?= $b['phone'] ?></div>
-                    <div style="font-size: 0.75rem; color: #666; margin-bottom: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><i class="fa fa-envelope"></i> <?= $b['email'] ?></div>
-                    
-                    <div style="display: flex; gap: 5px;">
-                        <a href="index.php?p=calendrier_cannes&center=305&nom=<?= urlencode($b['name']) ?>&email=<?= urlencode($b['email']) ?>&phone=<?= urlencode($b['phone']) ?>&old_rdv=<?= urlencode($b['rdv_brut']) ?>" 
-                           style="flex: 1; text-align: center; background: #00a8cc; color: white; padding: 5px; border-radius: 4px; text-decoration: none; font-size: 0.7rem; font-weight: bold;">
-                           MODIFIER
-                        </a>
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $b['id'] ?>" 
-                           onclick="return confirm('Annuler définitivement ce rendez-vous ?')" 
-                           style="flex: 1; text-align: center; background: #ff4d4d; color: white; padding: 5px; border-radius: 4px; text-decoration: none; font-size: 0.7rem; font-weight: bold;">
-                           ANNULER
-                        </a>
-                    </div>
+                $res = $existing_bookings[$key] ?? null;
+            ?>
+                <div style="padding: 6px; border-radius: 5px; margin-bottom: 5px; font-size: 0.8rem; background: <?= $res ? '#e3f2fd' : '#fff' ?>; border: 1px solid <?= $res ? '#bbdefb' : '#eee' ?>;">
+                  <b><?= $slot ?></b>
+                  <?php if ($res) : ?>
+                    <div style="margin: 3px 0; font-weight: bold; color: #1976d2;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                    <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ce RDV ?')" style="color: #d32f2f; font-size: 0.7rem; text-decoration: underline;">Supprimer</a>
                   <?php else : ?>
-                    <a href="index.php?p=admin_planning&action=block&date=<?= $day['full_date'] ?>&hour=<?= $slot ?>" 
-                       style="display: block; text-align: center; color: #999; padding: 6px; border: 1px dashed #ccc; border-radius: 4px; text-decoration: none; font-size: 0.75rem;">
-                       BLOQUER
-                    </a>
+                    <div style="color: #ccc;">Libre</div>
                   <?php endif; ?>
                 </div>
-              <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
           </div>
         <?php endforeach; ?>
       </div>
     </div>
+
+    <!-- SECTION 2 : TOUS LES PROSPECTS (VUE RÉELLE BASE DE DONNÉES) -->
+    <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <h2 style="color: #00a8cc; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; margin-bottom: 20px;">👥 Liste réelle des 100 derniers prospects (am_free)</h2>
+      <div class="table-responsive">
+        <table class="table table-striped" style="font-size: 0.9rem;">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom / RDV</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($all_prospects as $p) : ?>
+              <tr>
+                <td><?= $p['id'] ?></td>
+                <td>
+                    <b><?= htmlspecialchars($p['name']) ?></b>
+                </td>
+                <td><?= htmlspecialchars($p['email']) ?></td>
+                <td><?= htmlspecialchars($p['phone']) ?></td>
+                <td>
+                  <a href="index.php?p=admin_planning&action=delete&id=<?= $p['id'] ?>" 
+                     onclick="return confirm('Supprimer définitivement ce prospect ?')" 
+                     class="btn btn-xs btn-danger">Supprimer</a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </section>

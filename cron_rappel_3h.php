@@ -45,7 +45,7 @@ foreach ($bookings as $booking) {
                     $mail->addAddress($booking['email']);
                     $mail->isHTML(true);
                     
-                    $mail->Subject = "À tout à l'heure ! bientôt votre séance Aquavelo";
+                    $mail->Subject = "Rappel de séance découverte";
                     
                     $rdv_brut = str_replace(['(RDV: ', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
                     $rdv_final = str_replace(['(', ')'], ['', ''], $rdv_brut);

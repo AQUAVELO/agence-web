@@ -1,7 +1,7 @@
 <?php
 /**
- * Simulation d'envoi du rappel 3h
- * Envoyé immédiatement à Claude pour vérification du contenu
+ * Simulation d'envoi du rappel 3h (Version Finale Mise à jour)
+ * Envoyé immédiatement à Claude pour validation finale du contenu
  */
 
 require '_settings.php';
@@ -15,8 +15,8 @@ use PHPMailer\PHPMailer\Exception;
 
 // CONFIGURATION DE LA SIMULATION
 $destinataire = "claude@alesiaminceur.com";
-$nom_client = "Claude (Test)";
-$rdv_info = "Lundi 19/01/2026 à 09:45 (AQUAVELO)";
+$nom_client = "Rodriguez"; // Simule le nom du prospect
+$rdv_info_brut = "Lundi 19/01/2026 à 09:45 (AQUAVELO)";
 $city = "Cannes";
 
 try {
@@ -35,17 +35,18 @@ try {
     
     $mail->Subject = "À tout à l'heure ! Votre séance Aquavelo dans 3 heures";
     
-    // Construction des URLs (simulation)
-    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($destinataire) . "&rdv=" . urlencode($rdv_info) . "&city=" . urlencode($city);
-    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_client) . "&email=" . urlencode($destinataire) . "&phone=0600000000&old_rdv=" . urlencode($rdv_info);
+    // URLs pour la simulation
+    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($destinataire) . "&rdv=" . urlencode($rdv_info_brut) . "&city=" . urlencode($city);
+    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_client) . "&email=" . urlencode($destinataire) . "&phone=0600000000&old_rdv=" . urlencode($rdv_info_brut);
 
+    // Contenu exact demandé
     $mail->Body = "Bonjour " . $nom_client . ",<br><br>
-                  Votre séance Aquavelo commence dans environ <b>3 heures</b> !<br><br>
-                  🗓️ <b>" . str_replace(['(', ')'], ['', ''], substr($rdv_info, strpos($rdv_info, "(RDV:") ?: 0)) . "</b><br><br>
-                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes<br>
+                  Je vous rappelle votre rdv pour <b>" . $rdv_info_brut . "</b>.<br><br>
+                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
+                  Bus : arrêt Leader ou Méridien.<br>
                   Tél : 04 93 93 05 65<br><br>
                   <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
-                  <b>🎒 À prévoir pour votre séance :</b><br>
+                  <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
                   ✅ Votre maillot de bain,<br>
                   ✅ Une serviette,<br>
                   ✅ Un gel douche,<br>
@@ -61,7 +62,7 @@ try {
                   </tr></table>";
     
     $mail->send();
-    echo "Simulation de rappel 3h envoyée avec succès à $destinataire";
+    echo "Simulation de rappel 3h envoyée à $destinataire avec le nouveau modèle.";
     
 } catch (Exception $e) {
     echo "Erreur lors de l'envoi de la simulation : " . $mail->ErrorInfo;

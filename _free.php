@@ -128,29 +128,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    // Email pour l'ADMIN
+                    // Email pour l'ADMIN (Dirigeant)
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
                     
-                    $subject_admin = "Nouveau contact $city - $input_nom_complet";
-                    if ($rescheduling_alert) $subject_admin = "🔄 REPLANIFICATION : $city - $input_nom_complet";
-                    if ($is_second_session && !$rescheduling_alert) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
+                    $date_now = date('d-m-Y H:i:s');
                     
-                    $mail->Subject = $subject_admin;
-                    
-                    if (in_array((int)$center_id, [305, 347, 349, 253])) {
-                        $mail->Body = "<h3>" . ($rescheduling_alert ? "🔄 Replanification de séance" : ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect")) . "</h3>
-                                      <b>Nom:</b> $input_nom_complet<br><b>Email:</b> $email<br><b>Tel:</b> $tel<br><b>Centre:</b> $city<br><b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
+                    if ($segment == 'calendrier-cannes') {
+                        // Email de CONFIRMATION de RDV (Une fois le créneau choisi)
+                        $subject_admin = "✅ RDV CONFIRMÉ : $city - $input_nom_complet";
+                        if ($rescheduling_alert) $subject_admin = "🔄 REPLANIFICATION : $city - $input_nom_complet";
+                        $mail->Subject = $subject_admin;
+                        
+                        $mail->Body = "<h3>" . ($rescheduling_alert ? "🔄 Replanification de séance" : "Séance confirmée") . "</h3>
+                                      <b>Nom:</b> $input_nom_complet<br>
+                                      <b>Email:</b> $email<br>
+                                      <b>Tel:</b> $tel<br>
+                                      <b>Centre:</b> $city<br>
+                                      <b>RDV choisi:</b> $date_heure";
                         if ($rescheduling_alert) {
                             $mail->Body .= "<br><br><b>Ancien RDV qui a été annulé :</b> " . htmlspecialchars($old_rdv);
                         }
                     } else {
-                        $date_now = date('d-m-Y H:i:s');
-                        $mail->Body = "Bonjour,<br><br>" . (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") . "
-                                      <b>$input_nom_complet</b><br>Adresse électronique : <b>$email</b><br>Téléphone : <b>$tel</b><br><br>
+                        // Email de NOUVEAU PROSPECT (Le modèle demandé)
+                        $subject_admin = "Nouveau contact $city - $input_nom_complet";
+                        if ($is_second_session) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
+                        $mail->Subject = $subject_admin;
+                        
+                        $mail->Body = "Bonjour,<br><br>" . 
+                                      (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") . "
+                                      <b>$input_nom_complet</b><br>
+                                      Adresse électronique : <b>$email</b><br>
+                                      Téléphone : <b>$tel</b><br><br>
                                       La personne ci-dessus a commandée une séance découverte gratuite ainsi qu'un bilan minceur dans votre centre.<br>
-                                      Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>Cordialement,<br>L'équipe Aquavelo<br><br><small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
+                                      Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>
+                                      Cordialement,<br>
+                                      L'équipe Aquavelo<br><br>
+                                      <small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
                     }
                     $mail->send();
 

@@ -6,18 +6,36 @@
 require '_settings.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-// 1. CONNEXION
-$password_secret = "aquavelo2026";
-$authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
-if (isset($_POST['login_pass']) && $_POST['login_pass'] === $password_secret) {
-    $_SESSION['admin_auth'] = true;
-    $authenticated = true;
+// 1. CONNEXION ET DÉCONNEXION
+if (isset($_GET['logout'])) {
+    $_SESSION['admin_auth'] = false;
+    unset($_SESSION['admin_auth']);
+    unset($_SESSION['csrf_token']);
+    header("Location: index.php?p=admin_planning");
+    exit;
 }
 
-// 2. ACTIONS (Suppression individuelle uniquement)
+$password_secret = "aquavelo2026";
+$authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
+
+if (isset($_POST['login_pass'])) {
+    if ($_POST['login_pass'] === $password_secret) {
+        $_SESSION['admin_auth'] = true;
+        $authenticated = true;
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        session_regenerate_id(true);
+    } else {
+        sleep(1);
+        $login_error = "Mot de passe incorrect";
+    }
+}
+
+// 2. ACTIONS (Suppression individuelle uniquement avec vérification CSRF)
 if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
-        $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
+        if (isset($_GET['token']) && $_GET['token'] === $_SESSION['csrf_token']) {
+            $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
+        }
     }
     echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
@@ -28,6 +46,9 @@ if (!$authenticated): ?>
       <div class="container">
         <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center;">
           <h2 style="color: #00a8cc;">Administration Planning</h2>
+          <?php if (isset($login_error)): ?>
+            <div style="color: #d32f2f; margin-bottom: 15px; font-weight: bold;"><?= $login_error ?></div>
+          <?php endif; ?>
           <form method="POST"><input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"><button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button></form>
         </div>
       </div>
@@ -109,7 +130,7 @@ foreach ($all_free as $res) {
                   
                   <?php if ($res) : ?>
                     <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px;">
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" 
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 
                            onclick="return confirm('Annuler ce RDV ?')" 
                            style="color: #d32f2f; font-size: 0.7rem; font-weight: bold; text-decoration: none;">❌ ANNULER</a>
                     </div>

@@ -1,11 +1,10 @@
 <?php
 /**
- * Page Séance Découverte Gratuite - Version Production avec Emails
+ * Page Séance Découverte Gratuite - Version Finale avec Annulation/Replanification
  */
 
 require '_settings.php';
 
-// Inclusion de l'autoloader PHPMailer si nécessaire
 if (file_exists('vendor/autoload.php')) {
     require_once 'vendor/autoload.php';
 }
@@ -37,6 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $date_heure = isset($_POST['date_heure']) ? strip_tags($_POST['date_heure']) : '';
     $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
     
+    // GESTION REPLANIFICATION : Si un ancien RDV est fourni, on le supprime d'abord
+    $old_rdv = isset($_POST['old_rdv']) ? strip_tags($_POST['old_rdv']) : '';
+    if ($old_rdv && $email) {
+        $search_old = "%" . $old_rdv . "%";
+        $del_old = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
+        $del_old->execute([$email, $search_old]);
+    }
+
     if (empty($error)) {
         $city = $row_center_contact['city'];
         $email_center = $row_center_contact['email'] ?: 'claude@alesiaminceur.com';
@@ -48,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             $add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $add_free->execute(array($reference, $center_id, 3, $input_name_db, $email, $tel, $segment));
             
-            // B. Enregistrement Table client (Split Nom/Prénom)
+            // B. Enregistrement Table client
             $check_client = $database->prepare("SELECT id FROM client WHERE email = ?");
             $check_client->execute([$email]);
             if ($check_client->rowCount() == 0) {
@@ -56,23 +63,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 $prenom_db = $name_parts[0];
                 $nom_db = isset($name_parts[1]) ? $name_parts[1] : $name_parts[0];
                 if (count($name_parts) == 1) $prenom_db = "-";
-
                 $add_client = $database->prepare("INSERT INTO client (nom, prenom, tel, email, ville) VALUES (?, ?, ?, ?, ?)");
                 $add_client->execute([$nom_db, $prenom_db, $tel, $email, $city]);
             }
 
-            // C. ENVOI DES EMAILS (uniquement si Mailjet est configuré dans _settings.php)
+            // C. ENVOI DES EMAILS
             if (!empty($settings['mjusername'])) {
                 try {
-                    // Vérification si c'est une 2ème séance (Alerte Admin)
                     $is_second_session = false;
                     if ($date_heure) {
                         $check_double = $database->prepare("SELECT id FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' AND id != ?");
                         $last_id = $database->lastInsertId();
                         $check_double->execute([$email, $last_id]);
-                        if ($check_double->rowCount() > 0) {
-                            $is_second_session = true;
-                        }
+                        if ($check_double->rowCount() > 0) $is_second_session = true;
                     }
 
                     $mail = new PHPMailer(true);
@@ -84,129 +87,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    // 1. Email pour l'ADMIN (Vous / Dirigeant)
+                    // 1. Email pour l'ADMIN
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
-                    
                     $subject_admin = "Nouveau contact $city - $input_nom_complet";
-                    if ($is_second_session) {
-                        $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
-                    }
-                    
+                    if ($is_second_session) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
                     $mail->Subject = $subject_admin;
-
-                    // Choix du modèle selon le centre
-                    $special_centers = [305, 347, 349, 253];
-                    if (in_array((int)$center_id, $special_centers)) {
-                        // Modèle détaillé pour Cannes, Mandelieu, Vallauris, Antibes
+                    
+                    if (in_array((int)$center_id, [305, 347, 349, 253])) {
                         $mail->Body = "<h3>" . ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect") . "</h3>
-                                      <b>Nom:</b> $input_nom_complet<br>
-                                      <b>Email:</b> $email<br>
-                                      <b>Tel:</b> $tel<br>
-                                      <b>Centre:</b> $city<br>
-                                      <b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
+                                      <b>Nom:</b> $input_nom_complet<br><b>Email:</b> $email<br><b>Tel:</b> $tel<br><b>Centre:</b> $city<br><b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
                     } else {
-                        // NOUVEAU MODÈLE POUR LES AUTRES DIRIGEANTS
                         $date_now = date('d-m-Y H:i:s');
-                        $alert_msg = ($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "";
-                        
-                        $mail->Body = "Bonjour,<br><br>
-                                      $alert_msg
-                                      <b>$input_nom_complet</b><br>
-                                      Adresse électronique : <b>$email</b><br>
-                                      Téléphone : <b>$tel</b><br><br>
+                        $mail->Body = "Bonjour,<br><br>" . (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") . "
+                                      <b>$input_nom_complet</b><br>Adresse électronique : <b>$email</b><br>Téléphone : <b>$tel</b><br><br>
                                       La personne ci-dessus a commandée une séance découverte gratuite ainsi qu'un bilan minceur dans votre centre.<br>
-                                      Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>
-                                      Cordialement,<br>
-                                      L'équipe Aquavelo<br><br>
-                                      <small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
+                                      Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>Cordialement,<br>L'équipe Aquavelo<br><br><small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
                     }
                     $mail->send();
 
                     // 2. Email pour le CLIENT
                     if ($date_heure) {
-                        // ... (Code existant pour Cannes/Mandelieu/Vallauris)
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Confirmation de votre séance à Aquavelo $city";
                         $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
-                        $mail->Body = "Bonjour $input_nom_complet,<br><br>
-                                      Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
-                                      Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
-                                      Bus : arrêt Leader ou Méridien Tél : 04 93 93 05 65<br><br>
+                        
+                        // URLs pour Annuler / Modifier
+                        $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($email) . "&rdv=" . urlencode($date_heure) . "&city=" . urlencode($city);
+                        $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&old_rdv=" . urlencode($date_heure);
+
+                        $mail->Body = "Bonjour $input_nom_complet,<br><br>Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
+                                      Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>Bus : arrêt Leader ou Méridien Tél : 04 93 93 05 65<br><br>
                                       <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
-                                      <b>🎒 À prévoir pour votre séance :</b><br>
-                                      ✅ Maillot de bain<br>
-                                      ✅ Serviette de bain<br>
-                                      ✅ Gel douche<br>
-                                      ✅ Bouteille d'eau<br>
-                                      ✅ Chaussures aquabiking (si vous ne les avez pas nous vous les prêterons)<br><br>
-                                      À très bientôt ! Cordialement Claude<br><br>
-                                      <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
-                                      <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
-                                      <table cellspacing='0' cellpadding='0'>
-                                        <tr>
-                                          <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px; color:#666; display:block;'>
-                                            <a href='https://www.aquavelo.com/index.php?p=page&city=" . urlencode($city) . "' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a>
-                                          </td>
-                                          <td width='10'></td>
-                                          <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px; color:#666; display:block;'>
-                                            <a href='https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a>
-                                          </td>
-                                        </tr>
-                                      </table>";
-                        $mail->send();
-                    } elseif ((int)$center_id === 253) {
-                        // MODÈLE SPÉCIFIQUE ANTIBES
-                        $mail->clearAddresses();
-                        $mail->addAddress($email);
-                        $mail->Subject = "Votre séance découverte gratuite chez Aquavelo Antibes";
-                        
-                        $mail->Body = "Bonjour $input_nom_complet,<br><br>
-                                      Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>Antibes</b>.<br><br>
-                                      Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
-                                      <b>Prenez dès maintenant rendez-vous directement sur :</b><br>
-                                      👉 <a href='https://calendly.com/aquavelo-antibes'>https://calendly.com/aquavelo-antibes</a><br>
-                                      ou en appelant le <b>" . $row_center_contact['phone'] . "</b>.<br><br>
-                                      N'oubliez pas de venir équipé(e) avec :<br>
-                                      ✅ Votre maillot de bain,<br>
-                                      ✅ Une serviette,<br>
-                                      ✅ Un gel douche,<br>
-                                      ✅ Une bouteille d'eau,<br>
-                                      ✅ Et des chaussures adaptées à l'aquabiking.<br><br>
-                                      <b>Adresse :</b> " . $row_center_contact['address'] . "<br>
-                                      <i>*Offre non cumulable. Réservez vite, les places sont limitées.</i><br><br>
-                                      Cordialement,<br>
-                                      L'équipe Aquavélo<br>
-                                      <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
-                        $mail->send();
-                    } elseif (!in_array((int)$center_id, [305, 347, 349])) {
-                        // MODÈLE PAR DÉFAUT POUR TOUS LES AUTRES CENTRES (Sauf Cannes, Mandelieu, Vallauris)
-                        $mail->clearAddresses();
-                        $mail->addAddress($email);
-                        $mail->Subject = "Votre séance découverte gratuite chez Aquavelo $city";
-                        
-                        $mail->Body = "Bonjour $input_nom_complet,<br><br>
-                                      Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>$city</b>.<br><br>
-                                      Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
-                                      <b>Prenez dès maintenant rendez-vous directement en appelant le :</b><br>
-                                      👉 <b>" . $row_center_contact['phone'] . "</b>.<br><br>
-                                      N'oubliez pas de venir équipé(e) avec :<br>
-                                      ✅ Votre maillot de bain,<br>
-                                      ✅ Une serviette,<br>
-                                      ✅ Un gel douche,<br>
-                                      ✅ Une bouteille d'eau,<br>
-                                      ✅ Et des chaussures adaptées à l'aquabiking.<br><br>
-                                      <b>Adresse :</b> " . $row_center_contact['address'] . "<br>
-                                      <i>*Offre non cumulable. Réservez vite, les places sont limitées.</i><br><br>
-                                      Cordialement,<br>
-                                      L'équipe Aquavélo<br>
-                                      <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
+                                      <b>🎒 À prévoir pour votre séance :</b><br>✅ Maillot, Serviette, Gel douche, Bouteille d'eau, Chaussures aquabiking.<br><br>
+                                      À très bientôt ! Cordialement Claude<br><br><hr style='border:none; border-top:1px solid #eee; margin:20px 0;'><p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
+                                      <table cellspacing='0' cellpadding='0'><tr>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a></td>
+                                      <td width='10'></td>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a></td>
+                                      </tr></table>";
                         $mail->send();
                     }
                 } catch (Exception $e) {
-                    // On ne bloque pas la navigation si l'email échoue
                     error_log("Erreur Email: " . $mail->ErrorInfo);
                 }
             }
@@ -224,23 +148,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 echo "<script>window.location.href = 'index.php?p=free&success=1&cid=$center_id';</script>";
                 exit;
             }
-
-        } catch (Exception $e) {
-            $error_message = "Erreur technique : " . $e->getMessage();
-        }
+        } catch (Exception $e) { $error_message = "Erreur technique : " . $e->getMessage(); }
     }
 }
 
 if (isset($_GET['success'])) {
     $success_message = "Votre demande a bien été envoyée !";
     if (isset($_GET['cid'])) {
-        $cid = intval($_GET['cid']);
         $stmt = $database->prepare("SELECT city, phone FROM am_centers WHERE id = ?");
-        $stmt->execute([$cid]);
+        $stmt->execute([intval($_GET['cid'])]);
         $cinfo = $stmt->fetch();
-        if ($cinfo) {
-            $success_message .= "<br><br>Veuillez appeler le centre de <b>" . $cinfo['city'] . "</b> au <b>" . $cinfo['phone'] . "</b> pour confirmer votre rendez-vous.";
-        }
+        if ($cinfo) $success_message .= "<br><br>Veuillez appeler le centre de <b>" . $cinfo['city'] . "</b> au <b>" . $cinfo['phone'] . "</b> pour confirmer votre rendez-vous.";
     }
 }
 ?>
@@ -254,17 +172,14 @@ if (isset($_GET['success'])) {
     <?php if ($success_message): ?>
       <div class="alert alert-success" style="max-width: 600px; margin: 40px auto; border-radius: 15px; background: #d4edda; color: #155724; padding: 40px; text-align: center;">
         <i class="fa fa-check-circle" style="font-size: 4rem; display: block; margin-bottom: 20px;"></i>
-        <h2>Merci !</h2>
-        <p><?= $success_message ?></p>
+        <h2>Merci !</h2><p><?= $success_message ?></p>
         <div style="margin-top: 30px;"><a href="index.php" class="btn btn-primary">RETOUR À L'ACCUEIL</a></div>
       </div>
     <?php else: ?>
-      <!-- Formulaire identique au local -->
       <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
         <h2 style="text-align: center; color: #00a8cc; margin-bottom: 25px;">Réservez votre séance gratuite</h2>
         <form role="form" method="POST" action="index.php?p=free" id="mainFreeForm">
-            <div style="margin-bottom: 15px;">
-                <label>Centre *</label>
+            <div style="margin-bottom: 15px;"><label>Centre *</label>
                 <select name="center" id="centerSelect" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;">
                     <option value="">-- Choisissez un centre --</option>
                     <?php foreach ($centers_list_d as $c): ?>

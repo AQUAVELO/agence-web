@@ -138,6 +138,7 @@ for ($i = 0; $i < 14; $i++) {
         <input type="hidden" name="nom" value="<?= htmlspecialchars($_GET['nom'] ?? 'Client Web') ?>">
         <input type="hidden" name="email" value="<?= htmlspecialchars($_GET['email'] ?? '') ?>">
         <input type="hidden" name="phone" value="<?= htmlspecialchars($_GET['phone'] ?? '') ?>">
+        <input type="hidden" name="old_rdv" value="<?= htmlspecialchars($_GET['old_rdv'] ?? '') ?>"> <!-- Ancien RDV à supprimer si modification -->
       </form>
 
     </div>

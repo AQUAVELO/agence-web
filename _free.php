@@ -160,10 +160,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $mail->addAddress($email);
                         $mail->Subject = "Votre séance découverte gratuite à Aquavelo $city";
                         
+                        // Ajout spécifique du lien Calendly pour Antibes uniquement
+                        $rdv_text = "Prenez dès maintenant rendez-vous directement en appelant le <b>" . $row_center_contact['phone'] . "</b>.";
+                        if ($center_id == 253) { // 253 est l'ID d'Antibes
+                            $rdv_text = "Prenez dès maintenant rendez-vous directement sur <a href='https://calendly.com/aquavelo-antibes'>https://calendly.com/aquavelo-antibes</a>, ou en appelant le <b>" . $row_center_contact['phone'] . "</b>.";
+                        }
+                        
                         $mail->Body = "Bonjour " . $input_nom_complet . ",<br><br>
                                       Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>$city</b>.<br><br>
                                       Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
-                                      Prenez dès maintenant rendez-vous directement en appelant le <b>" . $row_center_contact['phone'] . "</b>.<br><br>
+                                      $rdv_text<br><br>
                                       <b>N'oubliez pas de venir équipé(e) avec :</b><br>
                                       ✅ Votre maillot de bain,<br>
                                       ✅ Une serviette,<br>

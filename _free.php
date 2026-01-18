@@ -38,10 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     
     // GESTION REPLANIFICATION : Si un ancien RDV est fourni, on le supprime d'abord
     $old_rdv = isset($_POST['old_rdv']) ? strip_tags($_POST['old_rdv']) : '';
+    $rescheduling_alert = false;
     if ($old_rdv && $email) {
         $search_old = "%" . $old_rdv . "%";
-        $del_old = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
-        $del_old->execute([$email, $search_old]);
+        // Récupérer les infos avant suppression pour l'alerte
+        $check_old = $database->prepare("SELECT name FROM am_free WHERE email = ? AND name LIKE ?");
+        $check_old->execute([$email, $search_old]);
+        if ($check_old->fetch()) {
+            $rescheduling_alert = true;
+            $del_old = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
+            $del_old->execute([$email, $search_old]);
+        }
     }
 
     if (empty($error)) {
@@ -91,13 +98,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
                     $mail->addAddress($email_center);
                     $mail->isHTML(true);
+                    
                     $subject_admin = "Nouveau contact $city - $input_nom_complet";
-                    if ($is_second_session) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
+                    if ($rescheduling_alert) $subject_admin = "🔄 REPLANIFICATION : $city - $input_nom_complet";
+                    if ($is_second_session && !$rescheduling_alert) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
+                    
                     $mail->Subject = $subject_admin;
                     
                     if (in_array((int)$center_id, [305, 347, 349, 253])) {
-                        $mail->Body = "<h3>" . ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect") . "</h3>
+                        $mail->Body = "<h3>" . ($rescheduling_alert ? "🔄 Replanification de séance" : ($is_second_session ? "<span style='color:red;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</span>" : "Nouveau prospect")) . "</h3>
                                       <b>Nom:</b> $input_nom_complet<br><b>Email:</b> $email<br><b>Tel:</b> $tel<br><b>Centre:</b> $city<br><b>RDV choisi:</b> " . ($date_heure ?: 'Pas encore choisi');
+                        if ($rescheduling_alert) {
+                            $mail->Body .= "<br><br><b>Ancien RDV qui a été annulé :</b> " . htmlspecialchars($old_rdv);
+                        }
                     } else {
                         $date_now = date('d-m-Y H:i:s');
                         $mail->Body = "Bonjour,<br><br>" . (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") . "

@@ -5,20 +5,63 @@
 
 require '_settings.php';
 
+if (file_exists('vendor/autoload.php')) {
+    require_once 'vendor/autoload.php';
+}
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 $rdv = isset($_GET['rdv']) ? htmlspecialchars($_GET['rdv']) : '';
 $city = isset($_GET['city']) ? htmlspecialchars($_GET['city']) : '';
 
+$success = false;
+
 if ($email && $rdv) {
-    // 1. Suppression de la réservation dans am_free
-    // On cherche l'entrée qui contient l'email et le RDV spécifique dans le nom
-    $search_rdv = "%" . $rdv . "%";
-    $del = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
-    $del->execute([$email, $search_rdv]);
-    
-    $success = true;
-} else {
-    $success = false;
+    // 0. Récupérer les infos avant suppression pour l'email
+    $stmt = $database->prepare("SELECT name, phone, center_id FROM am_free WHERE email = ? AND name LIKE ? LIMIT 1");
+    $stmt->execute([$email, "%" . $rdv . "%"]);
+    $booking = $stmt->fetch();
+
+    if ($booking) {
+        // 1. Suppression de la réservation dans am_free
+        $search_rdv = "%" . $rdv . "%";
+        $del = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
+        $del->execute([$email, $search_rdv]);
+        
+        $success = true;
+
+        // 2. Envoi d'un email d'alerte à l'admin
+        if (!empty($settings['mjusername'])) {
+            try {
+                $mail = new PHPMailer(true);
+                $mail->isSMTP();
+                $mail->Host = $settings['mjhost'];
+                $mail->SMTPAuth = true;
+                $mail->Username = $settings['mjusername'];
+                $mail->Password = $settings['mjpassword'];
+                $mail->Port = 587;
+                $mail->CharSet = 'UTF-8';
+
+                $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Annulation');
+                $mail->addAddress('claude@alesiaminceur.com'); // Email admin
+                $mail->isHTML(true);
+                $mail->Subject = "⚠️ ANNULATION : $city - " . trim(explode('(RDV:', $booking['name'])[0]);
+                
+                $mail->Body = "<h3>Une annulation a été effectuée</h3>
+                              <b>Client :</b> " . htmlspecialchars($booking['name']) . "<br>
+                              <b>Email :</b> " . htmlspecialchars($email) . "<br>
+                              <b>Tel :</b> " . htmlspecialchars($booking['phone']) . "<br>
+                              <b>RDV annulé :</b> " . htmlspecialchars($rdv) . "<br>
+                              <b>Centre :</b> " . htmlspecialchars($city);
+                
+                $mail->send();
+            } catch (Exception $e) {
+                error_log("Erreur Email Annulation: " . $mail->ErrorInfo);
+            }
+        }
+    }
 }
 ?>
 

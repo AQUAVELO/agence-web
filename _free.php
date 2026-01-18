@@ -142,7 +142,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       ✅ Gel douche<br>
                                       ✅ Bouteille d'eau<br>
                                       ✅ Chaussures aquabiking (si vous ne les avez pas nous vous les prêterons)<br><br>
-                                      À très bientôt ! Cordialement Claude";
+                                      À très bientôt ! Cordialement Claude<br><br>
+                                      <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
+                                      <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
+                                      <table cellspacing='0' cellpadding='0'>
+                                        <tr>
+                                          <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px; color:#666; display:block;'>
+                                            <a href='https://www.aquavelo.com/index.php?p=page&city=" . urlencode($city) . "' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a>
+                                          </td>
+                                          <td width='10'></td>
+                                          <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px; color:#666; display:block;'>
+                                            <a href='https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a>
+                                          </td>
+                                        </tr>
+                                      </table>";
                         $mail->send();
                     } elseif ((int)$center_id === 253) {
                         // MODÈLE SPÉCIFIQUE ANTIBES

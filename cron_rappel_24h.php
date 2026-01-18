@@ -60,6 +60,15 @@ foreach ($bookings as $booking) {
                     
                     // Formatage pour l'email
                     $rdv_info = str_replace(['(', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
+                    
+                    // Extraction précise pour les URLs
+                    preg_match('/\(RDV: (.*?)\)\z/', $booking['name'], $rdv_match);
+                    $date_heure_exact = $rdv_match[1] ?? '';
+                    $nom_prospect = trim(explode('(RDV:', $booking['name'])[0]);
+
+                    // URLs Annuler / Modifier
+                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($date_heure_exact) . "&city=Cannes";
+                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_prospect) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($date_heure_exact);
 
                     $mail->Body = "Bonjour " . explode(' ', $booking['name'])[0] . ",<br><br>
                                   Ceci est un petit rappel pour votre séance de demain :<br>
@@ -68,7 +77,20 @@ foreach ($bookings as $booking) {
                                   Tél : 04 93 93 05 65<br><br>
                                   <b>🎒 Rappel équipement :</b><br>
                                   ✅ Maillot, Serviette, Gel douche, Bouteille d'eau.<br><br>
-                                  À demain ! Cordialement Claude";
+                                  À demain ! Cordialement Claude<br><br>
+                                  <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
+                                  <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
+                                  <table cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
+                                        <a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a>
+                                      </td>
+                                      <td width='10'></td>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
+                                        <a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a>
+                                      </td>
+                                    </tr>
+                                  </table>";
                     
                     $mail->send();
                     

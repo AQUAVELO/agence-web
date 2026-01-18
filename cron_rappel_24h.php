@@ -1,12 +1,9 @@
 <?php
 /**
  * Script de rappel automatique 24h avant le RDV
- * À exécuter par Clever Cloud (Cron)
  */
 
 require '_settings.php';
-
-// Force le fuseau horaire de Paris pour la comparaison
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -16,9 +13,6 @@ if (file_exists('vendor/autoload.php')) {
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// 1. On cherche les RDV prévus dans environ 24h qui n'ont pas encore reçu de rappel
-// Le format dans la base est "Jour DD/MM/YYYY à HH:mm (ACTIVITE)"
-// On récupère tout ce qui n'est pas marqué comme "rappel envoyé"
 $stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND reminder_sent = 0");
 $stmt->execute();
 $bookings = $stmt->fetchAll();
@@ -26,23 +20,17 @@ $bookings = $stmt->fetchAll();
 $now = new DateTime();
 $count = 0;
 
-       foreach ($bookings as $booking) {
-           // Extraction de la date plus robuste : supporte différents formats
-           // Ex: "Lundi 19/01/2026 à 09:45" ou "19/01/2026 à 09:45"
-           preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
-           
-           if (count($matches) === 3) {
-               $rdv_date_str = $matches[1] . ' ' . $matches[2];
-               $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $rdv_date_str);
-               
-               if ($rdv_date) {
-                   $diff = $now->diff($rdv_date);
-                   $hours_until = ($diff->days * 24) + $diff->h;
+foreach ($bookings as $booking) {
+    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
+    
+    if (count($matches) === 3) {
+        $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
+        
+        if ($rdv_date) {
+            $diff = $now->diff($rdv_date);
+            $hours_until = ($diff->days * 24) + $diff->h;
 
-                   // Fenêtre de 24h (entre 18h et 30h à l'avance pour être sûr de ne rien rater)
-                   if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
-
-                // ENVOI DE L'EMAIL
+            if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
                 try {
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();
@@ -57,28 +45,22 @@ $count = 0;
                     $mail->addAddress($booking['email']);
                     $mail->isHTML(true);
                     
-                    $mail->Subject = "Rappel : Votre séance Aquavelo demain !";
+                    $mail->Subject = "Votre séance Aquavelo demain !";
                     
-                    // Formatage pour l'email
-                    $rdv_info = str_replace(['(', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
-                    $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $rdv_info);
-                    
-                    // Extraction précise pour les URLs
-                    preg_match('/\(RDV: (.*?)\)\z/', $booking['name'], $rdv_match);
-                    $date_heure_exact = $rdv_match[1] ?? '';
-                    $nom_prospect = trim(explode('(RDV:', $booking['name'])[0]);
+                    $rdv_brut = str_replace(['(RDV: ', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
+                    $rdv_final = str_replace(['(', ')'], ['', ''], $rdv_brut);
+                    $client_first_name = explode(' ', trim(explode('(RDV:', $booking['name'])[0]))[0];
 
-                    // URLs Annuler / Modifier
-                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($date_heure_exact) . "&city=Cannes";
-                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_prospect) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($date_heure_exact);
+                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($rdv_brut) . "&city=Cannes";
+                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($booking['name']) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($rdv_brut);
 
-                    $mail->Body = "Bonjour " . explode(' ', $booking['name'])[0] . ",<br><br>
-                                  Je vous rappelle votre rdv pour <b>$rdv_info</b>.<br><br>
-                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
-                                  Bus : arrêt Leader ou Méridien.<br>
+                    $mail->Body = "Bonjour " . $client_first_name . ",<br><br>
+                                  Votre séance d'essai est réservée :<br><br>
+                                  🗓️ <b>" . $rdv_final . "</b><br><br>
+                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes<br>
                                   Tél : 04 93 93 05 65<br><br>
-                                  <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
-                                  <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
+                                  Important : Merci d'arriver 15 minutes avant le début du cours.<br><br>
+                                  <b>🎒 À prévoir pour votre séance :</b><br>
                                   ✅ Votre maillot de bain,<br>
                                   ✅ Une serviette,<br>
                                   ✅ Un gel douche,<br>
@@ -87,32 +69,19 @@ $count = 0;
                                   À très bientôt ! Cordialement Claude<br><br>
                                   <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
                                   <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
-                                  <table cellspacing='0' cellpadding='0'>
-                                    <tr>
-                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
-                                        <a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a>
-                                      </td>
-                                      <td width='10'></td>
-                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
-                                        <a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a>
-                                      </td>
-                                    </tr>
-                                  </table>";
+                                  <table cellspacing='0' cellpadding='0'><tr>
+                                  <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a></td>
+                                  <td width='10'></td>
+                                  <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a></td>
+                                  </tr></table>";
                     
                     $mail->send();
-                    
-                    // Marquer comme envoyé
-                    $upd = $database->prepare("UPDATE am_free SET reminder_sent = 1 WHERE id = ?");
-                    $upd->execute([$booking['id']]);
+                    $database->prepare("UPDATE am_free SET reminder_sent = 1 WHERE id = ?")->execute([$booking['id']]);
                     $count++;
-                    
-                } catch (Exception $e) {
-                    error_log("Erreur Cron Rappel: " . $mail->ErrorInfo);
-                }
+                } catch (Exception $e) {}
             }
         }
     }
 }
-
-echo "Nombre de rappels envoyés : $count";
+echo "Rappels 24h envoyés : $count";
 ?>

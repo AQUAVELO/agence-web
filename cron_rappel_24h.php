@@ -26,21 +26,22 @@ $bookings = $stmt->fetchAll();
 $now = new DateTime();
 $count = 0;
 
-foreach ($bookings as $booking) {
-    // Extraction de la date : "Mardi 20/01/2026 à 09:45 (AQUAVELO)" -> "20/01/2026 09:45"
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
-    
-    if (count($matches) === 3) {
-        $rdv_date_str = $matches[1] . ' ' . $matches[2];
-        $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $rdv_date_str);
-        
-        if ($rdv_date) {
-            $diff = $now->diff($rdv_date);
-            $hours_until = ($diff->days * 24) + $diff->h;
+       foreach ($bookings as $booking) {
+           // Extraction de la date plus robuste : supporte différents formats
+           // Ex: "Lundi 19/01/2026 à 09:45" ou "19/01/2026 à 09:45"
+           preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
+           
+           if (count($matches) === 3) {
+               $rdv_date_str = $matches[1] . ' ' . $matches[2];
+               $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $rdv_date_str);
+               
+               if ($rdv_date) {
+                   $diff = $now->diff($rdv_date);
+                   $hours_until = ($diff->days * 24) + $diff->h;
 
-            // Si le RDV est entre 20h et 26h dans le futur (on vise la fenêtre des 24h)
-            if ($hours_until >= 20 && $hours_until <= 26 && $rdv_date > $now) {
-                
+                   // Fenêtre de 24h (entre 18h et 30h à l'avance pour être sûr de ne rien rater)
+                   if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
+
                 // ENVOI DE L'EMAIL
                 try {
                     $mail = new PHPMailer(true);

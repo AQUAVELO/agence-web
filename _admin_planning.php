@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Synchronisation Totale avec Nouveau Planning
+ * Admin Planning - Version avec restriction à partir de 10h00
  */
 
 require '_settings.php';
@@ -53,7 +53,7 @@ if (!$authenticated): ?>
     </section>
 <?php return; endif;
 
-// 3. CONFIGURATION DES PLANNINGS (Même logique que le calendrier client)
+// 3. CONFIGURATION DES PLANNINGS (Restriction >= 10h00)
 $old_creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
 $old_creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
 $old_special_activities = [
@@ -88,11 +88,15 @@ for ($i = 0; $i < 14; $i++) {
 
     $current_slots = [];
     if ($date >= $switch_date) {
-        foreach ($new_planning[$day_fr] as $h => $act) $current_slots[] = ['time' => $h, 'activity' => $act];
+        foreach ($new_planning[$day_fr] as $h => $act) {
+            if ($h >= '10:00') $current_slots[] = ['time' => $h, 'activity' => $act];
+        }
     } else {
         if ($day_num <= 6) {
             $times = ($day_num == 6) ? $old_creneaux_samedi : $old_creneaux_semaine;
-            foreach ($times as $t) $current_slots[] = ['time' => $t, 'activity' => ($old_special_activities[$day_fr][$t] ?? 'AQUAVELO')];
+            foreach ($times as $t) {
+                if ($t >= '10:00') $current_slots[] = ['time' => $t, 'activity' => ($old_special_activities[$day_fr][$t] ?? 'AQUAVELO')];
+            }
         }
     }
     if (!empty($current_slots)) {

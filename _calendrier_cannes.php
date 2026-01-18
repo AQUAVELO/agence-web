@@ -1,7 +1,7 @@
 <?php
 /**
  * Page de Calendrier locale pour Cannes, Mandelieu, Vallauris
- * Version avec bascule automatique au 1er Février 2026
+ * Version avec restriction à partir de 10h00
  */
 
 require '_settings.php';
@@ -97,15 +97,21 @@ for ($i = 0; $i < 14; $i++) {
     if ($date >= $switch_date) {
         // NOUVEAU PLANNING
         foreach ($new_planning[$day_fr] as $h => $act) {
-            $current_slots[] = ['time' => $h, 'activity' => $act];
+            // ⭐ Restriction : Uniquement à partir de 10h00
+            if ($h >= '10:00') {
+                $current_slots[] = ['time' => $h, 'activity' => $act];
+            }
         }
     } else {
-        // ANCIEN PLANNING (Pas de Dimanche)
+        // ANCIEN PLANNING
         if ($day_num <= 6) {
             $times = ($day_num == 6) ? $old_creneaux_samedi : $old_creneaux_semaine;
             foreach ($times as $t) {
-                $act = $old_special_activities[$day_fr][$t] ?? 'AQUAVELO';
-                $current_slots[] = ['time' => $t, 'activity' => $act];
+                // ⭐ Restriction : Uniquement à partir de 10h00 (donc on retire le 09:45)
+                if ($t >= '10:00') {
+                    $act = $old_special_activities[$day_fr][$t] ?? 'AQUAVELO';
+                    $current_slots[] = ['time' => $t, 'activity' => $act];
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ try {
     $mail->addAddress($destinataire);
     $mail->isHTML(true);
     
-    $mail->Subject = "Simulation : Rappel de séance découverte (3h)";
+    $mail->Subject = "À tout à l'heure ! bientôt votre séance Aquavelo";
     
     $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($destinataire) . "&rdv=" . urlencode($rdv_brut) . "&city=Cannes";
     $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_client) . "&email=" . urlencode($destinataire) . "&phone=0600000000&old_rdv=" . urlencode($rdv_brut);

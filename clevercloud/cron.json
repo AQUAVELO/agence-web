@@ -13,5 +13,10 @@
     "id": "suivi-apres-seance",
     "command": "php cron_apres_seance.php",
     "schedule": "20 * * * *"
+  },
+  {
+    "id": "suivi-2j",
+    "command": "php cron_suivi_2j.php",
+    "schedule": "30 * * * *"
   }
 ]

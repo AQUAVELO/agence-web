@@ -1,8 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 // _settings.php
-ini_set('display_errors', 0);
-error_reporting(0);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 require __DIR__ . '/vendor/autoload.php';
 use Phpfastcache\CacheManager;
@@ -34,8 +34,26 @@ $settings['tg_chat_id'] = '6535972843';
 function sendTelegram($message) {
     global $settings;
     if (empty($settings['tg_token'])) return;
-    $url = "https://api.telegram.org/bot" . $settings['tg_token'] . "/sendMessage?chat_id=" . $settings['tg_chat_id'] . "&text=" . urlencode($message) . "&parse_mode=html";
-    @file_get_contents($url);
+    
+    // On utilise cURL qui est plus robuste et ne bloque pas la page en cas d'erreur
+    $url = "https://api.telegram.org/bot" . $settings['tg_token'] . "/sendMessage";
+    $data = [
+        'chat_id' => $settings['tg_chat_id'],
+        'text' => $message,
+        'parse_mode' => 'html'
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($data));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2); // Timeout court (2s) pour ne pas ralentir le site
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Éviter les erreurs de certificat SSL
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
 }
 
 try {

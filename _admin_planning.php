@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Version avec restriction à partir de 10h00
+ * Admin Planning - Synchronisation Totale avec Restriction 9h45/10h00
  */
 
 require '_settings.php';
@@ -53,7 +53,7 @@ if (!$authenticated): ?>
     </section>
 <?php return; endif;
 
-// 3. CONFIGURATION DES PLANNINGS (Restriction >= 10h00)
+// 3. CONFIGURATION DES PLANNINGS (Synchronisé avec le calendrier client)
 $old_creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
 $old_creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
 $old_special_activities = [
@@ -95,7 +95,7 @@ for ($i = 0; $i < 14; $i++) {
         if ($day_num <= 6) {
             $times = ($day_num == 6) ? $old_creneaux_samedi : $old_creneaux_semaine;
             foreach ($times as $t) {
-                if ($t >= '10:00') $current_slots[] = ['time' => $t, 'activity' => ($old_special_activities[$day_fr][$t] ?? 'AQUAVELO')];
+                if ($t >= '09:45') $current_slots[] = ['time' => $t, 'activity' => ($old_special_activities[$day_fr][$t] ?? 'AQUAVELO')];
             }
         }
     }

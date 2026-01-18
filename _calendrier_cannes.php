@@ -1,7 +1,7 @@
 <?php
 /**
  * Page de Calendrier locale pour Cannes, Mandelieu, Vallauris
- * Version avec restriction à partir de 10h00
+ * Version avec restriction 9h45 (actuel) et 10h00 (février)
  */
 
 require '_settings.php';
@@ -30,39 +30,13 @@ $old_special_activities = [
 
 // 2. NOUVEAU PLANNING (à partir du 1er Février)
 $new_planning = [
-    'Lundi' => [
-        '08:30' => 'AQUAVELO', '09:45' => 'AQUAVELO', '11:00' => 'AQUAVELO', '12:15' => 'AQUAVELO', 
-        '13:30' => 'AQUAGYM', '14:45' => 'AQUAVELO', '16:00' => 'AQUAVELO', '17:15' => 'AQUAVELO', 
-        '18:30' => 'AQUAVELO', '19:45' => 'AQUAGYM'
-    ],
-    'Mardi' => [
-        '08:30' => 'AQUAVELO', '09:45' => 'AQUAVELO', '11:00' => 'AQUAVELO', '12:15' => 'AQUAVELO', 
-        '13:30' => 'AQUABOXING', '14:45' => 'AQUAVELO', '16:00' => 'AQUAGYM', '17:15' => 'AQUAVELO', 
-        '18:30' => 'AQUAVELO', '19:45' => 'AQUAVELO'
-    ],
-    'Mercredi' => [
-        '08:15' => 'AQUAVELO', '09:15' => 'AQUAGYM', '10:15' => 'AQUAVELO', '11:15' => 'AQUAVELO', 
-        '12:15' => 'AQUAVELO', '13:30' => 'AQUAVELO', '14:45' => 'AQUAGYM', '16:00' => 'AQUAVELO', 
-        '17:15' => 'AQUAVELO', '18:30' => 'AQUAVELO', '19:45' => 'AQUAVELO'
-    ],
-    'Jeudi' => [
-        '08:30' => 'AQUAVELO', '09:45' => 'AQUAVELO', '11:00' => 'AQUAVELO', '12:15' => 'AQUAVELO', 
-        '13:30' => 'AQUAVELO', '14:45' => 'AQUAGYM', '16:00' => 'AQUAVELO', '17:15' => 'AQUAVELO', 
-        '18:30' => 'AQUAVELO', '19:45' => 'AQUAVELO'
-    ],
-    'Vendredi' => [
-        '08:15' => 'AQUAVELO', '09:15' => 'AQUAGYM', '10:15' => 'AQUAVELO', '11:15' => 'AQUAVELO', 
-        '12:15' => 'AQUAVELO', '13:30' => 'AQUAVELO', '14:45' => 'AQUAVELO', '16:00' => 'AQUAVELO', 
-        '17:15' => 'AQUAGYM', '18:30' => 'AQUAVELO', '19:45' => 'AQUABOXING'
-    ],
-    'Samedi' => [
-        '08:15' => 'AQUAVELO', '09:15' => 'AQUAGYM', '10:15' => 'AQUAVELO', '11:15' => 'AQUAVELO', 
-        '12:15' => 'AQUAVELO', '13:15' => 'AQUAGYM'
-    ],
-    'Dimanche' => [
-        '08:00' => 'AQUAVELO', '09:00' => 'AQUAGYM', '10:00' => 'AQUAVELO', '11:00' => 'AQUAVELO', 
-        '12:00' => 'AQUAVELO'
-    ]
+    'Lundi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAGYM'],
+    'Mardi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Mercredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Jeudi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Vendredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAGYM','18:30' => 'AQUAVELO','19:45' => 'AQUABOXING'],
+    'Samedi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM'],
+    'Dimanche' => ['08:00' => 'AQUAVELO','09:00' => 'AQUAGYM','10:00' => 'AQUAVELO','11:00' => 'AQUAVELO','12:00' => 'AQUAVELO']
 ];
 
 // Récupérer les réservations
@@ -87,28 +61,21 @@ for ($i = 0; $i < 14; $i++) {
     $date->modify("+$i day");
     $day_name_en = $date->format('l');
     $day_num = $date->format('N');
-    
-    // Traduction jour
     $days_fr = ['Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'];
     $day_fr = $days_fr[$day_name_en];
 
-    // Choix du planning selon la date
     $current_slots = [];
     if ($date >= $switch_date) {
-        // NOUVEAU PLANNING
+        // ⭐ FUTUR (Février) : Restriction 10h00
         foreach ($new_planning[$day_fr] as $h => $act) {
-            // ⭐ Restriction : Uniquement à partir de 10h00
-            if ($h >= '10:00') {
-                $current_slots[] = ['time' => $h, 'activity' => $act];
-            }
+            if ($h >= '10:00') $current_slots[] = ['time' => $h, 'activity' => $act];
         }
     } else {
-        // ANCIEN PLANNING
+        // ⭐ ACTUEL : Restriction 9h45
         if ($day_num <= 6) {
             $times = ($day_num == 6) ? $old_creneaux_samedi : $old_creneaux_semaine;
             foreach ($times as $t) {
-                // ⭐ Restriction : Uniquement à partir de 10h00 (donc on retire le 09:45)
-                if ($t >= '10:00') {
+                if ($t >= '09:45') {
                     $act = $old_special_activities[$day_fr][$t] ?? 'AQUAVELO';
                     $current_slots[] = ['time' => $t, 'activity' => $act];
                 }
@@ -117,11 +84,7 @@ for ($i = 0; $i < 14; $i++) {
     }
 
     if (!empty($current_slots)) {
-        $calendar[] = [
-            'full_date' => $date->format('d/m/Y'),
-            'day_name'  => $day_fr,
-            'slots'     => $current_slots
-        ];
+        $calendar[] = ['full_date' => $date->format('d/m/Y'), 'day_name' => $day_fr, 'slots' => $current_slots];
     }
 }
 ?>

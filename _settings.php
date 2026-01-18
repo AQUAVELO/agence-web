@@ -15,7 +15,7 @@ $settings['base_url'] = '';
 
 // ⭐ Variables d'environnement Clever Cloud (avec fallback local)
 $settings['dbhost'] = getenv('MYSQL_ADDON_HOST') ?: '127.0.0.1';
-$settings['dbport'] = getenv('MYSQL_ADDON_PORT') ?: '3306';
+$settings['dbport'] = getenv('MYSQL_ADDON_PORT') ?: '8889';
 $settings['dbname'] = getenv('MYSQL_ADDON_DB') ?: 'alesiaminceur';
 $settings['dbusername'] = getenv('MYSQL_ADDON_USER') ?: 'root';
 $settings['dbpassword'] = getenv('MYSQL_ADDON_PASSWORD') ?: 'root';

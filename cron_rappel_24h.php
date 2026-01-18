@@ -61,6 +61,7 @@ $count = 0;
                     
                     // Formatage pour l'email
                     $rdv_info = str_replace(['(', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
+                    $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $rdv_info);
                     
                     // Extraction précise pour les URLs
                     preg_match('/\(RDV: (.*?)\)\z/', $booking['name'], $rdv_match);
@@ -72,17 +73,18 @@ $count = 0;
                     $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_prospect) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($date_heure_exact);
 
                     $mail->Body = "Bonjour " . explode(' ', $booking['name'])[0] . ",<br><br>
-                                  Ceci est un petit rappel pour votre séance de demain :<br>
-                                  🗓️ <b>$rdv_info</b><br><br>
-                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes<br>
+                                  Je vous rappelle votre rdv pour <b>$rdv_info</b>.<br><br>
+                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
+                                  Bus : arrêt Leader ou Méridien.<br>
                                   Tél : 04 93 93 05 65<br><br>
+                                  <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                   <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
                                   ✅ Votre maillot de bain,<br>
                                   ✅ Une serviette,<br>
                                   ✅ Un gel douche,<br>
                                   ✅ Une bouteille d'eau,<br>
                                   ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                  À demain ! Cordialement Claude<br><br>
+                                  À très bientôt ! Cordialement Claude<br><br>
                                   <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
                                   <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
                                   <table cellspacing='0' cellpadding='0'>

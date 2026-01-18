@@ -42,17 +42,43 @@ foreach ($bookings as $booking) {
                     $mail->Subject = "À tout à l'heure ! Votre séance Aquavelo dans 3 heures";
                     
                     $rdv_info = str_replace(['(', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
+                    $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $rdv_info);
+                    
+                    // Extraction précise pour les URLs
+                    preg_match('/\(RDV: (.*?)\)\z/', $booking['name'], $rdv_match);
+                    $date_heure_exact = $rdv_match[1] ?? '';
+                    $nom_prospect = trim(explode('(RDV:', $booking['name'])[0]);
+
+                    // URLs Annuler / Modifier
+                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($date_heure_exact) . "&city=Cannes";
+                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_prospect) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($date_heure_exact);
 
                     $mail->Body = "Bonjour " . explode(' ', $booking['name'])[0] . ",<br><br>
-                                  Votre séance Aquavelo commence dans 3 heures !<br>
-                                  🗓️ <b>$rdv_info</b><br><br>
+                                  Je vous rappelle votre rdv pour <b>$rdv_info</b>.<br><br>
+                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>
+                                  Bus : arrêt Leader ou Méridien.<br>
+                                  Tél : 04 93 93 05 65<br><br>
+                                  <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                   <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
                                   ✅ Votre maillot de bain,<br>
                                   ✅ Une serviette,<br>
                                   ✅ Un gel douche,<br>
                                   ✅ Une bouteille d'eau,<br>
                                   ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                  À tout à l'heure ! Cordialement Claude";
+                                  À très bientôt ! Cordialement Claude<br><br>
+                                  <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
+                                  <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
+                                  <table cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
+                                        <a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a>
+                                      </td>
+                                      <td width='10'></td>
+                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'>
+                                        <a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a>
+                                      </td>
+                                    </tr>
+                                  </table>";
                     $mail->send();
                     $database->prepare("UPDATE am_free SET reminder_3h_sent = 1 WHERE id = ?")->execute([$booking['id']]);
                     $count++;

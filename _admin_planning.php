@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Planning - Synchronisation Totale (Version Finale)
+ * Admin Planning - Synchronisation Totale et Réelle
  */
 
 require '_settings.php';
@@ -14,14 +14,36 @@ if (isset($_POST['login_pass']) && $_POST['login_pass'] === $password_secret) {
     $authenticated = true;
 }
 
-// 2. ACTIONS (Suppression / Nettoyage)
+// 2. ACTIONS
 if ($authenticated && isset($_GET['action'])) {
     if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
         $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
     }
-    if ($_GET['action'] === 'cleanup_tests') {
-        // Nettoyage des tests uniquement pour repartir à zéro si vous le souhaitez
-        $database->prepare("DELETE FROM am_free WHERE email = 'deja@reserve.com' OR name LIKE '%RODRIGO%' OR name LIKE '%TROI%' OR name LIKE '%Client Web%'")->execute();
+    // Injection des blocages si vous voulez qu'ils apparaissent dans l'admin
+    if ($_GET['action'] === 'sync_blocks') {
+        $manual_blocks = [
+            '19/01/2026' => ['09:45', '11:00', '12:15', '14:45', '16:00', '17:15', '18:30'],
+            '20/01/2026' => ['11:00', '13:30', '14:45'],
+            '21/01/2026' => ['17:15'],
+            '22/01/2026' => ['12:15'],
+            '23/01/2026' => ['09:45', '11:00', '14:45', '18:30'],
+            '24/01/2026' => ['09:45', '11:00', '12:15'],
+            '26/01/2026' => ['17:15'],
+            '27/01/2026' => ['13:30'],
+            '30/01/2026' => ['17:15'],
+            '31/01/2026' => ['09:45', '11:00', '12:15'],
+        ];
+        foreach ($manual_blocks as $date => $hours) {
+            foreach ($hours as $h) {
+                $search = "%(RDV: $date à $h%";
+                $check = $database->prepare("SELECT id FROM am_free WHERE name LIKE ?");
+                $check->execute([$search]);
+                if (!$check->fetch()) {
+                    $name = "RÉSERVÉ (RDV: $date à $h (AQUAVELO))";
+                    $database->prepare("INSERT INTO am_free (reference, center_id, name, email, phone, free) VALUES (?, 305, ?, 'deja@reserve.com', '0000', 3)")->execute(['MANUAL'.rand(10,99), $name]);
+                }
+            }
+        }
     }
     echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
@@ -31,19 +53,27 @@ if (!$authenticated): ?>
     <section class="content-area bg1" style="padding: 100px 0;">
       <div class="container">
         <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); text-align: center;">
-          <h2 style="color: #00a8cc;">Administration Planning</h2>
+          <h2>Admin Planning</h2>
           <form method="POST"><input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"><button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button></form>
         </div>
       </div>
     </section>
 <?php return; endif;
 
-// 3. RÉCUPÉRATION DES DONNÉES (Toute la table am_free pour les centres 305, 347, 349)
+// 3. RÉCUPÉRATION DES DONNÉES
 $all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
 $all_free_query->execute();
 $all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
 
-// 4. CONFIGURATION DU PLANNING
+$special_activities = [
+    'Lundi'    => ['13:30' => 'AQUAGYM'],
+    'Mardi'    => ['13:30' => 'AQUABOXING', '16:00' => 'AQUAGYM'],
+    'Mercredi' => ['14:45' => 'AQUAGYM'],
+    'Jeudi'    => ['14:45' => 'AQUAGYM'],
+    'Vendredi' => ['17:15' => 'AQUAGYM'],
+    'Samedi'   => ['13:30' => 'AQUAGYM'],
+];
+
 $creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
 $creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
 $calendar = [];
@@ -60,7 +90,7 @@ for ($i = 0; $i < 14; $i++) {
     }
 }
 
-// 5. MAPPING DES RÉSERVATIONS (Utilise la même logique que le planning client)
+// Mapping robuste
 $bookings_visuel = [];
 foreach ($all_free as $res) {
     foreach ($calendar as $day) {
@@ -76,13 +106,9 @@ foreach ($all_free as $res) {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h2 style="color: #00a8cc; margin: 0;">🗓️ Planning d'Administration</h2>
-        <div>
-            <a href="index.php?p=admin_planning&action=cleanup_tests" onclick="return confirm('Voulez-vous supprimer les tests ?')" class="btn btn-warning" style="margin-right: 10px;">Nettoyer les tests</a>
-            <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
-        </div>
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <a href="index.php?p=admin_planning&action=sync_blocks" class="btn btn-info">🔄 Synchroniser les blocages</a>
+        <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
     </div>
 
     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
@@ -95,25 +121,19 @@ foreach ($all_free as $res) {
             <?php foreach ($day['slots'] as $slot) : 
                 $key = $day['full_date'] . '|' . $slot;
                 $res = $bookings_visuel[$key] ?? null;
+                $activity = $special_activities[$day['day_name']][$slot] ?? 'AQUAVELO';
                 $is_manual = ($res && $res['email'] == 'deja@reserve.com');
             ?>
-                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_manual ? '#eceff1' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_manual ? '#b0bec5' : '#fbc02d') : '#eee' ?>; min-height: 90px; display: flex; flex-direction: column; justify-content: space-between;">
-                  <div>
-                      <b><?= $slot ?></b>
-                      <?php if ($res) : ?>
-                        <div style="margin-top: 5px; font-weight: bold; color: #333;"><?= trim(explode('(RDV:', $res['name'])[0]) ?></div>
-                        <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
-                      <?php else : ?>
-                        <div style="color: #bbb; margin-top: 5px;">Disponible</div>
-                      <?php endif; ?>
-                  </div>
-                  
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_manual ? '#eceff1' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_manual ? '#b0bec5' : '#fbc02d') : '#eee' ?>; min-height: 100px;">
+                  <b><?= $slot ?></b> <span style="font-size: 0.65rem; color: #999;"><?= $activity ?></span>
                   <?php if ($res) : ?>
-                    <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px;">
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" 
-                           onclick="return confirm('Annuler ce RDV ?')" 
-                           style="color: #d32f2f; font-size: 0.7rem; font-weight: bold; text-decoration: none;">❌ ANNULER</a>
+                    <div style="margin-top: 5px; font-weight: bold; color: #333;"><?= $is_manual ? 'RÉSERVÉ' : trim(explode('(RDV:', $res['name'])[0]) ?></div>
+                    <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
+                    <div style="margin-top: 8px;">
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>" onclick="return confirm('Annuler ?')" style="color: #d32f2f; font-weight: bold;">❌ ANNULER</a>
                     </div>
+                  <?php else : ?>
+                    <div style="color: #bbb; margin-top: 5px;">Libre</div>
                   <?php endif; ?>
                 </div>
             <?php endforeach; ?>

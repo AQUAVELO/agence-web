@@ -23,7 +23,14 @@ try {
     $database->exec("UPDATE am_free SET reminder_sent = 0 WHERE reminder_sent IS NULL");
     $database->exec("UPDATE am_free SET reminder_3h_sent = 0 WHERE reminder_3h_sent IS NULL");
 
-    echo "\n✅ Base de données mise à jour avec succès !";
+    // 4. TEST D'ENVOI MANUEL (si demandé)
+    if (isset($_GET['force_email'])) {
+        echo "\n--- TEST D'ENVOI MANUEL ---\n";
+        require 'cron_rappel_24h.php';
+        echo "\nRésultat : " . ($count > 0 ? "$count email(s) envoyé(s)." : "Aucun email envoyé (hors fenêtre ou déjà envoyé).");
+    }
+
+    echo "\n\n✅ Opération terminée !";
 } catch (Exception $e) {
     echo "❌ Erreur : " . $e->getMessage();
 }

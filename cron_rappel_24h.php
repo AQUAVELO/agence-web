@@ -19,6 +19,7 @@ $bookings = $stmt->fetchAll();
 
 $now = new DateTime();
 $count = 0;
+$log = "[" . $now->format('Y-m-d H:i:s') . "] Lancement du Cron 24h\n";
 
 foreach ($bookings as $booking) {
     preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
@@ -32,7 +33,9 @@ foreach ($bookings as $booking) {
 
             if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
                 try {
+                    $log .= "Tentative d'envoi à : " . $booking['email'] . " (RDV le " . $rdv_date->format('Y-m-d H:i') . ")\n";
                     $mail = new PHPMailer(true);
+                    // ... (reste de la config mail)
                     $mail->isSMTP();
                     $mail->Host = $settings['mjhost'];
                     $mail->SMTPAuth = true;
@@ -78,10 +81,17 @@ foreach ($bookings as $booking) {
                     $mail->send();
                     $database->prepare("UPDATE am_free SET reminder_sent = 1 WHERE id = ?")->execute([$booking['id']]);
                     $count++;
-                } catch (Exception $e) {}
+                    $log .= "✅ Succès pour " . $booking['email'] . "\n";
+                } catch (Exception $e) {
+                    $log .= "❌ Erreur Mailer pour " . $booking['email'] . " : " . $mail->ErrorInfo . "\n";
+                }
+            } else {
+                $log .= "Sauté : " . $booking['email'] . " (Hors fenêtre : " . $hours_until . "h avant)\n";
             }
         }
     }
 }
+$log .= "Fin du Cron. Total envoyés : $count\n---\n";
+file_put_contents('cron_log.txt', $log, FILE_APPEND);
 echo "Rappels 24h envoyés : $count";
 ?>

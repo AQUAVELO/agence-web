@@ -4,9 +4,6 @@
  */
 
 require '_settings.php';
-echo "SCRIPT STARTING...<br>";
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -35,8 +32,8 @@ foreach ($bookings as $booking) {
             $total_minutes_until = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
             $is_future = ($rdv_date > $now);
 
-            // Fenêtre d'envoi : élargie temporairement pour le test (90-240 min)
-            if ($is_future && $total_minutes_until >= 90 && $total_minutes_until <= 240) {
+            // Fenêtre d'envoi : normale (120-240 min)
+            if ($is_future && $total_minutes_until >= 120 && $total_minutes_until <= 240) {
                 try {
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();

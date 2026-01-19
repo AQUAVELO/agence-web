@@ -32,8 +32,8 @@ foreach ($bookings as $booking) {
             $total_minutes_until = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
             $is_future = ($rdv_date > $now);
 
-            // Fenêtre d'envoi : entre 120 minutes (2h) et 240 minutes (4h) avant le RDV
-            if ($is_future && $total_minutes_until >= 120 && $total_minutes_until <= 240) {
+            // Fenêtre d'envoi : élargie temporairement pour le test (90-240 min)
+            if ($is_future && $total_minutes_until >= 90 && $total_minutes_until <= 240) {
                 try {
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();

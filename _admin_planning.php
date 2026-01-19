@@ -66,30 +66,35 @@ $old_special_activities = [
 ];
 
 $new_planning = [
-    'Lundi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAGYM'],
-    'Mardi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
-    'Mercredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
-    'Jeudi' => ['08:30' => 'AQUAVELO','09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
-    'Vendredi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAGYM','18:30' => 'AQUAVELO','19:45' => 'AQUABOXING'],
-    'Samedi' => ['08:15' => 'AQUAVELO','09:15' => 'AQUAGYM','10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM'],
-    'Dimanche' => ['08:00' => 'AQUAVELO','09:00' => 'AQUAGYM','10:00' => 'AQUAVELO','11:00' => 'AQUAVELO','12:00' => 'AQUAVELO']
+    'Lundi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
+    'Mardi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
+    'Mercredi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
+    'Jeudi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
+    'Vendredi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAGYM','18:30' => 'AQUAVELO'],
+    'Samedi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM']
 ];
 
 $calendar = [];
 $today = new DateTime();
 $switch_date = new DateTime('2026-02-01');
 
-for ($i = 0; $i < 14; $i++) {
+for ($i = 0; $i < 21; $i++) {
     $date = clone $today; $date->modify("+$i day");
     $day_name_en = $date->format('l');
-    $day_num = $date->format('N');
+    $day_num = (int)$date->format('N');
+    
+    // On saute les dimanches
+    if ($day_num === 7) continue;
+
     $days_fr = ['Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'];
     $day_fr = $days_fr[$day_name_en];
 
     $current_slots = [];
     if ($date >= $switch_date) {
-        foreach ($new_planning[$day_fr] as $h => $act) {
-            if ($h >= '10:00') $current_slots[] = ['time' => $h, 'activity' => $act];
+        if (isset($new_planning[$day_fr])) {
+            foreach ($new_planning[$day_fr] as $h => $act) {
+                $current_slots[] = ['time' => $h, 'activity' => $act];
+            }
         }
     } else {
         if ($day_num <= 6) {

@@ -50,7 +50,8 @@ if ($authenticated && isset($_GET['action'])) {
             $stmt->execute([$ref, 305, 3, $lock_name, 'admin@aquavelo.com', '0493930565', 'admin-lock']);
         }
     }
-    header("Location: index.php?p=admin_planning");
+    // Redirection JavaScript car index.php a déjà envoyé du contenu
+    echo "<script>window.location.href='index.php?p=admin_planning';</script>";
     exit;
 }
 

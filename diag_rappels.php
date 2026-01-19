@@ -7,6 +7,12 @@ use PHPMailer\PHPMailer\Exception;
 
 echo "Heure actuelle : " . date('d/m/Y H:i:s') . "<br><br>";
 
+if (isset($_GET['reset'])) {
+    $id_reset = intval($_GET['reset']);
+    $database->prepare("UPDATE am_free SET reminder_3h_sent = 0 WHERE id = ?")->execute([$id_reset]);
+    echo "RESET EFFECTUÉ POUR L'ID $id_reset<br><br>";
+}
+
 $stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 10");
 $stmt->execute();
 $bookings = $stmt->fetchAll();

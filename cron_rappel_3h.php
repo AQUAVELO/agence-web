@@ -1,6 +1,6 @@
 <?php
 /**
- * Script de rappel automatique 3h avant le RDV
+ * Script de rappel automatique 3h avant le RDV - VERSION AMELIOREE (MINUTES)
  */
 
 require '_settings.php';
@@ -27,10 +27,13 @@ foreach ($bookings as $booking) {
         $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
         
         if ($rdv_date) {
+            // Calcul précis en minutes
             $diff = $now->diff($rdv_date);
-            $hours_until = ($diff->days * 24) + $diff->h;
+            $total_minutes_until = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
+            $is_future = ($rdv_date > $now);
 
-            if ($hours_until >= 2 && $hours_until <= 4 && $rdv_date > $now) {
+            // Fenêtre d'envoi : entre 120 minutes (2h) et 240 minutes (4h) avant le RDV
+            if ($is_future && $total_minutes_until >= 120 && $total_minutes_until <= 240) {
                 try {
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();

@@ -7,6 +7,7 @@ $stmt = $database->prepare("SELECT * FROM am_free WHERE id = ?");
 $stmt->execute([$id]);
 $booking = $stmt->fetch();
 
+echo "DEBUG_START<br>";
 echo "ANALYSE DU RDV " . $id . "<br>";
 echo "Nom complet dans la base : " . $booking['name'] . "<br>";
 

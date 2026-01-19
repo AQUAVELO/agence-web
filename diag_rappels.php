@@ -2,6 +2,9 @@
 require '_settings.php';
 date_default_timezone_set('Europe/Paris');
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 echo "Heure actuelle : " . date('d/m/Y H:i:s') . "<br><br>";
 
 $stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 10");
@@ -36,7 +39,27 @@ foreach ($bookings as $booking) {
     echo "<td>" . $booking['id'] . "</td>";
     echo "<td>" . htmlspecialchars($booking['name']) . "</td>";
     echo "<td>" . $booking['email'] . "</td>";
-    echo "<td>" . ($booking['reminder_3h_sent'] ? "OUI ✅" : "NON ❌") . "</td>";
+    if ($booking['id'] == 234154) {
+        echo "FORCING SEND FOR 234154... ";
+        try {
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = $settings['mjhost'];
+            $mail->SMTPAuth = true;
+            $mail->Username = $settings['mjusername'];
+            $mail->Password = $settings['mjpassword'];
+            $mail->Port = 587;
+            $mail->CharSet = 'UTF-8';
+            $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo');
+            $mail->addAddress($booking['email']);
+            $mail->isHTML(true);
+            $mail->Subject = "Rappel de séance découverte (FORCED)";
+            $mail->Body = "Bonjour, ceci est un rappel forcé pour votre RDV de 09:45.";
+            if($mail->send()) echo "SUCCESS ✅";
+            else echo "FAILED ❌";
+        } catch (Exception $e) { echo "ERROR: " . $e->getMessage(); }
+    }
+    echo "</td>";
     echo "<td>" . $status . "</td>";
     echo "</tr>";
 }

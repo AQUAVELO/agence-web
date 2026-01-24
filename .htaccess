@@ -6,7 +6,8 @@
     Options -MultiViews
     RewriteEngine On
     
-    # Détection automatique du RewriteBase pour local/prod (accepte les ports)
+    RewriteRule ^ping_htaccess/?$ index.php?p=home&ping=1 [QSA,L]
+    RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     <If "%{HTTP_HOST} =~ /^(localhost|127\.0\.0\.1)/">
         RewriteBase /aquavelo/
     </If>

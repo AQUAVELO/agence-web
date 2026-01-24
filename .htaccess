@@ -16,6 +16,7 @@
     RewriteRule ^ - [L]
 
     # Custom Routes
+    RewriteRule ^google_test/?$ https://www.google.com [R=301,L]
     RewriteRule ^ping_htaccess/?$ index.php?p=home&ping=1 [QSA,L]
     RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]

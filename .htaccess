@@ -1,23 +1,14 @@
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
-    
-    # Base URL
-    <If "%{HTTP_HOST} =~ /^(localhost|127\.0\.0\.1)/">
-        RewriteBase /aquavelo/
-    </If>
-    <Else>
-        RewriteBase /
-    </Else>
+    RewriteBase /
 
-    # Force redirection if not a real file or directory
+    # Ne pas traiter les fichiers et répertoires existants
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Custom Routes
-    RewriteRule ^google_test/?$ https://www.google.com [R=301,L]
-    RewriteRule ^ping_htaccess/?$ index.php?p=home&ping=1 [QSA,L]
+    # Routes personnalisées
     RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]
     RewriteRule ^vente_prix/?$ index.php?p=vente_prix [QSA,L]
@@ -29,6 +20,7 @@
     RewriteRule ^aquabiking/?$ index.php?p=aquabiking [QSA,L]
     RewriteRule ^contact/?$ index.php?p=contact [QSA,L]
     RewriteRule ^free/?$ index.php?p=free [QSA,L]
+    RewriteRule ^franchise/?$ index.php?p=franchise [QSA,L]
 
 </IfModule>
 

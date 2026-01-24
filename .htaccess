@@ -16,6 +16,7 @@
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ping_htaccess/?$ index.php?p=home&ping=1 [QSA,L]
     RewriteRule ^centres/([^/]+)/?$ index.php?p=page&city=$1 [QSA,L]
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
     RewriteRule ^aquabiking/?$ index.php?p=aquabiking [QSA,L]

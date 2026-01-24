@@ -1,6 +1,48 @@
 <?php require '_settings.php'; ?>
 <?php
 
+// ===== ROUTEUR PHP POUR PRETTY URLs =====
+// Gère les URLs comme /vente_formule, /centres/Cannes, etc.
+$request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Retirer le préfixe /aquavelo/ si on est en local
+if (strpos($request_uri, '/aquavelo/') === 0) {
+    $request_uri = substr($request_uri, strlen('/aquavelo'));
+}
+
+// Retirer le slash initial
+$request_uri = ltrim($request_uri, '/');
+
+// Router les pretty URLs vers les paramètres GET
+$routes = [
+    'vente_formule' => ['p' => 'vente_formule'],
+    'vente_cryo' => ['p' => 'vente_cryo'],
+    'vente_prix' => ['p' => 'vente_prix'],
+    'vente_prixprod' => ['p' => 'vente_prixprod'],
+    'vente_cryoprod' => ['p' => 'vente_cryoprod'],
+    'inscription' => ['p' => 'vente_formule'],
+    'centres' => ['p' => 'centers'],
+    'aquabiking' => ['p' => 'aquabiking'],
+    'contact' => ['p' => 'contact'],
+    'free' => ['p' => 'free'],
+    'franchise' => ['p' => 'franchise'],
+];
+
+// Vérifier les routes exactes
+if (isset($routes[$request_uri])) {
+    foreach ($routes[$request_uri] as $key => $value) {
+        $_GET[$key] = $value;
+    }
+}
+
+// Vérifier les routes avec paramètres (centres/ville)
+if (preg_match('#^centres/([^/]+)/?$#', $request_uri, $matches)) {
+    $_GET['p'] = 'page';
+    $_GET['city'] = urldecode($matches[1]);
+}
+
+// ===== FIN ROUTEUR =====
+
 if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 

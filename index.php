@@ -1,7 +1,7 @@
 <?php require '_settings.php'; ?>
 <?php
 
-if (isset($_GET['p']) && is_file('_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
+if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
 // ===== TITRES ET META DESCRIPTIONS OPTIMISÉS SEO =====

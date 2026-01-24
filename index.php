@@ -209,7 +209,7 @@ if (isset($_GET['city'])) {
   ?>
   <link rel="canonical" href="<?= $canonical_url; ?>">
   
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="<?= BASE_PATH ?>favicon.ico" type="image/x-icon">
   
   <!-- Hreflang pour SEO international -->
   <link rel="alternate" hreflang="fr-FR" href="<?= $canonical_url; ?>">
@@ -221,10 +221,10 @@ if (isset($_GET['city'])) {
   <link rel="preconnect" href="https://www.googletagmanager.com">
   
   <title><?= $title; ?> | Aquavelo</title>
-  <link rel="stylesheet" type="text/css" href="/css/animate.css">
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link rel="icon" href="images/favicon.png">
+  <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/animate.css?v=1">
+  <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/bootstrap.css?v=1">
+  <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/style.css?v=1">
+  <link rel="icon" href="<?= BASE_PATH ?>images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
   <style type="text/css">
     body,
@@ -523,12 +523,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   gtag('config', 'G-26LRGBE9X2');
 </script>
   
-  <script src="/js/modernizr.custom.js"></script>
+  <script src="<?= BASE_PATH ?>js/modernizr.custom.js"></script>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-  <script src="/bootstrap/js/html5shiv.js"></script>
-  <script src="/bootstrap/js/respond.min.js"></script>
+  <script src="<?= BASE_PATH ?>bootstrap/js/html5shiv.js"></script>
+  <script src="<?= BASE_PATH ?>bootstrap/js/respond.min.js"></script>
   <![endif]-->
   
   <script>
@@ -758,17 +758,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   
 <?php if (isset($row_center['id'])) : ?>
   <?php if ($row_center['id'] == 305) : // Cannes ?>
-    <link rel="manifest" href="/manifest-cannes.json">
-    <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_C.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_C.png">
+    <link rel="manifest" href="<?= BASE_PATH ?>manifest-cannes.json">
+    <link rel="icon" type="image/png" sizes="92x92" href="<?= BASE_PATH ?>images/Aquavelo_Icon_C.png">
+    <link rel="apple-touch-icon" href="<?= BASE_PATH ?>images/Aquavelo_Icon_192_C.png">
   <?php elseif ($row_center['id'] == 253) : // Antibes ?>
-    <link rel="manifest" href="/manifest-antibes.json">
-    <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_A.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_A.png">
+    <link rel="manifest" href="<?= BASE_PATH ?>manifest-antibes.json">
+    <link rel="icon" type="image/png" sizes="92x92" href="<?= BASE_PATH ?>images/Aquavelo_Icon_A.png">
+    <link rel="apple-touch-icon" href="<?= BASE_PATH ?>images/Aquavelo_Icon_192_A.png">
   <?php elseif ($_SERVER['REQUEST_URI'] === '/conseilminceur') : // Conseil Minceur ?>
-    <link rel="manifest" href="/manifest-conseilminceur.json">
-    <link rel="icon" type="image/png" sizes="92x92" href="/images/Aquavelo_Icon_M.png">
-    <link rel="apple-touch-icon" href="/images/Aquavelo_Icon_192_M.png">
+    <link rel="manifest" href="<?= BASE_PATH ?>manifest-conseilminceur.json">
+    <link rel="icon" type="image/png" sizes="92x92" href="<?= BASE_PATH ?>images/Aquavelo_Icon_M.png">
+    <link rel="apple-touch-icon" href="<?= BASE_PATH ?>images/Aquavelo_Icon_192_M.png">
   <?php endif; ?>
   <meta name="theme-color" content="#00ACDC">
 <?php endif; ?>
@@ -821,7 +821,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-          <a class="navbar-brand" href="https://www.aquavelo.com/"><img src="/images/content/logo.png" alt="Aquabiking collectif en piscine - Aquavelo" width="180" height="60"></a> 
+          <a class="navbar-brand" href="<?= BASE_PATH ?>"><img src="<?= BASE_PATH ?>images/content/logo.png" alt="Aquabiking collectif en piscine - Aquavelo" width="180" height="60"></a> 
         </div>
         <div class="navbar-collapse collapse">
           <form class="pull-right header-search" role="form" style="display:none;">
@@ -835,71 +835,71 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </fieldset>
           </form>
           <a href="#" id="showHeaderSearch" class="hidden-xs"><i class="fa fa-search"></i></a>
-          <ul class="nav navbar-nav navbar-right">
-            <li<?php if ($page == 'home') echo ' class="active"'; ?>> 
-              <a href="index.php">Accueil</a> 
-            </li>
-            
-            <li class="dropdown<?php if ($page == 'aquabiking') echo ' active'; ?>"> 
-              <a href="index.php?p=aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
-              <ul class="dropdown-menu">
-                <li><a href="index.php?p=aquabiking">Le vélo dans l'eau</a></li>
-                <li><a href="index.php?p=aquabiking#bienfaits">Les bienfaits</a></li>
-                <li><a href="index.php?p=aquabiking#questions">Vos questions</a></li>
-              </ul>
-            </li>
-            
-            <li class="dropdown<?php if ($page == 'centres') echo ' active'; ?>"> 
-              <a href="index.php?p=centers" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
-              <ul class="dropdown-menu">
-                <?php foreach ($centers_list_d as &$row_centers_list) { ?>
-                  <li><a href="index.php?p=page&city=<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
-                <?php } ?>
-              </ul>
-            </li>
-            
-            <li class="dropdown<?php if ($page == 'concept' || $page == 'franchise') echo ' active'; ?>"> 
-              <a href="index.php?p=franchise" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
-              <ul class="dropdown-menu">
-                <li><a href="index.php?p=franchise">Notre Concept</a></li>
-                <li class="divider"></li>
-                <li><a href="index.php?p=franchise" style="color: #ff9800; font-weight: 600;">
-                  <i class="fa fa-briefcase"></i> Ouvrir un Centre
-                </a></li>
-              </ul>
-            </li>
-
-            <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 
-              <a href="index.php?p=conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
-              <ul class="dropdown-menu">
-                <li><a href="index.php?p=conseilminceur">Amincissement</a></li>
-              </ul>
-            </li>
-
-            <li <?php if ($page == 'contact') echo ' class="active"'; ?> class="dropdown"> 
-              <a href="index.php?p=contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
-              <ul class="dropdown-menu">
-                <li><a href="index.php?p=contact#emploi">Emploi</a></li>
-                <li><a href="index.php?p=contact#contact">Contactez-nous</a></li>
-              </ul>
-            </li>
-            
-            <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
+            <ul class="nav navbar-nav navbar-right">
+              <li<?php if ($page == 'home') echo ' class="active"'; ?>> 
+                <a href="<?= BASE_PATH ?>">Accueil</a> 
+              </li>
               
-            <!-- CTA Séance gratuite optimisé -->
-            <li class="cta-nav"> 
-                <a href="index.php?p=free" class="btn-reserve-nav">
-                   <i class="fa fa-gift"></i> 🎁 SÉANCE GRATUITE
-                </a>
-            </li>
-            
-            <!-- ⭐ NOUVEAU : Bouton Ouvrir un Centre visible -->
-            <li class="cta-franchise hidden-sm"> 
-              <a href="index.php?p=franchise" class="btn-franchise-nav">
-                <i class="fa fa-briefcase"></i> Ouvrir un Centre
-              </a> 
-            </li>
-          </ul>
+              <li class="dropdown<?php if ($page == 'aquabiking') echo ' active'; ?>"> 
+                <a href="<?= BASE_PATH ?>?p=aquabiking" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Aquabiking</a>
+                <ul class="dropdown-menu">
+                  <li><a href="<?= BASE_PATH ?>?p=aquabiking">Le vélo dans l'eau</a></li>
+                  <li><a href="<?= BASE_PATH ?>?p=aquabiking#bienfaits">Les bienfaits</a></li>
+                  <li><a href="<?= BASE_PATH ?>?p=aquabiking#questions">Vos questions</a></li>
+                </ul>
+              </li>
+              
+              <li class="dropdown<?php if ($page == 'centres') echo ' active'; ?>"> 
+                <a href="<?= BASE_PATH ?>?p=centers" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
+                <ul class="dropdown-menu">
+                  <?php foreach ($centers_list_d as &$row_centers_list) { ?>
+                    <li><a href="<?= BASE_PATH ?>?p=page&city=<?= $row_centers_list['city']; ?>" title="Aquabiking à <?= $row_centers_list['city']; ?>"><?= $row_centers_list['city']; ?></a></li>
+                  <?php } ?>
+                </ul>
+              </li>
+              
+              <li class="dropdown<?php if ($page == 'concept' || $page == 'franchise') echo ' active'; ?>"> 
+                <a href="<?= BASE_PATH ?>?p=franchise" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Concept</a>
+                <ul class="dropdown-menu">
+                  <li><a href="<?= BASE_PATH ?>?p=franchise">Notre Concept</a></li>
+                  <li class="divider"></li>
+                  <li><a href="<?= BASE_PATH ?>?p=franchise" style="color: #ff9800; font-weight: 600;">
+                    <i class="fa fa-briefcase"></i> Ouvrir un Centre
+                  </a></li>
+                </ul>
+              </li>
+
+              <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 
+                <a href="<?= BASE_PATH ?>?p=conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
+                <ul class="dropdown-menu">
+                  <li><a href="<?= BASE_PATH ?>?p=conseilminceur">Amincissement</a></li>
+                </ul>
+              </li>
+
+              <li <?php if ($page == 'contact') echo ' class="active"'; ?> class="dropdown"> 
+                <a href="<?= BASE_PATH ?>?p=contact" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Contact</a>
+                <ul class="dropdown-menu">
+                  <li><a href="<?= BASE_PATH ?>?p=contact#emploi">Emploi</a></li>
+                  <li><a href="<?= BASE_PATH ?>?p=contact#contact">Contactez-nous</a></li>
+                </ul>
+              </li>
+              
+              <!-- ⭐ NOUVEAU : Bouton Réserver visible -->
+                
+              <!-- CTA Séance gratuite optimisé -->
+              <li class="cta-nav"> 
+                  <a href="<?= BASE_PATH ?>?p=free" class="btn-reserve-nav">
+                     <i class="fa fa-gift"></i> 🎁 SÉANCE GRATUITE
+                  </a>
+              </li>
+              
+              <!-- ⭐ NOUVEAU : Bouton Ouvrir un Centre visible -->
+              <li class="cta-franchise hidden-sm"> 
+                <a href="<?= BASE_PATH ?>?p=franchise" class="btn-franchise-nav">
+                  <i class="fa fa-briefcase"></i> Ouvrir un Centre
+                </a> 
+              </li>
+            </ul>
         </div>
       </div>
     </nav>
@@ -936,7 +936,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 Une erreur est survenue. 
               </div>
-              <form class="liveForm" role="form" action="/form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
+              <form class="liveForm" role="form" action="<?= BASE_PATH ?>form/send.php" method="post" data-email-subject="Newsletter Form" data-show-errors="true" data-hide-form="true">
                 <fieldset>
                   <article class="table-content animated" data-fx="flipInY">
                     <section class="table-row">
@@ -964,7 +964,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="container mainfooter">
         <div class="row">
           <aside class="col-md-3 widget"> 
-            <img src="/images/content/logo-footer.png" alt="centre Aquavélo"> <br><br>
+            <img src="<?= BASE_PATH ?>images/content/logo-footer.png" alt="centre Aquavélo"> <br><br>
             <h1 style="font-size: 12px;">Aquabiking collectif en piscine</h1>
             <h1 class="darker">Éliminez votre cellulite et affinez votre silhouette</h1>
             <p class="darker">&copy; 2014-<?= date('Y'); ?></p>
@@ -978,25 +978,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <aside class="col-md-3 widget">
             <h2 class="widget-title">Liens Rapides</h2>
             <ul>
-              <li><a href="index.php?p=free">Séance Découverte Gratuite</a></li>
-              <li><a href="index.php?p=centers">Trouver un Centre</a></li>
-              <li><a href="index.php?p=franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
-              <li><a href="index.php?p=contact">Contact</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=free">Séance Découverte Gratuite</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=centers">Trouver un Centre</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=contact">Contact</a></li>
             </ul>
           </aside>
           <aside class="col-md-3 widget">
             <h3 class="widget-title">Nos Centres</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-              <a href="index.php?p=page&city=cannes" title="Centre Aquavelo Cannes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
-                <img src="/images/Cannes1.jpg" alt="Centre Aquavelo Cannes" style="width: 100%; height: 100%; object-fit: cover;">
+              <a href="<?= BASE_PATH ?>?p=page&city=cannes" title="Centre Aquavelo Cannes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="<?= BASE_PATH ?>images/Cannes1.jpg" alt="Centre Aquavelo Cannes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="index.php?p=page&city=antibes" title="Centre Aquavelo Antibes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
-                <img src="/images/content/home-v1-slider-03.webp" alt="Centre Aquavelo Antibes" style="width: 100%; height: 100%; object-fit: cover;">
+              <a href="<?= BASE_PATH ?>?p=page&city=antibes" title="Centre Aquavelo Antibes" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="<?= BASE_PATH ?>images/content/home-v1-slider-03.webp" alt="Centre Aquavelo Antibes" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="index.php?p=page&city=nice" title="Centre Aquavelo Nice" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
-                <img src="/images/center_179/1.jpg" alt="Centre Aquavelo Nice" style="width: 100%; height: 100%; object-fit: cover;">
+              <a href="<?= BASE_PATH ?>?p=page&city=nice" title="Centre Aquavelo Nice" style="display: block; width: 80px; height: 60px; overflow: hidden; border-radius: 5px;">
+                <img src="<?= BASE_PATH ?>images/center_179/1.jpg" alt="Centre Aquavelo Nice" style="width: 100%; height: 100%; object-fit: cover;">
               </a>
-              <a href="index.php?p=free" title="Séance découverte gratuite" style="display: flex; align-items: center; justify-content: center; width: 80px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 5px; color: #fff; font-size: 11px; text-align: center; text-decoration: none; font-weight: 600;">
+              <a href="<?= BASE_PATH ?>?p=free" title="Séance découverte gratuite" style="display: flex; align-items: center; justify-content: center; width: 80px; height: 60px; background: linear-gradient(135deg, #ff6b35, #f7931e); border-radius: 5px; color: #fff; font-size: 11px; text-align: center; text-decoration: none; font-weight: 600;">
                 Essai<br>Gratuit
               </a>
             </div>
@@ -1009,7 +1009,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ⭐ Bouton réservation flottant -->
     <div id="floating-booking-btn">
-      <a href="/?p=free">
+      <a href="<?= BASE_PATH ?>?p=free">
         <span class="pulse-dot"></span>
         <i class="fa fa-gift"></i> 1ère SÉANCE OFFERTE
         <span>🎁 SÉANCE GRATUITE</span>
@@ -1032,36 +1032,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <li>✓ Accompagnement marketing</li>
         <li>✓ Redevances : 490€/mois seulement</li>
       </ul>
-      <a href="/franchise" class="btn-franchise-popup">En savoir plus</a>
+      <a href="<?= BASE_PATH ?>franchise" class="btn-franchise-popup">En savoir plus</a>
       <button class="btn-later">Plus tard</button>
     </div>
   </div>
 
   <a href="#" id="toTop"><i class="fa fa-angle-up"></i></a>
   
-  <script src="/js/jquery.min.js"></script>
-  <script src="/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/js/detectmobilebrowser.js"></script>
-  <script src="/js/gmap3.min.js"></script>
-  <script src="/js/jquery.appear.js"></script>
-  <script src="/js/jquery.isotope.min.js"></script>
-  <script src="/js/jquery.ba-bbq.min.js"></script>
-  <script src="/js/jquery.countTo.js"></script>
-  <script src="/js/jquery.fitvids.js"></script>
-  <script src="/js/jquery.flexslider-min.js"></script>
-  <script src="/js/jquery.magnific-popup.min.js"></script>
-  <script src="/js/jquery.mb.YTPlayer.js"></script>
-  <script src="/js/jquery.placeholder.min.js"></script>
-  <script src="/js/retina-1.1.0.min.js"></script>
-  <script src="/js/timeline/js/storyjs-embed.js"></script>
-  <script src="/form/js/form.js"></script>
-  <script src="/js/main.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.min.js"></script>
+  <script src="<?= BASE_PATH ?>bootstrap/js/bootstrap.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/detectmobilebrowser.js"></script>
+  <script src="<?= BASE_PATH ?>js/gmap3.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.appear.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.isotope.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.ba-bbq.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.countTo.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.fitvids.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.flexslider-min.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.magnific-popup.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.mb.YTPlayer.js"></script>
+  <script src="<?= BASE_PATH ?>js/jquery.placeholder.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/retina-1.1.0.min.js"></script>
+  <script src="<?= BASE_PATH ?>js/timeline/js/storyjs-embed.js"></script>
+  <script src="<?= BASE_PATH ?>form/js/form.js"></script>
+  <script src="<?= BASE_PATH ?>js/main.js"></script>
   
   <script>
     document.addEventListener("DOMContentLoaded", function(event) {
       document.querySelectorAll('img').forEach(function(img) {
         img.onerror = function() {
-          this.src = '/images/center_179/1.jpg';
+          this.src = '<?= BASE_PATH ?>images/center_179/1.jpg';
         };
       })
     })
@@ -1069,7 +1069,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
+    navigator.serviceWorker.register('<?= BASE_PATH ?>service-worker.js')
     .then(function(registration) {
       console.log('Service Worker enregistré avec succès:', registration);
     })

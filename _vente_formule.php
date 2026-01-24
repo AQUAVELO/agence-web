@@ -6,16 +6,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Configuration de Monetico
-define('MONETICO_TPE', '6684349');
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
-define('MONETICO_COMPANY', 'AQUACANNES');
-define('MONETICO_URL', 'https://p.monetico-services.com/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
-define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
+if (!defined('MONETICO_TPE')) define('MONETICO_TPE', '6684349');
+if (!defined('MONETICO_KEY')) define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+if (!defined('MONETICO_COMPANY')) define('MONETICO_COMPANY', 'AQUACANNES');
+if (!defined('MONETICO_URL')) define('MONETICO_URL', 'https://p.monetico-services.com/paiement.cgi');
+if (!defined('MONETICO_RETURN_URL')) define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation.php');
+if (!defined('MONETICO_CANCEL_URL')) define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation.php');
 
 $formules = [
-        ['nom' => 'Formule 2', 'prix' => 99, 'description' => 'Les 25 séances à 399 € payable en 4 fois € soit la séance à 16 €, valable 9 mois. Je paie la première échéance 99 €.'],
-
+    ['nom' => 'Formule 2', 'prix' => 99, 'description' => 'Les 25 séances à 399 € payable en 4 fois € soit la séance à 16 €, valable 9 mois. Je paie la première échéance 99 €.'],
     ['nom' => 'Formule 3', 'prix' => 58, 'description' => 'Les 40 séances payable en 10 x 58.5 € soit la séance à 14 €, valable 15 mois. Je paie la première échéance 59 €.'],
     ['nom' => 'Formule 4', 'prix' => 73, 'description' => 'Les 80 séances payable en 12 x 73.4 € soit la séance à 11 €, valable 18 mois. Je paie la première échéance 73 €.'],
     ['nom' => 'Formule 5', 'prix' => 87, 'description' => 'Les 104 séances en 12 x 87 € soit la séance à 10 €, valable 20 mois. Je paie la première échéance 87 €.'],
@@ -24,26 +23,28 @@ $formules = [
 
 $reference = 'CMD' . date('YmdHis') . rand(100, 999);
 
-function calculateMAC($fields, $keyHex) {
-    $recognizedKeys = [
-        'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
-        'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
-    ];
+if (!function_exists('calculateMAC_formule')) {
+    function calculateMAC_formule($fields, $keyHex) {
+        $recognizedKeys = [
+            'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
+            'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
+        ];
 
-    $macFields = [];
-    foreach ($recognizedKeys as $key) {
-        $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
+        $macFields = [];
+        foreach ($recognizedKeys as $key) {
+            $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
+        }
+
+        ksort($macFields, SORT_STRING);
+        $chaine = '';
+        foreach ($macFields as $k => $v) {
+            $chaine .= "$k=$v*";
+        }
+        $chaine = rtrim($chaine, '*');
+
+        $binaryKey = pack('H*', $keyHex);
+        return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     }
-
-    ksort($macFields, SORT_STRING);
-    $chaine = '';
-    foreach ($macFields as $k => $v) {
-        $chaine .= "$k=$v*";
-    }
-    $chaine = rtrim($chaine, '*');
-
-    $binaryKey = pack('H*', $keyHex);
-    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
 }
 
 $dateCommande = date('d/m/Y:H:i:s');
@@ -100,39 +101,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'url_retour_err'    => MONETICO_CANCEL_URL
         ];
 
-        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
+        $fields['MAC'] = calculateMAC_formule($fields, MONETICO_KEY);
 
-        echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
+        echo '<div style="text-align:center; font-family:sans-serif; margin-top:30px; color:green; padding:50px;">Merci, votre réservation a bien été enregistrée ! Vous allez être redirigé vers le paiement.</div>';
         echo '<form id="form-monetico" action="' . MONETICO_URL . '" method="post">';
         foreach ($fields as $name => $value) {
             echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars_decode($value, ENT_QUOTES) . '">';
         }
         echo '</form>';
         echo '<script>setTimeout(() => document.getElementById("form-monetico").submit(), 2000);</script>';
-        exit;
+        return; // Au lieu de exit pour rester dans le flux index.php
     } else {
         $error = "Tous les champs doivent être remplis correctement.";
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Choisissez votre formule et inscrivez-vous</title>
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f8fb;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    .section {
+
+<style>
+    .vente-section {
       max-width: 800px;
       margin: 40px auto;
       background: white;
@@ -140,23 +126,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
-    h1, h2 {
+    .vente-section h1 {
       color: #104e8b;
       text-align: center;
+      margin-bottom: 30px;
     }
-    label {
+    .vente-section label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
     }
-    input, select {
+    .vente-section input, .vente-section select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-    button {
+    .vente-section button {
       background-color: #104e8b;
       color: white;
       border: none;
@@ -165,27 +152,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       cursor: pointer;
       margin-top: 20px;
       width: 100%;
+      font-weight: bold;
     }
-    button:hover {
+    .vente-section button:hover {
       background-color: #0d3e70;
     }
-    .error {
+    .vente-section .error {
       color: red;
       text-align: center;
     }
-    /* Style pour l'image insérée */
     .hero-image {
       display: block;
       margin: 0 auto 20px;
       max-width: 100%;
       border-radius: 12px;
     }
-  </style>
-</head>
-<body>
-  <div class="section">
-    <!-- Image harmonieuse en-tête -->
-    <img src="/images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
+</style>
+
+<div class="vente-section">
+    <img src="<?= BASE_PATH ?>images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
     <h1>Choisissez votre formule et inscrivez-vous</h1>
     <?php if (isset($error)): ?>
       <p class="error"><?= $error ?></p>
@@ -202,12 +187,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <?php endforeach; ?>
         </select>
       </label>
-      <p style="font-style: italic; color: #555;">Je fournis un RIB à la première séance pour les autres échéances.</p>
+      <p style="font-style: italic; color: #555; margin-top: 15px;">Je fournis un RIB à la première séance pour les autres échéances.</p>
       <button type="submit">Payer le premier mois</button>
     </form>
-  </div>
-</body>
-</html>
+</div>
 
 
 

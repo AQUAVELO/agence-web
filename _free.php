@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // C. NOTIFICATIONS (Email et Telegram)
             
             // 1. Détermination du message Telegram
-            $planning_centers = [305, 347, 349];
+            $planning_centers = [305, 347, 349, 343];
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris
@@ -129,8 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail->CharSet = 'UTF-8';
 
                     // Email pour l'ADMIN (Dirigeant)
-                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Resa');
+                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $city);
                     $mail->addAddress($email_center);
+                    $mail->addReplyTo($email_center, 'Aquavelo ' . $city);
                     $mail->isHTML(true);
                     
                     $date_now = date('d-m-Y H:i:s');
@@ -169,8 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     }
                     $mail->send();
 
-                    // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris gérés plus bas)
-                    if (!in_array((int)$center_id, [305, 347, 349]) && !$date_heure) {
+                    // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac gérés plus bas)
+                    if (!in_array((int)$center_id, [305, 347, 349, 343]) && !$date_heure) {
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Votre séance découverte gratuite à Aquavelo $city";
@@ -203,15 +204,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if ($date_heure) {
                         $mail->clearAddresses();
                         $mail->addAddress($email);
+                        $mail->addReplyTo($email_center, 'Aquavelo ' . $city);
                         $mail->Subject = "Confirmation de votre séance à Aquavelo $city";
                         $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
                         
+                        // Infos centre pour l'email
+                        $lieu_rdv = $row_center_contact['address'] . ", " . $row_center_contact['city'];
+                        $tel_rdv = $row_center_contact['phone'];
+
                         // URLs pour Annuler / Modifier
                         $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($email) . "&rdv=" . urlencode($date_heure) . "&city=" . urlencode($city);
-                        $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&old_rdv=" . urlencode($date_heure);
+                        $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&old_rdv=" . urlencode($date_heure);
 
+                        $signature = in_array((int)$center_id, [305, 347, 349]) ? "Cordialement Claude" : "Cordialement,<br>Aquavelo $city";
                         $mail->Body = "Bonjour $input_nom_complet,<br><br>Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
-                                      Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes,<br>Bus : arrêt Leader ou Méridien Tél : 04 93 93 05 65<br><br>
+                                      Lieu : $lieu_rdv<br>Tél : $tel_rdv<br><br>
                                       <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                       <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
                                       ✅ Votre maillot de bain,<br>
@@ -219,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       ✅ Un gel douche,<br>
                                       ✅ Une bouteille d'eau,<br>
                                       ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                      À très bientôt ! Cordialement Claude<br><br><hr style='border:none; border-top:1px solid #eee; margin:20px 0;'><p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
+                                      À très bientôt ! $signature<br><br><hr style='border:none; border-top:1px solid #eee; margin:20px 0;'><p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
                                       <table cellspacing='0' cellpadding='0'><tr>
                                       <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a></td>
                                       <td width='10'></td>
@@ -234,15 +241,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
             // D. REDIRECTION
             if ($segment == 'calendrier-cannes') {
-                $url = "index.php?p=merci_rdv&center=305&rdv=" . urlencode($date_heure) . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&city=" . urlencode($city);
-                echo "<script>window.location.href = '$url';</script>";
+                $url = BASE_PATH . "index.php?p=merci_rdv&center=" . $center_id . "&rdv=" . urlencode($date_heure) . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&city=" . urlencode($city);
+                echo "<script>window.location.replace('$url');</script>";
                 exit;
-            } elseif (in_array((int)$center_id, [305, 347, 349])) {
-                $url = "index.php?p=calendrier_cannes&center=305&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel);
-                echo "<script>window.location.href = '$url';</script>";
+            } elseif (in_array((int)$center_id, [305, 347, 349, 343])) {
+                $url = BASE_PATH . "index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel);
+                echo "<script>window.location.replace('$url');</script>";
                 exit;
             } else {
-                echo "<script>window.location.href = 'index.php?p=free&success=1&cid=$center_id';</script>";
+                $url = BASE_PATH . "index.php?p=free&success=1&cid=$center_id";
+                echo "<script>window.location.href = '$url';</script>";
                 exit;
             }
         } catch (Exception $e) { $error_message = "Erreur technique : " . $e->getMessage(); }
@@ -275,7 +283,7 @@ if (isset($_GET['success'])) {
     <?php else: ?>
       <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
         <h2 style="text-align: center; color: #00a8cc; margin-bottom: 25px;">Réservez votre séance gratuite</h2>
-        <form role="form" method="POST" action="index.php?p=free" id="mainFreeForm">
+        <form role="form" method="POST" action="<?= BASE_PATH ?>index.php?p=free" id="mainFreeForm">
             <div style="margin-bottom: 15px;"><label>Centre *</label>
                 <select name="center" id="centerSelect" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;">
                     <option value="">-- Choisissez un centre --</option>
@@ -294,7 +302,7 @@ if (isset($_GET['success'])) {
       const centerSelect = document.getElementById('centerSelect');
       const submitBtnText = document.getElementById('submitBtnText');
       centerSelect.addEventListener('change', function() {
-          if ([305, 347, 349].includes(parseInt(this.value))) submitBtnText.innerText = "RÉSERVER MA SÉANCE OFFERTE";
+          if ([305, 347, 349, 343].includes(parseInt(this.value))) submitBtnText.innerText = "RÉSERVER MA SÉANCE OFFERTE";
           else submitBtnText.innerText = "RECEVOIR MON BON GRATUIT";
       });
       </script>

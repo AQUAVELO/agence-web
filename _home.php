@@ -55,7 +55,7 @@
         ?>
           <li>
             <article class="portfolio-item animated" data-fx="fadeInUp">
-              <div class="portfolio-thumbnail"> <a href="/centres/<?= $row_centers_last['city'] ?>"><img src="/cloud/thumbnail/center_<?= $row_centers_last['id']; ?>/1.jpg" alt="Aquavelo <?= $row_centers_last['city'] ?>"></a> <a href="/centres/<?= $row_centers_last['city'] ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
+              <div class="portfolio-thumbnail"> <a href="<?= BASE_PATH ?>centres/<?= $row_centers_last['city'] ?>"><img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= $row_centers_last['id']; ?>/1.jpg" alt="Aquavelo <?= $row_centers_last['city'] ?>"></a> <a href="<?= BASE_PATH ?>centres/<?= $row_centers_last['city'] ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
               <div class="entry-meta"> <span class="cat-links"><a href="#"><?= $department; ?></a>, <a href="#"><?= $row_centers_last['country'] ?></a></span> </div>
               <h4 class="entry-title"><a href="#"><?= $row_centers_last['city'] ?>, <?= $row_centers_last['TypeAQUAVELO'] ?></a></h4>
             </article>
@@ -63,7 +63,7 @@
         <?php } ?>
         <li>
           <article class="portfolio-item animated" data-fx="fadeInDown">
-            <div class="portfolio-thumbnail"> <a href="#"><img src="/images/content/works-02.jpg" alt=" "></a> <a href="#" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
+            <div class="portfolio-thumbnail"> <a href="#"><img src="<?= BASE_PATH ?>images/content/works-02.jpg" alt=" "></a> <a href="#" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
             <div class="entry-meta"> <span class="cat-links"><a href="#">&Icirc;le de France</a>, <a href="#">France</a></span> </div>
             <h4 class="entry-title"><a href="#">Paris, 75013</a></h4>
           </article>
@@ -71,7 +71,7 @@
         </li>
         <li>
           <article class="portfolio-item animated" data-fx="fadeInUp">
-            <div class="portfolio-thumbnail"> <a href="#"><img src="/images/content/works-03.jpg" alt=" "></a> <a href="#" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
+            <div class="portfolio-thumbnail"> <a href="#"><img src="<?= BASE_PATH ?>images/content/works-03.jpg" alt=" "></a> <a href="#" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
             <div class="entry-meta"> <span class="cat-links"><a href="#">Maroc</a>, <a href="#">Afrique</a></span> </div>
             <h4 class="entry-title"><a href="#">Casablanca, Racine</a></h4>
           </article>
@@ -80,8 +80,8 @@
       </ul>
     </div>
     <div class="text-center"> 
-      <a href="/?p=free" class="btn btn-primary btn-lg animated" data-fx="fadeInUp" style="margin-right: 10px;"><i class="fa fa-gift"></i> Réserver ma séance gratuite</a>
-      <a href="/centres" class="btn btn-default animated" data-fx="fadeInUp">Voir tous les centres</a> 
+      <a href="<?= BASE_PATH ?>?p=free" class="btn btn-primary btn-lg animated" data-fx="fadeInUp" style="margin-right: 10px;"><i class="fa fa-gift"></i> Réserver ma séance gratuite</a>
+      <a href="<?= BASE_PATH ?>centres" class="btn btn-default animated" data-fx="fadeInUp">Voir tous les centres</a> 
     </div>
   </div>
 </section>
@@ -96,11 +96,11 @@
             <h2>Un cadre unique pour vos séances</h2>
             <p class="larger">Nos centres allient design contemporain et confort : eau chauffée à 28°C, vestiaires privatifs, produits de douche fournis.<br><br>
               <strong>Immergé jusqu'à la taille, vos cheveux restent secs.</strong> Venez comme vous êtes, repartez transformé(e) !</p>
-            <a href="/?p=free" class="btn btn-primary" style="margin-right: 10px;"><i class="fa fa-gift"></i> Essayer gratuitement</a>
-            <a href="/concept-aquabiking" class="btn btn-default">Découvrir le concept</a>
+            <a href="<?= BASE_PATH ?>?p=free" class="btn btn-primary" style="margin-right: 10px;"><i class="fa fa-gift"></i> Essayer gratuitement</a>
+            <a href="<?= BASE_PATH ?>concept-aquabiking" class="btn btn-default">Découvrir le concept</a>
           </div>
         </div>
-        <div class="col-md-6 col-md-pull-6"> <img src="/images/content/home-v1-promo.jpg" alt=" " class="animated" data-fx="fadeInLeft"> </div>
+        <div class="col-md-6 col-md-pull-6"> <img src="<?= BASE_PATH ?>images/content/home-v1-promo.jpg" alt=" " class="animated" data-fx="fadeInLeft"> </div>
       </div>
     </div>
     <!-- / promoBox -->

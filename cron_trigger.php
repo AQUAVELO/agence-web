@@ -1,33 +1,46 @@
 <?php
 /**
  * Déclencheur de Cron sécurisé par URL
- * Usage: https://www.aquavelo.com/cron_trigger.php?key=aquavelo123
+ * Version robuste pour éviter les Erreurs 500
  */
+require '_settings.php';
+date_default_timezone_set('Europe/Paris');
 
-// Clé de sécurité (vous pouvez la changer)
 $secret_key = "aquavelo123";
 
 if (!isset($_GET['key']) || $_GET['key'] !== $secret_key) {
     die("Accès non autorisé.");
 }
 
-echo "<pre>";
+// Désactiver l'affichage des erreurs pour éviter de casser le flux de sortie
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
 echo "Démarrage des tâches planifiées...\n\n";
 
-echo "1. Rappels 24h :\n";
-include 'cron_rappel_24h.php';
-echo "\n\n";
+$tasks = [
+    'Rappels 24h' => 'cron_rappel_24h.php',
+    'Rappels 3h' => 'cron_rappel_3h.php',
+    'Suivi après séance' => 'cron_apres_seance.php',
+    'Suivi J+2' => 'cron_suivi_2j.php',
+    'Suivi J+7' => 'cron_suivi_7j.php',
+    'Sync Google Calendar' => 'cron_sync_google.php'
+];
 
-echo "2. Rappels 3h :\n";
-include 'cron_rappel_3h.php';
-echo "\n\n";
+foreach ($tasks as $name => $file) {
+    echo "Exécution : $name... ";
+    try {
+        if (file_exists($file)) {
+            include $file;
+            echo " ✅ TERMINÉ\n";
+        } else {
+            echo " ❌ FICHIER MANQUANT\n";
+        }
+    } catch (Exception $e) {
+        echo " ❌ ERREUR : " . $e->getMessage() . "\n";
+    }
+    echo "--------------------------\n";
+}
 
-echo "3. Suivi après séance :\n";
-include 'cron_apres_seance.php';
-echo "\n\n";
-
-echo "4. Suivi J+2 :\n";
-include 'cron_suivi_2j.php';
-
-echo "\n\n✅ Toutes les tâches ont été exécutées.";
-echo "</pre>";
+echo "\n✅ Toutes les tâches ont été traitées.";
+?>

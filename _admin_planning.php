@@ -18,7 +18,7 @@ $password_secret = "aquavelo2026";
 $authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
 
 // Liste des centres partageant le même planning
-$shared_centers = [305, 347, 349];
+$shared_centers = [305, 347, 349, 343];
 $centers_names = [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris'];
 
 if (isset($_POST['login_pass'])) {
@@ -38,20 +38,48 @@ if ($authenticated && isset($_GET['action'])) {
     
     if ($token_ok) {
         if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
-            $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([intval($_GET['id'])]);
+            $id = intval($_GET['id']);
+            
+            // --- SYNCHRO GOOGLE : Suppression de l'événement si présent ---
+            $check = $database->prepare("SELECT google_event_id FROM am_free WHERE id = ?");
+            $check->execute([$id]);
+            $booking_to_del = $check->fetch();
+            
+            if ($booking_to_del && !empty($booking_to_del['google_event_id'])) {
+                try {
+                    if (file_exists('vendor/autoload.php')) {
+                        require_once 'vendor/autoload.php';
+                        $client = new Google\Client();
+                        $client->setAuthConfig('google_key.json');
+                        $client->addScope(Google\Service\Calendar::CALENDAR);
+                        $service = new Google\Service\Calendar($client);
+                        $service->events->delete('aqua.cannes@gmail.com', $booking_to_del['google_event_id']);
+                    }
+                } catch (Exception $e) {
+                    // On ignore l'erreur si l'événement a déjà été supprimé manuellement sur Google
+                }
+            }
+            // ---------------------------------------------------------------
+
+            $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([$id]);
         } 
         elseif ($_GET['action'] === 'lock' && isset($_GET['date']) && isset($_GET['time'])) {
-            // Création d'un blocage manuel (par défaut sur l'ID Cannes 305)
-            $date_str = $_GET['dayname'] . " " . $_GET['date'] . " à " . $_GET['time'] . " (" . $_GET['activity'] . ")";
-            $lock_name = "🔒 VERROUILLÉ (ADMIN) (RDV: " . $date_str . ")";
-            $ref = 'LOCK' . date('dmhis');
-            
-            $stmt = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$ref, 305, 3, $lock_name, 'admin@aquavelo.com', '0493930565', 'admin-lock']);
+            try {
+                // Création d'un blocage manuel (Sans emoji pour éviter les erreurs d'encodage SQL)
+                $date_str = $_GET['dayname'] . " " . $_GET['date'] . " à " . $_GET['time'] . " (" . $_GET['activity'] . ")";
+                $lock_name = "BLOQUE (ADMIN) (RDV: " . $date_str . ")";
+                $ref = 'LOCK' . date('dmhis');
+                
+                $stmt = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$ref, 305, 3, $lock_name, 'admin@aquavelo.com', '0493930565', 'admin-lock']);
+            } catch (Exception $e) {
+                // En cas d'erreur, on l'affiche 2 secondes avant de rediriger
+                die("Erreur lors du verrouillage : " . $e->getMessage());
+            }
         }
     }
-    // Redirection JavaScript car index.php a déjà envoyé du contenu
-    echo "<script>window.location.href='index.php?p=admin_planning';</script>";
+    // Redirection JavaScript plus robuste
+    echo "<script>window.location.replace('index.php?p=admin_planning');</script>";
     exit;
 }
 
@@ -126,7 +154,7 @@ for ($i = 0; $i < 21; $i++) {
 }
 
 // 4. RÉCUPÉRATION DES RÉSERVATIONS (Cannes, Mandelieu, Vallauris)
-$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
+$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349, 343) AND name LIKE '%(RDV:%'");
 $all_free_query->execute();
 $all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -159,7 +187,7 @@ foreach ($all_free as $res) {
             <?php foreach ($day['slots'] as $s) : 
                 $key = $day['full_date'] . '|' . $s['time'];
                 $res = $bookings_visuel[$key] ?? null;
-                $is_locked = ($res && strpos($res['name'], 'VERROUILLÉ') !== false);
+                $is_locked = ($res && (strpos($res['name'], 'VERROUILLÉ') !== false || strpos($res['name'], 'BLOQUE') !== false));
                 $center_label = ($res && isset($centers_names[$res['center_id']])) ? $centers_names[$res['center_id']] : '';
             ?>
                 <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_locked ? '#f5f5f5' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_locked ? '#ddd' : '#fbc02d') : '#eee' ?>; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between;">
@@ -178,6 +206,14 @@ foreach ($all_free as $res) {
                         </div>
                         <?php if (!$is_locked): ?>
                             <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
+                            <!-- Indicateurs de relances Cron -->
+                            <div style="margin-top: 8px; display: flex; gap: 4px;" title="Statut des relances (24h, 3h, Après, J+2, J+7)">
+                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['reminder_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">24h</span>
+                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['reminder_3h_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">3h</span>
+                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['after_session_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">Post</span>
+                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['followup_2d_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">J+2</span>
+                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['followup_7d_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">J+7</span>
+                            </div>
                         <?php endif; ?>
                       <?php else : ?>
                         <div style="color: #bbb; margin-top: 5px;">Disponible</div>
@@ -201,6 +237,171 @@ foreach ($all_free as $res) {
             <?php endforeach; ?>
           </div>
         <?php endforeach; ?>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⭐ NOUVEAU : Statistiques du mois en cours ⭐ -->
+<section class="content-area bg1" style="padding-bottom: 60px;">
+  <div class="container">
+    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <h3 style="color: #00a8cc; margin-top: 0; margin-bottom: 20px;"><i class="fa fa-bar-chart"></i> Statistiques du mois (Séances Gratuites)</h3>
+      
+      <?php
+      $current_month = date('m/Y');
+      $days_in_month = date('t');
+      
+      // On récupère TOUS les prospects du mois pour TOUS les centres actifs
+      $target_centers = [305, 347, 349, 253, 345, 271, 343, 308, 338, 324, 341, 179, 339, 320, 312, 321, 315];
+      $center_labels = [
+          305 => 'Cannes', 
+          347 => 'Mandelieu', 
+          349 => 'Vallauris', 
+          253 => 'Antibes', 
+          345 => 'Aix', 
+          271 => 'Toulouse',
+          343 => 'Mérignac',
+          308 => 'St Raphaël',
+          338 => 'Puget',
+          324 => 'Villebon',
+          341 => 'Senlis',
+          179 => 'Nice',
+          339 => 'Hyères',
+          320 => 'Dijon',
+          312 => 'Valence',
+          321 => 'Grasse',
+          315 => 'St Étienne'
+      ];
+      
+      $in_clause = implode(',', $target_centers);
+      // Utilisation de la colonne 'date' et 'email' pour filtrer les doublons
+      $stats_query = $database->prepare("SELECT center_id, email, date FROM am_free WHERE center_id IN ($in_clause) AND date LIKE ? AND name NOT LIKE '%BLOQUE%' AND name NOT LIKE '%VERROUILLÉ%'");
+      $stats_query->execute([date('Y-m') . "%"]);
+      $all_stats = $stats_query->fetchAll(PDO::FETCH_ASSOC);
+
+      $stats_data = [];
+      $seen_today = []; // Pour gérer l'unicité par jour/centre/email
+
+      foreach ($all_stats as $s) {
+          $day = (int)date('d', strtotime($s['date']));
+          $cid = $s['center_id'];
+          $email = strtolower(trim($s['email']));
+          
+          if (!isset($stats_data[$day])) {
+              $stats_data[$day] = array_fill_keys($target_centers, 0);
+          }
+          
+          // Clé d'unicité : même jour, même centre, même email
+          $uniq_key = $day . '-' . $cid . '-' . $email;
+          
+          if (!isset($seen_today[$uniq_key])) {
+              if (isset($stats_data[$day][$cid])) {
+                  $stats_data[$day][$cid]++;
+                  $seen_today[$uniq_key] = true;
+              }
+          }
+      }
+      ?>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" style="font-size: 0.7rem;">
+          <thead style="background: #00a8cc; color: white !important;">
+            <tr>
+              <th style="color: white !important;">Jour</th>
+              <?php foreach ($center_labels as $id => $label) : ?>
+                <th class="text-center" style="color: white !important;"><?= $label ?></th>
+              <?php endforeach; ?>
+              <th class="text-center" style="background: #008ba3; color: white !important;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php 
+            $total_month = array_fill_keys($target_centers, 0);
+            $total_month['global'] = 0;
+            
+            for ($d = 1; $d <= $days_in_month; $d++) : 
+                $c = $stats_data[$d] ?? array_fill_keys($target_centers, 0);
+                $day_total = array_sum($c);
+                
+                foreach ($target_centers as $id) {
+                    $total_month[$id] += $c[$id];
+                }
+                $total_month['global'] += $day_total;
+
+                if ($day_total > 0 || $d <= (int)date('d')) :
+            ?>
+              <tr>
+                <td><b><?= sprintf("%02d", $d) ?>/<?= $current_month ?></b></td>
+                <?php foreach ($target_centers as $id) : ?>
+                  <td class="text-center"><?= $c[$id] ?: '-' ?></td>
+                <?php endforeach; ?>
+                <td class="text-center" style="font-weight: bold; background: #f0fbfc;"><?= $day_total ?: '-' ?></td>
+              </tr>
+            <?php endif; endfor; ?>
+          </tbody>
+          <tfoot style="background: #eee; font-weight: bold;">
+            <tr>
+              <td>TOTAL MOIS</td>
+              <?php foreach ($target_centers as $id) : ?>
+                <td class="text-center"><?= $total_month[$id] ?></td>
+              <?php endforeach; ?>
+              <td class="text-center" style="background: #00a8cc; color: white !important;"><?= $total_month['global'] ?></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⭐ NOUVEAU : Journal détaillé des Relances Cron ⭐ -->
+<section class="content-area bg1" style="padding-bottom: 100px;">
+  <div class="container">
+    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <h3 style="color: #00a8cc; margin-top: 0; margin-bottom: 20px;"><i class="fa fa-envelope-o"></i> Suivi des Relances (Dernières réservations)</h3>
+      
+      <?php
+      // On récupère les 50 derniers RDV pour voir le statut des emails
+      $journal_query = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 50");
+      $journal_query->execute();
+      $last_rdvs = $journal_query->fetchAll(PDO::FETCH_ASSOC);
+      ?>
+
+      <div class="table-responsive">
+        <table class="table table-hover" style="font-size: 0.85rem;">
+          <thead>
+            <tr style="background: #f8f9fa;">
+              <th>Client</th>
+              <th>Centre</th>
+              <th>RDV</th>
+              <th class="text-center">24h</th>
+              <th class="text-center">3h/SMS</th>
+              <th class="text-center">Post</th>
+              <th class="text-center">J+2</th>
+              <th class="text-center">J+7</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($last_rdvs as $rdv) : 
+                $center_name = $center_labels[$rdv['center_id']] ?? 'Centre #'.$rdv['center_id'];
+                $client_info = trim(explode('(RDV:', $rdv['name'])[0]);
+                preg_match('/\d{2}\/\d{2}\/\d{4} à \d{2}:\d{2}/', $rdv['name'], $date_match);
+                $rdv_date = $date_match[0] ?? '-';
+            ?>
+              <tr>
+                <td><b><?= $client_info ?></b><br><small class="text-muted"><?= $rdv['email'] ?></small></td>
+                <td><?= $center_name ?></td>
+                <td><?= $rdv_date ?></td>
+                <td class="text-center"><?= $rdv['reminder_sent'] ? '✅' : '⏳' ?></td>
+                <td class="text-center"><?= $rdv['reminder_3h_sent'] ? '✅' : '⏳' ?></td>
+                <td class="text-center"><?= $rdv['after_session_sent'] ? '✅' : '⏳' ?></td>
+                <td class="text-center"><?= $rdv['followup_2d_sent'] ? '✅' : '⏳' ?></td>
+                <td class="text-center"><?= $rdv['followup_7d_sent'] ? '✅' : '⏳' ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

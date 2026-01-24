@@ -33,9 +33,17 @@ foreach ($bookings as $booking) {
 
             if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
                 try {
+                    $center_id = $booking['center_id'] ?: 305;
+                    $stmt_c = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
+                    $stmt_c->execute([$center_id]);
+                    $center_info = $stmt_c->fetch();
+                    
+                    if (!$center_info) {
+                        $center_info = ['city' => 'Cannes', 'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 'phone' => '04 93 93 05 65'];
+                    }
+
                     $log .= "Tentative d'envoi à : " . $booking['email'] . " (RDV le " . $rdv_date->format('Y-m-d H:i') . ")\n";
                     $mail = new PHPMailer(true);
-                    // ... (reste de la config mail)
                     $mail->isSMTP();
                     $mail->Host = $settings['mjhost'];
                     $mail->SMTPAuth = true;
@@ -44,8 +52,11 @@ foreach ($bookings as $booking) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo');
+                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $center_info['city']);
                     $mail->addAddress($booking['email']);
+                    if (!empty($center_info['email'])) {
+                        $mail->addReplyTo($center_info['email'], 'Aquavelo ' . $center_info['city']);
+                    }
                     $mail->isHTML(true);
                     
                     $mail->Subject = "Votre séance Aquavelo demain !";
@@ -54,14 +65,14 @@ foreach ($bookings as $booking) {
                     $rdv_final = str_replace(['(', ')'], ['', ''], $rdv_brut);
                     $client_first_name = explode(' ', trim(explode('(RDV:', $booking['name'])[0]))[0];
 
-                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($rdv_brut) . "&city=Cannes";
-                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=305&nom=" . urlencode($booking['name']) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($rdv_brut);
+                    $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($rdv_brut) . "&city=" . urlencode($center_info['city']);
+                    $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($booking['name']) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($rdv_brut);
 
                     $mail->Body = "Bonjour " . $client_first_name . ",<br><br>
                                   Votre séance d'essai est réservée :<br><br>
                                   🗓️ <b>" . $rdv_final . "</b><br><br>
-                                  Lieu : 60 Avenue du Dr Raymond Picaud, 06150 Cannes<br>
-                                  Tél : 04 93 93 05 65<br><br>
+                                  Lieu : " . $center_info['address'] . "<br>
+                                  Tél : " . $center_info['phone'] . "<br><br>
                                   Important : Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                   <b>🎒 À prévoir pour votre séance :</b><br>
                                   ✅ Votre maillot de bain,<br>
@@ -69,7 +80,7 @@ foreach ($bookings as $booking) {
                                   ✅ Un gel douche,<br>
                                   ✅ Une bouteille d'eau,<br>
                                   ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                  À très bientôt ! Cordialement Claude<br><br>
+                                  À très bientôt ! " . (in_array((int)$center_id, [305, 347, 349]) ? "Cordialement Claude" : "Cordialement,<br>Aquavelo " . $center_info['city']) . "<br><br>
                                   <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
                                   <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
                                   <table cellspacing='0' cellpadding='0'><tr>

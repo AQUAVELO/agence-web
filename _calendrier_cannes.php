@@ -7,16 +7,23 @@
 require '_settings.php';
 
 $center_id = isset($_GET['center']) ? (int)$_GET['center'] : 305;
+
+// Récupérer les infos du centre dynamiquement
+$stmt_center = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
+$stmt_center->execute([$center_id]);
+$row_c = $stmt_center->fetch();
+
 $centers_info = [
     305 => ['city' => 'Cannes', 'addr' => '60 avenue du Docteur Raymond Picaud', 'tel' => '04 93 93 05 65'],
     347 => ['city' => 'Mandelieu', 'addr' => 'Avenue de Fréjus', 'tel' => '04 93 93 05 65'],
-    349 => ['city' => 'Vallauris', 'addr' => 'Chemin de Saint-Bernard', 'tel' => '04 93 93 05 65']
+    349 => ['city' => 'Vallauris', 'addr' => 'Chemin de Saint-Bernard', 'tel' => '04 93 93 05 65'],
+    343 => ['city' => 'Mérignac', 'addr' => $row_c['address'] ?? 'Centre Mérignac', 'tel' => $row_c['phone'] ?? '05 56 00 00 00']
 ];
 $current_center = isset($centers_info[$center_id]) ? $centers_info[$center_id] : $centers_info[305];
 
 // --- LOGIQUE DES CRÉNEAUX ---
 
-// 1. Planning ACTUEL (jusqu'au 31 janvier)
+// 1. Planning CANNES/MANDELIEU/VALLAURIS
 $old_creneaux_semaine = ['09:45', '11:00', '12:15', '13:30', '14:45', '16:00', '17:15', '18:30'];
 $old_creneaux_samedi  = ['09:45', '11:00', '12:15', '13:30'];
 $old_special_activities = [
@@ -28,7 +35,11 @@ $old_special_activities = [
     'Samedi'   => ['13:30' => 'AQUAGYM'],
 ];
 
-// 2. NOUVEAU PLANNING (à partir du 1er Février)
+// 2. Planning MÉRIGNAC (ID: 343)
+$merignac_creneaux_semaine = ['09:30', '10:30', '11:30', '12:30', '16:30', '17:30', '18:30', '19:30'];
+$merignac_creneaux_samedi  = ['09:30', '10:30', '11:30'];
+
+// 3. NOUVEAU PLANNING (à partir du 1er Février) - Uniquement pour Cannes Group pour l'instant
 $new_planning = [
     'Lundi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
     'Mardi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
@@ -39,7 +50,7 @@ $new_planning = [
 ];
 
 // Récupérer les réservations
-$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
+$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349, 343) AND name LIKE '%(RDV:%'");
 $bookings_query->execute();
 $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
 
@@ -68,8 +79,14 @@ for ($i = 0; $i < 21; $i++) {
     $day_fr = $days_fr[$day_name_en];
 
     $current_slots = [];
-    if ($date >= $switch_date) {
-        // ⭐ FUTUR (Février) : On affiche tous les créneaux du nouveau planning
+    if ($center_id == 343) {
+        // ⭐ MÉRIGNAC
+        $times = ($day_num == 6) ? $merignac_creneaux_samedi : $merignac_creneaux_semaine;
+        foreach ($times as $t) {
+            $current_slots[] = ['time' => $t, 'activity' => 'AQUAVELO'];
+        }
+    } elseif ($date >= $switch_date) {
+        // ⭐ FUTUR (Février) : Uniquement Cannes Group
         if (isset($new_planning[$day_fr])) {
             foreach ($new_planning[$day_fr] as $h => $act) {
                 $current_slots[] = ['time' => $h, 'activity' => $act];
@@ -133,7 +150,7 @@ for ($i = 0; $i < 21; $i++) {
         <?php endforeach; ?>
       </div>
 
-      <form id="calendrierForm" method="POST" action="index.php?p=free">
+      <form id="calendrierForm" method="POST" action="<?= BASE_PATH ?>index.php?p=free">
         <input type="hidden" name="reason" value=""><input type="hidden" name="center" value="<?= $center_id ?>">
         <input type="hidden" name="segment" value="calendrier-cannes"><input type="hidden" id="selected_date_heure" name="date_heure">
         <input type="hidden" name="nom" value="<?= htmlspecialchars($_GET['nom'] ?? 'Client Web') ?>">

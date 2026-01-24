@@ -24,6 +24,6 @@ if (isset($_SESSION['produit_reference'])) {
     <p>Votre paiement a été annulé ou refusé.</p>
     <p>Référence de la commande : <?php echo htmlspecialchars($reference); ?></p>
     <p>Veuillez réessayer ou contacter le service client.</p>
-    <a href="vente_formule.php">Réessayer le paiement</a> | <a href="index.php">Retour à l'accueil</a>
+    <a href="index.php?p=vente_formule">Réessayer le paiement</a> | <a href="index.php">Retour à l'accueil</a>
 </body>
 </html>

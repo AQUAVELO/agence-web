@@ -35,9 +35,25 @@ foreach ($bookings as $booking) {
             $hours_passed = ($diff->days * 24) + $diff->h;
             $is_past = ($now > $rdv_start);
 
-            // Fenêtre d'envoi : entre 3h et 6h après le début (pour couvrir la fin de séance + 3h)
-            if ($is_past && $hours_passed >= 3 && $hours_passed <= 6) {
+// Fenêtre d'envoi : entre 3h et 6h après le début (pour couvrir la fin de séance + 3h)
+            $force_this = (isset($_GET['force_email']) && $_GET['force_email'] === $booking['email']);
+            
+            if ($force_this || ($is_past && $hours_passed >= 3 && $hours_passed <= 6)) {
                 try {
+                    $center_id = $booking['center_id'] ?: 305;
+                    $stmt_c = $database->prepare("SELECT city, address, phone, email FROM am_centers WHERE id = ?");
+                    $stmt_c->execute([$center_id]);
+                    $center_info = $stmt_c->fetch();
+                    
+                    if (!$center_info) {
+                        $center_info = [
+                            'city' => 'Cannes', 
+                            'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 
+                            'phone' => '06 22 64 70 95',
+                            'email' => 'aqua.cannes@gmail.com'
+                        ];
+                    }
+
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();
                     $mail->Host = $settings['mjhost'];
@@ -47,19 +63,33 @@ foreach ($bookings as $booking) {
                     $mail->Port = 587;
                     $mail->CharSet = 'UTF-8';
 
-                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo');
+                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $center_info['city']);
                     $mail->addAddress($booking['email']);
+                    if (!empty($center_info['email'])) {
+                        $mail->addReplyTo($center_info['email'], 'Aquavelo ' . $center_info['city']);
+                    }
                     $mail->isHTML(true);
                     
+                    $client_first_name = explode(' ', trim(explode('(RDV:', $booking['name'])[0]))[0];
                     $mail->Subject = "Merci de votre visite chez Aquavelo ! 🚴‍♀️💦";
                     
-                    $mail->Body = "Bonjour,<br><br>
-                                  Merci d’être venu(e) découvrir l'Aquavelo🚴‍♀️💦 ! J’espère que vous avez apprécié.<br><br>
-                                  Nous serons ravis de vous revoir très vite 🌊.<br><br>
-                                  N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
-                                  Cordialement,<br>
-                                  Claude<br>
-                                  Tél : 06 22 64 70 95";
+                    if (in_array((int)$center_id, [305, 347, 349])) {
+                        // Modèle CANNES, MANDELIEU, VALLAURIS
+                        $mail->Body = "Bonjour " . $client_first_name . ",<br><br>
+                                      Merci d’être venu(e) découvrir l'Aquavelo🚴‍♀️💦 ! J’espère que vous avez apprécié. Nous serons ravis de vous revoir très vite 🌊.<br><br>
+                                      N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
+                                      Cordialement,<br>
+                                      Claude<br>
+                                      Tél : 06 22 64 70 95";
+                    } else {
+                        // Modèle pour les AUTRES CENTRES (Mérignac, etc.)
+                        $mail->Body = "Bonjour " . $client_first_name . ",<br><br>
+                                      Merci d’être venu(e) découvrir l'Aquavelo🚴‍♀️💦 ! J’espère que vous avez apprécié. Nous serons ravis de vous revoir très vite 🌊.<br><br>
+                                      N’hésitez pas à nous contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription.<br><br>
+                                      Cordialement,<br>
+                                      Aquavelo " . $center_info['city'] . "<br>
+                                      Tél : " . $center_info['phone'];
+                    }
                     
                     $mail->send();
                     

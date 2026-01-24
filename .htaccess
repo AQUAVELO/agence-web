@@ -4,7 +4,15 @@
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
+    
+    # Détection automatique du RewriteBase pour local/prod (accepte les ports)
+    <If "%{HTTP_HOST} =~ /^(localhost|127\.0\.0\.1)/">
+        RewriteBase /aquavelo/
+    </If>
+    <Else>
+        RewriteBase /
+    </Else>
+
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^centres/([^/]+)/?$ index.php?p=page&city=$1 [QSA,L]

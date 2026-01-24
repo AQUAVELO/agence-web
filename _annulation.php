@@ -59,7 +59,7 @@ if ($email && $rdv) {
                 $mail->send();
                 
                 // NOTIFICATION TELEGRAM (ANNULATION) - Uniquement pour Cannes, Mandelieu, Vallauris
-                $planning_centers = [305, 347, 349];
+                $planning_centers = [305, 347, 349, 343];
                 if (in_array((int)$booking['center_id'], $planning_centers)) {
                     $tg_msg = "<b>❌ ANNULATION $city</b>\n" .
                               "👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n" .

@@ -1,6 +1,6 @@
   <section class="flexslider std-slider" data-height="740" data-loop="true" data-smooth="false" data-slideshow="true" data-speed="15000" data-animspeed="550" data-controls="true" data-dircontrols="true">
   <ul class="slides">
-    <li data-bg="/images/content/home-v1-slider-03.webp" class="img-fluid" style="background-position: top; background-size: cover; min-height: 740px !important;">
+    <li data-bg="<?= BASE_PATH ?>images/content/home-v1-slider-03.webp" class="img-fluid" style="background-position: top; background-size: cover; min-height: 740px !important;">
       <div class="container">
         <div class="inner">
           <div class="row">
@@ -14,7 +14,7 @@
                 <p style="color: #fff; font-size: 22px; text-shadow: 1px 1px 4px rgba(0,0,0,0.7); margin-bottom: 30px;">
                   <strong>30 min = 500 calories brûlées</strong> · Dans l'eau à 29°C
                 </p>
-                <a href="/?p=free" class="btn btn-lg" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: #fff; padding: 18px 40px; font-size: 20px; border-radius: 50px; text-decoration: none; display: inline-block; box-shadow: 0 5px 25px rgba(255,107,53,0.5); animation: pulse-glow 2s ease-in-out infinite;">
+                <a href="<?= BASE_PATH ?>?p=free" class="btn btn-lg" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: #fff; padding: 18px 40px; font-size: 20px; border-radius: 50px; text-decoration: none; display: inline-block; box-shadow: 0 5px 25px rgba(255,107,53,0.5); animation: pulse-glow 2s ease-in-out infinite;">
                   <i class="fa fa-gift"></i> MA SÉANCE GRATUITE
                 </a>
                 <p style="color: #fff; font-size: 14px; margin-top: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
@@ -26,29 +26,29 @@
         </div>
       </div>
     </li>
-    <li data-bg="/images/content/home-v1-slider-01.jpg">
+    <li data-bg="<?= BASE_PATH ?>images/content/home-v1-slider-01.jpg">
       <div class="container">
         <div class="inner">
           <div class="row">
             <div class="col-md-6 animated" data-fx="fadeIn">
               <h2>Dites adieu à la cellulite</h2>
               <p>30 min d'aquabiking = 1h de fitness · <strong>Brûlez 500 calories par séance</strong> grâce à la résistance de l'eau !</p>
-              <a href="/?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> Essai gratuit</a> 
-              <a href="/aquabiking" class="btn btn-default btn-lg">Les bienfaits</a> 
+              <a href="<?= BASE_PATH ?>?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> Essai gratuit</a> 
+              <a href="<?= BASE_PATH ?>aquabiking" class="btn btn-default btn-lg">Les bienfaits</a> 
             </div>
             <div class="col-md-6"></div>
           </div>
         </div>
       </div>
     </li>
-    <li data-bg="/images/content/home-v2-slider-01.jpg">
+    <li data-bg="<?= BASE_PATH ?>images/content/home-v2-slider-01.jpg">
       <div class="container">
         <div class="inner">
           <div class="text-center animated" data-fx="fadeIn">
             <h2 class="page-title">D&eacute;couvrez</h2>
             <h2>LE NOUVEL AQUAVELO</h2>
             <p style="color: #fff; font-size: 18px;">17 centres en France · Ouverts 7j/7</p>
-            <a href="/?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> 1ère séance offerte</a>
+            <a href="?p=free" class="btn btn-primary btn-lg"><i class="fa fa-gift"></i> 1ère séance offerte</a>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">🎁 Votre séance découverte OFFERTE</h2>
               <div class="col-md-6">
-                <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+                <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349, 343])) : ?>
                   <p>Vous pouvez vous réserver sur notre <a href="index.php?p=calendrier_cannes" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
                 <?php endif; ?>
                 <form role="form" class="contact-form-planning" id="sliderForm" method="POST" action="index.php?p=free">
@@ -107,7 +107,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const centerSelect = document.getElementById("center");
     const calendrierSection = document.getElementById("calendrier_section");
-    const centersWithCalendly = [305, 347, 349];
+    const centersWithCalendly = [305, 347, 349, 343];
 
     function toggleCalendrier() {
         if (!centerSelect || !calendrierSection) return;

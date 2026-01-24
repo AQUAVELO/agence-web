@@ -2,33 +2,34 @@
 // require 'vendor/autoload.php';
 // require 'settings.php';
 
-
 // Configuration Monetico
-define('MONETICO_TPE', '6684349');
-define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
-define('MONETICO_COMPANY', 'ALESIAMINCEUR');
-define('MONETICO_URL', 'https://p.monetico-services.com/test/paiement.cgi');
-define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
-define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');
+if (!defined('MONETICO_TPE')) define('MONETICO_TPE', '6684349');
+if (!defined('MONETICO_KEY')) define('MONETICO_KEY', 'AB477436DAE9200BF71E755208720A3CD5280594');
+if (!defined('MONETICO_COMPANY')) define('MONETICO_COMPANY', 'ALESIAMINCEUR');
+if (!defined('MONETICO_URL')) define('MONETICO_URL', 'https://p.monetico-services.com/paiement.cgi');
+if (!defined('MONETICO_RETURN_URL')) define('MONETICO_RETURN_URL', 'https://www.aquavelo.com/confirmation_prix.php');
+if (!defined('MONETICO_CANCEL_URL')) define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_prix.php');
 
 // Fonction pour calculer le MAC
-function calculateMAC($fields, $keyHex) {
-    $recognizedKeys = [
-        'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
-        'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
-    ];
-    $macFields = [];
-    foreach ($recognizedKeys as $key) {
-        $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
+if (!function_exists('calculateMAC_prixprod')) {
+    function calculateMAC_prixprod($fields, $keyHex) {
+        $recognizedKeys = [
+            'TPE', 'contexte_commande', 'date', 'lgue', 'mail', 'montant', 'reference',
+            'societe', 'texte-libre', 'url_retour_err', 'url_retour_ok', 'version'
+        ];
+        $macFields = [];
+        foreach ($recognizedKeys as $key) {
+            $macFields[$key] = isset($fields[$key]) ? mb_convert_encoding($fields[$key], 'UTF-8', 'auto') : '';
+        }
+        ksort($macFields, SORT_STRING);
+        $chaine = '';
+        foreach ($macFields as $k => $v) {
+            $chaine .= "$k=$v*";
+        }
+        $chaine = rtrim($chaine, '*');
+        $binaryKey = pack('H*', $keyHex);
+        return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
     }
-    ksort($macFields, SORT_STRING);
-    $chaine = '';
-    foreach ($macFields as $k => $v) {
-        $chaine .= "$k=$v*";
-    }
-    $chaine = rtrim($chaine, '*');
-    $binaryKey = pack('H*', $keyHex);
-    return strtoupper(hash_hmac('sha1', $chaine, $binaryKey));
 }
 
 $error = '';
@@ -60,16 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]
         ], JSON_UNESCAPED_UNICODE));
 
-        // ✅ Enregistrement dans la base de données
-     
-        try {
-            $stmt = $conn->prepare("INSERT INTO formule (nom, prenom, tel, prix, email, vente, detail) VALUES (?, ?, ?, ?, ?, 0, ?)");
-            $stmt->execute([$nom, $prenom, $tel, $montant, $email, $detail]);
-        } catch (PDOException $e) {
-            $error = "Erreur lors de l'enregistrement : " . $e->getMessage();
-        }
-
-        // ✅ Préparation Monetico
         $fields = [
             'TPE'               => MONETICO_TPE,
             'contexte_commande' => $contexteCommande,
@@ -77,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'montant'           => sprintf('%012.2f', $montant) . 'EUR',
             'reference'         => $reference,
             'texte-libre'       => http_build_query([
-                'nom'      => $nom,
-                'prenom'   => $prenom,
-                'telephone'=> $tel,
-                'email'    => $email,
-                'montant'  => number_format($montant, 2, '.', '') . 'EUR',
-                'detail'   => $detail
+                'email'     => $email,
+                'nom'       => $nom,
+                'prenom'    => $prenom,
+                'telephone' => $tel,
+                'detail'    => $detail,
+                'montant'   => number_format($montant, 2, '.', '') . 'EUR'
             ], '', ';'),
             'version'           => '3.0',
             'lgue'              => 'FR',
@@ -91,12 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'url_retour_ok'     => MONETICO_RETURN_URL,
             'url_retour_err'    => MONETICO_CANCEL_URL
         ];
-        $fields['MAC'] = calculateMAC($fields, MONETICO_KEY);
 
-        // ✅ Construction de l'URL de paiement
+        $fields['MAC'] = calculateMAC_prixprod($fields, MONETICO_KEY);
+
         $params = [];
-        foreach ($fields as $k => $v) {
-            $params[] = urlencode($k) . '=' . urlencode($v);
+        foreach ($fields as $key => $val) {
+            $params[] = "$key=" . urlencode($val);
         }
         $urlPaiement = MONETICO_URL . '?' . implode('&', $params);
 
@@ -106,24 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Créer un lien de paiement Monetico</title>
-  <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f8fb;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    .section {
+<style>
+    .vente-section {
       max-width: 600px;
       margin: 40px auto;
       background: white;
@@ -131,24 +106,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: 12px;
       box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
-    h1 {
+    .vente-section h1 {
       color: #104e8b;
       text-align: center;
       margin-bottom: 30px;
     }
-    label {
+    .vente-section label {
       display: block;
       margin-top: 15px;
       font-weight: bold;
     }
-    input {
+    .vente-section input {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-    button {
+    .vente-section button {
       background-color: #104e8b;
       color: white;
       border: none;
@@ -158,21 +133,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-top: 20px;
       width: 100%;
       font-size: 1.1em;
+      font-weight: bold;
     }
-    button:hover {
+    .vente-section button:hover {
       background-color: #0d3e70;
     }
-    .error {
+    .vente-section .error {
       color: red;
       text-align: center;
       margin-bottom: 15px;
     }
-    .success {
+    .vente-section .success {
       color: green;
       text-align: center;
       margin-bottom: 15px;
     }
-    .url {
+    .vente-section .url {
       word-break: break-all;
       text-align: center;
       margin-top: 15px;
@@ -184,11 +160,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       max-width: 100%;
       border-radius: 12px;
     }
-  </style>
-</head>
-<body>
-  <div class="section">
-    <img src="/images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
+</style>
+
+<div class="vente-section">
+    <img src="<?= BASE_PATH ?>images/center_179/1.jpg" alt="Aquavelo" class="hero-image">
     <h1>Créer un lien de paiement Monetico</h1>
     <?php if ($error): ?>
       <div class="error"><?= htmlspecialchars($error) ?></div>
@@ -207,8 +182,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit">Générer le lien de paiement</button>
       </form>
     <?php endif; ?>
-  </div>
-</body>
-</html>
-
-
+</div>

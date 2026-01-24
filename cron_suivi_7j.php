@@ -1,6 +1,6 @@
 <?php
 /**
- * Script d'envoi automatique 2 jours après la séance
+ * Script d'envoi automatique 7 jours après la séance
  * À exécuter par Clever Cloud (Cron)
  */
 
@@ -14,8 +14,8 @@ if (file_exists('vendor/autoload.php')) {
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// On cherche les RDV passés (J+2) qui n'ont pas encore reçu l'email de suivi J+2
-$stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND followup_2d_sent = 0");
+// On cherche les RDV passés (J+7) qui n'ont pas encore reçu l'email de suivi J+7
+$stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND followup_7d_sent = 0");
 $stmt->execute();
 $bookings = $stmt->fetchAll();
 
@@ -33,10 +33,10 @@ foreach ($bookings as $booking) {
             $days_passed = $diff->days;
             $is_past = ($now > $rdv_start);
 
-            // Fenêtre d'envoi : environ 2 jours après (entre 44h et 60h après le début)
+            // Fenêtre d'envoi : environ 7 jours après (entre 160h et 184h après le début)
             $hours_passed = ($days_passed * 24) + $diff->h;
 
-            if ($is_past && $hours_passed >= 44 && $hours_passed <= 60) {
+            if ($is_past && $hours_passed >= 160 && $hours_passed <= 184) {
                 try {
                     $center_id = $booking['center_id'] ?: 305;
                     $stmt_c = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
@@ -68,23 +68,26 @@ foreach ($bookings as $booking) {
                     }
                     $mail->isHTML(true);
                     
-                    $mail->Subject = "Votre séance Aquavelo vous a plu ? 💦";
+                    $mail->Subject = "Des nouvelles de votre séance découverte Aquavelo 🌊";
                     
                     if (in_array((int)$center_id, [305, 347, 349])) {
                         $mail->Body = "Bonjour " . $prenom . ",<br><br>
-                                      J’espère que votre séance découverte Aquavelo vous a plu 💦 !<br>
-                                      Si vous avez un moment, donnez-nous votre avis par retour email — cela nous aide à progresser 🌟.<br><br>
-                                      Et si vous souhaitez continuer, vous pouvez dès maintenant vous inscrire en ligne via ce lien si cela n'a pas été fait :<br>
-                                      👉 <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
-                                      À très bientôt dans l’eau 🌊<br>
+                                      Je reviens vers vous après votre séance découverte Aquavelo 🌊<br>
+                                      J’espère que vous en ressentez encore les bienfaits !<br><br>
+                                      Si vous souhaitez commencer un rythme régulier et atteindre vos objectifs (forme, tonicité, minceur ou bien-être), je suis là pour vous conseiller la formule la plus adaptée si cela n'a pas été fait.<br><br>
+                                      👉 Vous pouvez aussi acheter directement votre formule ici :<br>
+                                      <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquez ici pour voir nos formules</a><br><br>
+                                      N’hésitez pas à me répondre si vous avez la moindre question ou besoin d’un accompagnement personnalisé.<br><br>
+                                      À très bientôt dans l’eau,<br>
                                       Claude<br>
-                                      Tél : 06 22 64 70 95";
+                                      📞 06 22 64 70 95";
                     } else {
                         $mail->Body = "Bonjour " . $prenom . ",<br><br>
-                                      J’espère que votre séance découverte Aquavelo vous a plu 💦 !<br>
-                                      Si vous avez un moment, donnez-nous votre avis par retour email — cela nous aide à progresser 🌟.<br><br>
-                                      N’hésitez pas à nous contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription.<br><br>
-                                      À très bientôt dans l’eau 🌊<br>
+                                      Je reviens vers vous après votre séance découverte Aquavelo 🌊<br>
+                                      J’espère que vous en ressentez encore les bienfaits !<br><br>
+                                      Si vous souhaitez commencer un rythme régulier et atteindre vos objectifs (forme, tonicité, minceur ou bien-être), nous sommes là pour vous conseiller la formule la plus adaptée.<br><br>
+                                      N’hésitez pas à nous répondre si vous avez la moindre question ou besoin d’un accompagnement personnalisé.<br><br>
+                                      À très bientôt dans l’eau,<br>
                                       Cordialement,<br>
                                       Aquavelo " . $center_info['city'] . "<br>
                                       Tél : " . $center_info['phone'];
@@ -93,17 +96,17 @@ foreach ($bookings as $booking) {
                     $mail->send();
                     
                     // Marquer comme envoyé
-                    $upd = $database->prepare("UPDATE am_free SET followup_2d_sent = 1 WHERE id = ?");
+                    $upd = $database->prepare("UPDATE am_free SET followup_7d_sent = 1 WHERE id = ?");
                     $upd->execute([$booking['id']]);
                     $count++;
                     
                 } catch (Exception $e) {
-                    error_log("Erreur Cron Suivi 2J: " . $mail->ErrorInfo);
+                    error_log("Erreur Cron Suivi 7J: " . $mail->ErrorInfo);
                 }
             }
         }
     }
 }
 
-echo "Nombre d'emails de suivi J+2 envoyés : $count";
+echo "Nombre d'emails de suivi J+7 envoyés : $count";
 ?>

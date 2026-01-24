@@ -1,32 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Gratuite 45min | Aquabiking</title>
-  
-  <meta name="description" content="Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>. Essayez gratuitement l'aquabiking + aquagym 45min. Affinez votre silhouette rapidement. Réservez maintenant !">
-  <meta name="keywords" content="aquavélo, aquabiking, aquagym, <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>, sport aquatique, perte de poids, raffermissement, cellulite">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="Aquavélo">
-  
-  <link rel="canonical" href="https://www.aquavelo.com/centres/<?= htmlspecialchars(strtolower($city ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
-  
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.aquavelo.com/centres/<?= htmlspecialchars(strtolower($city ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
-  <meta property="og:title" content="Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Découverte Gratuite">
-  <meta property="og:description" content="Essayez gratuitement l'aquabiking et l'aquagym dans notre centre de <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>. 45 minutes pour découvrir tous les bienfaits.">
-  <meta property="og:image" content="https://www.aquavelo.com/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg">
-  <meta property="og:locale" content="fr_FR">
-  
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> - Séance Gratuite">
-  <meta name="twitter:description" content="Essayez l'aquabiking gratuitement pendant 45min à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>.">
-  <meta name="twitter:image" content="https://www.aquavelo.com/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg">
-  
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+<!-- Page spécifique centre -->
   
   
   <!-- Schema.org JSON-LD -->
@@ -145,17 +117,7 @@
       fbq('track', 'PageView');
     </script>
   <?php endif; ?>
-
-  <?php if (isset($row_center['id']) && in_array($row_center['id'], [343])) : ?>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17714430375"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-17714430375');
-    </script>
-  <?php endif; ?>
-
+  
   <style>
     /* ⭐ Styles améliorés pour la conversion */
     .promo-banner {
@@ -455,8 +417,8 @@
   <div class="container">
     <h1 class="page-title pull-left">Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></h1>
     <ol class="breadcrumb pull-right">
-      <li><a href="./">Accueil</a></li>
-      <li><a href="/centres">Centres</a></li>
+      <li><a href="<?= BASE_PATH ?>">Accueil</a></li>
+      <li><a href="<?= BASE_PATH ?>centres">Centres</a></li>
       <li class="active"><?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></li>
     </ol>
   </div>
@@ -465,7 +427,15 @@
 <!-- Bannière promo -->
 <section class="content-area bg1">
   <div class="container">
-    <a href="/?p=free" class="promo-banner" style="display: block; text-decoration: none; cursor: pointer;" aria-label="Réserver une séance découverte gratuite">
+    <?php if (isset($_GET['success_rdv']) && $_GET['success_rdv'] == 1) : ?>
+      <div class="alert alert-success" style="text-align: center; border-radius: 15px; background: #d4edda; color: #155724; padding: 30px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        <i class="fa fa-check-circle" style="font-size: 3rem; display: block; margin-bottom: 15px;"></i>
+        <h2 style="color: #155724; margin-top: 0;">Félicitations !</h2>
+        <p style="font-size: 1.2rem;">Votre réservation a été enregistrée avec succès.<br>Un email de confirmation vient de vous être envoyé.</p>
+      </div>
+    <?php endif; ?>
+    
+    <a href="<?= BASE_PATH ?>?p=free" class="promo-banner" style="display: block; text-decoration: none; cursor: pointer;" aria-label="Réserver une séance découverte gratuite">
       <h2>🎁 Séance Découverte GRATUITE 45min</h2>
       <p>✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé</p>
     </a>
@@ -477,7 +447,7 @@
   <div class="container">
     <div class="row mt-3">
       <div class="col-md-3 col-6 text-center">
-        <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
+        <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
              alt="Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques" 
              class="img-fluid img-same" 
              style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -488,7 +458,7 @@
 
       <div class="col-md-3 col-6 text-center">
         <?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
-          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
+          <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
                alt="Espace aquagym centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                class="img-fluid img-same" 
                style="border-radius: 10px;"
@@ -496,7 +466,7 @@
                height="200"
                loading="lazy">
         <?php else : ?>
-          <img src="/images/Cannes1.jpg" 
+          <img src="<?= BASE_PATH ?>images/Cannes1.jpg" 
                alt="Intérieur centre Aquavélo Cannes" 
                class="img-fluid img-same" 
                style="border-radius: 10px;"
@@ -508,7 +478,7 @@
 
       <?php if (isset($row_center['id']) && !in_array($row_center['id'], [305, 347, 349])) : ?>
         <div class="col-md-3 col-6 text-center">
-          <img src="/cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
+          <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
                alt="Équipements vestiaires centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                class="img-fluid img-same" 
                style="border-radius: 10px;"
@@ -522,15 +492,17 @@
       $promotions = [
           305 => "Cannes",
           253 => "Antibes",
-          347 => "Nice",
-          349 => "Vallauris"
+          179 => "Nice",
+          347 => "Mandelieu",
+          349 => "Vallauris",
+          343 => "Merignac"
       ];
 
       if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : ?>
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
              title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="/images/promoJan24.webp" 
+            <img src="<?= BASE_PATH ?>images/promoJan24.webp" 
                  alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same" 
                  style="border-radius: 10px; border: 3px solid #ff9800;"
@@ -562,7 +534,7 @@
             <?php if ($row_center['id'] == 253) : ?>
               <div class="text-center">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="/images/planningAntibes.jpg" 
+                <img src="<?= BASE_PATH ?>images/planningAntibes.jpg" 
                      alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
                      class="img-fluid" 
                      style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -571,7 +543,7 @@
             <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
               <div class="text-center">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="/images/PLANNINGCANNES0125.jpg" 
+                <img src="<?= BASE_PATH ?>images/PLANNINGCANNES0125.jpg" 
                      alt="Planning hebdomadaire cours aquabiking aquagym Cannes janvier 2025" 
                      class="img-fluid" 
                      style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -580,7 +552,7 @@
             <?php elseif ($row_center['id'] == 179) : ?>
               <div class="text-center">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="/images/planningNice.jpg" 
+                <img src="<?= BASE_PATH ?>images/planningNice.jpg" 
                      alt="Planning hebdomadaire cours aquabiking aquagym Nice" 
                      class="img-fluid" 
                      style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -589,7 +561,7 @@
             <?php elseif ($row_center['id'] == 271) : ?>
               <div class="text-center">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="/images/planningToulouse.jpg" 
+                <img src="<?= BASE_PATH ?>images/planningToulouse.jpg" 
                      alt="Planning hebdomadaire cours aquabiking aquagym Toulouse" 
                      class="img-fluid" 
                      style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -616,14 +588,14 @@
           <div class="form-container">
             <h2><i class="fa fa-calendar-check-o"></i> Réservez Votre Séance Gratuite</h2>
           
-            <form role="form" id="contactForm" class="contact-form-planning" method="POST" action="index.php?p=free" novalidate>
+            <form role="form" id="contactForm" class="contact-form-planning" method="POST" action="<?= BASE_PATH ?>index.php?p=free" novalidate>
               <div class="form-group">
                 <label for="center"><i class="fa fa-map-marker"></i> Centre <span style="color: red;">*</span></label>
                 <select class="form-control" id="center" name="center">
                   <?php if (isset($centers_list_d)) : ?>
                     <option value="">-- Sélectionnez un centre --</option>
                     <?php foreach ($centers_list_d as $free_d) : ?>
-                      <option <?php if (isset($_GET['city']) && $_GET['city'] == $free_d['city']) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                      <option <?php if (isset($_GET['city']) && strtolower($_GET['city']) == strtolower($free_d['city'])) echo 'selected'; ?> value="<?= htmlspecialchars($free_d['id'], ENT_QUOTES, 'UTF-8'); ?>">
                         <?= htmlspecialchars($free_d['city'], ENT_QUOTES, 'UTF-8'); ?>
                       </option>
                     <?php endforeach; ?>
@@ -669,7 +641,7 @@
               <input type="hidden" name="segment" id="segment">
               
               <button type="submit" id="submitBtnPage" class="btn btn-submit" aria-label="Recevoir mon bon par email">
-                <i class="fa fa-check-circle"></i> <?= in_array($row_center['id'], [305, 347, 349]) ? "RÉSERVER MA SÉANCE OFFERTE" : "Recevoir mon Bon par Email" ?>
+                <i class="fa fa-check-circle"></i> <?= in_array($row_center['id'], [305, 347, 349, 343]) ? "RÉSERVER MA SÉANCE OFFERTE" : "Recevoir mon Bon par Email" ?>
               </button>
 
               <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
@@ -740,7 +712,7 @@
           </div>
 
           <!-- ⭐ Témoignages Google Business - Centre Cannes -->
-          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349])) : ?>
+          <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349, 343])) : ?>
           <div style="margin-top: 40px;">
             <h3 style="color: #00a8cc; margin-bottom: 25px;">
               <i class="fa fa-google"></i> Avis Google 
@@ -848,18 +820,18 @@
             </a>
 
             <button type="button" class="btn btn-default btn-block" 
-               onclick="ouvre_popup('/nouveauResultat.html'); return false;" 
+               onclick="ouvre_popup('<?= BASE_PATH ?>nouveauResultat.html'); return false;" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-image"></i> Voir les Résultats Minceur
             </button>
 
-            <a href="index.php?p=conseilminceur" class="btn btn-default btn-block" 
+            <a href="<?= BASE_PATH ?>index.php?p=conseilminceur" class="btn btn-default btn-block" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-cutlery"></i> Menu Perte de Poids
             </a>
 
             <?php if (in_array(strtolower($city ?? ''), ['cannes', 'mandelieu-la-napoule', 'mandelieu', 'vallauris', 'nice'])) : ?>
-            <a href="index.php?p=cryolipolyse" class="btn btn-default btn-block" 
+            <a href="<?= BASE_PATH ?>index.php?p=cryolipolyse" class="btn btn-default btn-block" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-snowflake-o"></i> Minceur Cryolipolyse
             </a>
@@ -924,7 +896,7 @@
               <?php foreach ($centers_list_d as $center) : ?>
                 <?php if ($center['city'] != $city) : ?>
                   <li style="margin-bottom: 8px; break-inside: avoid;">
-                    <a href="/centres/<?= htmlspecialchars(strtolower($center['city']), ENT_QUOTES, 'UTF-8'); ?>" 
+                    <a href="<?= BASE_PATH ?>centres/<?= htmlspecialchars(strtolower($center['city']), ENT_QUOTES, 'UTF-8'); ?>"
                        style="color: #00a8cc; text-decoration: none;"
                        title="Centre Aquavélo <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?>">
                       <i class="fa fa-chevron-right" style="font-size: 0.8rem;"></i> <?= htmlspecialchars($center['city'], ENT_QUOTES, 'UTF-8'); ?>
@@ -1125,9 +1097,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-</body>
-</html>
 
 
 

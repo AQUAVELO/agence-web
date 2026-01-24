@@ -5,10 +5,20 @@ $nom_rdv = isset($_GET['nom']) ? htmlspecialchars($_GET['nom']) : '';
 $email_rdv = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 $phone_rdv = isset($_GET['phone']) ? htmlspecialchars($_GET['phone']) : '';
 $city_rdv = isset($_GET['city']) ? htmlspecialchars($_GET['city']) : 'Cannes';
+$center_id = isset($_GET['center']) ? (int)$_GET['center'] : 305;
+
+// Récupérer les infos du centre
+$stmt_c = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
+$stmt_c->execute([$center_id]);
+$center_info = $stmt_c->fetch();
+
+if (!$center_info) {
+    $center_info = ['city' => 'Cannes', 'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 'phone' => '04 93 93 05 65'];
+}
 
 // URLs dynamiques
-$url_annuler = "index.php?p=annulation&email=" . urlencode($email_rdv) . "&rdv=" . urlencode($rdv_brut) . "&city=" . urlencode($city_rdv);
-$url_modifier = "index.php?p=calendrier_cannes&center=305&nom=" . urlencode($nom_rdv) . "&email=" . urlencode($email_rdv) . "&phone=" . urlencode($phone_rdv) . "&old_rdv=" . urlencode($rdv_brut);
+$url_annuler = BASE_PATH . "index.php?p=annulation&email=" . urlencode($email_rdv) . "&rdv=" . urlencode($rdv_brut) . "&city=" . urlencode($city_rdv);
+$url_modifier = BASE_PATH . "index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($nom_rdv) . "&email=" . urlencode($email_rdv) . "&phone=" . urlencode($phone_rdv) . "&old_rdv=" . urlencode($rdv_brut);
 
 // Formatage affichage
 $rdv_display = strpos($rdv_brut, '(') !== false ? str_replace(['(', ')'], ['pour une séance ', ''], $rdv_brut) : $rdv_brut . " pour une séance AQUAVELO";
@@ -33,13 +43,13 @@ $rdv_display = strpos($rdv_brut, '(') !== false ? str_replace(['(', ')'], ['pour
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 40px;">
         <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; border-left: 5px solid #00a8cc;">
             <h3 style="margin-top: 0; font-size: 1.1rem; color: #333;"><i class="fa fa-map-marker"></i> Lieu</h3>
-            <p style="margin-bottom: 5px;"><strong>Aquavelo Cannes</strong></p>
-            <p style="font-size: 0.95rem; color: #666; margin: 0;">60 avenue du Docteur Raymond Picaud, Cannes</p>
+            <p style="margin-bottom: 5px;"><strong>Aquavelo <?= $center_info['city'] ?></strong></p>
+            <p style="font-size: 0.95rem; color: #666; margin: 0;"><?= $center_info['address'] ?></p>
         </div>
         <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; border-left: 5px solid #00a8cc;">
             <h3 style="margin-top: 0; font-size: 1.1rem; color: #333;"><i class="fa fa-phone"></i> Contact</h3>
             <p style="margin-bottom: 5px;"><strong>Besoin d'aide ?</strong></p>
-            <p style="font-size: 1.2rem; color: #00a8cc; font-weight: bold; margin: 0;">04 93 93 05 65</p>
+            <p style="font-size: 1.2rem; color: #00a8cc; font-weight: bold; margin: 0;"><?= $center_info['phone'] ?></p>
         </div>
       </div>
 
@@ -63,7 +73,7 @@ $rdv_display = strpos($rdv_brut, '(') !== false ? str_replace(['(', ')'], ['pour
       </div>
 
       <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
-        <a href="index.php?p=page&city=<?= urlencode($city_rdv) ?>" class="btn btn-primary" style="padding: 15px 40px; border-radius: 50px; font-weight: bold; background: #00a8cc; border: none; font-size: 1.2rem; color: white; text-decoration: none;">RETOUR À L'ACCUEIL</a>
+        <a href="<?= BASE_PATH ?>index.php?p=page&city=<?= urlencode($city_rdv) ?>" class="btn btn-primary" style="padding: 15px 40px; border-radius: 50px; font-weight: bold; background: #00a8cc; border: none; font-size: 1.2rem; color: white; text-decoration: none;">RETOUR À L'ACCUEIL</a>
       </div>
     </div>
   </div>

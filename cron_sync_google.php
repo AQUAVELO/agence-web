@@ -28,10 +28,9 @@ $client->setAuthConfig($keyFile);
 $client->addScope(Calendar::CALENDAR);
 $service = new Calendar($client);
 
-$calendarId = 'aqua.cannes@gmail.com';
-
-// 2. Récupérer les RDV non synchronisés (sur les 7 derniers jours et le futur)
-$stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND google_sync = 0 AND center_id IN (305, 347, 349, 343)");
+// 2. Récupérer les RDV non synchronisés
+// Ajout du centre 253 (Antibes)
+$stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND google_sync = 0 AND center_id IN (305, 347, 349, 343, 253)");
 $stmt->execute();
 $bookings = $stmt->fetchAll();
 
@@ -50,11 +49,19 @@ foreach ($bookings as $booking) {
 
                 $client_name = trim(explode('(RDV:', $booking['name'])[0]);
                 
-                // Récupérer le lieu du centre
-                $stmt_c = $database->prepare("SELECT address FROM am_centers WHERE id = ?");
+                // Récupérer les infos du centre (adresse et email pour l'agenda)
+                $stmt_c = $database->prepare("SELECT address, email FROM am_centers WHERE id = ?");
                 $stmt_c->execute([$booking['center_id'] ?: 305]);
                 $c_info = $stmt_c->fetch();
+                
                 $location = $c_info['address'] ?? '60 Avenue du Dr Raymond Picaud, 06150 Cannes';
+                
+                // Déterminer l'agenda de destination
+                // Par défaut aqua.cannes@gmail.com, sauf si le centre a un email spécifique
+                $targetCalendarId = 'aqua.cannes@gmail.com';
+                if (!empty($c_info['email'])) {
+                    $targetCalendarId = $c_info['email'];
+                }
 
                 // Création de l'événement
                 $event = new Event([
@@ -71,7 +78,7 @@ foreach ($bookings as $booking) {
                     ],
                 ]);
 
-                $createdEvent = $service->events->insert($calendarId, $event);
+                $createdEvent = $service->events->insert($targetCalendarId, $event);
                 $googleEventId = $createdEvent->getId();
 
                 // Marquer comme synchronisé et stocker l'ID Google
@@ -79,7 +86,7 @@ foreach ($bookings as $booking) {
                 $count++;
                 
             } catch (Exception $e) {
-                error_log("Erreur Google Calendar Sync: " . $e->getMessage());
+                error_log("Erreur Google Calendar Sync (ID: {$booking['id']}, Target: $targetCalendarId): " . $e->getMessage());
             }
         }
     }

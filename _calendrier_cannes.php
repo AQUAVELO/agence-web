@@ -17,7 +17,8 @@ $centers_info = [
     305 => ['city' => 'Cannes', 'addr' => '60 avenue du Docteur Raymond Picaud', 'tel' => '04 93 93 05 65'],
     347 => ['city' => 'Mandelieu', 'addr' => 'Avenue de Fréjus', 'tel' => '04 93 93 05 65'],
     349 => ['city' => 'Vallauris', 'addr' => 'Chemin de Saint-Bernard', 'tel' => '04 93 93 05 65'],
-    343 => ['city' => 'Mérignac', 'addr' => $row_c['address'] ?? 'Centre Mérignac', 'tel' => $row_c['phone'] ?? '05 56 00 00 00']
+    343 => ['city' => 'Mérignac', 'addr' => $row_c['address'] ?? 'Centre Mérignac', 'tel' => $row_c['phone'] ?? '05 56 00 00 00'],
+    253 => ['city' => 'Antibes', 'addr' => '1730 Chemin des Terriers', 'tel' => '04 93 74 97 99']
 ];
 $current_center = isset($centers_info[$center_id]) ? $centers_info[$center_id] : $centers_info[305];
 
@@ -39,7 +40,17 @@ $old_special_activities = [
 $merignac_creneaux_semaine = ['09:30', '10:30', '11:30', '12:30', '16:30', '17:30', '18:30', '19:30'];
 $merignac_creneaux_samedi  = ['09:30', '10:30', '11:30'];
 
-// 3. NOUVEAU PLANNING (à partir du 1er Février) - Uniquement pour Cannes Group pour l'instant
+// 3. Planning ANTIBES (ID: 253)
+$antibes_planning = [
+    'Lundi'    => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Mardi'    => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Mercredi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Jeudi'    => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAGYM','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Vendredi' => ['10:15' => 'AQUAGYM','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAVELO','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO','19:45' => 'AQUAVELO'],
+    'Samedi'   => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM']
+];
+
+// 4. NOUVEAU PLANNING (à partir du 1er Février) - Uniquement pour Cannes Group pour l'instant
 $new_planning = [
     'Lundi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUAGYM','14:45' => 'AQUAVELO','16:00' => 'AQUAVELO','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
     'Mardi' => ['09:45' => 'AQUAVELO','11:00' => 'AQUAVELO','12:15' => 'AQUAVELO','13:30' => 'AQUABOXING','14:45' => 'AQUAVELO','16:00' => 'AQUAGYM','17:15' => 'AQUAVELO','18:30' => 'AQUAVELO'],
@@ -50,7 +61,7 @@ $new_planning = [
 ];
 
 // Récupérer les réservations
-$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349, 343) AND name LIKE '%(RDV:%'");
+$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349, 343, 253) AND name LIKE '%(RDV:%'");
 $bookings_query->execute();
 $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
 
@@ -84,6 +95,13 @@ for ($i = 0; $i < 21; $i++) {
         $times = ($day_num == 6) ? $merignac_creneaux_samedi : $merignac_creneaux_semaine;
         foreach ($times as $t) {
             $current_slots[] = ['time' => $t, 'activity' => 'AQUAVELO'];
+        }
+    } elseif ($center_id == 253) {
+        // ⭐ ANTIBES
+        if (isset($antibes_planning[$day_fr])) {
+            foreach ($antibes_planning[$day_fr] as $h => $act) {
+                $current_slots[] = ['time' => $h, 'activity' => $act];
+            }
         }
     } elseif ($date >= $switch_date) {
         // ⭐ FUTUR (Février) : Uniquement Cannes Group

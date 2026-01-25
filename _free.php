@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // C. NOTIFICATIONS (Email et Telegram)
             
             // 1. Détermination du message Telegram
-            $planning_centers = [305, 347, 349, 343];
+            $planning_centers = [305, 347, 349, 343, 253];
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris
@@ -170,8 +170,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     }
                     $mail->send();
 
-                    // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac gérés plus bas)
-                    if (!in_array((int)$center_id, [305, 347, 349, 343]) && !$date_heure) {
+                    // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
+                    if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
                         $mail->clearAddresses();
                         $mail->addAddress($email);
                         $mail->Subject = "Votre séance découverte gratuite à Aquavelo $city";
@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 $url = BASE_PATH . "index.php?p=merci_rdv&center=" . $center_id . "&rdv=" . urlencode($date_heure) . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&city=" . urlencode($city);
                 echo "<script>window.location.replace('$url');</script>";
                 exit;
-            } elseif (in_array((int)$center_id, [305, 347, 349, 343])) {
+            } elseif (in_array((int)$center_id, [305, 347, 349, 343, 253])) {
                 $url = BASE_PATH . "index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel);
                 echo "<script>window.location.replace('$url');</script>";
                 exit;

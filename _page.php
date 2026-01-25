@@ -532,13 +532,12 @@
         <div class="planning-section">
           <?php if (isset($row_center['id'])) : ?>
             <?php if ($row_center['id'] == 253) : ?>
-              <div class="text-center">
-                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="<?= BASE_PATH ?>images/planningAntibes.jpg" 
-                     alt="Planning hebdomadaire cours aquabiking aquagym Antibes" 
-                     class="img-fluid" 
-                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                     loading="lazy">
+              <div class="text-center" style="padding: 30px; background: #fff; border-radius: 15px; border: 2px solid #00a8cc; box-shadow: 0 10px 30px rgba(0,168,204,0.1); margin-bottom: 30px;">
+                <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Nouveau Planning 2026</h3>
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 25px;">Le planning des cours d'Antibes a été mis à jour pour l'année 2026.</p>
+                <a href="<?= BASE_PATH ?>documents/planning-antibes-2026.pdf" target="_blank" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); border: none; border-radius: 50px; padding: 18px 35px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(0,168,204,0.4); transition: all 0.3s ease;">
+                  <i class="fa fa-file-pdf-o" style="margin-right: 10px;"></i> Consulter le Planning (PDF)
+                </a>
               </div>
             <?php elseif (in_array($row_center['id'], [305, 347, 349])) : ?>
               <div class="text-center">

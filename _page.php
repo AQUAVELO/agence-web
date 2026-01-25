@@ -531,7 +531,15 @@
         <a id="planning-cours"></a>
         <div class="planning-section">
           <?php if (isset($row_center['id'])) : ?>
-            <?php if ($row_center['id'] == 253) : ?>
+            
+            <?php 
+            // Vérifier si un planning dynamique existe pour ce centre
+            $planning_html = renderPlanningTable($row_center['id']);
+            if (!empty($planning_html)) :
+                echo $planning_html;
+            ?>
+
+            <?php elseif ($row_center['id'] == 253) : // Garder l'ancien bouton en secours si pas de tableau ?>
               <div class="text-center" style="padding: 30px; background: #fff; border-radius: 15px; border: 2px solid #00a8cc; box-shadow: 0 10px 30px rgba(0,168,204,0.1); margin-bottom: 30px;">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Nouveau Planning 2026</h3>
                 <p style="font-size: 1.1rem; color: #555; margin-bottom: 25px;">Le planning des cours d'Antibes a été mis à jour pour l'année 2026.</p>

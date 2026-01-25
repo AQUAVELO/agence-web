@@ -1,4 +1,5 @@
 <?php require '_settings.php'; ?>
+<?php require 'Include/planning_functions.php'; ?>
 <?php
 
 // ===== ROUTEUR PHP POUR PRETTY URLs =====
@@ -266,6 +267,7 @@ if (isset($_GET['city'])) {
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/animate.css?v=1">
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/bootstrap.css?v=1">
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/style.css?v=1">
+  <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/planning.css?v=1">
   <link rel="icon" href="<?= BASE_PATH ?>images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
   <style type="text/css">

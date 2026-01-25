@@ -66,6 +66,11 @@ if ($email && $rdv) {
                               "📧 " . $email . "\n" .
                               "🗓️ RDV : $rdv";
                     sendTelegram($tg_msg);
+                    
+                    // Notification spécifique pour le responsable d'Antibes (ID 253)
+                    if ((int)$booking['center_id'] == 253) {
+                        sendTelegram($tg_msg, '1449612043');
+                    }
                 }
             } catch (Exception $e) {
                 error_log("Erreur Email Annulation: " . $mail->ErrorInfo);

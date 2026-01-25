@@ -41,13 +41,15 @@ $settings['tg_chat_id'] = '6535972843';
 $settings['smsfactor_token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMzIzOSIsImlhdCI6MTc2ODkyMjIzOS4wMjUwMjZ9.CXCqk_FX_6WzK6Hk3MosVXWTgsDtntI2t7j6W5Q5o4Y';
 
 if (!function_exists('sendTelegram')) {
-    function sendTelegram($message) {
+    function sendTelegram($message, $chat_id = null) {
         global $settings;
         if (empty($settings['tg_token'])) return;
         
+        $target_chat_id = $chat_id ?: $settings['tg_chat_id'];
+        
         $url = "https://api.telegram.org/bot" . $settings['tg_token'] . "/sendMessage";
         $data = [
-            'chat_id' => $settings['tg_chat_id'],
+            'chat_id' => $target_chat_id,
             'text' => $message,
             'parse_mode' => 'html'
         ];

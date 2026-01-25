@@ -106,6 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     }
                 }
                 sendTelegram($tg_msg);
+                
+                // Notification spécifique pour le responsable d'Antibes (ID 253)
+                if ((int)$center_id == 253) {
+                    sendTelegram($tg_msg, '1449612043');
+                }
             }
 
             // 2. Envoi des Emails

@@ -60,9 +60,9 @@ $new_planning = [
     'Samedi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM']
 ];
 
-// Récupérer les réservations
-$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id IN (305, 347, 349, 343, 253) AND name LIKE '%(RDV:%'");
-$bookings_query->execute();
+// Récupérer les réservations spécifiquement pour CE centre
+$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id = ? AND name LIKE '%(RDV:%'");
+$bookings_query->execute([$center_id]);
 $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
 
 function isSlotTaken($date, $hour, $existing_bookings) {

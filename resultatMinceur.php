@@ -52,18 +52,82 @@
     function calculateIMC(weight,height){const heightInMeters=height/100;return(weight/(heightInMeters*heightInMeters)).toFixed(2);}
     async function getAdvice(age,weight,height,imc,localisation,moral,sport,eau,tdee){
       const prompt=`Donne des conseils pour une personne de ${age} ans, ${weight} kg, ${height} cm, IMC ${imc}. Cellulite: ${localisation}. Moral: ${moral}. Sport: ${sport}. Eau: ${eau}. Besoin calorique: ${tdee} calories. Propose l'Aquavelo, des conseils alimentaires et des ajustements pour atteindre les objectifs minceur. Limite à 10 lignes et 350 tokens. Ne parle pas de professionnel de santé, ni de nutritionniste.`;
-    const response = await fetch('./api_handler.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt: prompt,
-        max_tokens: 400,          // Augmente la limite de tokens
-        stop: ["\n\n"]            // Exemple de marqueur d'arrêt, à ajuster selon vos besoins
-      })
-    });
+      try {
+        const response = await fetch('./api_handler.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: prompt,
+            max_tokens: 400,
+            stop: ["\n\n"]
+          })
+        });
 
+        if (!response.ok) {
+          const errorText = await response.text();
+          let errorMsg = `Erreur HTTP: ${response.status}`;
+          try {
+            const errorData = JSON.parse(errorText);
+            if (errorData.error) {
+              errorMsg = typeof errorData.error === 'string' ? errorData.error : (errorData.error.message || errorMsg);
+            }
+          } catch (e) {
+            errorMsg += ' - ' + errorText.substring(0, 100);
+          }
+          throw new Error(errorMsg);
+        }
 
-      const data=await response.json();return data.choices[0].message.content;}
+        let data;
+        try {
+          const responseText = await response.text();
+          console.log('Réponse brute:', responseText.substring(0, 500)); // Log les 500 premiers caractères
+          data = JSON.parse(responseText);
+        } catch (e) {
+          console.error('Erreur parsing JSON:', e);
+          throw new Error('Erreur lors du parsing de la réponse JSON: ' + e.message);
+        }
+        
+        // Log pour déboguer
+        console.log('Réponse API complète:', data);
+        
+        // Vérifier si la réponse contient une erreur
+        if (data.error) {
+          const errorMsg = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
+          throw new Error('Erreur API: ' + errorMsg);
+        }
+        
+        // Vérifier si la structure de réponse est correcte
+        if (!data || typeof data !== 'object') {
+          console.error('Réponse invalide:', data);
+          throw new Error('Réponse API invalide: format de données incorrect');
+        }
+        
+        if (!data.choices) {
+          console.error('Pas de propriété choices dans la réponse:', data);
+          throw new Error('Réponse API invalide: propriété "choices" manquante');
+        }
+        
+        if (!Array.isArray(data.choices) || data.choices.length === 0) {
+          console.error('Tableau choices vide ou invalide:', data.choices);
+          throw new Error('Réponse API invalide: tableau "choices" vide');
+        }
+        
+        if (!data.choices[0] || !data.choices[0].message) {
+          console.error('Structure message invalide:', data.choices[0]);
+          throw new Error('Réponse API invalide: structure "message" manquante');
+        }
+        
+        if (!data.choices[0].message.content) {
+          console.error('Contenu message manquant:', data.choices[0].message);
+          throw new Error('Réponse API invalide: contenu du message manquant');
+        }
+        
+        return data.choices[0].message.content;
+      } catch (error) {
+        console.error('Erreur lors de l\'appel API:', error);
+        throw error;
+      }
+    }
     document.getElementById('combinedForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
       const gender=document.getElementById('gender').value;
@@ -88,8 +152,19 @@
       const tdee=Math.round(bmr*multiplier);document.getElementById('calorieResult').textContent='Votre besoin calorique journalier est d\'environ '+tdee+' calories par jour.';
       const localisation=document.getElementById('localisation').value;const moral=document.getElementById('moral').value;const sport=sportValue;const eau=document.getElementById('eau').value;
       const responseDiv=document.getElementById('response');responseDiv.textContent='Je vais vous donner une réponse adaptée, chargement...';
-      try{const advice=await getAdvice(ageCalc,weightCalc,height,imc,localisation,moral,sport,eau,tdee);responseDiv.textContent=advice;}
-      catch(error){responseDiv.textContent='Une erreur s\'est produite. Veuillez réessayer.';console.error(error);}});
+      try{
+        const advice=await getAdvice(ageCalc,weightCalc,height,imc,localisation,moral,sport,eau,tdee);
+        responseDiv.textContent=advice;
+        responseDiv.style.background='#e8f5e9';
+        responseDiv.style.color='#2e7d32';
+      }
+      catch(error){
+        console.error('Erreur détaillée:', error);
+        responseDiv.textContent='Une erreur s\'est produite lors de la génération des conseils. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez le support.';
+        responseDiv.style.background='#ffebee';
+        responseDiv.style.color='#c62828';
+      }
+    });
     document.getElementById('bouton-fermeture').addEventListener('click',()=>{window.close();});
   </script>
 </body>

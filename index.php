@@ -913,6 +913,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
               </li>
 
+              <li> 
+                <a href="https://aquacoach.fr" target="_blank" rel="noopener">Natation</a>
+              </li>
+
               <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 
                 <a href="<?= BASE_PATH ?>?p=conseilminceur" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Amincissement</a>
                 <ul class="dropdown-menu">

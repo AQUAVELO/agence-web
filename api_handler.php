@@ -1,7 +1,7 @@
 <?php
-// Activer l'affichage des erreurs pour le débogage
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Désactiver l'affichage des erreurs en production (comme dans _settings.php)
+ini_set('display_errors', 0);
+error_reporting(0);
 
 // Définir la clé API OpenAI
 define('API_KEY', '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');
@@ -33,10 +33,13 @@ $headers = [
     'Content-Type: application/json',
     'Authorization: Bearer ' . API_KEY
 ];
+// Récupérer max_tokens depuis les données si fourni, sinon utiliser 400 par défaut
+$max_tokens = isset($data['max_tokens']) ? (int)$data['max_tokens'] : 400;
+
 $body = [
     'model' => 'gpt-3.5-turbo',
     'messages' => [['role' => 'user', 'content' => $prompt]],
-    'max_tokens' => 250 // Limite la réponse à 250 tokens
+    'max_tokens' => $max_tokens
 ];
 
 // Utiliser cURL pour envoyer la requête
@@ -57,6 +60,51 @@ if (curl_errno($ch)) {
 }
 
 curl_close($ch);
+
+// Vérifier que la réponse n'est pas vide
+if (empty($response)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Réponse vide de l\'API OpenAI']);
+    exit;
+}
+
+// Décoder la réponse JSON
+$responseData = json_decode($response, true);
+
+// Vérifier si le JSON est valide
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Réponse JSON invalide de l\'API: ' . json_last_error_msg()]);
+    exit;
+}
+
+// Vérifier le code HTTP de la réponse
+if ($httpCode !== 200) {
+    http_response_code($httpCode);
+    $errorMessage = 'Erreur API OpenAI';
+    if (isset($responseData['error']['message'])) {
+        $errorMessage = $responseData['error']['message'];
+    } elseif (isset($responseData['error'])) {
+        $errorMessage = is_string($responseData['error']) ? $responseData['error'] : json_encode($responseData['error']);
+    }
+    echo json_encode(['error' => $errorMessage, 'http_code' => $httpCode]);
+    exit;
+}
+
+// Vérifier si la réponse contient une erreur (même avec code HTTP 200)
+if (isset($responseData['error'])) {
+    http_response_code(500);
+    $errorMessage = isset($responseData['error']['message']) ? $responseData['error']['message'] : 'Erreur API OpenAI';
+    echo json_encode(['error' => $errorMessage]);
+    exit;
+}
+
+// Vérifier que la structure de réponse est correcte
+if (!isset($responseData['choices']) || !is_array($responseData['choices']) || empty($responseData['choices'])) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Réponse API invalide: structure "choices" manquante ou vide']);
+    exit;
+}
 
 // Renvoyer la réponse de l'API OpenAI au client
 echo $response;

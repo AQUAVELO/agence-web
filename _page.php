@@ -825,7 +825,15 @@
             </a>
 
             <?php if (in_array(strtolower($city ?? ''), ['cannes', 'mandelieu-la-napoule', 'mandelieu', 'vallauris', 'nice'])) : ?>
-            <a href="<?= BASE_PATH ?>index.php?p=cryolipolyse" class="btn btn-default btn-block" 
+            <a href="<?php 
+                // Pour Nice (ID 179), rediriger vers sudminceur.fr
+                if (isset($row_center['id']) && $row_center['id'] == 179) {
+                    echo 'https://sudminceur.fr/';
+                } else {
+                    echo BASE_PATH . 'index.php?p=cryolipolyse';
+                }
+            ?>" 
+            class="btn btn-default btn-block" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
               <i class="fa fa-snowflake-o"></i> Minceur Cryolipolyse
             </a>

@@ -32,8 +32,9 @@ foreach ($bookings as $booking) {
             $total_minutes_until = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
             $is_future = ($rdv_date > $now);
 
-            // Fenêtre d'envoi : normale (120-240 min)
-            if ($is_future && $total_minutes_until >= 120 && $total_minutes_until <= 240) {
+            // Fenêtre d'envoi : 3h avant (150-210 min = 2h30 à 3h30 avant)
+            // Centré sur 3h (180 min) avec une marge pour le cron horaire
+            if ($is_future && $total_minutes_until >= 150 && $total_minutes_until <= 210) {
                 try {
                     $center_id = $booking['center_id'] ?: 305;
                     $stmt_c = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");

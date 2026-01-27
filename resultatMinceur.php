@@ -53,115 +53,134 @@
     async function getAdvice(age,weight,height,imc,localisation,moral,sport,eau,tdee){
       const prompt=`Donne des conseils pour une personne de ${age} ans, ${weight} kg, ${height} cm, IMC ${imc}. Cellulite: ${localisation}. Moral: ${moral}. Sport: ${sport}. Eau: ${eau}. Besoin calorique: ${tdee} calories. Propose l'Aquavelo, des conseils alimentaires et des ajustements pour atteindre les objectifs minceur. Limite à 10 lignes et 350 tokens. Ne parle pas de professionnel de santé, ni de nutritionniste.`;
       
-      console.log('Début appel API avec prompt:', prompt.substring(0, 100) + '...');
+      console.log('[V2] Début appel API');
       
       try {
-        const requestBody = {
-          prompt: prompt,
-          max_tokens: 400,
-          stop: ["\n\n"]
-        };
+        // Construction de l'URL avec gestion d'erreur
+        const apiUrl = (() => {
+          try {
+            const baseUrl = window.location.origin || '';
+            const pathname = window.location.pathname || '';
+            const currentDir = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+            return baseUrl + currentDir + 'api_handler.php';
+          } catch (e) {
+            console.error('Erreur construction URL:', e);
+            return 'api_handler.php';  // Fallback
+          }
+        })();
         
-        console.log('Envoi requête à api_handler.php...');
-        // Construire l'URL complète pour éviter les problèmes de chemin
-        // Le fichier est ouvert avec un chemin absolu /resultatMinceur.php
-        // donc api_handler.php devrait être accessible avec le même chemin de base
-        const baseUrl = window.location.origin;
-        const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-        const apiUrl = baseUrl + currentDir + 'api_handler.php';
+        console.log('[V2] URL API:', apiUrl);
         
-        console.log('URL API complète:', apiUrl);
-        console.log('Base URL:', baseUrl);
-        console.log('Répertoire actuel:', currentDir);
-        console.log('Pathname:', window.location.pathname);
-        
+        // Appel API
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestBody)
+          body: JSON.stringify({ prompt: prompt, max_tokens: 400 })
         });
         
-        console.log('Réponse reçue, status:', response.status, response.statusText);
-
-        // Lire la réponse une seule fois
-        const responseText = await response.text();
-        console.log('Code HTTP:', response.status);
-        console.log('Réponse brute:', responseText.substring(0, 500)); // Log les 500 premiers caractères
+        console.log('[V2] Status HTTP:', response.status);
         
-        // Parser le JSON
-        let data;
+        // Lecture de la réponse
+        const responseText = await response.text();
+        console.log('[V2] Réponse brute (500 car):', responseText.substring(0, 500));
+        
+        // Parsing JSON sécurisé
+        let data = null;
         try {
           data = JSON.parse(responseText);
-        } catch (e) {
-          console.error('Erreur parsing JSON:', e);
-          throw new Error('Erreur lors du parsing de la réponse JSON: ' + e.message + '. Réponse: ' + responseText.substring(0, 200));
+          console.log('[V2] Données parsées:', Object.keys(data || {}));
+        } catch (parseError) {
+          console.error('[V2] Erreur parsing:', parseError);
+          throw new Error('Réponse JSON invalide: ' + parseError.message);
         }
         
-        // Vérifier le code HTTP après avoir parsé le JSON
-        if (!response.ok) {
-          let errorMsg = `Erreur HTTP: ${response.status}`;
-          if (data && data.error) {
-            errorMsg = typeof data.error === 'string' ? data.error : (data.error.message || errorMsg);
-          }
+        // Vérification HTTP status
+        if (!response.ok || response.status !== 200) {
+          const errorMsg = (data && data.error) ? (typeof data.error === 'string' ? data.error : (data.error.message || 'Erreur API')) : 'Erreur HTTP ' + response.status;
           throw new Error(errorMsg);
         }
         
-        // Log pour déboguer
-        console.log('Réponse API complète:', data);
+        // Vérification structure de données - approche ultra-sécurisée
+        console.log('[V2] Vérification structure data');
         
-        // Vérifier si la réponse contient une erreur
+        // Étape 1: data existe?
+        if (!data) {
+          throw new Error('Data est null ou undefined');
+        }
+        
+        // Étape 2: data.error?
         if (data.error) {
-          const errorMsg = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
-          throw new Error('Erreur API: ' + errorMsg);
+          throw new Error('API error: ' + JSON.stringify(data.error));
         }
         
-        // Vérifier si la structure de réponse est correcte
-        if (!data || typeof data !== 'object') {
-          console.error('Réponse invalide:', data);
-          throw new Error('Réponse API invalide: format de données incorrect');
+        // Étape 3: data.choices existe?
+        let choices = null;
+        try {
+          choices = data['choices'];  // Accès par crochets
+        } catch (e) {
+          console.error('[V2] Erreur accès choices:', e);
         }
         
-        // Vérifications sécurisées pour éviter TypeError
-        if (!data.hasOwnProperty('choices')) {
-          console.error('Pas de propriété choices dans la réponse:', data);
-          throw new Error('Réponse API invalide: propriété "choices" manquante. Réponse complète: ' + JSON.stringify(data));
+        if (!choices) {
+          throw new Error('Propriété "choices" manquante dans la réponse');
         }
         
-        if (data.choices === null || data.choices === undefined) {
-          console.error('Choices est null ou undefined:', data);
-          throw new Error('Réponse API invalide: "choices" est null ou undefined. Réponse complète: ' + JSON.stringify(data));
+        // Étape 4: choices est un tableau?
+        if (!Array.isArray(choices)) {
+          throw new Error('choices n\'est pas un tableau');
         }
         
-        if (!Array.isArray(data.choices)) {
-          console.error('Choices n\'est pas un tableau:', typeof data.choices, data.choices);
-          throw new Error('Réponse API invalide: "choices" n\'est pas un tableau. Type: ' + typeof data.choices + '. Valeur: ' + JSON.stringify(data.choices));
+        // Étape 5: choices a au moins un élément?
+        if (choices.length === 0) {
+          throw new Error('Le tableau choices est vide');
         }
         
-        if (data.choices.length === 0) {
-          console.error('Tableau choices vide:', data);
-          throw new Error('Réponse API invalide: tableau "choices" vide');
+        // Étape 6: Accès ultra-sécurisé au premier élément
+        let firstChoice = null;
+        try {
+          firstChoice = choices[0];
+        } catch (e) {
+          console.error('[V2] Erreur accès choices[0]:', e);
+          throw new Error('Impossible d\'accéder au premier élément de choices');
         }
         
-        // Accès sécurisé au premier élément
-        const firstChoice = data.choices && data.choices.length > 0 ? data.choices[0] : null;
         if (!firstChoice) {
-          console.error('Premier élément de choices est undefined:', data.choices);
-          throw new Error('Réponse API invalide: premier élément de "choices" est undefined');
+          throw new Error('Le premier élément de choices est null ou undefined');
         }
         
-        if (!firstChoice.message) {
-          console.error('Structure message manquante dans firstChoice:', firstChoice);
-          throw new Error('Réponse API invalide: propriété "message" manquante dans choices[0]');
+        // Étape 7: Accès au message
+        let message = null;
+        try {
+          message = firstChoice['message'];
+        } catch (e) {
+          console.error('[V2] Erreur accès message:', e);
+          throw new Error('Impossible d\'accéder à la propriété message');
         }
         
-        if (!firstChoice.message.content) {
-          console.error('Contenu message manquant:', firstChoice.message);
-          throw new Error('Réponse API invalide: contenu du message manquant');
+        if (!message) {
+          throw new Error('La propriété message est manquante');
         }
         
-        return firstChoice.message.content;
+        // Étape 8: Accès au contenu
+        let content = null;
+        try {
+          content = message['content'];
+        } catch (e) {
+          console.error('[V2] Erreur accès content:', e);
+          throw new Error('Impossible d\'accéder au contenu du message');
+        }
+        
+        if (!content) {
+          throw new Error('Le contenu du message est vide');
+        }
+        
+        console.log('[V2] Succès! Contenu récupéré');
+        return content;
+        
       } catch (error) {
-        console.error('Erreur lors de l\'appel API:', error);
+        console.error('[V2] Erreur finale:', error);
+        console.error('[V2] Message:', error.message);
+        console.error('[V2] Stack:', error.stack);
         throw error;
       }
     }

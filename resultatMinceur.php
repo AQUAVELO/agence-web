@@ -52,39 +52,51 @@
     function calculateIMC(weight,height){const heightInMeters=height/100;return(weight/(heightInMeters*heightInMeters)).toFixed(2);}
     async function getAdvice(age,weight,height,imc,localisation,moral,sport,eau,tdee){
       const prompt=`Donne des conseils pour une personne de ${age} ans, ${weight} kg, ${height} cm, IMC ${imc}. Cellulite: ${localisation}. Moral: ${moral}. Sport: ${sport}. Eau: ${eau}. Besoin calorique: ${tdee} calories. Propose l'Aquavelo, des conseils alimentaires et des ajustements pour atteindre les objectifs minceur. Limite à 10 lignes et 350 tokens. Ne parle pas de professionnel de santé, ni de nutritionniste.`;
+      
+      console.log('Début appel API avec prompt:', prompt.substring(0, 100) + '...');
+      
       try {
-        const response = await fetch('./api_handler.php', {
+        const requestBody = {
+          prompt: prompt,
+          max_tokens: 400,
+          stop: ["\n\n"]
+        };
+        
+        console.log('Envoi requête à api_handler.php...');
+        // Utiliser un chemin absolu pour éviter les problèmes de chemin relatif
+        const apiUrl = window.location.pathname.includes('/resultatMinceur.php') 
+          ? '/api_handler.php' 
+          : './api_handler.php';
+        console.log('URL API:', apiUrl);
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt: prompt,
-            max_tokens: 400,
-            stop: ["\n\n"]
-          })
+          body: JSON.stringify(requestBody)
         });
+        
+        console.log('Réponse reçue, status:', response.status, response.statusText);
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          let errorMsg = `Erreur HTTP: ${response.status}`;
-          try {
-            const errorData = JSON.parse(errorText);
-            if (errorData.error) {
-              errorMsg = typeof errorData.error === 'string' ? errorData.error : (errorData.error.message || errorMsg);
-            }
-          } catch (e) {
-            errorMsg += ' - ' + errorText.substring(0, 100);
-          }
-          throw new Error(errorMsg);
-        }
-
+        // Lire la réponse une seule fois
+        const responseText = await response.text();
+        console.log('Code HTTP:', response.status);
+        console.log('Réponse brute:', responseText.substring(0, 500)); // Log les 500 premiers caractères
+        
+        // Parser le JSON
         let data;
         try {
-          const responseText = await response.text();
-          console.log('Réponse brute:', responseText.substring(0, 500)); // Log les 500 premiers caractères
           data = JSON.parse(responseText);
         } catch (e) {
           console.error('Erreur parsing JSON:', e);
-          throw new Error('Erreur lors du parsing de la réponse JSON: ' + e.message);
+          throw new Error('Erreur lors du parsing de la réponse JSON: ' + e.message + '. Réponse: ' + responseText.substring(0, 200));
+        }
+        
+        // Vérifier le code HTTP après avoir parsé le JSON
+        if (!response.ok) {
+          let errorMsg = `Erreur HTTP: ${response.status}`;
+          if (data && data.error) {
+            errorMsg = typeof data.error === 'string' ? data.error : (data.error.message || errorMsg);
+          }
+          throw new Error(errorMsg);
         }
         
         // Log pour déboguer
@@ -159,8 +171,11 @@
         responseDiv.style.color='#2e7d32';
       }
       catch(error){
-        console.error('Erreur détaillée:', error);
-        responseDiv.textContent='Une erreur s\'est produite lors de la génération des conseils. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez le support.';
+        console.error('Erreur complète:', error);
+        console.error('Message:', error.message);
+        console.error('Stack:', error.stack);
+        const errorMessage = error.message || 'Erreur inconnue';
+        responseDiv.textContent='Une erreur s\'est produite lors de la génération des conseils: ' + errorMessage + '. Veuillez réessayer dans quelques instants. Si le problème persiste, contactez le support.';
         responseDiv.style.background='#ffebee';
         responseDiv.style.color='#c62828';
       }

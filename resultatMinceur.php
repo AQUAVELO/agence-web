@@ -63,11 +63,18 @@
         };
         
         console.log('Envoi requête à api_handler.php...');
-        // Utiliser un chemin absolu pour éviter les problèmes de chemin relatif
-        const apiUrl = window.location.pathname.includes('/resultatMinceur.php') 
-          ? '/api_handler.php' 
-          : './api_handler.php';
-        console.log('URL API:', apiUrl);
+        // Construire l'URL complète pour éviter les problèmes de chemin
+        // Le fichier est ouvert avec un chemin absolu /resultatMinceur.php
+        // donc api_handler.php devrait être accessible avec le même chemin de base
+        const baseUrl = window.location.origin;
+        const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        const apiUrl = baseUrl + currentDir + 'api_handler.php';
+        
+        console.log('URL API complète:', apiUrl);
+        console.log('Base URL:', baseUrl);
+        console.log('Répertoire actuel:', currentDir);
+        console.log('Pathname:', window.location.pathname);
+        
         const response = await fetch(apiUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

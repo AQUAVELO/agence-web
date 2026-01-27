@@ -114,27 +114,45 @@
           throw new Error('Réponse API invalide: format de données incorrect');
         }
         
-        if (!data.choices) {
+        // Vérifications sécurisées pour éviter TypeError
+        if (!data.hasOwnProperty('choices')) {
           console.error('Pas de propriété choices dans la réponse:', data);
-          throw new Error('Réponse API invalide: propriété "choices" manquante');
+          throw new Error('Réponse API invalide: propriété "choices" manquante. Réponse complète: ' + JSON.stringify(data));
         }
         
-        if (!Array.isArray(data.choices) || data.choices.length === 0) {
-          console.error('Tableau choices vide ou invalide:', data.choices);
+        if (data.choices === null || data.choices === undefined) {
+          console.error('Choices est null ou undefined:', data);
+          throw new Error('Réponse API invalide: "choices" est null ou undefined. Réponse complète: ' + JSON.stringify(data));
+        }
+        
+        if (!Array.isArray(data.choices)) {
+          console.error('Choices n\'est pas un tableau:', typeof data.choices, data.choices);
+          throw new Error('Réponse API invalide: "choices" n\'est pas un tableau. Type: ' + typeof data.choices + '. Valeur: ' + JSON.stringify(data.choices));
+        }
+        
+        if (data.choices.length === 0) {
+          console.error('Tableau choices vide:', data);
           throw new Error('Réponse API invalide: tableau "choices" vide');
         }
         
-        if (!data.choices[0] || !data.choices[0].message) {
-          console.error('Structure message invalide:', data.choices[0]);
-          throw new Error('Réponse API invalide: structure "message" manquante');
+        // Accès sécurisé au premier élément
+        const firstChoice = data.choices && data.choices.length > 0 ? data.choices[0] : null;
+        if (!firstChoice) {
+          console.error('Premier élément de choices est undefined:', data.choices);
+          throw new Error('Réponse API invalide: premier élément de "choices" est undefined');
         }
         
-        if (!data.choices[0].message.content) {
-          console.error('Contenu message manquant:', data.choices[0].message);
+        if (!firstChoice.message) {
+          console.error('Structure message manquante dans firstChoice:', firstChoice);
+          throw new Error('Réponse API invalide: propriété "message" manquante dans choices[0]');
+        }
+        
+        if (!firstChoice.message.content) {
+          console.error('Contenu message manquant:', firstChoice.message);
           throw new Error('Réponse API invalide: contenu du message manquant');
         }
         
-        return data.choices[0].message.content;
+        return firstChoice.message.content;
       } catch (error) {
         console.error('Erreur lors de l\'appel API:', error);
         throw error;

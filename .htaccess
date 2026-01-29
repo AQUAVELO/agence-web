@@ -21,6 +21,8 @@
     RewriteRule ^contact/?$ index.php?p=contact [QSA,L]
     RewriteRule ^free/?$ index.php?p=free [QSA,L]
     RewriteRule ^franchise/?$ index.php?p=franchise [QSA,L]
+    RewriteRule ^conseilminceur/?$ index.php?p=conseilminceur [QSA,L]
+    RewriteRule ^cryolipolyse/?$ index.php?p=cryolipolyse [QSA,L]
 
 </IfModule>
 

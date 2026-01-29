@@ -913,8 +913,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
               </li>
 
-              <li<?php if ($page == 'natation') echo ' class="active"'; ?>> 
-                <a href="<?= BASE_PATH ?>?p=natation" title="Cours de Natation et Maître-Nageur">Natation</a>
+              <li> 
+                <a href="https://aquacoach.fr" target="_blank" rel="noopener" title="Cours de Natation Aquacoach">Natation</a>
               </li>
 
               <li <?php if ($page == 'conseilminceur') echo ' class="active"'; ?> class="dropdown"> 

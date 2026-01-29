@@ -107,3 +107,4 @@ try {
 } catch (Exception $e) {
     echo "Erreur : " . $mail->ErrorInfo;
 }
+

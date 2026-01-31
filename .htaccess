@@ -3,7 +3,14 @@
     RewriteEngine On
     RewriteBase /
 
-    # Ne pas traiter les fichiers et répertoires existants
+    # Rediriger les anciennes URLs .php vers les nouvelles URLs propres
+    RewriteRule ^vente_formule\.php$ index.php?p=vente_formule [QSA,L]
+    RewriteRule ^vente_cryo\.php$ index.php?p=vente_cryo [QSA,L]
+    RewriteRule ^vente_prix\.php$ index.php?p=vente_prix [QSA,L]
+    RewriteRule ^vente_prixprod\.php$ index.php?p=vente_prixprod [QSA,L]
+    RewriteRule ^vente_cryoprod\.php$ index.php?p=vente_cryoprod [QSA,L]
+
+    # Ne pas traiter les fichiers et répertoires existants (sauf ceux gérés ci-dessus)
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]

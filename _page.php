@@ -536,13 +536,9 @@
             $center_id = (int)$row_center['id'];
             $planning_image = "";
             
-            // Planning 2026 pour Cannes, Mandelieu et Mérignac
-            if (in_array($center_id, [305, 347, 343])) {
+            // Planning 2026 pour Cannes, Mandelieu et Vallauris
+            if (in_array($center_id, [305, 347, 349])) {
                 $planning_image = BASE_PATH . "images/PlanningCannes2026.png";
-            }
-            // Vallauris utilise encore l'ancien planning Cannes
-            elseif ($center_id == 349) {
-                $planning_image = BASE_PATH . "images/PLANNINGCANNES0125.jpg";
             }
             // On vérifie si une image de planning spécifique existe pour ce centre
             elseif (is_file(__DIR__ . "/images/planning_{$center_id}.png")) {

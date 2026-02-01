@@ -498,12 +498,18 @@
           343 => "Merignac"
       ];
 
-      if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : ?>
+      // Centres avec la nouvelle promo de février 2026
+      $promo_fevrier = [305, 347, 349, 253]; // Cannes, Mandelieu, Vallauris, Antibes
+
+      if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : 
+        $center_id = $row_center['id'];
+        $promo_image = in_array($center_id, $promo_fevrier) ? 'promoFev2026.png' : 'promoJan24.webp';
+      ?>
         <div class="col-md-3 col-6 text-center">
-          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-             title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="<?= BASE_PATH ?>images/promoJan24.webp" 
-                 alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
+             title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>">
+            <img src="<?= BASE_PATH ?>images/<?= $promo_image ?>" 
+                 alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same" 
                  style="border-radius: 10px; border: 3px solid #ff9800;"
                  width="300" 

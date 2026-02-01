@@ -1,18 +1,19 @@
 <IfModule mod_rewrite.c>
-    Options -MultiViews
+    Options +FollowSymlinks
     RewriteEngine On
     RewriteBase /
 
-    # 1. Laisser l'accès direct aux fichiers réels (inclut votre dossier /cloud)
-    # Très important pour que le FS Bucket fonctionne
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
+    # 1. EXCLUSIONS : Ne pas réécrire le dossier du FS Bucket et les assets
+    # Cette règle permet d'accéder directement aux fichiers stockés dans /cloud
+    RewriteRule ^(css|js|images|fonts|uploads|cloud|vendor)/ - [L]
+    RewriteRule \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot|pdf|zip)$ - [L]
 
-    # 2. Rediriger les anciens fichiers .php vers les versions sans extension (SEO)
+    # 2. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
     RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
 
-    # 3. Routes personnalisées vers index.php
+    # 3. ROUTES VERS index.php (Aquavelo spécifique)
+    
+    # Processus de vente et Inscription
     RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]
     RewriteRule ^vente_prix/?$ index.php?p=vente_prix [QSA,L]
@@ -20,13 +21,14 @@
     RewriteRule ^vente_cryoprod/?$ index.php?p=vente_cryoprod [QSA,L]
     RewriteRule ^inscription/?$ index.php?p=vente_formule [QSA,L]
     
-    # Centres et Villes
+    # Gestion des centres et villes
     RewriteRule ^centres/([^/]+)/?$ index.php?p=page&city=$1 [QSA,L]
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
 
-    # Autres pages
+    # Pages de contenu et divers
     RewriteRule ^(aquabiking|contact|free|franchise|conseilminceur|cryolipolyse)/?$ index.php?p=$1 [QSA,L]
 
 </IfModule>
 
+# Gestion de l'erreur 404
 ErrorDocument 404 /index.php

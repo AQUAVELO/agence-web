@@ -1,6 +1,5 @@
-
 <?php
-// TEMPORAIRE - Pour debug uniquement
+// Activer les erreurs temporairement pour debug
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -14,28 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-
-// Désactiver l'affichage des erreurs en production (comme dans _settings.php)
-ini_set('display_errors', 0);
-error_reporting(0);
-
-// Définir la clé API OpenAI
-define('API_KEY', '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');
-
-// Vérifier si la requête est une requête POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Méthode non autorisée
-    echo json_encode(['error' => 'Seules les requêtes POST sont autorisées.']);
-    exit;
-}
-
 // Lire les données JSON envoyées depuis le formulaire
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
 
 // Vérifier si les données sont valides
 if (empty($data) || !isset($data['prompt'])) {
-    http_response_code(400); // Requête incorrecte
+    http_response_code(400);
     echo json_encode(['error' => 'Données invalides ou champ "prompt" manquant.']);
     exit;
 }
@@ -49,6 +33,7 @@ $headers = [
     'Content-Type: application/json',
     'Authorization: Bearer ' . API_KEY
 ];
+
 // Récupérer max_tokens depuis les données si fourni, sinon utiliser 400 par défaut
 $max_tokens = isset($data['max_tokens']) ? (int)$data['max_tokens'] : 400;
 
@@ -69,7 +54,7 @@ $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 if (curl_errno($ch)) {
-    http_response_code(500); // Erreur serveur
+    http_response_code(500);
     echo json_encode(['error' => 'Erreur cURL : ' . curl_error($ch)]);
     curl_close($ch);
     exit;

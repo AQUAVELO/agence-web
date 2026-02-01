@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 error_reporting(0);
 
 // Définir la clé API OpenAI
-define('API_KEY', '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');
+define('API_KEY', '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');
 
 // Vérifier si la requête est une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -1,4 +1,20 @@
+
 <?php
+// TEMPORAIRE - Pour debug uniquement
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// Définir la clé API OpenAI
+define('API_KEY', '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');
+
+// Vérifier si la requête est une requête POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Seules les requêtes POST sont autorisées.']);
+    exit;
+}
+
+
 // Désactiver l'affichage des erreurs en production (comme dans _settings.php)
 ini_set('display_errors', 0);
 error_reporting(0);

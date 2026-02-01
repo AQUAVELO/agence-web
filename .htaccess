@@ -2,25 +2,16 @@
     Options -MultiViews
     RewriteEngine On
     RewriteBase /
-    
-    # ⭐ NOUVEAU : Exclure les fichiers API des réécritures
-    RewriteRule ^api_handler\.php$ - [L]
-    RewriteRule ^api_handler_v2\.php$ - [L]
-    RewriteRule ^debug\.php$ - [L]
-    RewriteRule ^resultatMinceur\.php$ - [L]
-    
     # Rediriger les anciennes URLs .php vers les nouvelles URLs propres
     RewriteRule ^vente_formule\.php$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo\.php$ index.php?p=vente_cryo [QSA,L]
     RewriteRule ^vente_prix\.php$ index.php?p=vente_prix [QSA,L]
     RewriteRule ^vente_prixprod\.php$ index.php?p=vente_prixprod [QSA,L]
     RewriteRule ^vente_cryoprod\.php$ index.php?p=vente_cryoprod [QSA,L]
-    
     # Ne pas traiter les fichiers et répertoires existants (sauf ceux gérés ci-dessus)
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
-    
     # Routes personnalisées
     RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]

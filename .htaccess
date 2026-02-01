@@ -2,30 +2,31 @@
     Options -MultiViews
     RewriteEngine On
     RewriteBase /
-    # Rediriger les anciennes URLs .php vers les nouvelles URLs propres
-    RewriteRule ^vente_formule\.php$ index.php?p=vente_formule [QSA,L]
-    RewriteRule ^vente_cryo\.php$ index.php?p=vente_cryo [QSA,L]
-    RewriteRule ^vente_prix\.php$ index.php?p=vente_prix [QSA,L]
-    RewriteRule ^vente_prixprod\.php$ index.php?p=vente_prixprod [QSA,L]
-    RewriteRule ^vente_cryoprod\.php$ index.php?p=vente_cryoprod [QSA,L]
-    # Ne pas traiter les fichiers et répertoires existants (sauf ceux gérés ci-dessus)
+
+    # 1. Laisser l'accès direct aux fichiers réels (inclut votre dossier /cloud)
+    # Très important pour que le FS Bucket fonctionne
     RewriteCond %{REQUEST_FILENAME} -f [OR]
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
-    # Routes personnalisées
+
+    # 2. Rediriger les anciens fichiers .php vers les versions sans extension (SEO)
+    RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
+
+    # 3. Routes personnalisées vers index.php
     RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]
     RewriteRule ^vente_prix/?$ index.php?p=vente_prix [QSA,L]
     RewriteRule ^vente_prixprod/?$ index.php?p=vente_prixprod [QSA,L]
     RewriteRule ^vente_cryoprod/?$ index.php?p=vente_cryoprod [QSA,L]
     RewriteRule ^inscription/?$ index.php?p=vente_formule [QSA,L]
+    
+    # Centres et Villes
     RewriteRule ^centres/([^/]+)/?$ index.php?p=page&city=$1 [QSA,L]
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
-    RewriteRule ^aquabiking/?$ index.php?p=aquabiking [QSA,L]
-    RewriteRule ^contact/?$ index.php?p=contact [QSA,L]
-    RewriteRule ^free/?$ index.php?p=free [QSA,L]
-    RewriteRule ^franchise/?$ index.php?p=franchise [QSA,L]
-    RewriteRule ^conseilminceur/?$ index.php?p=conseilminceur [QSA,L]
-    RewriteRule ^cryolipolyse/?$ index.php?p=cryolipolyse [QSA,L]
+
+    # Autres pages
+    RewriteRule ^(aquabiking|contact|free|franchise|conseilminceur|cryolipolyse)/?$ index.php?p=$1 [QSA,L]
+
 </IfModule>
+
 ErrorDocument 404 /index.php

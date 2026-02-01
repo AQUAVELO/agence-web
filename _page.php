@@ -536,15 +536,21 @@
             $center_id = (int)$row_center['id'];
             $planning_image = "";
             
+            // Planning 2026 pour Cannes, Mandelieu et Mérignac
+            if (in_array($center_id, [305, 347, 343])) {
+                $planning_image = BASE_PATH . "images/PlanningCannes2026.png";
+            }
+            // Vallauris utilise encore l'ancien planning Cannes
+            elseif ($center_id == 349) {
+                $planning_image = BASE_PATH . "images/PLANNINGCANNES0125.jpg";
+            }
             // On vérifie si une image de planning spécifique existe pour ce centre
-            if (is_file(__DIR__ . "/images/planning_{$center_id}.png")) {
+            elseif (is_file(__DIR__ . "/images/planning_{$center_id}.png")) {
                 $planning_image = BASE_PATH . "images/planning_{$center_id}.png";
             } elseif (is_file(__DIR__ . "/images/planning_{$center_id}.jpg")) {
                 $planning_image = BASE_PATH . "images/planning_{$center_id}.jpg";
             } elseif ($center_id == 253) { // Secours pour Antibes si le fichier n'est pas encore détecté
                 $planning_image = BASE_PATH . "images/planning_253.png";
-            } elseif (in_array($center_id, [305, 347, 349])) {
-                $planning_image = BASE_PATH . "images/PLANNINGCANNES0125.jpg";
             } elseif ($center_id == 179) {
                 $planning_image = BASE_PATH . "images/planningNice.jpg";
             } elseif ($center_id == 271) {

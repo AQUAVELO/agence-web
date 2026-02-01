@@ -7,6 +7,7 @@
     RewriteRule ^api_handler\.php$ - [L]
     RewriteRule ^api_handler_v2\.php$ - [L]
     RewriteRule ^debug\.php$ - [L]
+    RewriteRule ^resultatMinceur\.php$ - [L]
     
     # Rediriger les anciennes URLs .php vers les nouvelles URLs propres
     RewriteRule ^vente_formule\.php$ index.php?p=vente_formule [QSA,L]

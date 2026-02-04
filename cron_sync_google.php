@@ -57,10 +57,14 @@ foreach ($bookings as $booking) {
                 $location = $c_info['address'] ?? '60 Avenue du Dr Raymond Picaud, 06150 Cannes';
                 
                 // Déterminer l'agenda de destination
-                // Par défaut aqua.cannes@gmail.com, sauf si le centre a un email spécifique
-                $targetCalendarId = 'aqua.cannes@gmail.com';
-                if (!empty($c_info['email'])) {
-                    $targetCalendarId = $c_info['email'];
+                // Cannes, Mandelieu, Vallauris → aqua.cannes@gmail.com
+                // Antibes, Mérignac → leur propre email
+                if (in_array((int)$booking['center_id'], [305, 347, 349])) {
+                    // Cannes, Mandelieu, Vallauris → Agenda commun
+                    $targetCalendarId = 'aqua.cannes@gmail.com';
+                } else {
+                    // Antibes, Mérignac → Email du centre (ou défaut si vide)
+                    $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
                 }
 
                 // Création de l'événement

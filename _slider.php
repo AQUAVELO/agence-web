@@ -60,8 +60,11 @@
 <!-- Formulaire -->
               <h2 class="form-group" style="text-align: center;">🎁 Votre séance découverte OFFERTE</h2>
               <div class="col-md-6">
-                <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349, 343])) : ?>
-                  <p>Vous pouvez vous réserver sur notre <a href="index.php?p=calendrier_cannes" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
+                <?php if (isset($row_center['id']) && in_array($row_center['id'], [305, 347, 349, 343])) : 
+                  // Mandelieu et Vallauris utilisent le planning de Cannes
+                  $cal_center = in_array((int)$row_center['id'], [347, 349]) ? 305 : (int)$row_center['id'];
+                ?>
+                  <p>Vous pouvez vous réserver sur notre <a href="index.php?p=calendrier_cannes&center=<?= $cal_center ?>" target="_blank"><strong>calendrier</strong> (cliquez ici)</a> ou en prenant rendez-vous ci-dessous.</p>
                 <?php endif; ?>
                 <form role="form" class="contact-form-planning" id="sliderForm" method="POST" action="index.php?p=free">
                   <div class="form-group">

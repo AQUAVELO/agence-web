@@ -258,11 +258,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
             // D. REDIRECTION
             if ($segment == 'calendrier-cannes') {
-                $url = BASE_PATH . "index.php?p=merci_rdv&center=" . $center_id . "&rdv=" . urlencode($date_heure) . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&city=" . urlencode($city);
+                // Mandelieu et Vallauris redirigent vers le planning de Cannes
+                $center_id_redirect = in_array((int)$center_id, [347, 349]) ? 305 : $center_id;
+                $url = BASE_PATH . "index.php?p=merci_rdv&center=" . $center_id_redirect . "&rdv=" . urlencode($date_heure) . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&city=" . urlencode($city);
                 echo "<script>window.location.replace('$url');</script>";
                 exit;
             } elseif (in_array((int)$center_id, [305, 347, 349, 343, 253])) {
-                $url = BASE_PATH . "index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel);
+                // Mandelieu et Vallauris redirigent vers le planning de Cannes
+                $center_id_redirect = in_array((int)$center_id, [347, 349]) ? 305 : $center_id;
+                $url = BASE_PATH . "index.php?p=calendrier_cannes&center=" . $center_id_redirect . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel);
                 echo "<script>window.location.replace('$url');</script>";
                 exit;
             } else {

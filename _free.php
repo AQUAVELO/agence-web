@@ -213,9 +213,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $mail->Subject = "Confirmation de votre séance à Aquavelo $city";
                         $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
                         
-                        // Infos centre pour l'email
-                        $lieu_rdv = $row_center_contact['address'] . ", " . $row_center_contact['city'];
-                        $tel_rdv = $row_center_contact['phone'];
+                        // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
+                        if (in_array((int)$center_id, [305, 347, 349])) {
+                            $stmt_cannes = $database->prepare('SELECT address, city, phone FROM am_centers WHERE id = 305');
+                            $stmt_cannes->execute();
+                            $cannes_info = $stmt_cannes->fetch();
+                            $lieu_rdv = $cannes_info['address'] . ", " . $cannes_info['city'];
+                            $tel_rdv = $cannes_info['phone'];
+                        } else {
+                            // Infos centre pour l'email
+                            $lieu_rdv = $row_center_contact['address'] . ", " . $row_center_contact['city'];
+                            $tel_rdv = $row_center_contact['phone'];
+                        }
 
                         // URLs pour Annuler / Modifier
                         $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($email) . "&rdv=" . urlencode($date_heure) . "&city=" . urlencode($city);

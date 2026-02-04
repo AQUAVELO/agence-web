@@ -41,8 +41,12 @@ foreach ($bookings as $booking) {
             if ($force_this || ($is_past && $hours_passed >= 3 && $hours_passed <= 6)) {
                 try {
                     $center_id = $booking['center_id'] ?: 305;
+                    
+                    // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
+                    $lookup_center_id = in_array((int)$center_id, [305, 347, 349]) ? 305 : $center_id;
+                    
                     $stmt_c = $database->prepare("SELECT city, address, phone, email FROM am_centers WHERE id = ?");
-                    $stmt_c->execute([$center_id]);
+                    $stmt_c->execute([$lookup_center_id]);
                     $center_info = $stmt_c->fetch();
                     
                     if (!$center_info) {

@@ -85,8 +85,12 @@ if (isset($_POST['nom']) && empty($_POST['reason'])) {
 	// Now check to see if there are any errors 
 	if (!$error) {
 		$reference = 'AQ' . date('dmhis');
+		
+		// Mandelieu et Vallauris utilisent le planning de Cannes
+		$center_db = in_array((int)$center, [347, 349]) ? 305 : $center;
+		
 		$add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-		$add_free->execute(array($reference, $center, 3, $name, $email, $tel, $segment));
+		$add_free->execute(array($reference, $center_db, 3, $name, $email, $tel, $segment));
 
 		Segment::track(array(
 			"anonymousId" => $segment,

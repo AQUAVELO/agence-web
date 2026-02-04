@@ -57,10 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         $reference = 'AQ' . date('dmhis');
         $input_name_db = ($date_heure) ? $input_nom_complet . " (RDV: " . $date_heure . ")" : $input_nom_complet;
 
+        // Mandelieu et Vallauris utilisent le planning de Cannes
+        $center_id_db = in_array((int)$center_id, [347, 349]) ? 305 : $center_id;
+
         try {
             // A. Enregistrement Table am_free
             $add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $add_free->execute(array($reference, $center_id, 3, $input_name_db, $email, $tel, $segment));
+            $add_free->execute(array($reference, $center_id_db, 3, $input_name_db, $email, $tel, $segment));
             
             // B. Enregistrement Table client
             $check_client = $database->prepare("SELECT id FROM client WHERE email = ?");

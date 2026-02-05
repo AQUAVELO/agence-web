@@ -21,14 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $error = [];
     $center_id = isset($_POST['center']) ? intval($_POST['center']) : 0;
     
-    // Anti-spam pour Aix-en-Provence (ID 291) : Vérification captcha
-    if ($center_id == 291) {
-        $captcha_response = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
-        if ($captcha_response !== '3') {
-            $error[] = "Erreur de vérification : réponse incorrecte à la question anti-spam.";
-        }
-    }
-    
     // 1. Vérification du centre
     $center_contact = $database->prepare('SELECT * FROM am_centers WHERE id = ?');
     $center_contact->execute(array($center_id));
@@ -36,6 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     
     if (!$row_center_contact) {
         $error[] = "Le centre sélectionné est invalide.";
+    }
+    
+    // Anti-spam pour Aix-en-Provence : Vérification captcha
+    if ($row_center_contact && stripos($row_center_contact['city'], 'Aix') !== false) {
+        $captcha_response = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
+        if ($captcha_response !== '3') {
+            $error[] = "Erreur de vérification : réponse incorrecte à la question anti-spam.";
+        }
     }
     
     $input_nom_complet = strip_tags(trim($_POST['nom'] ?? ''));
@@ -330,9 +330,9 @@ if (isset($_GET['success'])) {
             <div style="margin-bottom: 15px;"><label>Email *</label><input type="email" name="email" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
             <div style="margin-bottom: 25px;"><label>Téléphone *</label><input type="tel" name="phone" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
             
-            <!-- Captcha anti-spam pour Aix-en-Provence (ID 291) -->
+            <!-- Captcha anti-spam pour Aix-en-Provence -->
             <div id="captchaField" style="margin-bottom: 25px; display: none; padding: 20px; background: #f8f9fa; border-radius: 5px; border: 2px solid #00a8cc;">
-                <label style="font-weight: bold; color: #00a8cc;">Question anti-spam : 2 + 1 = ? *</label>
+                <label style="font-weight: bold; color: #00a8cc;">🛡️ Question anti-spam : 2 + 1 = ? *</label>
                 <input type="number" name="captcha" id="captchaInput" style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px; margin-top: 10px;" placeholder="Entrez votre réponse">
             </div>
             <button type="submit" id="submitBtnText" style="width: 100%; height: 60px; background: #00a8cc; color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 1.1rem; cursor: pointer;">RECEVOIR MON BON GRATUIT</button>
@@ -346,9 +346,10 @@ if (isset($_GET['success'])) {
       
       centerSelect.addEventListener('change', function() {
           const centerId = parseInt(this.value);
+          const centerText = this.options[this.selectedIndex].text;
           
-          // Affichage du captcha pour Aix-en-Provence (ID 291)
-          if (centerId === 291) {
+          // Affichage du captcha pour Aix-en-Provence
+          if (centerText && centerText.toLowerCase().includes('aix')) {
               captchaField.style.display = 'block';
               captchaInput.required = true;
           } else {

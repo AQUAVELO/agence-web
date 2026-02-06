@@ -13,8 +13,16 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+if (!isset($_SESSION)) session_start();
+
 $error_message = '';
 $success_message = '';
+
+// Récupérer les messages depuis la session
+if (isset($_SESSION['error_message'])) {
+    $error_message = $_SESSION['error_message'];
+    unset($_SESSION['error_message']);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     
@@ -70,9 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         }
     }
 
-    // Convertir les erreurs en message d'affichage
+    // Convertir les erreurs en message d'affichage et rediriger
     if (!empty($error)) {
-        $error_message = implode('<br>', $error);
+        // Sauvegarder l'erreur dans la session et rediriger (Pattern POST-Redirect-GET)
+        if (!isset($_SESSION)) session_start();
+        $_SESSION['error_message'] = implode('<br>', $error);
+        header('Location: ' . BASE_PATH . 'index.php?p=free&error=1');
+        exit;
     }
     
     if (empty($error)) {

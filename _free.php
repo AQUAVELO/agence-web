@@ -45,12 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
     
     // Vérifier qu'un email ne peut prendre qu'une seule séance d'essai
-    if ($email && $segment !== 'calendrier-cannes') {
+    if ($email && $segment !== 'calendrier-cannes' && $row_center_contact) {
         $check_existing = $database->prepare("SELECT COUNT(*) as count FROM am_free WHERE email = ? AND name LIKE '%(RDV:%'");
         $check_existing->execute([$email]);
         $existing = $check_existing->fetch();
         if ($existing && $existing['count'] > 0) {
-            $error[] = "Cet email a déjà une séance d'essai réservée. Chaque personne ne peut réserver qu'une seule séance découverte gratuite.";
+            $tel_center = $row_center_contact['phone'] ?: '06 22 64 70 95';
+            $error[] = "Vous ne pouvez pas effectuer une 2ème séance d'essai, pour plus d'infos appelez le " . $tel_center;
         }
     }
     

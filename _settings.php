@@ -1,8 +1,8 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 // _settings.php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+error_reporting(0);
 
 require __DIR__ . '/vendor/autoload.php';
 use Phpfastcache\CacheManager;

@@ -18,7 +18,7 @@ $password_secret = "aquavelo2026";
 $authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
 
 // Liste des centres partageant le même planning
-$shared_centers = [305, 347, 349, 343];
+$shared_centers = [305, 347, 349];
 $centers_names = [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris'];
 
 if (isset($_POST['login_pass'])) {
@@ -153,8 +153,8 @@ for ($i = 0; $i < 21; $i++) {
     }
 }
 
-// 4. RÉCUPÉRATION DES RÉSERVATIONS (Cannes, Mandelieu, Vallauris)
-$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349, 343) AND name LIKE '%(RDV:%'");
+// 4. RÉCUPÉRATION DES RÉSERVATIONS (Cannes, Mandelieu, Vallauris uniquement)
+$all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
 $all_free_query->execute();
 $all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
 

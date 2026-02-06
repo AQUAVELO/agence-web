@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     // Convertir les erreurs en message d'affichage et rediriger
     if (!empty($error)) {
         // Sauvegarder l'erreur dans la session et rediriger (Pattern POST-Redirect-GET)
-        if (!isset($_SESSION)) session_start();
         $_SESSION['error_message'] = implode('<br>', $error);
         header('Location: ' . BASE_PATH . 'index.php?p=free&error=1');
         exit;

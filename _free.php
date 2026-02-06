@@ -16,12 +16,6 @@ use PHPMailer\PHPMailer\Exception;
 $error_message = '';
 $success_message = '';
 
-// Récupérer les messages depuis la session
-if (isset($_SESSION['error_message'])) {
-    $error_message = $_SESSION['error_message'];
-    unset($_SESSION['error_message']);
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     
     $error = [];
@@ -40,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     if ($row_center_contact && stripos($row_center_contact['city'], 'Aix') !== false) {
         $captcha_response = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
         if ($captcha_response !== '3') {
-            $error[] = "Erreur de vérification : réponse incorrecte à la question anti-spam.";
+            $error_message = "Erreur de vérification : réponse incorrecte à la question anti-spam.";
         }
     }
     
@@ -49,17 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $tel = strip_tags(trim($_POST['phone'] ?? ''));
     $date_heure = isset($_POST['date_heure']) ? strip_tags($_POST['date_heure']) : '';
     $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
-    
-    // Vérifier qu'un email ne peut prendre qu'une seule séance d'essai
-    if ($email && $segment !== 'calendrier-cannes' && $row_center_contact) {
-        $check_existing = $database->prepare("SELECT COUNT(*) as count FROM am_free WHERE email = ? AND name LIKE '%(RDV:%'");
-        $check_existing->execute([$email]);
-        $existing = $check_existing->fetch();
-        if ($existing && $existing['count'] > 0) {
-            $tel_center = $row_center_contact['phone'] ?: '06 22 64 70 95';
-            $error[] = "Vous ne pouvez pas effectuer une 2ème séance d'essai, pour plus d'infos appelez le " . $tel_center;
-        }
-    }
     
     // GESTION REPLANIFICATION : Si un ancien RDV est fourni, on le supprime d'abord
     $old_rdv = isset($_POST['old_rdv']) ? strip_tags($_POST['old_rdv']) : '';
@@ -76,15 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         }
     }
 
-    // Convertir les erreurs en message d'affichage et rediriger
-    if (!empty($error)) {
-        // Sauvegarder l'erreur dans la session et rediriger (Pattern POST-Redirect-GET)
-        $_SESSION['error_message'] = implode('<br>', $error);
-        header('Location: ' . BASE_PATH . 'index.php?p=free&error=1');
-        exit;
-    }
-    
-    if (empty($error)) {
+    if (empty($error) && empty($error_message)) {
         $city = $row_center_contact['city'];
         $email_center = $row_center_contact['email'] ?: 'claude@alesiaminceur.com';
         $reference = 'AQ' . date('dmhis');

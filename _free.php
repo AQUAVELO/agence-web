@@ -44,6 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $date_heure = isset($_POST['date_heure']) ? strip_tags($_POST['date_heure']) : '';
     $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
     
+    // Vérifier qu'un email ne peut prendre qu'une seule séance d'essai
+    if ($email && $segment !== 'calendrier-cannes') {
+        $check_existing = $database->prepare("SELECT COUNT(*) as count FROM am_free WHERE email = ? AND name LIKE '%(RDV:%'");
+        $check_existing->execute([$email]);
+        $existing = $check_existing->fetch();
+        if ($existing && $existing['count'] > 0) {
+            $error[] = "Cet email a déjà une séance d'essai réservée. Chaque personne ne peut réserver qu'une seule séance découverte gratuite.";
+        }
+    }
+    
     // GESTION REPLANIFICATION : Si un ancien RDV est fourni, on le supprime d'abord
     $old_rdv = isset($_POST['old_rdv']) ? strip_tags($_POST['old_rdv']) : '';
     $rescheduling_alert = false;

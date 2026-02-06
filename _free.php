@@ -70,11 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         $center_id_db = in_array((int)$center_id, [347, 349]) ? 305 : $center_id;
 
         try {
-            // A. Enregistrement Table am_free
+            // A. Vérification double inscription pour Cannes/Mandelieu/Vallauris
+            $is_double_booking = false;
+            if (in_array((int)$center_id, [305, 347, 349])) {
+                $check_previous = $database->prepare("SELECT COUNT(*) as count FROM am_free WHERE email = ? AND name LIKE '%(RDV:%'");
+                $check_previous->execute([$email]);
+                $previous = $check_previous->fetch();
+                if ($previous && $previous['count'] > 0) {
+                    $is_double_booking = true;
+                }
+            }
+            
+            // B. Enregistrement Table am_free
             $add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $add_free->execute(array($reference, $center_id_db, 3, $input_name_db, $email, $tel, $segment));
             
-            // B. Enregistrement Table client
+            // C. Enregistrement Table client
             $check_client = $database->prepare("SELECT id FROM client WHERE email = ?");
             $check_client->execute([$email]);
             if ($check_client->rowCount() == 0) {
@@ -86,9 +97,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 $add_client->execute([$nom_db, $prenom_db, $tel, $email, $city]);
             }
 
-            // C. NOTIFICATIONS (Email et Telegram)
+            // D. NOTIFICATIONS (Email et Telegram)
             
-            // 1. Détermination du message Telegram
+            // 1. Alerte Telegram pour double inscription (Cannes/Mandelieu/Vallauris)
+            if ($is_double_booking) {
+                $alert_msg = "<b>🚨 ALERTE DOUBLE INSCRIPTION - $city</b>\n" . 
+                             "👤 $input_nom_complet\n" . 
+                             "📧 $email\n" .
+                             "📞 $tel\n" .
+                             "⚠️ Cette personne s'inscrit pour une 2ème séance d'essai !";
+                sendTelegram($alert_msg);
+            }
+            
+            // 2. Détermination du message Telegram normal
             $planning_centers = [305, 347, 349, 343, 253];
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
@@ -112,10 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                               "👤 $input_nom_complet\n" . 
                               "📧 $email\n" .
                               "📞 $tel";
-                    if ($is_second_session) {
-                        $tg_msg = "<b>⚠️ ALERTE DOUBLE SÉANCE - $city</b>\n" . 
-                                  "👤 $input_nom_complet ($email) a déjà réservé une séance auparavant.";
-                    }
                 }
                 sendTelegram($tg_msg);
                 
@@ -125,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 }
             }
 
-            // 2. Envoi des Emails
+            // 3. Envoi des Emails
             if (!empty($settings['mjusername'])) {
                 try {
 

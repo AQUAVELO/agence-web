@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     }
 
     if (empty($error) && empty($error_message)) {
+        $is_second_session = false; // Variable pour compatibilité (fonctionnalité désactivée)
         $city = $row_center_contact['city'];
         $email_center = $row_center_contact['email'] ?: 'claude@alesiaminceur.com';
         $reference = 'AQ' . date('dmhis');
@@ -127,13 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // 2. Envoi des Emails
             if (!empty($settings['mjusername'])) {
                 try {
-                    $is_second_session = false;
-                    if ($date_heure) {
-                        $check_double = $database->prepare("SELECT id FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' AND id != ?");
-                        $last_id = $database->lastInsertId();
-                        $check_double->execute([$email, $last_id]);
-                        if ($check_double->rowCount() > 0) $is_second_session = true;
-                    }
 
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();

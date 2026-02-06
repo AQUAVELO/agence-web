@@ -13,8 +13,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-if (!isset($_SESSION)) session_start();
-
 $error_message = '';
 $success_message = '';
 

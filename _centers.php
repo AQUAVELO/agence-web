@@ -57,9 +57,10 @@
         <article class="portfolio-item" style="border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: all 0.3s ease;">
           
           <!-- Image du centre -->
-          <div class="portfolio-thumbnail" style="position: relative; overflow: hidden;">
+          <div class="portfolio-thumbnail" style="position: relative; overflow: hidden; background: linear-gradient(135deg, #00d4ff, #00a8cc);">
             <a href="/centres/<?= strtolower($row_centers_list['city']); ?>">
               <img src="/cloud/thumbnail/center_<?= $row_centers_list['id']; ?>/1.jpg" 
+                   onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 250%22%3E%3Crect fill=%22%2300a8cc%22 width=%22400%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial, sans-serif%22 font-size=%2224%22 fill=%22white%22%3EAquavélo <?= htmlspecialchars($row_centers_list['city']); ?>%3C/text%3E%3C/svg%3E'"
                    alt="Centre Aquavélo <?= $row_centers_list['city']; ?> - Aquabiking"
                    style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s ease;">
             </a>

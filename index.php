@@ -857,6 +857,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </ul>
               </li>
               
+              <li class="<?php if ($page == 'aquagym') echo 'active'; ?>"> 
+                <a href="<?= BASE_PATH ?>?p=aquagym">Aquagym</a>
+              </li>
+              
               <li class="dropdown<?php if ($page == 'centres') echo ' active'; ?>"> 
                 <a href="<?= BASE_PATH ?>?p=centers" class="dropdown-toggle" data-toggle="dropdown" data-target="#">Centres</a>
                 <ul class="dropdown-menu">
@@ -991,6 +995,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <h2 class="widget-title">Liens Rapides</h2>
             <ul>
               <li><a href="<?= BASE_PATH ?>?p=free">Séance Découverte Gratuite</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=aquabiking">Aquabiking</a></li>
+              <li><a href="<?= BASE_PATH ?>?p=aquagym">Aquagym</a></li>
               <li><a href="<?= BASE_PATH ?>?p=centers">Trouver un Centre</a></li>
               <li><a href="<?= BASE_PATH ?>?p=franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
               <li><a href="<?= BASE_PATH ?>?p=contact">Contact</a></li>

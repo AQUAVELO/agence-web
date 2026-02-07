@@ -195,69 +195,65 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
       }
     }
     <?php endif; ?>
-  ]
-}
-</script>
-
-<!-- FAQ Schema (si page FAQ) -->
-<?php if ($page == 'aquabiking' || $page == 'home'): ?>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Qu'est-ce que l'aquabiking ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "L'aquabiking (ou aquabike) est une activité sportive qui consiste à pédaler sur un vélo immergé dans l'eau, dans une piscine. C'est un sport doux pour les articulations mais très efficace pour brûler des calories (400-500 par séance), tonifier les muscles et réduire la cellulite grâce à l'effet massant de l'eau."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Quelle est la différence entre aquabiking et aquagym ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "L'aquabiking se pratique sur un vélo aquatique fixe immergé dans l'eau, principalement axé sur le bas du corps (jambes, fessiers, cuisses) et le cardio. L'aquagym est une gymnastique aquatique plus globale qui fait travailler tout le corps avec des mouvements variés, sans vélo, souvent avec des accessoires comme des haltères aquatiques."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Combien de calories brûle-t-on en aquabiking ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Une séance d'aquabiking de 45 minutes permet de brûler entre 400 et 500 calories en moyenne, selon l'intensité de l'effort. La résistance de l'eau multiplie l'efficacité du pédalage par rapport à un vélo classique, tout en étant plus doux pour les articulations."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "L'aquabiking est-il efficace pour perdre du poids ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Oui, l'aquabiking est très efficace pour la perte de poids. Avec 2 à 3 séances par semaine associées à une alimentation équilibrée, vous pouvez perdre jusqu'à 10kg en 3 mois. L'aquabiking cible particulièrement la cellulite et l'affinement de la silhouette."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Faut-il savoir nager pour faire de l'aquabiking ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Non, il n'est pas nécessaire de savoir nager pour pratiquer l'aquabiking. Le niveau d'eau arrive généralement à la taille ou la poitrine et vous restez assis sur le vélo pendant toute la séance. Les piscines Aquavelo ont un fond accessible et sécurisé."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Combien coûte une séance d'aquabiking chez Aquavelo ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Chez Aquavelo, les tarifs varient selon la formule choisie : à partir de 8€ la séance avec un abonnement annuel, 15€ la séance à l'unité, ou des forfaits 10 séances à tarif dégressif. La première séance découverte est gratuite sans engagement."
-      }
+    <?php if ($page == 'aquabiking' || $page == 'home'): ?>
+    ,{
+      "@type": "FAQPage",
+      "@id": "https://www.aquavelo.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que l'aquabiking ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'aquabiking (ou aquabike) est une activité sportive qui consiste à pédaler sur un vélo immergé dans l'eau, dans une piscine. C'est un sport doux pour les articulations mais très efficace pour brûler des calories (400-500 par séance), tonifier les muscles et réduire la cellulite grâce à l'effet massant de l'eau."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle est la différence entre aquabiking et aquagym ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'aquabiking se pratique sur un vélo aquatique fixe immergé dans l'eau, principalement axé sur le bas du corps (jambes, fessiers, cuisses) et le cardio. L'aquagym est une gymnastique aquatique plus globale qui fait travailler tout le corps avec des mouvements variés, sans vélo, souvent avec des accessoires comme des haltères aquatiques."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de calories brûle-t-on en aquabiking ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Une séance d'aquabiking de 45 minutes permet de brûler entre 400 et 500 calories en moyenne, selon l'intensité de l'effort. La résistance de l'eau multiplie l'efficacité du pédalage par rapport à un vélo classique, tout en étant plus doux pour les articulations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'aquabiking est-il efficace pour perdre du poids ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, l'aquabiking est très efficace pour la perte de poids. Avec 2 à 3 séances par semaine associées à une alimentation équilibrée, vous pouvez perdre jusqu'à 10kg en 3 mois. L'aquabiking cible particulièrement la cellulite et l'affinement de la silhouette."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il savoir nager pour faire de l'aquabiking ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non, il n'est pas nécessaire de savoir nager pour pratiquer l'aquabiking. Le niveau d'eau arrive généralement à la taille ou la poitrine et vous restez assis sur le vélo pendant toute la séance. Les piscines Aquavelo ont un fond accessible et sécurisé."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien coûte une séance d'aquabiking chez Aquavelo ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Chez Aquavelo, les tarifs varient selon la formule choisie : à partir de 8€ la séance avec un abonnement annuel, 15€ la séance à l'unité, ou des forfaits 10 séances à tarif dégressif. La première séance découverte est gratuite sans engagement."
+          }
+        }
+      ]
     }
+    <?php endif; ?>
   ]
 }
 </script>
-<?php endif; ?>
 
 <!-- Breadcrumb Schema -->
 <?php if (isset($city)): ?>

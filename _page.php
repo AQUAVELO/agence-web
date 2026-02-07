@@ -429,7 +429,7 @@
         <i class="fa fa-clock-o"></i> Prochainement Ouverture
       </h2>
       <p style="color: white; font-size: 1.2rem; margin: 10px 0 0 0; opacity: 0.95;">
-        Notre centre d'<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ouvrira bientôt ses portes
+        Notre centre de <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ouvrira bientôt ses portes
       </p>
     </div>
     <?php endif; ?>

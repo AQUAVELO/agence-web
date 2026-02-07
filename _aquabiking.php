@@ -2,7 +2,7 @@
 <!-- Header -->
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Les Bienfaits de l'Aquabiking</h1>
+    <h1 class="page-title pull-left">Aquabiking et Aquagym : Bienfaits du Sport Aquatique pour Maigrir</h1>
     <nav aria-label="Fil d'Ariane">
       <ol class="breadcrumb pull-right" itemscope itemtype="https://schema.org/BreadcrumbList">
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -12,7 +12,7 @@
           <meta itemprop="position" content="1" />
         </li>
         <li class="active" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <span itemprop="name">Aquabiking</span>
+          <span itemprop="name">Aquabiking & Aquagym</span>
           <meta itemprop="position" content="2" />
         </li>
       </ol>
@@ -68,7 +68,7 @@
       
       <div class="col-md-6">
         <h2 style="color: #00a8cc; margin-bottom: 25px;">
-          <i class="fa fa-bicycle"></i> Des Centres Dédiés à l'Aquavélo
+          <i class="fa fa-bicycle"></i> Aquabike et Aquagym : Des Centres Dédiés au Sport Aquatique
         </h2>
         
         <p style="font-size: 1.05rem; line-height: 1.8; text-align: justify;">

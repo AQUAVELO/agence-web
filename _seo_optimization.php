@@ -251,6 +251,75 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
       ]
     }
     <?php endif; ?>
+    <?php if ($page == 'aquagym'): ?>
+    ,{
+      "@type": "FAQPage",
+      "@id": "https://www.aquavelo.com/?p=aquagym#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que l'aquagym tonique ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'aquagym tonique est une forme dynamique de gymnastique aquatique qui se pratique dans l'eau avec un coach. Elle combine des exercices cardiovasculaires et de renforcement musculaire utilisant la résistance naturelle de l'eau. Cette activité permet de brûler 300-400 calories par séance tout en préservant les articulations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quelle est la différence entre aquabiking et aquagym ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'aquabiking se pratique sur un vélo aquatique fixe immergé dans l'eau, principalement axé sur le bas du corps (jambes, fessiers, cuisses) et le cardio. L'aquagym est une gymnastique aquatique plus globale qui fait travailler tout le corps avec des mouvements variés, sans vélo, souvent avec des accessoires comme des haltères aquatiques ou des frites en mousse."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'aquagym est-elle efficace pour perdre du poids ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, l'aquagym est efficace pour la perte de poids. Une séance de 45 minutes permet de brûler entre 300 et 400 calories. Avec 2 à 3 séances par semaine associées à une alimentation équilibrée, l'aquagym tonique favorise l'amincissement, la tonification musculaire et l'amélioration de la silhouette."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "L'aquagym est-elle adaptée aux seniors ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolument ! L'aquagym est particulièrement recommandée pour les seniors car elle préserve les articulations grâce à la portance de l'eau, améliore la circulation sanguine, maintient la mobilité et renforce les muscles en douceur. C'est une activité sûre et progressive adaptée à tous les âges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Peut-on faire de l'aquagym enceinte ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, l'aquagym peut être pratiquée pendant la grossesse avec l'accord de votre médecin ou sage-femme. L'eau soulage le poids du ventre, réduit les jambes lourdes, améliore la circulation et prépare le corps à l'accouchement. Nos coachs adaptent les exercices aux femmes enceintes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien coûte un cours d'aquagym chez Aquavelo ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Chez Aquavelo, les tarifs d'aquagym sont identiques à ceux de l'aquabiking : à partir de 8€ la séance avec un abonnement annuel, 15€ la séance à l'unité, ou des forfaits 10 séances à tarif dégressif. La première séance découverte est gratuite sans engagement."
+          }
+        }
+      ]
+    }
+    <?php endif; ?>
+    <?php if ($page == 'aquabiking'): ?>
+    ,{
+      "@type": "VideoObject",
+      "@id": "https://www.aquavelo.com/aquabiking#video",
+      "name": "Démonstration Aquabiking en Piscine - Centre Aquavelo",
+      "description": "Découvrez comment se déroule une séance d'aquabiking collective avec coach dans nos centres Aquavelo. Vidéo de démonstration du vélo aquatique en action dans une piscine chauffée.",
+      "thumbnailUrl": "https://www.aquavelo.com/images/aquavelo-video-thumbnail.jpg",
+      "uploadDate": "2024-01-15",
+      "duration": "PT2M30S",
+      "contentUrl": "https://www.aquavelo.com/Video-aquavelo-de-Antibes.mov",
+      "embedUrl": "https://www.aquavelo.com/aquabiking#velo"
+    }
+    <?php endif; ?>
   ]
 }
 </script>

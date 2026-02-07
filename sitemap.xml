@@ -7,10 +7,10 @@
     <loc>https://www.aquavelo.com/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-01-26</lastmod>
+    <lastmod>2026-01-27</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/aquavelo.webp</image:loc>
-        <image:title>Aquabiking et Aquagym collectif en piscine - Aquavelo</image:title>
+        <image:title>Aquabiking et Aquagym collectif en piscine avec coach - Aquavelo France</image:title>
     </image:image>
 </url>
 
@@ -19,10 +19,10 @@
     <loc>https://www.aquavelo.com/aquabiking</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-01-26</lastmod>
+    <lastmod>2026-01-27</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/content/home-v1-promo.jpg</image:loc>
-        <image:title>Les bienfaits de l'aquabiking et l'aquagym</image:title>
+        <image:title>Aquabiking et Aquagym : bienfaits du sport aquatique pour maigrir</image:title>
     </image:image>
 </url>
 
@@ -30,7 +30,11 @@
     <loc>https://www.aquavelo.com/?p=aquagym</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-01-26</lastmod>
+    <lastmod>2026-01-27</lastmod>
+    <image:image>
+        <image:loc>https://www.aquavelo.com/images/aquagym-cours-collectif.jpg</image:loc>
+        <image:title>Aquagym tonique : cours de gymnastique aquatique avec coach</image:title>
+    </image:image>
 </url>
 
 <url>

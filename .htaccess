@@ -30,7 +30,7 @@
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
 
     # Pages de contenu et divers
-    RewriteRule ^(aquabiking|contact|free|franchise|conseilminceur|cryolipolyse)/?$ index.php?p=$1 [QSA,L]
+    RewriteRule ^(aquabiking|aquagym|contact|free|franchise|conseilminceur|cryolipolyse)/?$ index.php?p=$1 [QSA,L]
 
 </IfModule>
 

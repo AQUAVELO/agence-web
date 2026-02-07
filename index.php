@@ -59,6 +59,11 @@ if ($page == 'aquabiking') {
     $meta_description = 'Découvrez les bienfaits de l\'aquabiking et l\'aquagym : perte de poids rapide (jusqu\'à 10kg en 3 mois), réduction de la cellulite à -95%, tonification musculaire sans douleur. Sport complet dans l\'eau avec coaching personnalisé. Première séance offerte !';
 }
 
+if ($page == 'aquagym') {
+    $title = 'Aquagym Tonique : Cours de Gymnastique Aquatique avec Coach | Séance Gratuite';
+    $meta_description = 'Cours d\'aquagym collectifs avec coach professionnel. Tonifiez votre corps en douceur, brûlez 300-400 calories/séance. Sport complet accessible à tous : seniors, femmes enceintes, tous niveaux. Piscine chauffée. Première séance offerte dans 17 centres en France !';
+}
+
 if ($page == 'centers') {
     $title = 'Centres Aquabiking et Aquagym en France : Trouvez le Plus Proche | Aquavelo';
     $meta_description = 'Trouvez votre centre d\'aquabiking et aquagym Aquavelo près de chez vous. Plus de 17 centres en France avec piscines privées chauffées, coaching professionnel et cours collectifs 7j/7. Aquabike + aquagym. Réservez votre séance découverte gratuite !';

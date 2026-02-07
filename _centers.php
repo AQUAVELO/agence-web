@@ -52,7 +52,12 @@
     <div id="galleryContainer" class="clearfix withSpaces col-3">
       
       <!-- Centres France -->
-      <?php foreach ($centers_list_d as &$row_centers_list) { ?>
+      <?php 
+      // Centres en cours d'ouverture
+      $opening_soon = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne'];
+      foreach ($centers_list_d as &$row_centers_list) { 
+        $is_opening_soon = in_array($row_centers_list['city'], $opening_soon);
+      ?>
       <div class="galleryItem france">
         <article class="portfolio-item" style="border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: all 0.3s ease;">
           
@@ -68,10 +73,16 @@
               <span class="overlay-ico"><i class="fa fa-plus"></i></span>
             </a>
             
-            <!-- Badge "Séance Gratuite" -->
+            <!-- Badge "Séance Gratuite" ou "Prochainement" -->
+            <?php if ($is_opening_soon): ?>
+            <div style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #9e9e9e, #757575); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; box-shadow: 0 3px 10px rgba(0,0,0,0.3);">
+              <i class="fa fa-clock-o"></i> Prochainement
+            </div>
+            <?php else: ?>
             <div style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 8px 15px; border-radius: 20px; font-weight: 600; font-size: 0.85rem; box-shadow: 0 3px 10px rgba(255, 152, 0, 0.4);">
               <i class="fa fa-gift"></i> Séance Gratuite
             </div>
+            <?php endif; ?>
           </div>
 
           <!-- Infos du centre -->
@@ -88,14 +99,28 @@
                 Aquavélo <?= $row_centers_list['city']; ?>
               </a>
             </h4>
-
+            
+            <?php if ($is_opening_soon): ?>
+            <p style="color: #ff9800; margin-bottom: 15px; font-size: 1rem; font-weight: 600;">
+              <i class="fa fa-clock-o" style="color: #ff9800;"></i> 
+              PROCHAINEMENT OUVERTURE
+            </p>
+            <?php else: ?>
             <p style="color: #666; margin-bottom: 15px; font-size: 0.95rem;">
               <i class="fa fa-bicycle" style="color: #00d4ff;"></i> 
               <?= $row_centers_list['TypeAQUAVELO']; ?>
             </p>
+            <?php endif; ?>
 
             <!-- Boutons d'action -->
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <?php if ($is_opening_soon): ?>
+              <a href="/contact" 
+                 class="btn btn-sm btn-block" 
+                 style="background: #e0e0e0; color: #666; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; text-align: center;">
+                <i class="fa fa-envelope"></i> Me tenir informé
+              </a>
+              <?php else: ?>
               <a href="/centres/<?= strtolower($row_centers_list['city']); ?>" 
                  class="btn btn-sm" 
                  style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; text-align: center;">
@@ -106,6 +131,7 @@
                  style="flex: 1; min-width: 120px; background: #ff9800; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 600; text-align: center;">
                 <i class="fa fa-gift"></i> Essai gratuit
               </a>
+              <?php endif; ?>
             </div>
           </div>
 

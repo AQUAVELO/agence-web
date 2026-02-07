@@ -416,6 +416,24 @@
 <!-- Photos du centre -->
 <section class="content-area" style="padding-top: 0;">
   <div class="container">
+    <?php 
+    // Centres en cours d'ouverture
+    $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne'];
+    $is_opening_soon = in_array($city, $opening_soon_cities);
+    ?>
+    
+    <?php if ($is_opening_soon): ?>
+    <!-- Message "Prochainement Ouverture" pour centres en cours d'ouverture -->
+    <div style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, #ff9800, #f57c00); border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(255, 152, 0, 0.3);">
+      <h2 style="color: white; font-size: 2rem; margin: 0; font-weight: 700;">
+        <i class="fa fa-clock-o"></i> Prochainement Ouverture
+      </h2>
+      <p style="color: white; font-size: 1.2rem; margin: 10px 0 0 0; opacity: 0.95;">
+        Notre centre d'<?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ouvrira bientôt ses portes
+      </p>
+    </div>
+    <?php endif; ?>
+    
     <div class="row mt-3">
       <div class="col-md-3 col-6 text-center">
         <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
@@ -756,10 +774,16 @@
             
             <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-phone"></i> Téléphone</dt>
             <dd style="margin-bottom: 25px; padding-left: 25px;">
-              <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" 
-                 style="color: #00a8cc; font-weight: 600; font-size: 1.2rem; text-decoration: none;">
-                <?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
-              </a>
+              <?php if ($is_opening_soon): ?>
+                <span style="color: #ff9800; font-weight: 600; font-size: 1.1rem;">
+                  <i class="fa fa-clock-o"></i> Prochainement Ouverture
+                </span>
+              <?php else: ?>
+                <a href="tel:<?= preg_replace('/[^0-9+]/', '', $row_center['phone'] ?? ''); ?>" 
+                   style="color: #00a8cc; font-weight: 600; font-size: 1.2rem; text-decoration: none;">
+                  <?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+                </a>
+              <?php endif; ?>
             </dd>
             
             <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-clock-o"></i> Horaires</dt>

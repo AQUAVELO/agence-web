@@ -638,50 +638,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   </script>
 
-  <?php if ($page == 'home') : ?>
-  <!-- FAQ Schema pour la page d'accueil -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Qu'est-ce que l'aquabiking ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "L'aquabiking est un sport aquatique qui consiste à pédaler sur un vélo immergé dans l'eau. Cette activité permet de brûler 400 à 600 calories par séance, de réduire la cellulite et de tonifier les muscles sans impact sur les articulations."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Combien coûte une séance d'aquabiking ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Les séances d'aquabiking chez Aquavelo débutent à partir de 8€ la séance avec nos formules d'abonnement. Nous proposons également une première séance découverte gratuite."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Faut-il savoir nager pour faire de l'aquabiking ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Non, il n'est pas nécessaire de savoir nager pour pratiquer l'aquabiking. Le vélo est immergé dans un bassin où l'eau arrive à la taille. Vous restez assis sur le vélo en toute sécurité."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "L'aquabiking est-il efficace pour maigrir ?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Oui, l'aquabiking est très efficace pour la perte de poids. Une séance de 45 minutes permet de brûler entre 400 et 600 calories. Combiné à une alimentation équilibrée, vous pouvez perdre jusqu'à 10kg en 3 mois avec 2 à 3 séances par semaine."
-        }
-      }
-    ]
-  }
-  </script>
-  <?php endif; ?>
-
   <?php if (isset($city) && isset($row_center)) : ?>
   <!-- LocalBusiness Schema pour les pages de centres -->
   <script type="application/ld+json">

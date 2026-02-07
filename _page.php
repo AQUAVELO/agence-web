@@ -67,35 +67,6 @@
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [{
-      "@type": "Question",
-      "name": "Dois-je savoir nager pour faire de l'aquavélo ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Non, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable."
-      }
-    },{
-      "@type": "Question",
-      "name": "Que faut-il apporter pour une séance d'aquavélo ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Prévoyez un maillot de bain, une serviette et optionnellement des chaussures d'eau. Nous mettons à disposition des casiers sécurisés."
-      }
-    },{
-      "@type": "Question",
-      "name": "L'aquavélo est-il efficace pour perdre du poids ?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Oui, l'aquavélo permet de brûler entre 400 et 600 calories par séance de 45 minutes. C'est très efficace pour la perte de poids."
-      }
-    }]
-  }
-  </script>
-
   <?php if (isset($row_center['id']) && $row_center['id'] == 253) : ?>
     <script>
       !function(f,b,e,v,n,t,s) {

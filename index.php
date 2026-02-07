@@ -50,18 +50,18 @@ else $page = 'home';
 // ===== TITRES ET META DESCRIPTIONS OPTIMISÉS SEO =====
 
 if ($page == 'home') {
-    $title = 'Aquabiking Collectif en Piscine avec Coach | 1ère Séance Offerte';
-    $meta_description = '🎁 PREMIÈRE SÉANCE OFFERTE ! Cours d\'aquabiking collectif avec coach professionnel. Perdez jusqu\'à 10kg en 3 mois. Brûlez 400-500 calories/séance. Centres ouverts 7j/7 partout en France. Réservez maintenant !';
+    $title = 'Aquabiking et Aquagym Collectif en Piscine avec Coach | 1ère Séance Offerte';
+    $meta_description = '🎁 PREMIÈRE SÉANCE OFFERTE ! Cours d\'aquabiking et aquagym collectifs avec coach professionnel. Perdez jusqu\'à 10kg en 3 mois. Brûlez 400-500 calories/séance. 17 centres ouverts 7j/7 en France. Piscine privée chauffée. Réservez maintenant !';
 }
 
 if ($page == 'aquabiking') {
-    $title = 'Aquabiking : Bienfaits du Vélo Aquatique pour Maigrir | Résultats Rapides';
-    $meta_description = 'Découvrez les bienfaits de l\'aquabiking : perte de poids rapide (jusqu\'à 10kg en 3 mois), réduction de la cellulite, tonification musculaire sans douleur. Sport complet dans l\'eau avec coaching personnalisé. Première séance offerte !';
+    $title = 'Aquabiking et Aquagym : Bienfaits du Sport Aquatique pour Maigrir | Résultats Rapides';
+    $meta_description = 'Découvrez les bienfaits de l\'aquabiking et l\'aquagym : perte de poids rapide (jusqu\'à 10kg en 3 mois), réduction de la cellulite à -95%, tonification musculaire sans douleur. Sport complet dans l\'eau avec coaching personnalisé. Première séance offerte !';
 }
 
 if ($page == 'centers') {
-    $title = 'Centres Aquabiking en France : Trouvez le Plus Proche | Aquavelo';
-    $meta_description = 'Trouvez votre centre d\'aquabiking Aquavelo près de chez vous. Plus de 17 centres en France avec piscines privées chauffées, coaching professionnel et cours collectifs 7j/7. Réservez votre séance découverte gratuite !';
+    $title = 'Centres Aquabiking et Aquagym en France : Trouvez le Plus Proche | Aquavelo';
+    $meta_description = 'Trouvez votre centre d\'aquabiking et aquagym Aquavelo près de chez vous. Plus de 17 centres en France avec piscines privées chauffées, coaching professionnel et cours collectifs 7j/7. Aquabike + aquagym. Réservez votre séance découverte gratuite !';
 }
 
 if ($page == 'concept') {
@@ -76,8 +76,8 @@ if ($page == 'franchise') {
 }
 
 if ($page == 'free') {
-    $title = 'Séance Découverte Gratuite d\'Aquabiking | Essayez Aquavelo';
-    $meta_description = 'Profitez d\'une séance découverte gratuite d\'aquabiking dans votre centre Aquavelo. Testez les bienfaits du vélo aquatique avec un coach sans engagement. Réservez votre créneau dès maintenant !';
+    $title = 'Séance Découverte Gratuite d\'Aquabiking et Aquagym | Essayez Aquavelo';
+    $meta_description = 'Profitez d\'une séance découverte gratuite d\'aquabiking ou aquagym dans votre centre Aquavelo. Testez les bienfaits du vélo aquatique ou de l\'aquagym tonique avec un coach sans engagement. Réservez votre créneau dès maintenant !';
 }
 
 if ($page == 'partenaires') {
@@ -218,10 +218,10 @@ if (isset($_GET['city'])) {
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];
-  $title = "Aquabiking $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
+  $title = "Aquabiking et Aquagym $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
   
-  $meta_description = "🎁 Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking avec coach, piscine privée chauffée. Perdez du poids rapidement. Réservez en ligne !";
-  $meta_keywords = "aquavelo, aquabiking, waterbike, aquabike, aquagym, anti cellulite, amincissement, perte de poids, aquabiking $city, centre aquabiking $city, cours aquabike $city, piscine $city, coach aquabiking $city";
+  $meta_description = "🎁 Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking et aquagym avec coach, piscine privée chauffée. Perdez du poids rapidement. Brûlez 400-500 calories/séance. Réservez en ligne !";
+  $meta_keywords = "aquavelo, aquabiking, waterbike, aquabike, aquagym, aquagym tonique, anti cellulite, amincissement, perte de poids, aquabiking $city, aquagym $city, centre aquabiking $city, centre aquagym $city, cours aquabike $city, cours aquagym $city, piscine $city, coach aquabiking $city, sport aquatique $city";
 }
 
 ?>
@@ -235,7 +235,7 @@ if (isset($_GET['city'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="description" content="<?= $meta_description ?? 'Cours d\'aquabiking collectif en piscine animé par un coach. Éliminez votre cellulite et affinez votre silhouette rapidement sur toutes les parties du corps.'; ?>">
-  <meta name="keywords" content="aquavelo, aquabiking, waterbike, aquabike, aquagym, anti cellulite, amincissement, perte de poids, kg en moins, affinement rapide de la silhouette<?php if(isset($city)) echo ", aquabiking $city, centre aquabiking $city"; ?>">
+  <meta name="keywords" content="aquavelo, aquabiking, aquabike, waterbike, aquagym, aquagym tonique, gymnastique aquatique, sport aquatique, anti cellulite, amincissement, perte de poids, minceur, kg en moins, affinement rapide de la silhouette, vélo dans l'eau, cours collectifs aqua, piscine chauffée, coach aquatique<?php if(isset($city)) echo ", aquabiking $city, aquagym $city, centre aquabiking $city, centre aquagym $city"; ?>">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -264,6 +264,9 @@ if (isset($_GET['city'])) {
   <link rel="preconnect" href="https://www.googletagmanager.com">
   
   <title><?= $title; ?> | Aquavelo</title>
+  
+  <?php include '_seo_optimization.php'; ?>
+  
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/animate.css?v=1">
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/bootstrap.css?v=1">
   <link rel="stylesheet" type="text/css" href="<?= BASE_PATH ?>css/style.css?v=1">

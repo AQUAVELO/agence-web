@@ -27,6 +27,8 @@ Disallow: /editCentre.php
 Disallow: /deleteCentre.php
 Disallow: /NewPost.php
 Disallow: /NewCentre.php
+Disallow: /check_paris12.php
+Disallow: /*?p=admin*
 
 # Interdire les pages de test et traitement
 Disallow: /test_*.php

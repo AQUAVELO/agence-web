@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <img src="/images/aquagym-cours-collectif.jpg" alt="Cours d'aquagym collectif avec coach en piscine" 
+        <img src="/images/aquagym-femme-halteres.jpg" alt="Aquagym avec coach - femme souriante avec haltères aquatiques" 
              style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
       </div>
     </div>

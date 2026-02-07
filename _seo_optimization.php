@@ -144,27 +144,31 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
         "description": "Tarifs dégressifs selon formule d'abonnement"
       }
     }
-    <?php if (isset($city)): ?>
+    <?php if (isset($city) && isset($row_center) && !empty($row_center['address'])): ?>
     ,{
       "@type": "HealthAndBeautyBusiness",
       "@id": "https://www.aquavelo.com/centres/<?= urlencode($city); ?>#localbusiness",
       "name": "Aquavelo <?= htmlspecialchars($city); ?>",
       "description": "Centre d'aquabiking et aquagym à <?= htmlspecialchars($city); ?> avec piscine privée chauffée et coaching professionnel.",
-      "image": "https://www.aquavelo.com/cloud/thumbnail/center_<?= $center_id ?? ''; ?>/1.jpg",
+      <?php if (!empty($row_center['id'])): ?>
+      "image": "https://www.aquavelo.com/cloud/thumbnail/center_<?= $row_center['id']; ?>/1.jpg",
+      <?php endif; ?>
       "telephone": "<?= $row_center['phone'] ?? '+33622647095'; ?>",
       "email": "<?= $row_center['email'] ?? 'claude@alesiaminceur.com'; ?>",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "<?= $row_center['address'] ?? ''; ?>",
+        "streetAddress": "<?= htmlspecialchars($row_center['address']); ?>",
         "addressLocality": "<?= htmlspecialchars($city); ?>",
         "postalCode": "<?= $row_center['zip'] ?? ''; ?>",
         "addressCountry": "FR"
       },
+      <?php if (!empty($row_center['latitude']) && !empty($row_center['longitude'])): ?>
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "<?= $row_center['latitude'] ?? ''; ?>",
-        "longitude": "<?= $row_center['longitude'] ?? ''; ?>"
+        "latitude": "<?= $row_center['latitude']; ?>",
+        "longitude": "<?= $row_center['longitude']; ?>"
       },
+      <?php endif; ?>
       "url": "https://www.aquavelo.com/centres/<?= urlencode($city); ?>",
       "priceRange": "€€",
       "openingHoursSpecification": [
@@ -181,7 +185,7 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
           "closes": "14:00"
         }
       ],
-      "hasMap": "https://www.google.com/maps?q=<?= urlencode($row_center['address'] ?? $city); ?>",
+      "hasMap": "https://www.google.com/maps?q=<?= urlencode($row_center['address'] . ', ' . $city); ?>",
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",

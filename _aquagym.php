@@ -40,7 +40,6 @@
       </div>
       <div class="col-md-6">
         <img src="/images/aquagym-cours-collectif.jpg" alt="Cours d'aquagym collectif avec coach en piscine" 
-             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 600 400%22%3E%3Crect fill=%22%2300a8cc%22 width=%22600%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2228%22 fill=%22white%22%3ECours d%27Aquagym Collectif%3C/text%3E%3C/svg%3E'"
              style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
       </div>
     </div>
@@ -50,6 +49,25 @@
 <!-- Section Bienfaits -->
 <section class="content-area bg2" style="background: #f8f9fa; padding: 80px 0;">
   <div class="container">
+    
+    <!-- Galerie photos -->
+    <div style="margin-bottom: 60px;">
+      <div class="row">
+        <div class="col-md-4" style="margin-bottom: 20px;">
+          <img src="/images/aquagym-frites-colorees.jpg" alt="Aquagym avec frites et accessoires colorés" 
+               style="width: 100%; height: 280px; object-fit: cover; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        </div>
+        <div class="col-md-4" style="margin-bottom: 20px;">
+          <img src="/images/aquagym-halteres-seniors.jpg" alt="Cours d'aquagym avec haltères aquatiques - seniors et adultes" 
+               style="width: 100%; height: 280px; object-fit: cover; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        </div>
+        <div class="col-md-4" style="margin-bottom: 20px;">
+          <img src="/images/aquagym-cours-collectif.jpg" alt="Cours d'aquagym collectif dynamique en piscine" 
+               style="width: 100%; height: 280px; object-fit: cover; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        </div>
+      </div>
+    </div>
+    
     <header class="page-header text-center">
       <h2 class="page-title" style="color: #00a8cc; font-size: 2.5rem;">Les 8 Bienfaits de l'Aquagym</h2>
       <p style="font-size: 1.2rem; color: #666; margin-top: 15px;">Pourquoi choisir l'aquagym pour votre remise en forme ?</p>

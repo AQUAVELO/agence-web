@@ -10,7 +10,7 @@
     
     # Fichiers PHP utilitaires (accès direct autorisé)
     RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler)\.php$ - [L]
+    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|test_google_calendar_cannes)\.php$ - [L]
 
     # 2. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
     RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]

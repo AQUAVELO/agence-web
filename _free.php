@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             }
             
             // 2. Détermination du message Telegram normal
-            $planning_centers = [305, 347, 349, 343, 253];
+            $planning_centers = [305, 347, 349, 253]; // Cannes, Mandelieu, Vallauris, Antibes (Mérignac retiré)
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris

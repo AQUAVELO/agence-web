@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "aquavelo-calendar",
+  "private_key_id": "596548f4eea2d031294972d93a2a5e3ea1916fd4",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCujSyOF0OpTGsh\n8XJc5UFSjsjgW48cqr7M/XsArgTG9s3ocsqM79QiJyAVkO2VAcaxBAxenrUfyvn9\nqC6L+H4s2oycUCr0ohbvxLPlI+C9YWjI1BH8Huu4MVi6I9LEJFALn4H4nvoUAQhD\nzU+7Cy0l8ANOR1OaXdmDW5WpFz9SbawqnhWlFjjvsoNM22A2xAssotGoE/NYP3cD\nCZK9aXNt4WApjeV664uS2kPMDjC+1fJzPQARQdKOVr08ka/7XdLFuM337Iw6TlAm\nAX2mwCVx/EDmzqRtebHlnrIb7QhcatvQnGeEFCUq/pfEViC5nOqoN6arF5H3dfVm\nL912qo8VAgMBAAECggEAEGogPYB8kWgpTvjYq1m3yd65jzes/qIj7T0NGyRCOL+u\n32QkHhrTlR6eyshlPzT6jVz3GNLN755z4eG19t24Z9lpja2QTI8NnyCdVjgIg2as\npu4iftYdjqW9VUvXHzDXAjDO1SWGGOl78HxXOhyz8zRd6zeT6hlXQh4TteIEx2h2\nq5IreNomRdt5qLQ/aOSJ6pYixAfvpS62rePfMtsyyxp+P3eq8zTDgMMkvTYpB8jY\nywx0AJgBSBzCVvP3954aPDgiANgd/tYVGv85h1SEs831+4avELdX5/ifa814fvL7\nmlypeyckyIz7VbURqR+uN9ZSaYqJPwhn1585jj/ooQKBgQD1b5SGwgiY3DTGb1eb\nc2uycqh9cmIDZJDnBi5ZJigvtfpbxXdx8O5H/Fl5pkD5sE7VP3vnyBzNuVp2MRX4\niIpohHGpO3mgm3puhkrOm+vC55hOZ335YpXXPlGkQZ0lCywjPNOcmtF34AVgtcH9\noJz6EMkcktxniXCC9IZLAqpuTQKBgQC2EIeVUw5ThVudCiFxY9nUQYPOSJt6hLfq\nDxw6hBbeWkNs0dXM7zrV8lvXYjPN7QL0/11Gw9kiPHSYTjjtLLTZWzlX9CWKls67\np5eXYk6haoDIm0jAVcQ3ukMRktRMpA1kaBM8UXQxcEjZPCu8fYIQmJKK7lzcsCoh\nZtwTPlBX6QKBgQC/YmLPMj7B8/SzR99ouHgijoYUTD1hp+nWPFun6LktexnetfyO\nPPGR8JVU5u+DxJe0ceyMsN7FDOQdhek8BDzpg12eOWJ+er7dsJpkwfD16uI5QTpa\nXSW60j2XeBKx8CRa1fOtCoyMjYOkBhdfTv8ZgD1SqrJzihjSBRszIsEDgQKBgQCp\nP9yK2FctFYABEPXd7zEEvJLHJYBD+TTvhXR8gWaw9cBQXREgHhTX5yGxrDz0Ziyl\njO8tZctopELPg4gwE6tblA5O0UxE9cThdf7aYC0wqU1nL9QF2LU8CQ9oOtLZHHjG\nqmmXXTFi9DsEl4chBpvuyacROF1jWvEPdAuKaBdQYQKBgQDA/lFFD6fMBfn3O3dd\nwugDCIBYY/IKZ5Owqm7aL7/tchemqtFkjUqgYcz4ex3LG9UHMiktd/V276/Z0Xjp\ncYJVHmUQsWdU7E2e4wD0tD6QOBdeSIDn5VdrmvVzGoX9BVwdqbmYzvH36herk2Ai\n1fTOcLcisG2KTmnLDR76yQ18sg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "aquavelo@aquavelo-calendar.iam.gserviceaccount.com",
+  "client_id": "116357351273218939547",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/aquavelo%40aquavelo-calendar.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

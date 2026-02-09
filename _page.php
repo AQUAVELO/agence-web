@@ -551,11 +551,19 @@
             if (!empty($planning_image)) : ?>
               <div class="text-center" style="margin-bottom: 30px;">
                 <h3 style="color: #00a8cc; margin-bottom: 20px;">📅 Planning des Cours</h3>
-                <img src="<?= $planning_image ?>" 
-                     alt="Planning hebdomadaire cours aquabiking aquagym <?= htmlspecialchars($row_center['city']) ?>" 
-                     class="img-fluid" 
-                     style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
-                     loading="lazy">
+                <div style="position: relative; cursor: pointer;" onclick="openPlanningModal()" title="Cliquer pour agrandir">
+                  <img id="planning-image" 
+                       src="<?= $planning_image ?>" 
+                       alt="Planning hebdomadaire cours aquabiking aquagym <?= htmlspecialchars($row_center['city']) ?>" 
+                       class="img-fluid" 
+                       style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
+                       onmouseover="this.style.transform='scale(1.02)'" 
+                       onmouseout="this.style.transform='scale(1)'"
+                       loading="lazy">
+                  <div style="position: absolute; bottom: 10px; right: 10px; background: rgba(0, 212, 255, 0.9); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; pointer-events: none;">
+                    <i class="fa fa-search-plus"></i> Cliquer pour agrandir
+                  </div>
+                </div>
               </div>
             <?php endif; ?>
 
@@ -1103,6 +1111,85 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- Modal Lightbox Planning -->
+<div id="planningModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.95); animation: fadeIn 0.3s;">
+  <span onclick="closePlanningModal()" style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; transition: 0.3s; cursor: pointer; z-index: 10000;">&times;</span>
+  
+  <div style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <img id="modalPlanningImage" src="" alt="Planning agrandi" style="max-width: 95%; max-height: 95%; object-fit: contain; border-radius: 10px; box-shadow: 0 10px 50px rgba(0, 212, 255, 0.5);">
+  </div>
+  
+  <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: white; text-align: center; background: rgba(0, 0, 0, 0.7); padding: 15px 30px; border-radius: 25px;">
+    <i class="fa fa-search-minus"></i> Cliquez n'importe où pour fermer • <i class="fa fa-arrows-alt"></i> Utilisez la molette pour zoomer
+  </div>
+</div>
 
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#planningModal:hover .close-button {
+  opacity: 1;
+}
+
+/* Animation de fermeture */
+.modal-closing {
+  animation: fadeOut 0.3s;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+</style>
+
+<script>
+// Fonction pour ouvrir le modal
+function openPlanningModal() {
+  var planningImg = document.getElementById('planning-image');
+  var modal = document.getElementById('planningModal');
+  var modalImg = document.getElementById('modalPlanningImage');
+  
+  if (planningImg && modal && modalImg) {
+    modalImg.src = planningImg.src;
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // Empêcher le scroll
+  }
+}
+
+// Fonction pour fermer le modal
+function closePlanningModal() {
+  var modal = document.getElementById('planningModal');
+  if (modal) {
+    modal.classList.add('modal-closing');
+    setTimeout(function() {
+      modal.style.display = 'none';
+      modal.classList.remove('modal-closing');
+      document.body.style.overflow = ''; // Réactiver le scroll
+    }, 300);
+  }
+}
+
+// Fermer le modal en cliquant en dehors de l'image
+document.addEventListener('DOMContentLoaded', function() {
+  var modal = document.getElementById('planningModal');
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closePlanningModal();
+      }
+    });
+  }
+  
+  // Fermer avec la touche Échap
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closePlanningModal();
+    }
+  });
+});
+</script>
 
 

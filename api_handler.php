@@ -1,10 +1,16 @@
 <?php
+// Charger les variables d'environnement
+if (file_exists(__DIR__ . '/load_env.php')) {
+    require_once __DIR__ . '/load_env.php';
+}
+
 // Activer les erreurs temporairement pour debug
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Définir la clé API OpenAI
-define('API_KEY', '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');
+// Définir la clé API OpenAI depuis .env ou fallback
+$apiKey = $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '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';
+define('API_KEY', $apiKey);
 
 // Vérifier si la requête est une requête POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

@@ -824,6 +824,17 @@
               <i class="fa fa-facebook"></i> Suivre sur Facebook
             </a>
 
+            <?php if (!empty($row_center['instagram'])) : ?>
+            <a href="https://www.instagram.com/<?= htmlspecialchars($row_center['instagram'], ENT_QUOTES, 'UTF-8'); ?>" 
+               title="Compte Instagram Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+               target="_blank"
+               rel="noopener nofollow"
+               class="btn btn-default btn-block" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; border: none;">
+              <i class="fa fa-instagram"></i> Suivre sur Instagram
+            </a>
+            <?php endif; ?>
+
             <button type="button" class="btn btn-default btn-block" 
                onclick="ouvre_popup('<?= BASE_PATH ?>nouveauResultat.html'); return false;" 
                style="margin-bottom: 10px; padding: 12px; font-weight: 600;">

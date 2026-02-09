@@ -4,6 +4,7 @@
  */
 
 require '_settings.php';
+require 'load_env.php'; // Charger les variables d'environnement
 date_default_timezone_set('Europe/Paris');
 
 echo "<h1>🧪 Test Synchronisation Google Calendar</h1>";

@@ -819,8 +819,8 @@
                title="Page Facebook Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                target="_blank"
                rel="noopener nofollow"
-               class="btn btn-default btn-block" 
-               style="margin-bottom: 10px; padding: 12px; font-weight: 600;">
+               class="btn btn-block" 
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600; background: #1877f2; color: white; border: none;">
               <i class="fa fa-facebook"></i> Suivre sur Facebook
             </a>
 

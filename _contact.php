@@ -3,6 +3,15 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+// Générer une question mathématique simple pour le captcha
+if (!isset($_SESSION['captcha_answer'])) {
+    $num1 = rand(1, 9);
+    $num2 = rand(1, 9);
+    $_SESSION['captcha_num1'] = $num1;
+    $_SESSION['captcha_num2'] = $num2;
+    $_SESSION['captcha_answer'] = $num1 + $num2;
+}
 ?>
 
 <!-- Header -->
@@ -151,6 +160,28 @@ use PHPMailer\PHPMailer\Exception;
                         style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 12px; font-size: 1rem;"><?php echo htmlspecialchars($_POST['message'] ?? ''); ?></textarea>
             </div>
 
+            <!-- Captcha mathématique -->
+            <div class="form-group">
+              <label for="captcha" style="color: #00a8cc; font-weight: 600;">
+                <i class="fa fa-shield"></i> Vérification anti-spam *
+              </label>
+              <div style="background: #f0f8ff; padding: 20px; border-radius: 10px; border: 2px solid #00d4ff; margin-bottom: 10px;">
+                <p style="margin: 0 0 15px 0; font-size: 1.1rem; color: #333;">
+                  <strong>Combien font :</strong> 
+                  <span style="background: white; padding: 8px 15px; border-radius: 8px; font-size: 1.3rem; font-weight: 700; color: #00a8cc; display: inline-block; margin-left: 10px;">
+                    <?= $_SESSION['captcha_num1'] ?> + <?= $_SESSION['captcha_num2'] ?> = ?
+                  </span>
+                </p>
+                <input type="number" 
+                       class="form-control" 
+                       id="captcha"
+                       name="captcha" 
+                       placeholder="Votre réponse"
+                       required
+                       style="border: 2px solid #00d4ff; border-radius: 10px; padding: 12px; font-size: 1.1rem; max-width: 150px;" />
+              </div>
+            </div>
+
             <!-- Champ anti-spam caché -->
             <input type="hidden" name="raison">
 
@@ -186,6 +217,7 @@ use PHPMailer\PHPMailer\Exception;
             $ville = trim($_POST['ville'] ?? '');
             $sujet = trim($_POST['sujet'] ?? '');
             $message = trim($_POST['message'] ?? '');
+            $captcha = trim($_POST['captcha'] ?? '');
             $err = 0;
             $errors = '';
 
@@ -196,6 +228,12 @@ use PHPMailer\PHPMailer\Exception;
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
               $errors .= '<br /><i class="fa fa-exclamation-circle"></i> L\'adresse email n\'est pas valide.';
+              $err++;
+            }
+
+            // Validation du captcha
+            if (empty($captcha) || !is_numeric($captcha) || (int)$captcha !== (int)$_SESSION['captcha_answer']) {
+              $errors .= '<br /><i class="fa fa-exclamation-circle"></i> La réponse au calcul est incorrecte. Veuillez réessayer.';
               $err++;
             }
 
@@ -270,6 +308,13 @@ use PHPMailer\PHPMailer\Exception;
                       . $errors . 
                     '</div>';
             }
+            
+            // Régénérer un nouveau captcha après chaque tentative
+            $num1 = rand(1, 9);
+            $num2 = rand(1, 9);
+            $_SESSION['captcha_num1'] = $num1;
+            $_SESSION['captcha_num2'] = $num2;
+            $_SESSION['captcha_answer'] = $num1 + $num2;
           }
           ?>
 

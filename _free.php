@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             }
             
             // 2. Détermination du message Telegram normal
-            $planning_centers = [305, 347, 349, 253]; // Cannes, Mandelieu, Vallauris, Antibes (Mérignac retiré)
+            $planning_centers = [305, 347, 349]; // Cannes, Mandelieu, Vallauris (Mérignac et Antibes retirés)
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris
@@ -172,11 +172,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                               "📞 $tel";
                 }
                 sendTelegram($tg_msg);
-                
-                // Notification spécifique pour le responsable d'Antibes (ID 253)
-                if ((int)$center_id == 253) {
-                    sendTelegram($tg_msg, '1449612043');
-                }
             }
 
             // 3. Envoi des Emails

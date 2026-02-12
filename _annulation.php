@@ -96,19 +96,14 @@ if ($email && $rdv) {
                 
                 $mail->send();
                 
-                // NOTIFICATION TELEGRAM (ANNULATION) - Uniquement pour Cannes, Mandelieu, Vallauris, Antibes
-                $planning_centers = [305, 347, 349, 343, 253];
+                // NOTIFICATION TELEGRAM (ANNULATION) - Uniquement pour Cannes, Mandelieu, Vallauris
+                $planning_centers = [305, 347, 349];
                 if (in_array((int)$booking['center_id'], $planning_centers)) {
                     $tg_msg = "<b>❌ ANNULATION $city</b>\n" .
                               "👤 " . trim(explode('(RDV:', $booking['name'])[0]) . "\n" .
                               "📧 " . $email . "\n" .
                               "🗓️ RDV : $rdv";
                     sendTelegram($tg_msg);
-                    
-                    // Notification spécifique pour le responsable d'Antibes (ID 253)
-                    if ((int)$booking['center_id'] == 253) {
-                        sendTelegram($tg_msg, '1449612043');
-                    }
                 }
             } catch (Exception $e) {
                 error_log("Erreur Email Annulation: " . $mail->ErrorInfo);

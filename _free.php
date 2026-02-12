@@ -49,11 +49,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $rescheduling_alert = false;
     if ($old_rdv && $email) {
         $search_old = "%" . $old_rdv . "%";
-        // Récupérer les infos avant suppression pour l'alerte
-        $check_old = $database->prepare("SELECT name FROM am_free WHERE email = ? AND name LIKE ?");
+        // Récupérer les infos avant suppression (y compris google_event_id)
+        $check_old = $database->prepare("SELECT name, google_event_id, google_sync, center_id FROM am_free WHERE email = ? AND name LIKE ?");
         $check_old->execute([$email, $search_old]);
-        if ($check_old->fetch()) {
+        $old_booking = $check_old->fetch();
+        
+        if ($old_booking) {
             $rescheduling_alert = true;
+            
+            // Supprimer l'événement de Google Calendar si synchronisé
+            if (!empty($old_booking['google_event_id']) && $old_booking['google_sync'] == 1) {
+                try {
+                    if (file_exists('vendor/autoload.php')) {
+                        require_once 'vendor/autoload.php';
+                        require_once 'load_env.php';
+                        
+                        $client = new Google\Client();
+                        $client->setAuthConfig('google_key.json');
+                        $client->addScope(Google\Service\Calendar::CALENDAR);
+                        $service = new Google\Service\Calendar($client);
+
+                        // Récupérer l'email du centre pour déterminer le bon calendrier
+                        $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
+                        $stmt_c->execute([$old_booking['center_id']]);
+                        $c_info = $stmt_c->fetch();
+
+                        // Déterminer l'agenda de destination
+                        if (in_array((int)$old_booking['center_id'], [305, 347, 349])) {
+                            $targetCalendarId = 'aqua.cannes@gmail.com';
+                        } else {
+                            $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
+                        }
+
+                        // Supprimer l'événement Google Calendar
+                        $service->events->delete($targetCalendarId, $old_booking['google_event_id']);
+                        error_log("✅ Replanification: Ancien événement Google Calendar supprimé : " . $old_booking['google_event_id']);
+                    }
+                } catch (Exception $e) {
+                    error_log("⚠️ Replanification: Erreur suppression Google Calendar: " . $e->getMessage());
+                }
+            }
+            
+            // Supprimer l'ancien RDV de la base de données
             $del_old = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
             $del_old->execute([$email, $search_old]);
         }

@@ -12,7 +12,38 @@
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|test_google_calendar_cannes|add_instagram_field|generate_env_from_google_key)\.php$ - [L]
 
-    # 2. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
+    # 2. REDIRECTIONS 301 - Nettoyage erreurs 404
+    
+    # Anciennes URLs de centres obsolètes → Liste centres
+    RewriteRule ^centres/(Boulogne-Billancourt|Sainte-Genevieve-des-Bois|Menton|Paris)/?$ /centres [R=301,L]
+    
+    # Anciennes URLs avec typos ou mauvais format
+    RewriteRule ^centres/(frejus|hyeres|saint-raphael)/?$ /centres/$1 [R=301,NC,L]
+    RewriteRule ^centres/Frejus$ /centres/Fréjus [R=301,L]
+    RewriteRule ^centres/Hyeres$ /centres/Hyères [R=301,L]
+    
+    # Séances découverte obsolètes → Formulaire général
+    RewriteRule ^seance-decouverte/(.*)$ /?p=free [R=301,L]
+    
+    # Blog et articles obsolètes → Accueil
+    RewriteRule ^(blog|Blog\.php|articles\.php|Post\.php).*$ / [R=301,L]
+    
+    # Pages admin et connexion → Accueil (404 évité)
+    RewriteRule ^(Admin\.php|Login-Aquavelo-Blog\.php|Dashboard\.php|editpost\.php|NewPost\.php).*$ / [R=301,L]
+    
+    # Anciennes pages de paiement
+    RewriteRule ^(annulation|vente_ko|error)\.php$ / [R=301,L]
+    
+    # Anciennes pages tests et obsolètes
+    RewriteRule ^(test_.*|traitement_.*|envoi.*|analyse.*|affichage.*|menu.*|index_.*|crop|reset_password|new_password)\.php$ / [R=301,L]
+    
+    # Pages de suivi et mensurations → Contact
+    RewriteRule ^(suivi.*|saisieMensurations.*|connexion_mensurations.*|indexMesure)\.php$ /contact [R=301,L]
+    
+    # Concept aquabiking
+    RewriteRule ^concept-aquabiking/?$ /?p=aquabiking [R=301,L]
+
+    # 3. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
     RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
 
     # 3. ROUTES VERS index.php (Aquavelo spécifique)

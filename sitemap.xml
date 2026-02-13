@@ -86,6 +86,13 @@
     <lastmod>2026-02-10</lastmod>
 </url>
 
+<url>
+    <loc>https://www.aquavelo.com/?p=cryolipolyse</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <lastmod>2026-02-10</lastmod>
+</url>
+
 <!-- ========== PAGES DES CENTRES ========== -->
 <url>
     <loc>https://www.aquavelo.com/centres/Aix-en-Provence</loc>
@@ -254,6 +261,14 @@
     <loc>https://www.aquavelo.com/centres/Villebon-sur-Yvette</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
+    <lastmod>2026-02-10</lastmod>
+</url>
+
+<!-- ========== CENTRES EN COURS D'OUVERTURE ========== -->
+<url>
+    <loc>https://www.aquavelo.com/centres/Paris</loc>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
     <lastmod>2026-02-10</lastmod>
 </url>
 

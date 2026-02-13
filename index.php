@@ -248,10 +248,38 @@ if (isset($_GET['city'])) {
   
   <!-- Balise Canonical SEO -->
   <?php 
+  // Construction de l'URL canonique (version propre sans paramètres)
   $canonical_url = 'https://www.aquavelo.com';
+  
+  // Pages de centres (pretty URL)
   if (isset($city)) {
       $canonical_url .= '/centres/' . urlencode($city);
-  } elseif ($page != 'home') {
+  } 
+  // Pages avec pretty URLs (sans paramètre ?p=)
+  elseif ($page == 'aquabiking') {
+      $canonical_url .= '/aquabiking';
+  } 
+  elseif ($page == 'contact') {
+      $canonical_url .= '/contact';
+  }
+  elseif ($page == 'free') {
+      $canonical_url .= '/free';
+  }
+  elseif ($page == 'franchise') {
+      $canonical_url .= '/franchise';
+  }
+  elseif ($page == 'conseilminceur') {
+      $canonical_url .= '/conseilminceur';
+  }
+  elseif ($page == 'centers') {
+      $canonical_url .= '/centres';
+  }
+  // Pages de vente (utiliser pretty URL sans .php)
+  elseif (in_array($page, ['vente_formule', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {
+      $canonical_url .= '/' . $page;
+  }
+  // Autres pages (avec paramètre ?p=)
+  elseif ($page != 'home') {
       $canonical_url .= '/?p=' . urlencode($page);
   }
   ?>

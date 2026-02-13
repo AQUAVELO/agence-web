@@ -1,20 +1,25 @@
 # Robots.txt pour Aquavelo.com
-# Dernière mise à jour : 26/12/2025
+# Dernière mise à jour : 10/02/2026
 
 User-Agent: *
 Allow: /
 
-# Interdire l'accès aux fichiers sensibles
+# Interdire l'accès aux fichiers sensibles et de configuration
 Disallow: /_settings.php
 Disallow: /_config.php
 Disallow: /config.php
+Disallow: /.env
+Disallow: /google_key.json
+Disallow: /composer.json
+Disallow: /composer.lock
+Disallow: /*.sql$
+
+# Interdire les dossiers techniques
 Disallow: /Include/
 Disallow: /vendor/
 Disallow: /cache/
 Disallow: /form/vendor/
-Disallow: /*.sql$
-Disallow: /composer.json
-Disallow: /composer.lock
+Disallow: /clevercloud/
 
 # Interdire les pages admin et techniques
 Disallow: /Admin.php
@@ -37,16 +42,20 @@ Disallow: /api_handler.php
 Disallow: /api.php
 Disallow: /envoi.php
 Disallow: /envoi2.php
+Disallow: /cron_*.php
+Disallow: /sync_*.php
 
-# Interdire les fichiers temporaires
+# Interdire les fichiers temporaires et logs
 Disallow: /*.txt$
 Disallow: /*.log$
+Disallow: /*.md$
 
-# Permettre les fichiers CSS et JS pour le rendu
+# Permettre les fichiers CSS, JS et images pour le rendu
 Allow: /css/
 Allow: /js/
 Allow: /bootstrap/
 Allow: /images/
+Allow: /font-awesome-4.7.0/
 
 # Ralentir les crawlers pour éviter la surcharge
 Crawl-delay: 1

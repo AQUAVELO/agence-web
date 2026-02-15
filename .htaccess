@@ -11,11 +11,6 @@
     # Fichiers PHP utilitaires (accès direct autorisé)
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|test_google_calendar_cannes|add_instagram_field|generate_env_from_google_key)\.php$ - [L]
-    
-    # 1.5 Forcer HTTPS (si pas déjà activé)
-    RewriteCond %{HTTPS} off
-    RewriteCond %{HTTP_HOST} !^localhost
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
     # 2. REDIRECTIONS 301 - Nettoyage erreurs 404
     

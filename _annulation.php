@@ -28,40 +28,80 @@ if ($email && $rdv) {
     $booking = $stmt->fetch();
 
     if ($booking) {
-        // 0.1 Supprimer l'événement de Google Calendar si synchronisé
-        if (!empty($booking['google_event_id']) && $booking['google_sync'] == 1) {
+        // 0.1 Supprimer l'événement de Google Calendar
+        $center_id_int = (int)$booking['center_id'];
+        $is_cannes_group = in_array($center_id_int, [305, 347, 349]);
+        // Tenter la suppression si : event_id connu, ou centre du groupe Cannes (fallback par recherche)
+        if (!empty($booking['google_event_id']) || $is_cannes_group) {
             try {
                 $keyFile = __DIR__ . '/google_key.json';
                 if (!file_exists($keyFile)) {
-                    // Tenter de générer le fichier depuis les variables d'environnement
                     generateGoogleKeyFile();
                 }
                 if (file_exists($keyFile)) {
-                    // Authentification Google
-                    $client = new Client();
-                    $client->setAuthConfig($keyFile);
-                    $client->addScope(Calendar::CALENDAR);
-                    $service = new Calendar($client);
+                    $gc_cancel_client = new Client();
+                    $gc_cancel_client->setAuthConfig($keyFile);
+                    $gc_cancel_client->addScope(Calendar::CALENDAR);
+                    $service = new Calendar($gc_cancel_client);
 
                     // Déterminer l'agenda de destination
-                    if (in_array((int)$booking['center_id'], [305, 347, 349])) {
-                        // Cannes, Mandelieu, Vallauris → Agenda commun
+                    if ($is_cannes_group) {
                         $targetCalendarId = 'aqua.cannes@gmail.com';
                     } else {
-                        // Autres centres → Email du centre (ou défaut)
                         $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
                         $stmt_c->execute([$booking['center_id']]);
                         $c_info = $stmt_c->fetch();
                         $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
                     }
 
-                    // Supprimer l'événement Google Calendar
-                    $service->events->delete($targetCalendarId, $booking['google_event_id']);
-                    error_log("✅ Annulation: Événement Google Calendar supprimé : " . $booking['google_event_id'] . " (Calendrier: $targetCalendarId)");
+                    $gc_deleted = false;
+
+                    // Méthode 1 : suppression directe via google_event_id
+                    if (!empty($booking['google_event_id'])) {
+                        try {
+                            $service->events->delete($targetCalendarId, $booking['google_event_id']);
+                            error_log("✅ Annulation: Événement supprimé via event_id: " . $booking['google_event_id'] . " (Calendrier: $targetCalendarId)");
+                            $gc_deleted = true;
+                        } catch (\Exception $e2) {
+                            error_log("⚠️ Annulation: suppression event_id échouée (" . $booking['google_event_id'] . "): " . $e2->getMessage());
+                        }
+                    }
+
+                    // Méthode 2 (fallback) : recherche par date/heure si event_id absent ou suppression échouée
+                    if (!$gc_deleted) {
+                        preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $rdv, $rdv_matches);
+                        if (count($rdv_matches) === 3) {
+                            $search_start = \DateTime::createFromFormat('d/m/Y H:i', $rdv_matches[1] . ' ' . $rdv_matches[2], new \DateTimeZone('Europe/Paris'));
+                            $search_end   = clone $search_start;
+                            $search_end->modify('+1 hour');
+
+                            $gc_events = $service->events->listEvents($targetCalendarId, [
+                                'timeMin'      => $search_start->format(\DateTime::RFC3339),
+                                'timeMax'      => $search_end->format(\DateTime::RFC3339),
+                                'singleEvents' => true,
+                            ]);
+
+                            // Nom du client (sans la partie "(RDV:...)")
+                            $client_name = trim(explode('(RDV:', $booking['name'])[0]);
+                            foreach ($gc_events->getItems() as $gc_evt) {
+                                if (stripos($gc_evt->getSummary(), $client_name) !== false) {
+                                    $service->events->delete($targetCalendarId, $gc_evt->getId());
+                                    error_log("✅ Annulation fallback: événement trouvé et supprimé: " . $gc_evt->getId() . " pour $client_name");
+                                    $gc_deleted = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$gc_deleted) {
+                                error_log("⚠️ Annulation: aucun événement trouvé dans Google Calendar pour '$client_name' le " . $rdv_matches[1] . " à " . $rdv_matches[2]);
+                            }
+                        } else {
+                            error_log("⚠️ Annulation: format de date non reconnu dans rdv='$rdv'");
+                        }
+                    }
                 }
-            } catch (Exception $e) {
-                // Log l'erreur mais continue le processus d'annulation
-                error_log("⚠️ Annulation: Erreur suppression Google Calendar (ID: {$booking['google_event_id']}): " . $e->getMessage());
+            } catch (\Exception $e) {
+                error_log("⚠️ Annulation: Erreur Google Calendar: " . $e->getMessage());
             }
         }
 

@@ -120,68 +120,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // B. Enregistrement Table am_free
             $add_free = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $add_free->execute(array($reference, $center_id_db, 3, $input_name_db, $email, $tel, $segment));
-            $new_booking_id = $database->lastInsertId();
+
+            // Récupérer l'ID du booking de manière fiable (lastInsertId + fallback SELECT)
+            $new_booking_id = (int)$database->lastInsertId();
+            if (!$new_booking_id) {
+                $stmt_bid = $database->prepare("SELECT id FROM am_free WHERE email = ? AND reference = ? ORDER BY id DESC LIMIT 1");
+                $stmt_bid->execute([$email, $reference]);
+                $row_bid = $stmt_bid->fetch();
+                $new_booking_id = $row_bid ? (int)$row_bid['id'] : 0;
+            }
 
             // B.2 Synchronisation immédiate Google Calendar (Cannes, Mandelieu, Vallauris)
-            if ($date_heure && in_array((int)$center_id, [305, 347, 349])) {
+            if ($date_heure && in_array((int)$center_id, [305, 347, 349]) && $new_booking_id) {
                 try {
-                    if (file_exists('vendor/autoload.php')) {
-                        require_once 'vendor/autoload.php';
-                        // Charger les variables d'env ET générer google_key.json si nécessaire
-                        require_once 'load_env.php';
-
-                        $keyFile = __DIR__ . '/google_key.json';
-                        if (!file_exists($keyFile)) {
-                            throw new Exception("google_key.json manquant même après load_env.php");
-                        }
-
-                        $gc_client = new Google\Client();
-                        $gc_client->setAuthConfig($keyFile);
-                        $gc_client->addScope(Google\Service\Calendar::CALENDAR);
-                        $gc_service = new Google\Service\Calendar($gc_client);
-
-                        // Récupérer l'adresse du centre
-                        $stmt_gc = $database->prepare("SELECT address FROM am_centers WHERE id = ?");
-                        $stmt_gc->execute([$center_id_db]);
-                        $gc_center = $stmt_gc->fetch();
-                        $gc_location = $gc_center['address'] ?? '60 Avenue du Dr Raymond Picaud, 06150 Cannes';
-
-                        // Parser la date/heure (format "Lundi 16/02/2026 à 10:15 (AQUAVELO)")
-                        preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $date_heure, $gc_matches);
-                        if (count($gc_matches) === 3) {
-                            $rdv_start = DateTime::createFromFormat('d/m/Y H:i', $gc_matches[1] . ' ' . $gc_matches[2], new DateTimeZone('Europe/Paris'));
-                            $rdv_end   = clone $rdv_start;
-                            $rdv_end->modify('+45 minutes');
-
-                            $gc_event = new Google\Service\Calendar\Event([
-                                'summary'     => '🏊 ' . $input_nom_complet . ' - ' . $city,
-                                'location'    => $gc_location,
-                                'description' => "Client: $input_nom_complet\nEmail: $email\nTél: $tel\nCentre: $city\nID: $new_booking_id",
-                                'start' => [
-                                    'dateTime' => $rdv_start->format(DateTime::RFC3339),
-                                    'timeZone' => 'Europe/Paris',
-                                ],
-                                'end' => [
-                                    'dateTime' => $rdv_end->format(DateTime::RFC3339),
-                                    'timeZone' => 'Europe/Paris',
-                                ],
-                            ]);
-
-                            $createdEvent = $gc_service->events->insert('aqua.cannes@gmail.com', $gc_event);
-                            $googleEventId = $createdEvent->getId();
-
-                            // Marquer comme synchronisé en base de données
-                            $database->prepare("UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?")
-                                     ->execute([$googleEventId, $new_booking_id]);
-
-                            error_log("✅ Google Calendar: RDV créé pour $input_nom_complet ($city) - Event: $googleEventId");
-                        } else {
-                            error_log("⚠️ Google Calendar: format date non reconnu pour '$date_heure'");
+                    if (!class_exists('Google\Client')) {
+                        if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+                            require_once __DIR__ . '/vendor/autoload.php';
                         }
                     }
-                } catch (Exception $e) {
+                    // Charger les variables d'env ET générer google_key.json si nécessaire
+                    if (!function_exists('generateGoogleKeyFile')) {
+                        require_once __DIR__ . '/load_env.php';
+                    }
+
+                    $keyFile = __DIR__ . '/google_key.json';
+                    if (!file_exists($keyFile)) {
+                        generateGoogleKeyFile();
+                    }
+                    if (!file_exists($keyFile)) {
+                        throw new \Exception("google_key.json manquant même après generateGoogleKeyFile()");
+                    }
+
+                    $gc_client = new Google\Client();
+                    $gc_client->setAuthConfig($keyFile);
+                    $gc_client->addScope(Google\Service\Calendar::CALENDAR);
+                    $gc_service = new Google\Service\Calendar($gc_client);
+
+                    // Récupérer l'adresse du centre
+                    $stmt_gc = $database->prepare("SELECT address FROM am_centers WHERE id = ?");
+                    $stmt_gc->execute([$center_id_db]);
+                    $gc_center = $stmt_gc->fetch();
+                    $gc_location = $gc_center['address'] ?? '60 Avenue du Dr Raymond Picaud, 06150 Cannes';
+
+                    // Parser la date/heure (format "Lundi 16/02/2026 à 10:15 (AQUAVELO)")
+                    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $date_heure, $gc_matches);
+                    if (count($gc_matches) === 3) {
+                        $rdv_start = \DateTime::createFromFormat('d/m/Y H:i', $gc_matches[1] . ' ' . $gc_matches[2], new \DateTimeZone('Europe/Paris'));
+                        $rdv_end   = clone $rdv_start;
+                        $rdv_end->modify('+45 minutes');
+
+                        $gc_event = new Google\Service\Calendar\Event([
+                            'summary'     => '🏊 ' . $input_nom_complet . ' - ' . $city,
+                            'location'    => $gc_location,
+                            'description' => "Client: $input_nom_complet\nEmail: $email\nTél: $tel\nCentre: $city\nID: $new_booking_id",
+                            'start' => [
+                                'dateTime' => $rdv_start->format(\DateTime::RFC3339),
+                                'timeZone' => 'Europe/Paris',
+                            ],
+                            'end' => [
+                                'dateTime' => $rdv_end->format(\DateTime::RFC3339),
+                                'timeZone' => 'Europe/Paris',
+                            ],
+                        ]);
+
+                        $createdEvent = $gc_service->events->insert('aqua.cannes@gmail.com', $gc_event);
+                        $googleEventId = $createdEvent->getId();
+
+                        // Sauvegarder l'ID Google Calendar en base de données
+                        $upd = $database->prepare("UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?");
+                        $upd->execute([$googleEventId, $new_booking_id]);
+
+                        error_log("✅ Google Calendar: RDV créé (ID:$new_booking_id) pour $input_nom_complet ($city) - Event: $googleEventId - Rows updated: " . $upd->rowCount());
+                    } else {
+                        error_log("⚠️ Google Calendar: format date non reconnu pour '$date_heure'");
+                    }
+                } catch (\Exception $e) {
                     // Ne pas bloquer la réservation si Google Calendar échoue
-                    error_log("⚠️ Google Calendar sync échouée pour ID $new_booking_id: " . $e->getMessage());
+                    error_log("⚠️ Google Calendar sync échouée pour ID $new_booking_id: " . $e->getMessage() . " | date_heure=$date_heure | center=$center_id");
                 }
             }
 

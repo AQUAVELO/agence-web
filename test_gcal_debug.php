@@ -28,17 +28,34 @@ if (!$has_google_sync) {
     echo "✅ Colonne google_sync AJOUTÉE\n";
 }
 
-// 3. Afficher les 10 derniers RDV avec leur statut Google
-echo "\n=== 10 DERNIERS RDV (Cannes/Mandelieu/Vallauris) ===\n";
-$stmt = $database->query("SELECT id, name, email, center_id, google_sync, google_event_id, created_at 
+// 3. Afficher les 10 derniers RDV TOUS centres confondus
+echo "\n=== 10 DERNIERS RDV (TOUS centres) ===\n";
+$stmt = $database->query("SELECT id, name, email, center_id, google_sync, google_event_id 
                            FROM am_free 
-                           WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'
+                           WHERE name LIKE '%(RDV:%'
                            ORDER BY id DESC LIMIT 10");
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-foreach ($rows as $r) {
-    $client = trim(explode('(RDV:', $r['name'])[0]);
-    $rdv_part = isset(explode('(RDV:', $r['name'])[1]) ? explode('(RDV:', $r['name'])[1] : '';
-    echo "ID:{$r['id']} | {$client} | sync:{$r['google_sync']} | event_id:" . ($r['google_event_id'] ?: '❌ VIDE') . "\n";
+if (empty($rows)) {
+    echo "⚠️ Aucun RDV trouvé avec format (RDV:...)\n";
+} else {
+    foreach ($rows as $r) {
+        $client = trim(explode('(RDV:', $r['name'])[0]);
+        $rdv_part = trim(str_replace(')', '', explode('(RDV:', $r['name'])[1] ?? ''));
+        $sync_status = $r['google_sync'] ? '✅' : '❌';
+        $event_status = $r['google_event_id'] ? '✅ ' . $r['google_event_id'] : '❌ VIDE';
+        echo "ID:{$r['id']} | Centre:{$r['center_id']} | {$client}\n";
+        echo "   RDV: {$rdv_part}\n";
+        echo "   Sync: {$sync_status} | EventID: {$event_status}\n\n";
+    }
+}
+
+// 4. Vérifier aussi les RDV sans format (RDV:
+echo "\n=== 5 DERNIÈRES ENTRÉES (toutes) ===\n";
+$stmt2 = $database->query("SELECT id, name, center_id, google_sync, google_event_id FROM am_free ORDER BY id DESC LIMIT 5");
+$rows2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+foreach ($rows2 as $r) {
+    echo "ID:{$r['id']} | Centre:{$r['center_id']} | google_sync:{$r['google_sync']} | event_id:" . ($r['google_event_id'] ?: 'VIDE') . "\n";
+    echo "   name: " . substr($r['name'], 0, 80) . "\n";
 }
 
 echo "\n=== FIN DIAGNOSTIC ===\n";

@@ -51,8 +51,9 @@ if ($authenticated && isset($_GET['action'])) {
                         require_once 'vendor/autoload.php';
                         require_once 'load_env.php'; // Charger les variables d'environnement
                         
+                        $keyFile = __DIR__ . '/google_key.json';
                         $client = new Google\Client();
-                        $client->setAuthConfig('google_key.json');
+                        $client->setAuthConfig($keyFile);
                         $client->addScope(Google\Service\Calendar::CALENDAR);
                         $service = new Google\Service\Calendar($client);
                         

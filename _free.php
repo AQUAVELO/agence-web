@@ -64,20 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         require_once 'vendor/autoload.php';
                         require_once 'load_env.php';
                         
+                        $keyFile = __DIR__ . '/google_key.json';
                         $client = new Google\Client();
-                        $client->setAuthConfig('google_key.json');
+                        $client->setAuthConfig($keyFile);
                         $client->addScope(Google\Service\Calendar::CALENDAR);
                         $service = new Google\Service\Calendar($client);
-
-                        // Récupérer l'email du centre pour déterminer le bon calendrier
-                        $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
-                        $stmt_c->execute([$old_booking['center_id']]);
-                        $c_info = $stmt_c->fetch();
 
                         // Déterminer l'agenda de destination
                         if (in_array((int)$old_booking['center_id'], [305, 347, 349])) {
                             $targetCalendarId = 'aqua.cannes@gmail.com';
                         } else {
+                            $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
+                            $stmt_c->execute([$old_booking['center_id']]);
+                            $c_info = $stmt_c->fetch();
                             $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
                         }
 

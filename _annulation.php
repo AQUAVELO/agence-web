@@ -31,7 +31,11 @@ if ($email && $rdv) {
         // 0.1 Supprimer l'événement de Google Calendar si synchronisé
         if (!empty($booking['google_event_id']) && $booking['google_sync'] == 1) {
             try {
-                $keyFile = 'google_key.json';
+                $keyFile = __DIR__ . '/google_key.json';
+                if (!file_exists($keyFile)) {
+                    // Tenter de générer le fichier depuis les variables d'environnement
+                    generateGoogleKeyFile();
+                }
                 if (file_exists($keyFile)) {
                     // Authentification Google
                     $client = new Client();
@@ -39,27 +43,25 @@ if ($email && $rdv) {
                     $client->addScope(Calendar::CALENDAR);
                     $service = new Calendar($client);
 
-                    // Récupérer l'email du centre pour déterminer le bon calendrier
-                    $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
-                    $stmt_c->execute([$booking['center_id']]);
-                    $c_info = $stmt_c->fetch();
-
-                    // Déterminer l'agenda de destination (même logique que cron_sync_google.php)
+                    // Déterminer l'agenda de destination
                     if (in_array((int)$booking['center_id'], [305, 347, 349])) {
                         // Cannes, Mandelieu, Vallauris → Agenda commun
                         $targetCalendarId = 'aqua.cannes@gmail.com';
                     } else {
-                        // Antibes, Mérignac → Email du centre (ou défaut si vide)
+                        // Autres centres → Email du centre (ou défaut)
+                        $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
+                        $stmt_c->execute([$booking['center_id']]);
+                        $c_info = $stmt_c->fetch();
                         $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
                     }
 
                     // Supprimer l'événement Google Calendar
                     $service->events->delete($targetCalendarId, $booking['google_event_id']);
-                    error_log("✅ Événement Google Calendar supprimé : " . $booking['google_event_id'] . " (Calendrier: $targetCalendarId)");
+                    error_log("✅ Annulation: Événement Google Calendar supprimé : " . $booking['google_event_id'] . " (Calendrier: $targetCalendarId)");
                 }
             } catch (Exception $e) {
                 // Log l'erreur mais continue le processus d'annulation
-                error_log("⚠️ Erreur suppression Google Calendar (ID: {$booking['google_event_id']}): " . $e->getMessage());
+                error_log("⚠️ Annulation: Erreur suppression Google Calendar (ID: {$booking['google_event_id']}): " . $e->getMessage());
             }
         }
 

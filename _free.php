@@ -56,22 +56,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         
         if ($old_booking) {
             $rescheduling_alert = true;
-            
-            // Supprimer l'événement de Google Calendar si synchronisé
-            if (!empty($old_booking['google_event_id']) && $old_booking['google_sync'] == 1) {
+            $old_center_id_int = (int)$old_booking['center_id'];
+            $old_is_cannes_group = in_array($old_center_id_int, [305, 347, 349]);
+
+            // Supprimer l'événement de Google Calendar (par event_id ou fallback par date/heure)
+            if (!empty($old_booking['google_event_id']) || $old_is_cannes_group) {
                 try {
-                    if (file_exists('vendor/autoload.php')) {
-                        require_once 'vendor/autoload.php';
-                        require_once 'load_env.php';
-                        
-                        $keyFile = __DIR__ . '/google_key.json';
-                        $client = new Google\Client();
-                        $client->setAuthConfig($keyFile);
-                        $client->addScope(Google\Service\Calendar::CALENDAR);
-                        $service = new Google\Service\Calendar($client);
+                    if (!class_exists('Google\Client')) {
+                        if (file_exists(__DIR__ . '/vendor/autoload.php')) require_once __DIR__ . '/vendor/autoload.php';
+                    }
+                    if (!function_exists('generateGoogleKeyFile')) {
+                        require_once __DIR__ . '/load_env.php';
+                    }
+
+                    $keyFile = __DIR__ . '/google_key.json';
+                    if (!file_exists($keyFile)) generateGoogleKeyFile();
+
+                    if (file_exists($keyFile)) {
+                        $replan_gc_client = new Google\Client();
+                        $replan_gc_client->setAuthConfig($keyFile);
+                        $replan_gc_client->addScope(Google\Service\Calendar::CALENDAR);
+                        $replan_service = new Google\Service\Calendar($replan_gc_client);
 
                         // Déterminer l'agenda de destination
-                        if (in_array((int)$old_booking['center_id'], [305, 347, 349])) {
+                        if ($old_is_cannes_group) {
                             $targetCalendarId = 'aqua.cannes@gmail.com';
                         } else {
                             $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
@@ -80,15 +88,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
                         }
 
-                        // Supprimer l'événement Google Calendar
-                        $service->events->delete($targetCalendarId, $old_booking['google_event_id']);
-                        error_log("✅ Replanification: Ancien événement Google Calendar supprimé : " . $old_booking['google_event_id']);
+                        $replan_deleted = false;
+
+                        // Méthode 1 : suppression directe via google_event_id
+                        if (!empty($old_booking['google_event_id'])) {
+                            try {
+                                $replan_service->events->delete($targetCalendarId, $old_booking['google_event_id']);
+                                error_log("✅ Replanification: ancien événement supprimé via event_id: " . $old_booking['google_event_id']);
+                                $replan_deleted = true;
+                            } catch (\Exception $e2) {
+                                error_log("⚠️ Replanification: suppression event_id échouée: " . $e2->getMessage());
+                            }
+                        }
+
+                        // Méthode 2 (fallback) : recherche par date/heure dans Google Calendar
+                        if (!$replan_deleted) {
+                            preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $old_rdv, $old_rdv_matches);
+                            if (count($old_rdv_matches) === 3) {
+                                $old_search_start = \DateTime::createFromFormat('d/m/Y H:i', $old_rdv_matches[1] . ' ' . $old_rdv_matches[2], new \DateTimeZone('Europe/Paris'));
+                                $old_search_end   = clone $old_search_start;
+                                $old_search_end->modify('+1 hour');
+
+                                $old_events = $replan_service->events->listEvents($targetCalendarId, [
+                                    'timeMin'      => $old_search_start->format(\DateTime::RFC3339),
+                                    'timeMax'      => $old_search_end->format(\DateTime::RFC3339),
+                                    'singleEvents' => true,
+                                ]);
+
+                                $old_client_name = trim(explode('(RDV:', $old_booking['name'])[0]);
+                                foreach ($old_events->getItems() as $old_evt) {
+                                    if (stripos($old_evt->getSummary(), $old_client_name) !== false) {
+                                        $replan_service->events->delete($targetCalendarId, $old_evt->getId());
+                                        error_log("✅ Replanification fallback: ancien événement supprimé: " . $old_evt->getId() . " pour $old_client_name");
+                                        $replan_deleted = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!$replan_deleted) {
+                                    error_log("⚠️ Replanification: aucun événement trouvé pour '$old_client_name' le " . $old_rdv_matches[1] . " à " . $old_rdv_matches[2]);
+                                }
+                            }
+                        }
                     }
-                } catch (Exception $e) {
-                    error_log("⚠️ Replanification: Erreur suppression Google Calendar: " . $e->getMessage());
+                } catch (\Exception $e) {
+                    error_log("⚠️ Replanification: Erreur Google Calendar: " . $e->getMessage());
                 }
             }
-            
+
             // Supprimer l'ancien RDV de la base de données
             $del_old = $database->prepare("DELETE FROM am_free WHERE email = ? AND name LIKE ?");
             $del_old->execute([$email, $search_old]);

@@ -126,12 +126,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // B.2 Synchronisation immédiate Google Calendar (Cannes, Mandelieu, Vallauris)
             if ($date_heure && in_array((int)$center_id, [305, 347, 349])) {
                 try {
-                    if (file_exists('vendor/autoload.php') && file_exists('google_key.json')) {
+                    if (file_exists('vendor/autoload.php')) {
                         require_once 'vendor/autoload.php';
+                        // Charger les variables d'env ET générer google_key.json si nécessaire
                         require_once 'load_env.php';
 
+                        $keyFile = __DIR__ . '/google_key.json';
+                        if (!file_exists($keyFile)) {
+                            throw new Exception("google_key.json manquant même après load_env.php");
+                        }
+
                         $gc_client = new Google\Client();
-                        $gc_client->setAuthConfig('google_key.json');
+                        $gc_client->setAuthConfig($keyFile);
                         $gc_client->addScope(Google\Service\Calendar::CALENDAR);
                         $gc_service = new Google\Service\Calendar($gc_client);
 
@@ -170,6 +176,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                      ->execute([$googleEventId, $new_booking_id]);
 
                             error_log("✅ Google Calendar: RDV créé pour $input_nom_complet ($city) - Event: $googleEventId");
+                        } else {
+                            error_log("⚠️ Google Calendar: format date non reconnu pour '$date_heure'");
                         }
                     }
                 } catch (Exception $e) {

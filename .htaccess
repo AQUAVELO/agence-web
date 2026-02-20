@@ -37,8 +37,8 @@
     # Anciennes pages tests et obsolètes
     RewriteRule ^(test_.*|traitement_.*|envoi.*|analyse.*|affichage.*|menu.*|index_.*|crop|reset_password|new_password)\.php$ / [R=301,L]
     
-    # Pages de suivi et mensurations → Contact
-    RewriteRule ^(suivi.*|saisieMensurations.*|connexion_mensurations.*|indexMesure)\.php$ /contact [R=301,L]
+    # Pages de suivi et mensurations obsolètes → Contact (saisieMensurations et suiviReguliers exclus car actifs)
+    RewriteRule ^(connexion_mensurations|indexMesure)\.php$ /contact [R=301,L]
     
     # Concept aquabiking
     RewriteRule ^concept-aquabiking/?$ /?p=aquabiking [R=301,L]

@@ -155,12 +155,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         try {
             // A. Vérification double inscription pour Cannes/Mandelieu/Vallauris
             $is_double_booking = false;
+            $previous_booking_date = '';
+            
             if (in_array((int)$center_id, [305, 347, 349])) {
-                $check_previous = $database->prepare("SELECT COUNT(*) as count FROM am_free WHERE email = ? AND name LIKE '%(RDV:%'");
+                // Récupérer la dernière séance (RDV) existante pour cet email
+                $check_previous = $database->prepare("SELECT name FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 1");
                 $check_previous->execute([$email]);
                 $previous = $check_previous->fetch();
-                if ($previous && $previous['count'] > 0) {
+                
+                if ($previous) {
                     $is_double_booking = true;
+                    // Extraire la date du champ name : "Nom (RDV: jj/mm/aaaa à hh:mm)"
+                    $parts = explode('(RDV:', $previous['name']);
+                    if (isset($parts[1])) {
+                        $previous_booking_date = trim(str_replace(')', '', $parts[1]));
+                    }
                 }
             }
             
@@ -267,7 +276,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                              "👤 $input_nom_complet\n" . 
                              "📧 $email\n" .
                              "📞 $tel\n" .
-                             "⚠️ Cette personne s'inscrit pour une 2ème séance d'essai !";
+                             "⚠️ Cette personne s'inscrit pour une 2ème séance d'essai !\n";
+                if (!empty($previous_booking_date)) {
+                    $alert_msg .= "📅 1ère séance : $previous_booking_date";
+                }
                 sendTelegram($alert_msg);
             }
             

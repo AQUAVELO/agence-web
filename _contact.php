@@ -204,6 +204,7 @@ if (!isset($_SESSION['captcha_answer'])) {
             
             $mail = new PHPMailer(true);
             $mail->IsSMTP();
+            $mail->CharSet = 'UTF-8'; // Fix encodage accents
             $mail->Host = "in-v3.mailjet.com";
             $mail->isHTML(true);
             $mail->SMTPAuth = true;

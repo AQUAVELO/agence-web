@@ -196,20 +196,35 @@
 
                 if (!empty($menu_datam[$fields['photo']])) {
                     $photo_db = $menu_datam[$fields['photo']];
-                    $src = '';
+                    $final_src = '';
 
-                    // Cas 1: Le fichier existe tel quel dans images/ (ex: "recette/plat.jpg" ou "plat.jpg")
+                    // 1. Test direct (images/ + nom)
                     if (file_exists(__DIR__ . '/images/' . $photo_db)) {
-                        $src = 'images/' . $photo_db;
+                        $final_src = 'images/' . $photo_db;
                     }
-                    // Cas 2: Le fichier existe dans images/recette/ (si le nom en base est juste "plat.jpg")
+                    // 2. Test dans recette/ (images/recette/ + nom)
                     elseif (file_exists(__DIR__ . '/images/recette/' . $photo_db)) {
-                        $src = 'images/recette/' . $photo_db;
+                        $final_src = 'images/recette/' . $photo_db;
+                    }
+                    // 3. Test insensible à la casse dans images/recette/
+                    else {
+                        $target_name = strtolower(basename($photo_db)); // ex: "papillotesaumon.jpg"
+                        $recette_dir = __DIR__ . '/images/recette/';
+                        
+                        if (is_dir($recette_dir)) {
+                            $files = scandir($recette_dir);
+                            foreach ($files as $file) {
+                                if (strtolower($file) === $target_name) {
+                                    $final_src = 'images/recette/' . $file;
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    if ($src) {
+                    if ($final_src) {
                         echo "<div style='text-align: center; margin-top: 20px;'>";
-                        echo "<img src='$src?v=$date_cache_buster' ";
+                        echo "<img src='$final_src?v=$date_cache_buster' ";
                         echo "alt='Photo $title' ";
                         echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
                         echo "</div>";

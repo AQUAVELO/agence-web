@@ -194,44 +194,11 @@
                 echo "<p style='color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0;'>" . htmlspecialchars($menu_datam[$fields['recette']] ?? 'Non disponible') . "</p>";
                 echo "</div>";
 
-                $photo_db = $menu_datam[$fields['photo']] ?? '';
-                $final_src = '';
-
-                if (!empty($photo_db)) {
-                    $candidates = [
-                        __DIR__ . '/images/' . $photo_db,
-                        __DIR__ . '/images/recette/' . $photo_db,
-                        __DIR__ . '/images/' . basename($photo_db),
-                        __DIR__ . '/images/recette/' . basename($photo_db),
-                    ];
-                    foreach ($candidates as $path) {
-                        if (file_exists($path)) {
-                            $final_src = str_replace(__DIR__ . '/', '', $path);
-                            break;
-                        }
-                    }
-                    if (!$final_src) {
-                        $target_name = strtolower(basename($photo_db));
-                        $search_dirs = [__DIR__ . '/images/', __DIR__ . '/images/recette/'];
-                        foreach ($search_dirs as $dir) {
-                            if (!is_dir($dir)) continue;
-                            foreach (scandir($dir) as $file) {
-                                if (strtolower($file) === $target_name) {
-                                    $final_src = str_replace(__DIR__ . '/', '', $dir) . $file;
-                                    break 2;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                echo "<div style='text-align: center; margin-top: 20px;'>";
-                if ($final_src) {
-                    echo "<img src='$final_src?v=$date_cache_buster' alt='Photo $title' style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
-                } else {
-                    echo "<div style='width: 100%; max-width: 300px; height: 200px; margin: 0 auto; border-radius: 10px; background: linear-gradient(135deg, " . $fields['color'] . "22, " . $fields['color'] . "44); display: flex; align-items: center; justify-content: center; flex-direction: column;'>";
-                    echo "<i class='fa " . $fields['icon'] . "' style='font-size: 3rem; color: " . $fields['color'] . "; opacity: 0.6;'></i>";
-                    echo "<span style='color: " . $fields['color'] . "; opacity: 0.6; margin-top: 10px; font-size: 0.85rem;'>$title</span>";
+                if (!empty($menu_datam[$fields['photo']])) {
+                    echo "<div style='text-align: center; margin-top: 20px;'>";
+                    echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' ";
+                    echo "alt='Photo $title' ";
+                    echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
                     echo "</div>";
                 }
                 

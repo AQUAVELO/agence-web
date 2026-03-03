@@ -195,10 +195,21 @@
                 echo "</div>";
 
                 if (!empty($menu_datam[$fields['photo']])) {
-                    $image_local_path = __DIR__ . '/images/' . $menu_datam[$fields['photo']];
-                    if (file_exists($image_local_path)) {
+                    $photo_db = $menu_datam[$fields['photo']];
+                    $src = '';
+
+                    // Cas 1: Le fichier existe tel quel dans images/ (ex: "recette/plat.jpg" ou "plat.jpg")
+                    if (file_exists(__DIR__ . '/images/' . $photo_db)) {
+                        $src = 'images/' . $photo_db;
+                    }
+                    // Cas 2: Le fichier existe dans images/recette/ (si le nom en base est juste "plat.jpg")
+                    elseif (file_exists(__DIR__ . '/images/recette/' . $photo_db)) {
+                        $src = 'images/recette/' . $photo_db;
+                    }
+
+                    if ($src) {
                         echo "<div style='text-align: center; margin-top: 20px;'>";
-                        echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' ";
+                        echo "<img src='$src?v=$date_cache_buster' ";
                         echo "alt='Photo $title' ";
                         echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
                         echo "</div>";

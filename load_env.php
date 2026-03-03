@@ -25,10 +25,15 @@ if (file_exists($envFile)) {
             // Retirer les guillemets si présents
             $value = trim($value, '"\'');
             
-            // Définir la variable d'environnement
-            if (!empty($key) && !isset($_ENV[$key])) {
-                $_ENV[$key] = $value;
-                putenv("$key=$value");
+            // Définir la variable d'environnement uniquement si pas déjà définie par le système
+            if (!empty($key)) {
+                $existing = getenv($key);
+                if ($existing === false || $existing === '') {
+                    $_ENV[$key] = $value;
+                    putenv("$key=$value");
+                } else {
+                    $_ENV[$key] = $existing;
+                }
             }
         }
     }

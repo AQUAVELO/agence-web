@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Définir la clé API OpenAI depuis .env ou fallback
-$apiKey = $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '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';
+$apiKey = $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '';
 define('API_KEY', $apiKey);
 
 // Vérifier si la requête est une requête POST

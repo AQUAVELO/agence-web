@@ -5,7 +5,8 @@
 require '_settings.php';
 
 // Utiliser la même clé API que dans api_handler.php
-$api_key = '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';
+if (file_exists(__DIR__ . '/load_env.php')) require_once __DIR__ . '/load_env.php';
+$api_key = $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '';
 
 echo "<h2>Test de connexion à l'API OpenAI</h2>";
 echo "<pre>";

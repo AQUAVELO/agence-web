@@ -3,7 +3,8 @@
 
 echo "Config loaded!";
 
-define('API_KEY', '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');
+if (file_exists(__DIR__ . '/../load_env.php')) require_once __DIR__ . '/../load_env.php';
+define('API_KEY', $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '');
 
 // Tes clés d'API Stripe (à remplacer par tes vraies clés)
 $stripeSecretKey = getenv('STRIPE_SECRET_KEY') ?: 'sk_test_51R0razK3GWmEE8Ic7OHpRMz8BcnfnuYSHmixqzKPD8Ww3UVrY5Fsti9B3Hiq8canrQ36M6lYpOSDg7uZcocLfikg00ipggxD7x'; // Utilise la variable d'env si définie

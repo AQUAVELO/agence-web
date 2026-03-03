@@ -2,7 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-define('API_KEY', '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');
+if (file_exists(__DIR__ . '/load_env.php')) require_once __DIR__ . '/load_env.php';
+define('API_KEY', $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY') ?? '');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);

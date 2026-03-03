@@ -129,57 +129,6 @@
 
     <hr style="margin: 40px 0; border-color: #00d4ff;">
 
-    <!-- DEBUG TEMPORAIRE -->
-    <?php if (isset($_GET['debug_images'])): ?>
-    <pre style="background:#333;color:#0f0;padding:20px;border-radius:10px;font-size:12px;overflow:auto;">
-<?php
-echo "=== DIAGNOSTIC IMAGES MENUS ===\n\n";
-echo "Jour du mois: " . date('d') . "\n\n";
-
-if (isset($menu_datam)) {
-    $photo_fields = ['photo_pet_dej', 'photo_repas_midi', 'photo_souper', 'photo_collation'];
-    foreach ($photo_fields as $pf) {
-        $val = $menu_datam[$pf] ?? '(null)';
-        echo "$pf en BDD: '$val'\n";
-        
-        if (!empty($val)) {
-            $test1 = __DIR__ . '/images/' . $val;
-            $test2 = __DIR__ . '/images/recette/' . $val;
-            echo "  Test images/$val : " . (file_exists($test1) ? "✅ EXISTE" : "❌ ABSENT") . "\n";
-            echo "  Test images/recette/$val : " . (file_exists($test2) ? "✅ EXISTE" : "❌ ABSENT") . "\n";
-            
-            // Test insensible casse
-            $recette_dir = __DIR__ . '/images/recette/';
-            if (is_dir($recette_dir)) {
-                $target = strtolower(basename($val));
-                $found = false;
-                foreach (scandir($recette_dir) as $f) {
-                    if (strtolower($f) === $target) { echo "  Match casse: $f\n"; $found = true; break; }
-                }
-                if (!$found) echo "  ❌ Aucun match même insensible à la casse\n";
-            } else {
-                echo "  ❌ Dossier images/recette/ N'EXISTE PAS sur le serveur !\n";
-            }
-        }
-        echo "\n";
-    }
-} else {
-    echo "❌ \$menu_datam n'est PAS défini !\n";
-}
-
-echo "\n=== CONTENU images/recette/ ===\n";
-$dir = __DIR__ . '/images/recette/';
-if (is_dir($dir)) {
-    $files = array_diff(scandir($dir), ['.', '..']);
-    echo count($files) . " fichiers:\n";
-    foreach ($files as $f) echo "  $f\n";
-} else {
-    echo "❌ Le dossier images/recette/ n'existe PAS !\n";
-}
-?>
-    </pre>
-    <?php endif; ?>
-
     <!-- Menu du Jour -->
     <?php
         if (isset($menu_datam)) {
@@ -245,41 +194,45 @@ if (is_dir($dir)) {
                 echo "<p style='color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0;'>" . htmlspecialchars($menu_datam[$fields['recette']] ?? 'Non disponible') . "</p>";
                 echo "</div>";
 
-                if (!empty($menu_datam[$fields['photo']])) {
-                    $photo_db = $menu_datam[$fields['photo']];
-                    $final_src = '';
+                $photo_db = $menu_datam[$fields['photo']] ?? '';
+                $final_src = '';
 
-                    // 1. Test direct (images/ + nom)
-                    if (file_exists(__DIR__ . '/images/' . $photo_db)) {
-                        $final_src = 'images/' . $photo_db;
+                if (!empty($photo_db)) {
+                    $candidates = [
+                        __DIR__ . '/images/' . $photo_db,
+                        __DIR__ . '/images/recette/' . $photo_db,
+                        __DIR__ . '/images/' . basename($photo_db),
+                        __DIR__ . '/images/recette/' . basename($photo_db),
+                    ];
+                    foreach ($candidates as $path) {
+                        if (file_exists($path)) {
+                            $final_src = str_replace(__DIR__ . '/', '', $path);
+                            break;
+                        }
                     }
-                    // 2. Test dans recette/ (images/recette/ + nom)
-                    elseif (file_exists(__DIR__ . '/images/recette/' . $photo_db)) {
-                        $final_src = 'images/recette/' . $photo_db;
-                    }
-                    // 3. Test insensible à la casse dans images/recette/
-                    else {
-                        $target_name = strtolower(basename($photo_db)); // ex: "papillotesaumon.jpg"
-                        $recette_dir = __DIR__ . '/images/recette/';
-                        
-                        if (is_dir($recette_dir)) {
-                            $files = scandir($recette_dir);
-                            foreach ($files as $file) {
+                    if (!$final_src) {
+                        $target_name = strtolower(basename($photo_db));
+                        $search_dirs = [__DIR__ . '/images/', __DIR__ . '/images/recette/'];
+                        foreach ($search_dirs as $dir) {
+                            if (!is_dir($dir)) continue;
+                            foreach (scandir($dir) as $file) {
                                 if (strtolower($file) === $target_name) {
-                                    $final_src = 'images/recette/' . $file;
-                                    break;
+                                    $final_src = str_replace(__DIR__ . '/', '', $dir) . $file;
+                                    break 2;
                                 }
                             }
                         }
                     }
+                }
 
-                    if ($final_src) {
-                        echo "<div style='text-align: center; margin-top: 20px;'>";
-                        echo "<img src='$final_src?v=$date_cache_buster' ";
-                        echo "alt='Photo $title' ";
-                        echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
-                        echo "</div>";
-                    }
+                echo "<div style='text-align: center; margin-top: 20px;'>";
+                if ($final_src) {
+                    echo "<img src='$final_src?v=$date_cache_buster' alt='Photo $title' style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
+                } else {
+                    echo "<div style='width: 100%; max-width: 300px; height: 200px; margin: 0 auto; border-radius: 10px; background: linear-gradient(135deg, " . $fields['color'] . "22, " . $fields['color'] . "44); display: flex; align-items: center; justify-content: center; flex-direction: column;'>";
+                    echo "<i class='fa " . $fields['icon'] . "' style='font-size: 3rem; color: " . $fields['color'] . "; opacity: 0.6;'></i>";
+                    echo "<span style='color: " . $fields['color'] . "; opacity: 0.6; margin-top: 10px; font-size: 0.85rem;'>$title</span>";
+                    echo "</div>";
                 }
                 
                 echo "</div>";

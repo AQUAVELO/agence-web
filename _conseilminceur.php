@@ -129,6 +129,44 @@
 
     <hr style="margin: 40px 0; border-color: #00d4ff;">
 
+    <!-- DIAGNOSTIC TABLES -->
+    <?php if (isset($_GET['debug_tables']) && isset($database)): ?>
+    <pre style="background:#333;color:#0f0;padding:20px;border-radius:10px;font-size:12px;overflow:auto;max-height:600px;">
+<?php
+$jour = date('d');
+echo "=== COMPARAISON TABLE menu vs menus (jour $jour) ===\n\n";
+
+echo "--- TABLE 'menu' ---\n";
+try {
+    $cols_q = $database->query("SHOW COLUMNS FROM menu");
+    $cols = $cols_q->fetchAll(PDO::FETCH_COLUMN);
+    echo "Colonnes: " . implode(', ', $cols) . "\n";
+    $q = $database->prepare("SELECT * FROM menu WHERE day_number = :j");
+    $q->execute([':j' => $jour]);
+    $row = $q->fetch(PDO::FETCH_ASSOC);
+    if ($row) { foreach ($row as $k => $v) echo "  $k = " . substr($v ?? '(null)', 0, 80) . "\n"; }
+    else echo "  (aucune ligne pour jour $jour)\n";
+    $cnt = $database->query("SELECT COUNT(*) FROM menu")->fetchColumn();
+    echo "  Total lignes: $cnt\n";
+} catch (Exception $e) { echo "ERREUR: " . $e->getMessage() . "\n"; }
+
+echo "\n--- TABLE 'menus' ---\n";
+try {
+    $cols_q = $database->query("SHOW COLUMNS FROM menus");
+    $cols = $cols_q->fetchAll(PDO::FETCH_COLUMN);
+    echo "Colonnes: " . implode(', ', $cols) . "\n";
+    $q = $database->prepare("SELECT * FROM menus WHERE day_number = :j");
+    $q->execute([':j' => $jour]);
+    $row = $q->fetch(PDO::FETCH_ASSOC);
+    if ($row) { foreach ($row as $k => $v) echo "  $k = " . substr($v ?? '(null)', 0, 80) . "\n"; }
+    else echo "  (aucune ligne pour jour $jour)\n";
+    $cnt = $database->query("SELECT COUNT(*) FROM menus")->fetchColumn();
+    echo "  Total lignes: $cnt\n";
+} catch (Exception $e) { echo "ERREUR: " . $e->getMessage() . "\n"; }
+?>
+    </pre>
+    <?php endif; ?>
+
     <!-- Menu du Jour -->
     <?php
         if (isset($menu_datam)) {

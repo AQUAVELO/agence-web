@@ -305,7 +305,7 @@ foreach ($all_free as $res) {
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris)</h2>
+        <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris) v2</h2>
         <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
     </div>
 

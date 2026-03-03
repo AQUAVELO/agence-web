@@ -129,6 +129,57 @@
 
     <hr style="margin: 40px 0; border-color: #00d4ff;">
 
+    <!-- DEBUG TEMPORAIRE -->
+    <?php if (isset($_GET['debug_images'])): ?>
+    <pre style="background:#333;color:#0f0;padding:20px;border-radius:10px;font-size:12px;overflow:auto;">
+<?php
+echo "=== DIAGNOSTIC IMAGES MENUS ===\n\n";
+echo "Jour du mois: " . date('d') . "\n\n";
+
+if (isset($menu_datam)) {
+    $photo_fields = ['photo_pet_dej', 'photo_repas_midi', 'photo_souper', 'photo_collation'];
+    foreach ($photo_fields as $pf) {
+        $val = $menu_datam[$pf] ?? '(null)';
+        echo "$pf en BDD: '$val'\n";
+        
+        if (!empty($val)) {
+            $test1 = __DIR__ . '/images/' . $val;
+            $test2 = __DIR__ . '/images/recette/' . $val;
+            echo "  Test images/$val : " . (file_exists($test1) ? "✅ EXISTE" : "❌ ABSENT") . "\n";
+            echo "  Test images/recette/$val : " . (file_exists($test2) ? "✅ EXISTE" : "❌ ABSENT") . "\n";
+            
+            // Test insensible casse
+            $recette_dir = __DIR__ . '/images/recette/';
+            if (is_dir($recette_dir)) {
+                $target = strtolower(basename($val));
+                $found = false;
+                foreach (scandir($recette_dir) as $f) {
+                    if (strtolower($f) === $target) { echo "  Match casse: $f\n"; $found = true; break; }
+                }
+                if (!$found) echo "  ❌ Aucun match même insensible à la casse\n";
+            } else {
+                echo "  ❌ Dossier images/recette/ N'EXISTE PAS sur le serveur !\n";
+            }
+        }
+        echo "\n";
+    }
+} else {
+    echo "❌ \$menu_datam n'est PAS défini !\n";
+}
+
+echo "\n=== CONTENU images/recette/ ===\n";
+$dir = __DIR__ . '/images/recette/';
+if (is_dir($dir)) {
+    $files = array_diff(scandir($dir), ['.', '..']);
+    echo count($files) . " fichiers:\n";
+    foreach ($files as $f) echo "  $f\n";
+} else {
+    echo "❌ Le dossier images/recette/ n'existe PAS !\n";
+}
+?>
+    </pre>
+    <?php endif; ?>
+
     <!-- Menu du Jour -->
     <?php
         if (isset($menu_datam)) {

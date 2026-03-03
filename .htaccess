@@ -10,7 +10,7 @@
     
     # Fichiers PHP utilitaires (accès direct autorisé)
     RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|cron_sync_google)\.php$ - [L]
+    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|cron_sync_google|test_menu_images)\.php$ - [L]
 
     # 2. REDIRECTIONS 301 - Nettoyage erreurs 404
     

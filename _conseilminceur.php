@@ -195,11 +195,14 @@
                 echo "</div>";
 
                 if (!empty($menu_datam[$fields['photo']])) {
-                    echo "<div style='text-align: center; margin-top: 20px;'>";
-                    echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' ";
-                    echo "alt='Photo $title' ";
-                    echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
-                    echo "</div>";
+                    $image_local_path = __DIR__ . '/images/' . $menu_datam[$fields['photo']];
+                    if (file_exists($image_local_path)) {
+                        echo "<div style='text-align: center; margin-top: 20px;'>";
+                        echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' ";
+                        echo "alt='Photo $title' ";
+                        echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
+                        echo "</div>";
+                    }
                 }
                 
                 echo "</div>";

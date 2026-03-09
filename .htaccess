@@ -12,7 +12,41 @@
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|cron_sync_google)\.php$ - [L]
 
-    # 2. REDIRECTIONS 301 - Nettoyage erreurs 404
+    # 2. REDIRECTIONS 301 - ?p= vers URLs propres (évite les doublons SEO)
+    RewriteCond %{QUERY_STRING} ^p=aquabiking$
+    RewriteRule ^$ /aquabiking? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=aquagym$
+    RewriteRule ^$ /aquagym? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=contact$
+    RewriteRule ^$ /contact? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=free$
+    RewriteRule ^$ /free? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=franchise$
+    RewriteRule ^$ /franchise? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=conseilminceur$
+    RewriteRule ^$ /conseilminceur? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=centers$
+    RewriteRule ^$ /centres? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=natation$
+    RewriteRule ^$ /natation? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=cryolipolyse$
+    RewriteRule ^$ /cryolipolyse? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=vente_formule$
+    RewriteRule ^$ /vente_formule? [R=301,L]
+    
+    RewriteCond %{QUERY_STRING} ^p=page&city=(.+)$
+    RewriteRule ^$ /centres/%1? [R=301,L]
+
+    # 3. REDIRECTIONS 301 - Nettoyage erreurs 404
     
     # Anciennes URLs de centres obsolètes → Liste centres
     RewriteRule ^centres/(Boulogne-Billancourt|Sainte-Genevieve-des-Bois|Menton)/?$ /centres [R=301,L]
@@ -23,7 +57,7 @@
     RewriteRule ^centres/(saint-raphael|Saint-Raphael)/?$ /centres/Saint-Raphaël [R=301,NC,L]
     
     # Séances découverte obsolètes → Formulaire général
-    RewriteRule ^seance-decouverte/(.*)$ /?p=free [R=301,L]
+    RewriteRule ^seance-decouverte/(.*)$ /free [R=301,L]
     
     # Blog et articles obsolètes → Accueil
     RewriteRule ^(blog|Blog\.php|articles\.php|Post\.php).*$ / [R=301,L]
@@ -41,7 +75,7 @@
     RewriteRule ^(connexion_mensurations|indexMesure)\.php$ /contact [R=301,L]
     
     # Concept aquabiking
-    RewriteRule ^concept-aquabiking/?$ /?p=aquabiking [R=301,L]
+    RewriteRule ^concept-aquabiking/?$ /aquabiking [R=301,L]
 
     # 3. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
     RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
@@ -61,7 +95,7 @@
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
 
     # Pages de contenu et divers
-    RewriteRule ^(aquabiking|aquagym|contact|free|franchise|conseilminceur|cryolipolyse)/?$ index.php?p=$1 [QSA,L]
+    RewriteRule ^(aquabiking|aquagym|contact|free|franchise|conseilminceur|cryolipolyse|natation)/?$ index.php?p=$1 [QSA,L]
 
 </IfModule>
 

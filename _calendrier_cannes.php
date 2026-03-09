@@ -4,7 +4,7 @@
  * Version avec restriction 9h45 (actuel) et 10h00 (février)
  */
 
-require '_settings.php';
+require_once '_settings.php';
 
 $center_id = isset($_GET['center']) ? (int)$_GET['center'] : 305;
 
@@ -171,9 +171,9 @@ for ($i = 0; $i < 21; $i++) {
       <form id="calendrierForm" method="POST" action="<?= BASE_PATH ?>index.php?p=free">
         <input type="hidden" name="reason" value=""><input type="hidden" name="center" value="<?= $center_id ?>">
         <input type="hidden" name="segment" value="calendrier-cannes"><input type="hidden" id="selected_date_heure" name="date_heure">
-        <input type="hidden" name="nom" value="<?= htmlspecialchars($_GET['nom'] ?? 'Client Web') ?>">
-        <input type="hidden" name="email" value="<?= htmlspecialchars($_GET['email'] ?? '') ?>">
-        <input type="hidden" name="phone" value="<?= htmlspecialchars($_GET['phone'] ?? '') ?>">
+        <input type="hidden" name="nom" id="cal_nom" value="<?= htmlspecialchars($_GET['nom'] ?? '') ?>">
+        <input type="hidden" name="email" id="cal_email" value="<?= htmlspecialchars($_GET['email'] ?? '') ?>">
+        <input type="hidden" name="phone" id="cal_phone" value="<?= htmlspecialchars($_GET['phone'] ?? '') ?>">
         <input type="hidden" name="old_rdv" value="<?= htmlspecialchars($_GET['old_rdv'] ?? '') ?>">
       </form>
     </div>
@@ -182,6 +182,13 @@ for ($i = 0; $i < 21; $i++) {
 
 <script>
 function confirmBooking(btn) {
+    var nom = document.getElementById('cal_nom').value.trim();
+    var email = document.getElementById('cal_email').value.trim();
+    var phone = document.getElementById('cal_phone').value.trim();
+    if (!nom || !email || !phone) {
+        alert('Veuillez renseigner vos coordonnées (nom, email, téléphone) avant de réserver.');
+        return;
+    }
     document.getElementById('loading-overlay').style.display = 'block';
     document.getElementById('loading-overlay').scrollIntoView({ behavior: 'smooth' });
     document.querySelectorAll('.slot-btn').forEach(b => b.disabled = true);

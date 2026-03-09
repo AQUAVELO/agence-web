@@ -3,7 +3,7 @@
  * Page Séance Découverte Gratuite - Version Finale avec Annulation/Replanification
  */
 
-require '_settings.php';
+require_once '_settings.php';
 
 if (file_exists('vendor/autoload.php')) {
     require_once 'vendor/autoload.php';
@@ -43,7 +43,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $tel = strip_tags(trim($_POST['phone'] ?? ''));
     $date_heure = isset($_POST['date_heure']) ? strip_tags($_POST['date_heure']) : '';
     $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
-    
+
+    if (empty($input_nom_complet)) $error[] = "Le nom et prénom sont obligatoires.";
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $error[] = "Une adresse email valide est obligatoire.";
+    if (empty($tel)) $error[] = "Le numéro de téléphone est obligatoire.";
+    if (!empty($error)) $error_message = implode('<br>', $error);
+
     // GESTION REPLANIFICATION : Si un ancien RDV est fourni, on le supprime d'abord
     $old_rdv = isset($_POST['old_rdv']) ? strip_tags($_POST['old_rdv']) : '';
     $rescheduling_alert = false;
@@ -313,6 +318,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
             // 3. Envoi des Emails
             if (!empty($settings['mjusername'])) {
+                // Garde stricte : ne jamais envoyer si nom ou email sont vides
+                if (empty($input_nom_complet) || empty($email)) {
+                    error_log("⚠️ Email non envoyé : nom ou email manquant. nom='$input_nom_complet' email='$email'");
+                } else {
                 try {
 
                     $mail = new PHPMailer(true);
@@ -327,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     // Email pour l'ADMIN (Dirigeant)
                     $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $city);
                     $mail->addAddress($email_center);
-                    $mail->addReplyTo($email_center, 'Aquavelo ' . $city);
+                    $mail->addReplyTo($email, $input_nom_complet);
                     $mail->isHTML(true);
                     
                     $date_now = date('d-m-Y H:i:s');
@@ -339,26 +348,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $mail->Subject = $subject_admin;
                         
                         $mail->Body = "<h3>" . ($rescheduling_alert ? "🔄 Replanification de séance" : "Séance confirmée") . "</h3>
-                                      <b>Nom:</b> $input_nom_complet<br>
-                                      <b>Email:</b> $email<br>
-                                      <b>Tel:</b> $tel<br>
-                                      <b>Centre:</b> $city<br>
-                                      <b>RDV choisi:</b> $date_heure";
+                                      <b>Nom :</b> $input_nom_complet<br>
+                                      <b>Email :</b> $email<br>
+                                      <b>Tél :</b> $tel<br>
+                                      <b>Centre :</b> $city<br>
+                                      <b>RDV choisi :</b> $date_heure";
                         if ($rescheduling_alert) {
-                            $mail->Body .= "<br><br><b>Ancien RDV qui a été annulé :</b> " . htmlspecialchars($old_rdv);
+                            $mail->Body .= "<br><br><b>Ancien RDV annulé :</b> " . htmlspecialchars($old_rdv);
                         }
                     } else {
-                        // Email de NOUVEAU PROSPECT (Le modèle demandé)
+                        // Email de NOUVEAU PROSPECT
                         $subject_admin = "Nouveau contact $city - $input_nom_complet";
                         if ($is_second_session) $subject_admin = "⚠️ ALERTE : Tentative de 2ème séance - $input_nom_complet";
                         $mail->Subject = $subject_admin;
                         
                         $mail->Body = "Bonjour,<br><br>" . 
-                                      (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") . "
-                                      <b>$input_nom_complet</b><br>
-                                      Adresse électronique : <b>$email</b><br>
-                                      Téléphone : <b>$tel</b><br><br>
-                                      La personne ci-dessus a commandée une séance découverte gratuite ainsi qu'un bilan minceur dans votre centre.<br>
+                                      (($is_second_session) ? "<p style='color:red; font-weight:bold;'>⚠️ ATTENTION : CE CLIENT A DÉJÀ RÉSERVÉ UNE SÉANCE AUPARAVANT</p>" : "") .
+                                      "<b>Nom :</b> " . htmlspecialchars($input_nom_complet) . "<br>
+                                      <b>Adresse électronique :</b> " . htmlspecialchars($email) . "<br>
+                                      <b>Téléphone :</b> " . htmlspecialchars($tel) . "<br><br>
+                                      La personne ci-dessus a commandé une séance découverte gratuite ainsi qu'un bilan minceur dans votre centre.<br>
                                       Nous vous invitons à la contacter pour prendre rendez-vous.<br><br>
                                       Cordialement,<br>
                                       L'équipe Aquavelo<br><br>
@@ -442,6 +451,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 } catch (Exception $e) {
                     error_log("Erreur Email: " . $mail->ErrorInfo);
                 }
+                } // fin garde stricte nom/email
             }
 
             // D. REDIRECTION
@@ -501,9 +511,9 @@ if (isset($_GET['success'])) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div style="margin-bottom: 15px;"><label>Nom et Prénom *</label><input type="text" name="nom" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
-            <div style="margin-bottom: 15px;"><label>Email *</label><input type="email" name="email" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
-            <div style="margin-bottom: 25px;"><label>Téléphone *</label><input type="tel" name="phone" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
+            <div style="margin-bottom: 15px;"><label>Nom et Prénom *</label><input type="text" name="nom" id="inputNom" required minlength="2" style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
+            <div style="margin-bottom: 15px;"><label>Email *</label><input type="email" name="email" id="inputEmail" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
+            <div style="margin-bottom: 25px;"><label>Téléphone *</label><input type="tel" name="phone" id="inputPhone" required minlength="8" pattern="[0-9+\s\-]{8,}" style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;"></div>
             
             <!-- Captcha anti-spam pour Aix-en-Provence -->
             <div id="captchaField" style="margin-bottom: 25px; display: none; padding: 20px; background: #f8f9fa; border-radius: 5px; border: 2px solid #00a8cc;">
@@ -519,6 +529,17 @@ if (isset($_GET['success'])) {
       const captchaField = document.getElementById('captchaField');
       const captchaInput = document.getElementById('captchaInput');
       
+      document.getElementById('mainFreeForm').addEventListener('submit', function(e) {
+          var nom = document.getElementById('inputNom').value.trim();
+          var email = document.getElementById('inputEmail').value.trim();
+          var phone = document.getElementById('inputPhone').value.trim();
+          var msgs = [];
+          if (!nom) msgs.push('Veuillez saisir votre nom et prénom.');
+          if (!email) msgs.push('Veuillez saisir votre adresse email.');
+          if (!phone || phone.length < 8) msgs.push('Veuillez saisir un numéro de téléphone valide.');
+          if (msgs.length > 0) { e.preventDefault(); alert(msgs.join('\n')); return false; }
+      });
+
       centerSelect.addEventListener('change', function() {
           const centerId = parseInt(this.value);
           const centerText = this.options[this.selectedIndex].text;

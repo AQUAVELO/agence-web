@@ -418,7 +418,7 @@
   <div class="container">
     <?php 
     // Centres en cours d'ouverture
-    $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne'];
+    $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne', 'Aix-en-Provence'];
     $is_opening_soon = in_array($city, $opening_soon_cities);
     ?>
     
@@ -436,7 +436,7 @@
     
     <div class="row mt-3">
       <div class="col-md-3 col-6 text-center">
-        <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>/1.jpg" 
+        <img src="<?= $is_opening_soon ? BASE_PATH . 'images/content/home-v1-slider-03.webp' : BASE_PATH . 'cloud/thumbnail/center_' . htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8') . '/1.jpg' ?>" 
              alt="Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques" 
              class="img-fluid img-same" 
              style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
@@ -446,7 +446,15 @@
       </div>
 
       <div class="col-md-3 col-6 text-center">
-        <?php if (isset($row_center['id']) && $row_center['id'] != 305) : ?>
+        <?php if ($is_opening_soon): ?>
+          <img src="<?= BASE_PATH ?>images/content/home-v1-promo.jpg" 
+               alt="Aquabiking collectif en piscine Aquavélo" 
+               class="img-fluid img-same" 
+               style="border-radius: 10px;"
+               width="300" 
+               height="200"
+               loading="lazy">
+        <?php elseif (isset($row_center['id']) && $row_center['id'] != 305) : ?>
           <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/2.jpg" 
                alt="Espace aquagym centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
                class="img-fluid img-same" 
@@ -465,10 +473,20 @@
         <?php endif; ?>
       </div>
 
-      <?php if (isset($row_center['id']) && !in_array($row_center['id'], [305, 347, 349])) : ?>
+      <?php if (!$is_opening_soon && isset($row_center['id']) && !in_array($row_center['id'], [305, 347, 349])) : ?>
         <div class="col-md-3 col-6 text-center">
           <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= htmlspecialchars($row_center['id'], ENT_QUOTES, 'UTF-8'); ?>/3.jpg" 
                alt="Équipements vestiaires centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?>" 
+               class="img-fluid img-same" 
+               style="border-radius: 10px;"
+               width="300" 
+               height="200"
+               loading="lazy">
+        </div>
+      <?php elseif ($is_opening_soon): ?>
+        <div class="col-md-3 col-6 text-center">
+          <img src="<?= BASE_PATH ?>images/aquavelo.webp" 
+               alt="Aquavélo - Aquabiking et Aquagym" 
                class="img-fluid img-same" 
                style="border-radius: 10px;"
                width="300" 
@@ -778,7 +796,15 @@
           
           <dl style="margin-top: 25px;">
             <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-map-marker"></i> Adresse</dt>
-            <dd style="margin-bottom: 25px; padding-left: 25px;"><?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?></dd>
+            <dd style="margin-bottom: 25px; padding-left: 25px;">
+              <?php if ($is_opening_soon): ?>
+                <span style="color: #ff9800; font-weight: 600;">
+                  <i class="fa fa-clock-o"></i> Prochainement ouverture <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> 2027
+                </span>
+              <?php else: ?>
+                <?= htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8'); ?>
+              <?php endif; ?>
+            </dd>
             
             <dt style="color: #00a8cc; font-size: 1.1rem; margin-bottom: 8px;"><i class="fa fa-phone"></i> Téléphone</dt>
             <dd style="margin-bottom: 25px; padding-left: 25px;">
@@ -870,7 +896,8 @@
           <?php endif; ?>
         </div>
         
-        <!-- Carte Google Maps -->
+        <!-- Carte Google Maps (masquée pour les centres à venir) -->
+        <?php if (!$is_opening_soon): ?>
         <div style="margin-top: 30px;">
           <h3 style="color: #00a8cc; margin-bottom: 20px;"><i class="fa fa-map"></i> Comment Nous Trouver</h3>
           
@@ -910,6 +937,7 @@
             </a>
           </div>
         </div>
+        <?php endif; ?>
 
         <!-- Autres centres -->
         <div style="margin-top: 40px; padding: 25px; background: #f0f8ff; border-radius: 10px;">

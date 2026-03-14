@@ -499,7 +499,6 @@
       $promotions = [
           305 => "Cannes",
           253 => "Antibes",
-          179 => "Nice",
           347 => "Mandelieu",
           349 => "Vallauris",
           343 => "Merignac"

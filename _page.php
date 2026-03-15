@@ -550,7 +550,7 @@
             
             // Planning 2026 pour Cannes, Mandelieu et Vallauris
             if (in_array($center_id, [305, 347, 349])) {
-                $planning_image = BASE_PATH . "images/PlanningCannes2026.png";
+                $planning_image = BASE_PATH . "images/PlanningCannes2026.png?v=" . filemtime(__DIR__ . "/images/PlanningCannes2026.png");
             }
             // On vérifie si une image de planning spécifique existe pour ce centre
             elseif (is_file(__DIR__ . "/images/planning_{$center_id}.png")) {

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aquavelo-cache-v3';
+const CACHE_NAME = 'aquavelo-cache-v4';
 
 self.addEventListener('install', function(event) {
   console.log('Service Worker (v3) installé.');

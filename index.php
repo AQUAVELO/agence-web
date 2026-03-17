@@ -243,7 +243,11 @@ if (isset($_GET['city'])) {
   <meta name="keywords" content="aquavelo, aquabiking, aquabike, aquabiking france, cours aquabike, séance aquabike, waterbike, hydrobike, aquavélo, vélo aquatique, aquagym, aquagym tonique, aquagym collective, cours aquagym, gymnastique aquatique, sport aquatique, fitness aquatique, aquafitness, aqua gym dynamique, aquagym senior, aquagym femme enceinte, renforcement musculaire aquatique, anti cellulite, réduction cellulite, massage drainant eau, amincissement, perte de poids rapide, maigrir rapidement, minceur, perdre 10kg, affinement silhouette, tonification musculaire, raffermissement corps, vélo dans l'eau, vélo piscine, cours collectifs aqua, cours aquatique avec coach, piscine privée chauffée, coach aquatique diplômé, sport sans impact articulations, sport doux efficace<?php if(isset($city)) echo ", aquabiking $city, aquabike $city, aquagym $city, cours aquabiking $city, cours aquagym $city, centre aquabiking $city, centre aquagym $city, piscine $city, sport aquatique $city"; ?>">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <?php
+  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci'];
+  $is_noindex = in_array($page, $noindex_pages);
+  ?>
+  <meta name="robots" content="<?= $is_noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'; ?>">
   <meta name="author" content="Aquavelo">
   
   <!-- Balise Canonical SEO -->
@@ -282,10 +286,8 @@ if (isset($_GET['city'])) {
   elseif (in_array($page, ['vente_formule', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {
       $canonical_url .= '/' . $page;
   }
-  // Autres pages (avec paramètre ?p=)
-  elseif ($page != 'home') {
-      $canonical_url .= '/?p=' . urlencode($page);
-  }
+  // Autres pages transactionnelles ou dynamiques : canonical vers l'accueil
+  // (evite que Google suive des ?p= non indexables)
   ?>
   <link rel="canonical" href="<?= $canonical_url; ?>">
   

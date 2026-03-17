@@ -3,7 +3,7 @@
  * Déclencheur de Cron sécurisé par URL
  * Version robuste pour éviter les Erreurs 500
  */
-require '_settings.php';
+require_once '_settings.php';
 date_default_timezone_set('Europe/Paris');
 
 $secret_key = "aquavelo123";

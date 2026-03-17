@@ -4,7 +4,7 @@
  * À exécuter par Clever Cloud (Cron)
  */
 
-require '_settings.php';
+require_once '_settings.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {

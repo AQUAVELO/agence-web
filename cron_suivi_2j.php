@@ -4,7 +4,7 @@
  * À exécuter par Clever Cloud (Cron)
  */
 
-require '_settings.php';
+require_once '_settings.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -43,12 +43,12 @@ foreach ($bookings as $booking) {
                     // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
                     $lookup_center_id = in_array((int)$center_id, [305, 347, 349]) ? 305 : $center_id;
                     
-                    $stmt_c = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
+                    $stmt_c = $database->prepare("SELECT city, address, phone, email FROM am_centers WHERE id = ?");
                     $stmt_c->execute([$lookup_center_id]);
                     $center_info = $stmt_c->fetch();
                     
                     if (!$center_info) {
-                        $center_info = ['city' => 'Cannes', 'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 'phone' => '06 22 64 70 95'];
+                        $center_info = ['city' => 'Cannes', 'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 'phone' => '06 22 64 70 95', 'email' => 'aqua.cannes@gmail.com'];
                     }
 
                     // Extraction du prénom (première partie avant l'espace)

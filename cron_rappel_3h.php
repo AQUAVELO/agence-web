@@ -3,7 +3,7 @@
  * Script de rappel automatique 3h avant le RDV - VERSION AMELIOREE (MINUTES)
  */
 
-require '_settings.php';
+require_once '_settings.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -106,7 +106,9 @@ foreach ($bookings as $booking) {
 
                     $database->prepare("UPDATE am_free SET reminder_3h_sent = 1 WHERE id = ?")->execute([$booking['id']]);
                     $count++;
-                } catch (Exception $e) {}
+                } catch (Exception $e) {
+                    error_log("Erreur Cron Rappel 3h pour " . $booking['email'] . " : " . $mail->ErrorInfo);
+                }
             }
         }
     }

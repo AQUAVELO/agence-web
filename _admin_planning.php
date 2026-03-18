@@ -223,7 +223,11 @@ if (!$authenticated): ?>
           <?php if (isset($login_error)): ?>
             <div style="color: #d32f2f; margin-bottom: 15px; font-weight: bold;"><?= $login_error ?></div>
           <?php endif; ?>
-          <form method="POST"><input type="password" name="login_pass" placeholder="Mot de passe" required style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;"><button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button></form>
+          <form method="POST" action="index.php?p=admin_planning" autocomplete="on">
+            <input type="text" name="username" value="admin" autocomplete="username" style="display:none;">
+            <input type="password" name="login_pass" id="login_pass" placeholder="Mot de passe" required autocomplete="current-password" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;">
+            <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button>
+          </form>
         </div>
       </div>
     </section>

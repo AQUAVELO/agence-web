@@ -575,7 +575,7 @@ function openNoShowModal(id, prenom, email) {
         "Bonjour " + prenom + ",\n\n" +
         "Vous avez oublié votre séance d'essai à Aquavelo, cela arrive !\n\n" +
         "Aussi je vous propose de prendre un nouveau rendez-vous en cliquant ici :\nhttps://www.aquavelo.com/free\n\n" +
-        "Cordialement,\nClaude\nTél : 06 22 64 70 95";
+        "Cordialement,\nClaude\nTél : 04 93 93 05 65";
     $('#noShowModal').modal('show');
 }
 

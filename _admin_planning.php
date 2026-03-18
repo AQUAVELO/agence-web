@@ -35,6 +35,53 @@ if (isset($_POST['login_pass'])) {
 // 2. ACTIONS (Suppression, Verrouillage, Déplacement)
 if ($authenticated) {
     
+    // ACTION: EMAIL NO-SHOW (absent au RDV)
+    if (isset($_POST['action_noshow'])) {
+        $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
+        if ($token_ok) {
+            $booking_id = intval($_POST['booking_id']);
+            $email_text = trim($_POST['email_text'] ?? '');
+
+            $stmt_get = $database->prepare("SELECT * FROM am_free WHERE id = ?");
+            $stmt_get->execute([$booking_id]);
+            $booking = $stmt_get->fetch();
+
+            if ($booking && !empty($email_text) && !empty($settings['mjusername'])) {
+                try {
+                    // Convertir les URLs en liens cliquables et les sauts de ligne en <br>
+                    $email_html = nl2br(htmlspecialchars($email_text, ENT_QUOTES, 'UTF-8'));
+                    $email_html = preg_replace(
+                        '/(https?:\/\/[^\s<]+)/',
+                        '<a href="$1" style="color:#00a8cc;">$1</a>',
+                        $email_html
+                    );
+
+                    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host       = $settings['mjhost'];
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = $settings['mjusername'];
+                    $mail->Password   = $settings['mjpassword'];
+                    $mail->Port       = 587;
+                    $mail->CharSet    = 'UTF-8';
+
+                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Cannes');
+                    $mail->addAddress($booking['email']);
+                    $mail->addReplyTo('claude@alesiaminceur.com', 'Claude - Aquavelo');
+                    $mail->isHTML(true);
+                    $mail->Subject = "Votre séance d'essai à Aquavelo";
+                    $mail->Body    = $email_html;
+
+                    $mail->send();
+                    echo "<script>alert('✅ Email envoyé à " . addslashes($booking['email']) . "'); window.location.replace('index.php?p=admin_planning');</script>";
+                } catch (Exception $e) {
+                    echo "<script>alert('❌ Erreur envoi : " . addslashes($mail->ErrorInfo) . "'); window.history.back();</script>";
+                }
+                exit;
+            }
+        }
+    }
+
     // ACTION: DÉPLACER UN RDV (POST)
     if (isset($_POST['action_move']) && $_POST['action_move'] === 'move_rdv') {
         $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
@@ -373,6 +420,14 @@ foreach ($all_free as $res) {
                            style="color: #00a8cc; font-size: 0.7rem; font-weight: bold; text-decoration: none;">🔒 VERROUILLER</a>
                     <?php endif; ?>
                   </div>
+                  <?php if ($res && !$is_locked): ?>
+                  <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px; margin-top: 4px;">
+                    <a href="#" onclick="openNoShowModal(<?= $res['id'] ?>, '<?= htmlspecialchars(explode(' ', $client_name_only)[0], ENT_QUOTES) ?>', '<?= htmlspecialchars($res['email'], ENT_QUOTES) ?>')"
+                       style="color: #e65100; font-size: 0.7rem; font-weight: bold; text-decoration: none;">
+                       👻 ABSENT
+                    </a>
+                  </div>
+                  <?php endif; ?>
                 </div>
             <?php endforeach; ?>
           </div>
@@ -433,6 +488,40 @@ foreach ($all_free as $res) {
   </div>
 </section>
 
+<!-- MODAL NO-SHOW (Absent au RDV) -->
+<div class="modal fade" id="noShowModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #e65100; color: white;">
+        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+        <h4 class="modal-title">👻 Client absent — Envoyer un email de relance</h4>
+      </div>
+      <form method="POST">
+        <div class="modal-body">
+          <input type="hidden" name="action_noshow" value="1">
+          <input type="hidden" name="booking_id" id="noShowBookingId">
+          <input type="hidden" name="token" value="<?= $_SESSION['csrf_token'] ?>">
+
+          <p style="margin-bottom: 5px; color: #666; font-size: 0.85rem;">
+            Destinataire : <b id="noShowEmail" style="color: #333;"></b>
+          </p>
+          <p style="margin-bottom: 10px; color: #666; font-size: 0.85rem;">
+            Vous pouvez modifier le message avant l'envoi :
+          </p>
+          <textarea name="email_text" id="noShowText" class="form-control" rows="8"
+                    style="font-size: 0.9rem; line-height: 1.6; resize: vertical;"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-warning" style="background: #e65100; color: white; border: none;">
+            📨 Envoyer l'email
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL DE DÉPLACEMENT -->
 <div class="modal fade" id="moveModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -478,6 +567,17 @@ const oldConfig = {
     'samedi': ['09:45', '11:00', '12:15', '13:30']
 };
 const switchDate = '2026-02-01';
+
+function openNoShowModal(id, prenom, email) {
+    document.getElementById('noShowBookingId').value = id;
+    document.getElementById('noShowEmail').innerText = email;
+    document.getElementById('noShowText').value =
+        "Bonjour " + prenom + ",\n\n" +
+        "Vous avez oublié votre séance d'essai à Aquavelo, cela arrive !\n\n" +
+        "Aussi je vous propose de prendre un nouveau rendez-vous en cliquant ici :\nhttps://www.aquavelo.com/free\n\n" +
+        "Cordialement,\nClaude\nTél : 06 22 64 70 95";
+    $('#noShowModal').modal('show');
+}
 
 function openMoveModal(id, name) {
     document.getElementById('moveBookingId').value = id;

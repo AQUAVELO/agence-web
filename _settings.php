@@ -110,14 +110,19 @@ if (!function_exists('sendSMS')) {
 
 try {
     $conn = new PDO(
-        "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']}",
+        "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']};connect_timeout=5",
         $settings['dbusername'],
-        $settings['dbpassword']
+        $settings['dbpassword'],
+        [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_TIMEOUT            => 5,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET wait_timeout=30",
+        ]
     );
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $database = $conn;
 } catch (PDOException $e) {
-    die("MySQL Error: " . $e->getMessage());
+    http_response_code(503);
+    die("Service temporairement indisponible. Veuillez réessayer dans quelques instants.");
 }
 
 $cachePath = __DIR__ . '/cache';

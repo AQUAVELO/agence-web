@@ -172,21 +172,6 @@ $news_querys = $database->prepare('SELECT news, photo, titre FROM article');
 $news_querys->execute();
 $news_datas = $news_querys->fetchAll(PDO::FETCH_ASSOC);
 
-// Récupérer tous les prospects (clients)
-$clients_query = $database->prepare('SELECT id, nom, prenom, tel, email, adresse, ville, dept, activites, besoin FROM client ORDER BY id DESC');
-$clients_query->execute();
-$clients_data = $clients_query->fetchAll(PDO::FETCH_ASSOC);
-
-// Récupérer tous les maîtres-nageurs (nageurs)
-$nageurs_query = $database->prepare('SELECT id, nom, prenom, tel, photo, ville, dept, diplome, presentation, prix, dispo, preference, email FROM nageur ORDER BY id DESC');
-$nageurs_query->execute();
-$nageurs_data = $nageurs_query->fetchAll(PDO::FETCH_ASSOC);
-
-// Préparer la requête pour récupérer les champs Nom et Prenom en fonction de l'email
-$user_query = $database->prepare('SELECT Nom, Prenom FROM mensurations WHERE email = :email');
-$user_query->bindParam(':email', $email, PDO::PARAM_STR);
-$user_query->execute();
-$user_data = $user_query->fetch(PDO::FETCH_ASSOC);
 
 #home
 if ($page == "home") {

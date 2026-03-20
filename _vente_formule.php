@@ -15,7 +15,7 @@ if (!defined('MONETICO_CANCEL_URL')) define('MONETICO_CANCEL_URL', 'https://www.
 
 $formules = [
     ['nom' => 'Formule 3', 'prix' => 60, 'description' => 'Les 40 séances payable en 10 x 60 € soit la séance à 14 €, valable 15 mois. Je paie la première échéance 60 €.'],
-    ['nom' => 'Formule 4', 'prix' => 73, 'description' => 'Les 80 séances payable en 12 x 73 € soit la séance à 11 €, valable 18 mois. Je paie la première échéance 73 €.'],
+    ['nom' => 'Formule 4', 'prix' => 75, 'description' => 'Les 80 séances payable en 12 x 75 € soit la séance à 11 €, valable 18 mois. Je paie la première échéance 75 €.'],
 
     ['nom' => 'Formule 5', 'prix' => 89, 'description' => 'Les 104 séances en 12 x 89 € soit la séance à 10 €, valable 20 mois. Je paie la première échéance 89 €.'],
     ['nom' => 'Formule 6', 'prix' => 99, 'description' => '12 mois illimité soit la séance à 8 € en venant 3 fois/semaine, payable en 12 x 99 €. Je paie la première échéance 99 €.']

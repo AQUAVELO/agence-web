@@ -56,6 +56,74 @@ $table_error = '';
 $created_url = '';
 $created_sms = '';
 $created_token = '';
+$sms_status_message = '';
+$sms_status_ok = null;
+
+/**
+ * Envoie le SMS via SMSFactor (sendSMS dans _settings.php).
+ * @return array{ok: bool, detail: string}
+ */
+if (!function_exists('admin_reglements_envoyer_sms')) {
+function admin_reglements_envoyer_sms(string $telephone, string $message): array
+{
+    if ($telephone === '') {
+        return ['ok' => false, 'detail' => 'Numéro de téléphone vide.'];
+    }
+    if (!function_exists('sendSMS')) {
+        return ['ok' => false, 'detail' => 'Fonction SMS indisponible.'];
+    }
+    $raw = sendSMS($telephone, $message);
+    if ($raw === false) {
+        return ['ok' => false, 'detail' => 'Token SMSFactor manquant ou erreur réseau.'];
+    }
+    $j = json_decode($raw, true);
+    if (is_array($j)) {
+        $st = $j['status'] ?? null;
+        if ($st === 1 || $st === '1' || (!empty($j['success']) && $j['success'])) {
+            return ['ok' => true, 'detail' => 'SMS envoyé.'];
+        }
+        $msg = $j['message'] ?? $j['error'] ?? json_encode($j);
+        return ['ok' => false, 'detail' => is_string($msg) ? $msg : 'Réponse API inattendue.'];
+    }
+    if (stripos($raw, 'error') !== false || stripos($raw, 'fail') !== false) {
+        return ['ok' => false, 'detail' => 'Réponse : ' . mb_substr($raw, 0, 200)];
+    }
+    return ['ok' => true, 'detail' => 'SMS envoyé.'];
+}
+}
+
+// Renvoi SMS depuis la liste
+if (!empty($_GET['resend_sms']) && isset($_GET['token_csrf'])) {
+    $rid = (int) $_GET['resend_sms'];
+    if (hash_equals($csrf, (string) $_GET['token_csrf']) && $rid > 0) {
+        try {
+            $st = $conn->prepare('SELECT id, token, libelle_client, motif, montant, statut, telephone_client FROM reglement_lien WHERE id = ? LIMIT 1');
+            $st->execute([$rid]);
+            $rw = $st->fetch(PDO::FETCH_ASSOC);
+            if ($rw && $rw['statut'] === 'en_attente' && !empty($rw['telephone_client'])) {
+                $u = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $rw['token'];
+                $mf = number_format((float) $rw['montant'], 2, ',', ' ');
+                $txt = 'Bonjour, pour régler votre situation Aquavelo (' . $rw['libelle_client'] . ', ' . $mf . ' €) : ' . $u;
+                $r = admin_reglements_envoyer_sms($rw['telephone_client'], $txt);
+                $_SESSION['admin_reglements_flash'] = $r['ok']
+                    ? ('✅ ' . $r['detail'])
+                    : ('❌ SMS non envoyé : ' . $r['detail']);
+            } else {
+                $_SESSION['admin_reglements_flash'] = '❌ Lien introuvable, déjà payé ou sans numéro.';
+            }
+        } catch (PDOException $e) {
+            $_SESSION['admin_reglements_flash'] = '❌ ' . $e->getMessage();
+        }
+    }
+    header('Location: index.php?p=admin_reglements');
+    exit;
+}
+
+if (!empty($_SESSION['admin_reglements_flash'])) {
+    $sms_status_message = (string) $_SESSION['admin_reglements_flash'];
+    $sms_status_ok = strpos($sms_status_message, '✅') === 0;
+    unset($_SESSION['admin_reglements_flash']);
+}
 
 // Annulation d'un lien
 if (!empty($_GET['annuler']) && isset($_GET['id'])) {
@@ -82,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
         $montant = round((float) $montantStr, 2);
         $email_c = trim($_POST['email_client'] ?? '') ?: null;
         $tel_c = trim($_POST['telephone_client'] ?? '') ?: null;
+        $envoyer_sms = !empty($_POST['envoyer_sms']);
 
         if ($libelle === '' || $motif === '' || $montant <= 0) {
             $table_error = 'Libellé, motif et montant valide sont obligatoires.';
@@ -94,6 +163,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
                 $created_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
                 $montantFmt = number_format($montant, 2, ',', ' ');
                 $created_sms = "Bonjour, pour régler votre situation Aquavelo ({$libelle}, {$montantFmt} €) : {$created_url}";
+
+                if ($envoyer_sms && $tel_c) {
+                    $sr = admin_reglements_envoyer_sms($tel_c, $created_sms);
+                    $sms_status_ok = $sr['ok'];
+                    $sms_status_message = ($sr['ok'] ? '✅ ' : '❌ ') . $sr['detail'];
+                } elseif ($envoyer_sms && !$tel_c) {
+                    $sms_status_ok = false;
+                    $sms_status_message = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
+                }
             } catch (PDOException $e) {
                 $table_error = 'Erreur base : ' . $e->getMessage() . ' — Avez-vous exécuté sql/reglement_lien.sql ?';
             }
@@ -103,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
 
 $liste = [];
 try {
-    $liste = $conn->query('SELECT id, token, libelle_client, motif, montant, statut, created_at, paid_at FROM reglement_lien ORDER BY id DESC LIMIT 80')->fetchAll(PDO::FETCH_ASSOC);
+    $liste = $conn->query('SELECT id, token, libelle_client, motif, montant, statut, created_at, paid_at, telephone_client FROM reglement_lien ORDER BY id DESC LIMIT 80')->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $table_error = $table_error ?: ('Table manquante : exécutez sql/reglement_lien.sql — ' . $e->getMessage());
 }
@@ -118,6 +196,10 @@ try {
 
     <?php if ($table_error): ?>
       <div class="alert alert-danger"><?= htmlspecialchars($table_error) ?></div>
+    <?php endif; ?>
+
+    <?php if ($sms_status_message !== ''): ?>
+      <div class="alert <?= $sms_status_ok ? 'alert-success' : 'alert-warning' ?>"><?= htmlspecialchars($sms_status_message) ?></div>
     <?php endif; ?>
 
     <?php if ($created_url): ?>
@@ -156,8 +238,14 @@ try {
           <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($_POST['email_client'] ?? '') ?>">
         </div>
         <div class="form-group">
-          <label>Téléphone (optionnel)</label>
-          <input type="text" name="telephone_client" class="form-control" value="<?= htmlspecialchars($_POST['telephone_client'] ?? '') ?>">
+          <label>Téléphone mobile (pour envoi SMS — indicatif France 06/07)</label>
+          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($_POST['telephone_client'] ?? '') ?>">
+        </div>
+        <div class="form-group">
+          <label style="font-weight:normal;">
+            <input type="checkbox" name="envoyer_sms" value="1" <?= (!isset($_POST['creer_lien']) || !empty($_POST['envoyer_sms'])) ? 'checked' : '' ?>>
+            Envoyer automatiquement le SMS avec le lien de paiement (SMSFactor)
+          </label>
         </div>
         <button type="submit" class="btn btn-primary" style="background:#00a8cc;border:none;">Créer le lien</button>
       </form>
@@ -168,7 +256,7 @@ try {
       <div class="table-responsive">
         <table class="table table-striped table-bordered" style="font-size:0.85rem;">
           <thead><tr>
-            <th>ID</th><th>Date</th><th>Libellé</th><th>Montant</th><th>Statut</th><th>URL</th><th></th>
+            <th>ID</th><th>Date</th><th>Libellé</th><th>Montant</th><th>Tél.</th><th>Statut</th><th>URL</th><th></th>
           </tr></thead>
           <tbody>
             <?php foreach ($liste as $r): ?>
@@ -180,9 +268,13 @@ try {
                 <td><?= htmlspecialchars(substr((string) $r['created_at'], 0, 16)) ?></td>
                 <td><?= htmlspecialchars($r['libelle_client']) ?><br><small class="text-muted"><?= htmlspecialchars(mb_substr($r['motif'], 0, 60)) ?><?= mb_strlen($r['motif']) > 60 ? '…' : '' ?></small></td>
                 <td><?= number_format((float) $r['montant'], 2, ',', ' ') ?> €</td>
+                <td><small><?= htmlspecialchars((string) ($r['telephone_client'] ?? '—')) ?></small></td>
                 <td><?= htmlspecialchars($r['statut']) ?><?= $r['paid_at'] ? '<br><small>' . htmlspecialchars(substr((string) $r['paid_at'], 0, 16)) . '</small>' : '' ?></td>
                 <td><input type="text" readonly class="form-control input-sm" style="min-width:220px;font-size:10px;" value="<?= $u ?>"></td>
                 <td>
+                  <?php if ($r['statut'] === 'en_attente' && !empty($r['telephone_client'])): ?>
+                    <a href="index.php?p=admin_reglements&amp;resend_sms=<?= (int) $r['id'] ?>&amp;token_csrf=<?= urlencode($csrf) ?>" class="btn btn-xs btn-info" onclick="return confirm('Renvoyer le SMS au client ?');">SMS</a><br>
+                  <?php endif; ?>
                   <?php if ($r['statut'] === 'en_attente'): ?>
                     <a href="index.php?p=admin_reglements&annuler=1&amp;id=<?= (int) $r['id'] ?>&amp;token_csrf=<?= urlencode($csrf) ?>" class="btn btn-xs btn-warning" onclick="return confirm('Annuler ce lien ?');">Annuler</a>
                   <?php endif; ?>
@@ -190,7 +282,7 @@ try {
               </tr>
             <?php endforeach; ?>
             <?php if (empty($liste) && !$table_error): ?>
-              <tr><td colspan="7">Aucun lien pour l’instant.</td></tr>
+              <tr><td colspan="8">Aucun lien pour l’instant.</td></tr>
             <?php endif; ?>
           </tbody>
         </table>

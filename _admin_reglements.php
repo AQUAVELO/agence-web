@@ -175,7 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
                     $sms_status_message = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
                 }
             } catch (PDOException $e) {
-                $table_error = 'Erreur base : ' . $e->getMessage() . ' — Avez-vous exécuté sql/reglement_lien.sql ?';
+                $hint = 'Si la table existe déjà : exécutez sql/reglement_lien_add_prenom_nom.sql dans phpMyAdmin. Sinon : sql/reglement_lien.sql.';
+                $table_error = 'Erreur base : ' . $e->getMessage() . ' — ' . $hint;
             }
         }
     }

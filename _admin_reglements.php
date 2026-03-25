@@ -158,9 +158,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
             $table_error = 'Libellé, motif et montant valide sont obligatoires.';
         } else {
             $token = bin2hex(random_bytes(16));
+            $insertOk = false;
             try {
                 $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, prenom_client, nom_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
                 $ins->execute([$token, $libelle, $prenom_c, $nom_c, $motif, $montant, $email_c, $tel_c, 'en_attente']);
+                $insertOk = true;
+            } catch (PDOException $e) {
+                $msg = $e->getMessage();
+                // BDD sans migration prenom/nom : on retombe sur l'ancien schéma (prénom/nom déduits du libellé côté page publique).
+                if (strpos($msg, 'Unknown column') !== false && strpos($msg, 'prenom_client') !== false) {
+                    try {
+                        $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?)');
+                        $ins->execute([$token, $libelle, $motif, $montant, $email_c, $tel_c, 'en_attente']);
+                        $insertOk = true;
+                    } catch (PDOException $e2) {
+                        $hint = 'Exécutez sql/reglement_lien.sql ou vérifiez la connexion à la bonne base.';
+                        $table_error = 'Erreur base : ' . $e2->getMessage() . ' — ' . $hint;
+                    }
+                } else {
+                    $hint = 'Si la table existe déjà : exécutez sql/reglement_lien_add_prenom_nom.sql dans phpMyAdmin. Sinon : sql/reglement_lien.sql.';
+                    $table_error = 'Erreur base : ' . $e->getMessage() . ' — ' . $hint;
+                }
+            }
+            if ($insertOk) {
                 $created_token = $token;
                 $created_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
                 $montantFmt = number_format($montant, 2, ',', ' ');
@@ -174,9 +194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
                     $sms_status_ok = false;
                     $sms_status_message = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
                 }
-            } catch (PDOException $e) {
-                $hint = 'Si la table existe déjà : exécutez sql/reglement_lien_add_prenom_nom.sql dans phpMyAdmin. Sinon : sql/reglement_lien.sql.';
-                $table_error = 'Erreur base : ' . $e->getMessage() . ' — ' . $hint;
             }
         }
     }

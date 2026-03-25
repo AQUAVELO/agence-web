@@ -21,6 +21,10 @@ Disallow: /cache/
 Disallow: /form/vendor/
 Disallow: /clevercloud/
 
+# Pages admin / paiement personnalisé (non référencées)
+Disallow: /*?p=reglement_lien
+Disallow: /*?p=admin_reglements
+
 # Interdire les pages admin et techniques
 Disallow: /Admin.php
 Disallow: /Dashboard.php

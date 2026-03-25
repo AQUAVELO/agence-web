@@ -47,6 +47,11 @@ if (preg_match('#^centres/([^/]+)/?$#', $request_uri, $matches)) {
 if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
+// En-tête HTTP pour les crawlers (complément meta robots) — admin / paiement par lien
+if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning'], true)) {
+    header('X-Robots-Tag: noindex, nofollow', false);
+}
+
 // ===== TITRES ET META DESCRIPTIONS OPTIMISÉS SEO =====
 
 if ($page == 'home') {
@@ -239,7 +244,7 @@ if (isset($_GET['city'])) {
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php
-  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci', 'reglement_lien', 'admin_reglements'];
+  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci', 'reglement_lien', 'admin_reglements', 'admin_planning'];
   $is_noindex = in_array($page, $noindex_pages);
   ?>
   <meta name="robots" content="<?= $is_noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'; ?>">

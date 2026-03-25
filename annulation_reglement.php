@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <title>Paiement annulé | Aquavelo</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 520px; margin: 60px auto; padding: 24px; text-align: center; }

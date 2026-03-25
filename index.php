@@ -105,6 +105,16 @@ if ($page == 'vente_cryo') {
     $meta_description = 'Associez cryothérapie et aquabiking pour des résultats optimaux. Récupération musculaire accélérée, brûlage de calories amplifié et réduction de la cellulite maximale.';
 }
 
+if ($page == 'reglement_lien') {
+    $title = 'Règlement en ligne | Aquavelo';
+    $meta_description = 'Réglez votre situation en toute sécurité sur le site Aquavelo.';
+}
+
+if ($page == 'admin_reglements') {
+    $title = 'Administration — Liens de règlement';
+    $meta_description = '';
+}
+
 if ($page == 'vente_cryoprod') {
     $title = 'Produits Cryothérapie et Récupération Sportive | Boutique Aquavelo';
     $meta_description = 'Boutique de produits cryothérapie professionnels : gels rafraîchissants, compléments alimentaires et accessoires pour optimiser votre récupération après l\'aquabiking.';
@@ -229,7 +239,7 @@ if (isset($_GET['city'])) {
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php
-  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci'];
+  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci', 'reglement_lien', 'admin_reglements'];
   $is_noindex = in_array($page, $noindex_pages);
   ?>
   <meta name="robots" content="<?= $is_noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'; ?>">

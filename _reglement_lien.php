@@ -13,6 +13,35 @@ if (!defined('MONETICO_TPE')) {
     define('MONETICO_CANCEL_URL', 'https://www.aquavelo.com/annulation_reglement.php');
 }
 
+if (!function_exists('reglement_parse_libelle')) {
+    /**
+     * Déduit prénom / nom depuis le libellé admin si les champs dédiés sont vides (retire M., Mme, Mr…).
+     *
+     * @return array{prenom: string, nom: string}
+     */
+    function reglement_parse_libelle(string $libelle): array
+    {
+        $libelle = trim(preg_replace('/\s+/u', ' ', $libelle));
+        $prenom = '';
+        $nom = '';
+        if ($libelle === '') {
+            return ['prenom' => $prenom, 'nom' => $nom];
+        }
+        $rest = preg_replace('/^(M\.|Mme|Mr|Mrs|Ms|Mlle|Monsieur|Madame|Dr)\.?\s+/iu', '', $libelle);
+        $rest = trim((string) $rest);
+        if ($rest === '') {
+            return ['prenom' => $prenom, 'nom' => $nom];
+        }
+        $parts = preg_split('/\s+/u', $rest);
+        if (count($parts) === 1) {
+            return ['prenom' => $prenom, 'nom' => $parts[0]];
+        }
+        $nom = (string) array_pop($parts);
+
+        return ['prenom' => implode(' ', $parts), 'nom' => $nom];
+    }
+}
+
 if (!function_exists('calculateMAC_reglement')) {
     function calculateMAC_reglement(array $fields, string $keyHex): string
     {
@@ -88,7 +117,7 @@ if ($db_error !== '') {
     $tel = trim($_POST['telephone'] ?? '');
 
     if (
-        $nom === '' || $prenom === '' ||
+        $nom === '' ||
         !filter_var($email, FILTER_VALIDATE_EMAIL) ||
         !preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
@@ -148,6 +177,25 @@ if ($db_error !== '') {
 }
 
 $montant_display = $row ? number_format((float) $row['montant'], 2, ',', ' ') : '';
+
+$disp_prenom = '';
+$disp_nom = '';
+if ($row && $blocked_message === '') {
+    $base_prenom = trim((string) ($row['prenom_client'] ?? ''));
+    $base_nom = trim((string) ($row['nom_client'] ?? ''));
+    if ($base_prenom === '' && $base_nom === '') {
+        $parsed = reglement_parse_libelle((string) ($row['libelle_client'] ?? ''));
+        $base_prenom = $parsed['prenom'];
+        $base_nom = $parsed['nom'];
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['payer_reglement'])) {
+        $disp_prenom = trim((string) ($_POST['prenom'] ?? ''));
+        $disp_nom = trim((string) ($_POST['nom'] ?? ''));
+    } else {
+        $disp_prenom = $base_prenom;
+        $disp_nom = $base_nom;
+    }
+}
 ?>
 
 <style>
@@ -219,10 +267,10 @@ $montant_display = $row ? number_format((float) $row['montant'], 2, ',', ' ') : 
     <form method="post" action="">
       <input type="hidden" name="reglement_token" value="<?= htmlspecialchars($token) ?>">
       <input type="hidden" name="payer_reglement" value="1">
-      <label>Prénom *<input type="text" name="prenom" required></label>
-      <label>Nom *<input type="text" name="nom" required></label>
-      <label>Email *<input type="email" name="email" required value="<?= htmlspecialchars((string) ($row['email_client'] ?? '')) ?>"></label>
-      <label>Téléphone *<input type="tel" name="telephone" required value="<?= htmlspecialchars((string) ($row['telephone_client'] ?? '')) ?>"></label>
+      <label>Prénom <input type="text" name="prenom" value="<?= htmlspecialchars($disp_prenom) ?>" autocomplete="given-name"></label>
+      <label>Nom *<input type="text" name="nom" required value="<?= htmlspecialchars($disp_nom) ?>" autocomplete="family-name"></label>
+      <label>Email *<input type="email" name="email" required value="<?= htmlspecialchars((string) ($_POST['email'] ?? $row['email_client'] ?? '')) ?>" autocomplete="email"></label>
+      <label>Téléphone *<input type="tel" name="telephone" required value="<?= htmlspecialchars((string) ($_POST['telephone'] ?? $row['telephone_client'] ?? '')) ?>" autocomplete="tel"></label>
       <button type="submit">Payer <?= htmlspecialchars($montant_display) ?> € en ligne</button>
     </form>
     <p style="margin-top:20px;font-size:0.85rem;color:#888;text-align:center;">

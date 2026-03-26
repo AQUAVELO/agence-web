@@ -31,8 +31,19 @@ if (!$authenticated) {
           <?php if (!empty($login_error)): ?>
             <div style="color: #d32f2f; margin-bottom: 15px; font-weight: bold;"><?= htmlspecialchars($login_error) ?></div>
           <?php endif; ?>
-          <form method="POST" action="index.php?p=admin_reglements" autocomplete="on">
-            <input type="password" name="login_pass" placeholder="Mot de passe" required autocomplete="current-password" style="width: 100%; padding: 12px; margin-bottom: 16px; border: 1px solid #ddd; border-radius: 5px;">
+          <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_reglements" autocomplete="on">
+            <div style="text-align: left; margin-bottom: 14px;">
+              <label for="admin_reglements_user" style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">Identifiant</label>
+              <input type="text" id="admin_reglements_user" name="login_user" autocomplete="username" autocapitalize="none" spellcheck="false"
+                     value="aquavelo-reglements" inputmode="text"
+                     style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+              <small style="color: #888; display: block; margin-top: 4px;">Laissez cette valeur : elle permet au navigateur d’enregistrer le mot de passe.</small>
+            </div>
+            <div style="text-align: left; margin-bottom: 16px;">
+              <label for="admin_reglements_pass" style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem;">Mot de passe</label>
+              <input type="password" id="admin_reglements_pass" name="login_pass" placeholder="Mot de passe" required autocomplete="current-password"
+                     style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">Connexion</button>
           </form>
         </div>

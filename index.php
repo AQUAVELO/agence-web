@@ -51,6 +51,11 @@ else $page = 'home';
 if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning'], true)) {
     header('X-Robots-Tag: noindex, nofollow', false);
 }
+// Admin règlements : pas de mise en cache (formulaire et liste à jour à chaque ouverture)
+if ($page === 'admin_reglements') {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0', false);
+    header('Pragma: no-cache', false);
+}
 
 // ===== TITRES ET META DESCRIPTIONS OPTIMISÉS SEO =====
 

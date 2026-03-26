@@ -55,7 +55,6 @@ $csrf = $_SESSION['csrf_reglements'];
 $table_error = '';
 $created_url = '';
 $created_sms = '';
-$created_token = '';
 $sms_status_message = '';
 $sms_status_ok = null;
 
@@ -125,6 +124,18 @@ if (!empty($_SESSION['admin_reglements_flash'])) {
     unset($_SESSION['admin_reglements_flash']);
 }
 
+/** Après création de lien : PRG pour formulaire vide + message succès une seule fois */
+if (!empty($_SESSION['admin_reglements_post_create']) && is_array($_SESSION['admin_reglements_post_create'])) {
+    $pc = $_SESSION['admin_reglements_post_create'];
+    $created_url = (string) ($pc['url'] ?? '');
+    $created_sms = (string) ($pc['sms'] ?? '');
+    if (($pc['sms_msg'] ?? '') !== '') {
+        $sms_status_message = (string) $pc['sms_msg'];
+        $sms_status_ok = (bool) ($pc['sms_ok'] ?? false);
+    }
+    unset($_SESSION['admin_reglements_post_create']);
+}
+
 // Annulation d'un lien
 if (!empty($_GET['annuler']) && isset($_GET['id'])) {
     $id = (int) $_GET['id'];
@@ -159,25 +170,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
             try {
                 $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?)');
                 $ins->execute([$token, $libelle, $motif, $montant, $email_c, $tel_c, 'en_attente']);
-                $created_token = $token;
-                $created_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
+                $ok_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
                 $montantFmt = number_format($montant, 2, ',', ' ');
-                $created_sms = "Bonjour, pour régler votre situation Aquavelo ({$libelle}, {$montantFmt} €) : {$created_url}";
+                $ok_sms = "Bonjour, pour régler votre situation Aquavelo ({$libelle}, {$montantFmt} €) : {$ok_url}";
 
+                $pcSmsMsg = '';
+                $pcSmsOk = false;
                 if ($envoyer_sms && $tel_c) {
-                    $sr = admin_reglements_envoyer_sms($tel_c, $created_sms);
-                    $sms_status_ok = $sr['ok'];
-                    $sms_status_message = ($sr['ok'] ? '✅ ' : '❌ ') . $sr['detail'];
+                    $sr = admin_reglements_envoyer_sms($tel_c, $ok_sms);
+                    $pcSmsOk = $sr['ok'];
+                    $pcSmsMsg = ($sr['ok'] ? '✅ ' : '❌ ') . $sr['detail'];
                 } elseif ($envoyer_sms && !$tel_c) {
-                    $sms_status_ok = false;
-                    $sms_status_message = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
+                    $pcSmsOk = false;
+                    $pcSmsMsg = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
                 }
+
+                $_SESSION['admin_reglements_post_create'] = [
+                    'url'  => $ok_url,
+                    'sms'  => $ok_sms,
+                    'sms_msg' => $pcSmsMsg,
+                    'sms_ok'  => $pcSmsOk,
+                ];
+                header('Location: index.php?p=admin_reglements', true, 303);
+                exit;
             } catch (PDOException $e) {
                 $table_error = 'Erreur base : ' . $e->getMessage() . ' — Exécutez sql/reglement_lien.sql ou vérifiez la base utilisée par le site.';
             }
         }
     }
 }
+
+$form_from_post = ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien']));
 
 $liste = [];
 try {
@@ -223,27 +246,27 @@ try {
         <input type="hidden" name="creer_lien" value="1">
         <div class="form-group">
           <label>Libellé client (ex. M. Durant — page de paiement, SMS ; prénom/nom sur le formulaire sont déduits : « Jean Dupont », « Mr Durand »)</label>
-          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($_POST['libelle_client'] ?? '') ?>">
+          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($form_from_post ? ($_POST['libelle_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Motif / détail (ex. 3 séances aquabiking — impayé)</label>
-          <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($_POST['motif'] ?? '') ?></textarea>
+          <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($form_from_post ? ($_POST['motif'] ?? '') : '') ?></textarea>
         </div>
         <div class="form-group">
           <label>Montant (€)</label>
-          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="<?= htmlspecialchars($_POST['montant'] ?? '') ?>">
+          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="<?= htmlspecialchars($form_from_post ? ($_POST['montant'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Email client (optionnel — pré-rempli sur la page de paiement)</label>
-          <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($_POST['email_client'] ?? '') ?>">
+          <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($form_from_post ? ($_POST['email_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Téléphone mobile (pour envoi SMS — indicatif France 06/07)</label>
-          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($_POST['telephone_client'] ?? '') ?>">
+          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($form_from_post ? ($_POST['telephone_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label style="font-weight:normal;">
-            <input type="checkbox" name="envoyer_sms" value="1" <?= (!isset($_POST['creer_lien']) || !empty($_POST['envoyer_sms'])) ? 'checked' : '' ?>>
+            <input type="checkbox" name="envoyer_sms" value="1" <?= (!$form_from_post || !empty($_POST['envoyer_sms'])) ? 'checked' : '' ?>>
             Envoyer automatiquement le SMS avec le lien de paiement (SMSFactor)
           </label>
         </div>

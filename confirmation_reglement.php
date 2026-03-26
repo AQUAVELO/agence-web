@@ -59,6 +59,7 @@ function reglement_send_emails(
     if (!filter_var($toEmail, FILTER_VALIDATE_EMAIL)) {
         return;
     }
+    $identite = trim($prenom . ' ' . $nom);
     $montantFmt = number_format($montant, 2, ',', ' ') . ' €';
     $mail = new PHPMailer(true);
     try {
@@ -75,7 +76,7 @@ function reglement_send_emails(
         $mail->addReplyTo('claude@alesiaminceur.com', 'Aquavelo');
         $mail->isHTML(true);
         $mail->Subject = 'Confirmation de votre règlement Aquavelo';
-        $mail->Body = '<p>Bonjour <strong>' . htmlspecialchars($prenom . ' ' . $nom) . '</strong>,</p>'
+        $mail->Body = '<p>Bonjour <strong>' . htmlspecialchars($identite) . '</strong>,</p>'
             . '<p>Nous avons bien reçu votre règlement de <strong>' . htmlspecialchars($montantFmt) . '</strong>.</p>'
             . '<p><strong>Détail :</strong> ' . htmlspecialchars($libelle) . '<br>'
             . htmlspecialchars($motif) . '</p>'
@@ -95,9 +96,9 @@ function reglement_send_emails(
         $admin->setFrom('service.clients@aquavelo.com', 'Aquavelo');
         $admin->addAddress('aqua.cannes@gmail.com');
         $admin->isHTML(true);
-        $admin->Subject = 'Règlement en ligne — ' . $prenom . ' ' . $nom;
+        $admin->Subject = 'Règlement en ligne — ' . $identite;
         $admin->Body = '<ul>'
-            . '<li>Nom : ' . htmlspecialchars($nom . ' ' . $prenom) . '</li>'
+            . '<li>Nom et prénom : ' . htmlspecialchars($identite) . '</li>'
             . '<li>Email : ' . htmlspecialchars($toEmail) . '</li>'
             . '<li>Tél : ' . htmlspecialchars($telephone) . '</li>'
             . '<li>Montant : ' . htmlspecialchars($montantFmt) . '</li>'

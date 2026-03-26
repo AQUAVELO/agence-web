@@ -15,8 +15,6 @@ if (!defined('MONETICO_TPE')) {
 
 if (!function_exists('reglement_parse_libelle')) {
     /**
-     * Pré-remplit le formulaire avant redirection Monetico (retire M., Mme, Mr… du libellé admin).
-     *
      * @return array{prenom: string, nom: string}
      */
     function reglement_parse_libelle(string $libelle): array
@@ -39,6 +37,16 @@ if (!function_exists('reglement_parse_libelle')) {
         $nom = (string) array_pop($parts);
 
         return ['prenom' => implode(' ', $parts), 'nom' => $nom];
+    }
+}
+
+if (!function_exists('reglement_libelle_nom_complet')) {
+    /** Pré-remplit « Nom et prénom » (civilité retirée, reste du libellé admin). */
+    function reglement_libelle_nom_complet(string $libelle): string
+    {
+        $p = reglement_parse_libelle($libelle);
+
+        return trim($p['prenom'] . ' ' . $p['nom']);
     }
 }
 
@@ -111,13 +119,12 @@ if ($db_error !== '') {
 } elseif ($row['statut'] === 'expire' || (!empty($row['expires_at']) && strtotime($row['expires_at']) < time())) {
     $blocked_message = 'Ce lien de paiement a expiré. Contactez votre centre Aquavelo.';
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['payer_reglement'])) {
-    $nom = trim($_POST['nom'] ?? '');
-    $prenom = trim($_POST['prenom'] ?? '');
+    $nomComplet = trim($_POST['nom_complet'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $tel = trim($_POST['telephone'] ?? '');
 
     if (
-        $nom === '' ||
+        $nomComplet === '' ||
         !filter_var($email, FILTER_VALIDATE_EMAIL) ||
         !preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
     ) {
@@ -135,8 +142,8 @@ if ($db_error !== '') {
                 'reglement_id' => (string) $row['id'],
                 'token'        => $token,
                 'email'        => $email,
-                'nom'          => $nom,
-                'prenom'       => $prenom,
+                'nom'          => $nomComplet,
+                'prenom'       => '',
                 'telephone'    => $tel,
                 'achat'        => $achatLabel,
                 'detail'       => $detail,
@@ -178,16 +185,12 @@ if ($db_error !== '') {
 
 $montant_display = $row ? number_format((float) $row['montant'], 2, ',', ' ') : '';
 
-$disp_prenom = '';
-$disp_nom = '';
+$disp_nom_complet = '';
 if ($row && $blocked_message === '') {
-    $parsed = reglement_parse_libelle((string) ($row['libelle_client'] ?? ''));
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['payer_reglement'])) {
-        $disp_prenom = trim((string) ($_POST['prenom'] ?? ''));
-        $disp_nom = trim((string) ($_POST['nom'] ?? ''));
+        $disp_nom_complet = trim((string) ($_POST['nom_complet'] ?? ''));
     } else {
-        $disp_prenom = $parsed['prenom'];
-        $disp_nom = $parsed['nom'];
+        $disp_nom_complet = reglement_libelle_nom_complet((string) ($row['libelle_client'] ?? ''));
     }
 }
 ?>
@@ -215,13 +218,20 @@ if ($row && $blocked_message === '') {
   margin: 16px 0 24px;
 }
 .reglement-section label { display: block; margin-top: 14px; font-weight: 600; }
-.reglement-section input {
+.reglement-section input,
+.reglement-section textarea[readonly] {
   width: 100%;
   padding: 10px 12px;
   margin-top: 6px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-sizing: border-box;
+}
+.reglement-section textarea[readonly] {
+  min-height: 72px;
+  resize: none;
+  background: #f9f9f9;
+  color: #444;
 }
 .reglement-section button[type="submit"] {
   width: 100%;
@@ -249,8 +259,7 @@ if ($row && $blocked_message === '') {
     <p class="text-center"><a href="<?= BASE_PATH ?>">Retour à l'accueil</a></p>
   <?php else: ?>
     <p class="reglement-info">
-      <strong><?= htmlspecialchars($row['libelle_client']) ?></strong><br>
-      <?= nl2br(htmlspecialchars($row['motif'])) ?>
+      <strong><?= htmlspecialchars($row['libelle_client']) ?></strong>
     </p>
     <div class="reglement-montant"><?= htmlspecialchars($montant_display) ?> €</div>
 
@@ -261,8 +270,8 @@ if ($row && $blocked_message === '') {
     <form method="post" action="">
       <input type="hidden" name="reglement_token" value="<?= htmlspecialchars($token) ?>">
       <input type="hidden" name="payer_reglement" value="1">
-      <label>Prénom <input type="text" name="prenom" value="<?= htmlspecialchars($disp_prenom) ?>" autocomplete="given-name"></label>
-      <label>Nom *<input type="text" name="nom" required value="<?= htmlspecialchars($disp_nom) ?>" autocomplete="family-name"></label>
+      <label>Motif<textarea readonly rows="3"><?= htmlspecialchars($row['motif']) ?></textarea></label>
+      <label>Nom et prénom *<input type="text" name="nom_complet" required value="<?= htmlspecialchars($disp_nom_complet) ?>" autocomplete="name"></label>
       <label>Email *<input type="email" name="email" required value="<?= htmlspecialchars((string) ($_POST['email'] ?? $row['email_client'] ?? '')) ?>" autocomplete="email"></label>
       <label>Téléphone *<input type="tel" name="telephone" required value="<?= htmlspecialchars((string) ($_POST['telephone'] ?? $row['telephone_client'] ?? '')) ?>" autocomplete="tel"></label>
       <button type="submit">Payer <?= htmlspecialchars($montant_display) ?> € en ligne</button>

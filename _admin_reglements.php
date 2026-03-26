@@ -76,13 +76,8 @@ if (!empty($_SESSION['admin_reglements_creer_feedback']) && is_array($_SESSION['
     if (!empty($fb['error'])) {
         $table_error = (string) $fb['error'];
     }
-    if (!empty($fb['post']) && is_array($fb['post'])) {
-        $form_repost = $fb['post'];
-    }
     unset($_SESSION['admin_reglements_creer_feedback']);
 }
-
-$form_from_post = $form_repost !== [];
 
 $liste = [];
 try {
@@ -123,32 +118,32 @@ try {
 
     <div style="background:#fff;padding:24px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin-bottom:32px;">
       <h3 style="margin-top:0;color:#104e8b;">Nouveau lien</h3>
-      <form method="post" action="index.php?p=admin_reglements">
+      <form method="post" action="index.php?p=admin_reglements" autocomplete="off">
         <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
         <input type="hidden" name="creer_lien" value="1">
         <div class="form-group">
           <label>Libellé client (ex. M. Durant — page de paiement, SMS ; prénom/nom sur le formulaire sont déduits : « Jean Dupont », « Mr Durand »)</label>
-          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($form_from_post ? ($form_repost['libelle_client'] ?? '') : '') ?>">
+          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label>Motif / détail (ex. 3 séances aquabiking — impayé)</label>
-          <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($form_from_post ? ($form_repost['motif'] ?? '') : '') ?></textarea>
+          <textarea name="motif" class="form-control" rows="3" required autocomplete="off"></textarea>
         </div>
         <div class="form-group">
           <label>Montant (€)</label>
-          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="<?= htmlspecialchars($form_from_post ? ($form_repost['montant'] ?? '') : '') ?>">
+          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label>Email client (optionnel — pré-rempli sur la page de paiement)</label>
-          <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($form_from_post ? ($form_repost['email_client'] ?? '') : '') ?>">
+          <input type="email" name="email_client" class="form-control" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label>Téléphone mobile (pour envoi SMS — indicatif France 06/07)</label>
-          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($form_from_post ? ($form_repost['telephone_client'] ?? '') : '') ?>">
+          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label style="font-weight:normal;">
-            <input type="checkbox" name="envoyer_sms" value="1" <?= (!$form_from_post || !empty($form_repost['envoyer_sms'])) ? 'checked' : '' ?>>
+            <input type="checkbox" name="envoyer_sms" value="1">
             Envoyer automatiquement le SMS avec le lien de paiement (SMSFactor)
           </label>
         </div>

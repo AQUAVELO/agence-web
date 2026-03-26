@@ -97,21 +97,9 @@ if ($authenticated) {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
-        $savePost = static function (): array {
-            return [
-                'libelle_client'   => trim((string) ($_POST['libelle_client'] ?? '')),
-                'motif'            => trim((string) ($_POST['motif'] ?? '')),
-                'montant'          => trim((string) ($_POST['montant'] ?? '')),
-                'email_client'     => trim((string) ($_POST['email_client'] ?? '')),
-                'telephone_client' => trim((string) ($_POST['telephone_client'] ?? '')),
-                'envoyer_sms'      => !empty($_POST['envoyer_sms']),
-            ];
-        };
-
         if (!hash_equals($csrf, (string) ($_POST['csrf'] ?? ''))) {
             $_SESSION['admin_reglements_creer_feedback'] = [
                 'error' => 'Session expirée, rechargez la page.',
-                'post'  => $savePost(),
             ];
             admin_reglements_redirect();
         }
@@ -127,7 +115,6 @@ if ($authenticated) {
         if ($libelle === '' || $motif === '' || $montant <= 0) {
             $_SESSION['admin_reglements_creer_feedback'] = [
                 'error' => 'Libellé, motif et montant valide sont obligatoires.',
-                'post'  => $savePost(),
             ];
             admin_reglements_redirect();
         }
@@ -161,7 +148,6 @@ if ($authenticated) {
         } catch (PDOException $e) {
             $_SESSION['admin_reglements_creer_feedback'] = [
                 'error' => 'Erreur base : ' . $e->getMessage() . ' — Exécutez sql/reglement_lien.sql ou vérifiez la base utilisée par le site.',
-                'post'  => $savePost(),
             ];
             admin_reglements_redirect();
         }

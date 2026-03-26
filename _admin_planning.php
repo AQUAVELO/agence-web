@@ -275,6 +275,10 @@ if (!$authenticated): ?>
             <input type="password" name="login_pass" id="login_pass" placeholder="Mot de passe" required autocomplete="current-password" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;">
             <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button>
           </form>
+          <p style="margin-top: 22px; margin-bottom: 0; font-size: 0.9rem;">
+            <a href="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_reglements" style="color: #104e8b;">→ Admin liens de règlement</a>
+            <span style="color: #999;"> (mot de passe distinct)</span>
+          </p>
         </div>
       </div>
     </section>
@@ -484,6 +488,20 @@ foreach ($all_free as $res) {
           </tfoot>
         </table>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="content-area bg1" style="padding-top: 0; padding-bottom: 60px;">
+  <div class="container">
+    <div style="background: #fff; padding: 24px 28px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); border-left: 4px solid #104e8b;">
+      <h3 style="color: #104e8b; margin-top: 0; margin-bottom: 10px;">Liens de règlement personnalisés</h3>
+      <p style="color: #666; margin-bottom: 18px; font-size: 0.95rem; line-height: 1.5;">
+        Création de liens de paiement sécurisés (Monetico), envoi SMS au client, suivi des règlements.
+      </p>
+      <a href="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_reglements" class="btn btn-primary" style="background: #00a8cc; border: none; padding: 10px 20px;">
+        Ouvrir l’admin — liens de règlement
+      </a>
     </div>
   </div>
 </section>

@@ -48,8 +48,6 @@ if (empty($_SESSION['csrf_reglements'])) {
 $csrf = $_SESSION['csrf_reglements'];
 
 $table_error = '';
-$created_url = '';
-$created_sms = '';
 $sms_status_message = '';
 $sms_status_ok = null;
 $form_repost = [];
@@ -62,8 +60,6 @@ if (!empty($_SESSION['admin_reglements_flash'])) {
 
 if (!empty($_SESSION['admin_reglements_post_create']) && is_array($_SESSION['admin_reglements_post_create'])) {
     $pc = $_SESSION['admin_reglements_post_create'];
-    $created_url = (string) ($pc['url'] ?? '');
-    $created_sms = (string) ($pc['sms'] ?? '');
     if (($pc['sms_msg'] ?? '') !== '') {
         $sms_status_message = (string) $pc['sms_msg'];
         $sms_status_ok = (bool) ($pc['sms_ok'] ?? false);
@@ -100,20 +96,6 @@ try {
 
     <?php if ($sms_status_message !== ''): ?>
       <div class="alert <?= $sms_status_ok ? 'alert-success' : 'alert-warning' ?>"><?= htmlspecialchars($sms_status_message) ?></div>
-    <?php endif; ?>
-
-    <?php if ($created_url): ?>
-      <div class="alert alert-success" style="margin-bottom:24px;">
-        <p><strong>Lien créé.</strong></p>
-        <p><label>URL</label><br>
-          <input type="text" readonly style="width:100%;max-width:100%;padding:8px;" id="copyUrl" value="<?= htmlspecialchars($created_url) ?>">
-          <button type="button" class="btn btn-sm btn-info" onclick="navigator.clipboard.writeText(document.getElementById('copyUrl').value)">Copier l'URL</button>
-        </p>
-        <p><label>Texte SMS suggéré</label><br>
-          <textarea readonly style="width:100%;min-height:100px;padding:8px;" id="copySms"><?= htmlspecialchars($created_sms) ?></textarea>
-          <button type="button" class="btn btn-sm btn-info" onclick="navigator.clipboard.writeText(document.getElementById('copySms').value)">Copier le SMS</button>
-        </p>
-      </div>
     <?php endif; ?>
 
     <div style="background:#fff;padding:24px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin-bottom:32px;">

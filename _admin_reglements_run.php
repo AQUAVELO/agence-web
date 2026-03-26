@@ -138,12 +138,12 @@ if ($authenticated) {
                 $pcSmsMsg = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
             }
 
-            $_SESSION['admin_reglements_post_create'] = [
-                'url'     => $ok_url,
-                'sms'     => $ok_sms,
-                'sms_msg' => $pcSmsMsg,
-                'sms_ok'  => $pcSmsOk,
-            ];
+            if ($pcSmsMsg !== '') {
+                $_SESSION['admin_reglements_post_create'] = [
+                    'sms_msg' => $pcSmsMsg,
+                    'sms_ok'  => $pcSmsOk,
+                ];
+            }
             admin_reglements_redirect();
         } catch (PDOException $e) {
             $_SESSION['admin_reglements_creer_feedback'] = [

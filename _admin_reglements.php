@@ -2,17 +2,12 @@
 /**
  * Mini-admin : création de liens de règlement personnalisés (impayés).
  * URL : index.php?p=admin_reglements
+ * Les actions avec redirection sont dans _admin_reglements_run.php (avant le HTML dans index.php).
  */
 
 require_once '_settings.php';
 
 $password_secret = getenv('AQUAVELO_ADMIN_REGLEMENTS_PASS') ?: 'aquavelo2026';
-
-if (isset($_GET['logout'])) {
-    unset($_SESSION['admin_reglements_auth'], $_SESSION['csrf_reglements']);
-    header('Location: index.php?p=admin_reglements');
-    exit;
-}
 
 $authenticated = !empty($_SESSION['admin_reglements_auth']);
 
@@ -57,66 +52,7 @@ $created_url = '';
 $created_sms = '';
 $sms_status_message = '';
 $sms_status_ok = null;
-
-/**
- * Envoie le SMS via SMSFactor (sendSMS dans _settings.php).
- * @return array{ok: bool, detail: string}
- */
-if (!function_exists('admin_reglements_envoyer_sms')) {
-function admin_reglements_envoyer_sms(string $telephone, string $message): array
-{
-    if ($telephone === '') {
-        return ['ok' => false, 'detail' => 'Numéro de téléphone vide.'];
-    }
-    if (!function_exists('sendSMS')) {
-        return ['ok' => false, 'detail' => 'Fonction SMS indisponible.'];
-    }
-    $raw = sendSMS($telephone, $message);
-    if ($raw === false) {
-        return ['ok' => false, 'detail' => 'Token SMSFactor manquant ou erreur réseau.'];
-    }
-    $j = json_decode($raw, true);
-    if (is_array($j)) {
-        $st = $j['status'] ?? null;
-        if ($st === 1 || $st === '1' || (!empty($j['success']) && $j['success'])) {
-            return ['ok' => true, 'detail' => 'SMS envoyé.'];
-        }
-        $msg = $j['message'] ?? $j['error'] ?? json_encode($j);
-        return ['ok' => false, 'detail' => is_string($msg) ? $msg : 'Réponse API inattendue.'];
-    }
-    if (stripos($raw, 'error') !== false || stripos($raw, 'fail') !== false) {
-        return ['ok' => false, 'detail' => 'Réponse : ' . mb_substr($raw, 0, 200)];
-    }
-    return ['ok' => true, 'detail' => 'SMS envoyé.'];
-}
-}
-
-// Renvoi SMS depuis la liste
-if (!empty($_GET['resend_sms']) && isset($_GET['token_csrf'])) {
-    $rid = (int) $_GET['resend_sms'];
-    if (hash_equals($csrf, (string) $_GET['token_csrf']) && $rid > 0) {
-        try {
-            $st = $conn->prepare('SELECT id, token, libelle_client, motif, montant, statut, telephone_client FROM reglement_lien WHERE id = ? LIMIT 1');
-            $st->execute([$rid]);
-            $rw = $st->fetch(PDO::FETCH_ASSOC);
-            if ($rw && $rw['statut'] === 'en_attente' && !empty($rw['telephone_client'])) {
-                $u = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $rw['token'];
-                $mf = number_format((float) $rw['montant'], 2, ',', ' ');
-                $txt = 'Bonjour, pour régler votre situation Aquavelo (' . $rw['libelle_client'] . ', ' . $mf . ' €) : ' . $u;
-                $r = admin_reglements_envoyer_sms($rw['telephone_client'], $txt);
-                $_SESSION['admin_reglements_flash'] = $r['ok']
-                    ? ('✅ ' . $r['detail'])
-                    : ('❌ SMS non envoyé : ' . $r['detail']);
-            } else {
-                $_SESSION['admin_reglements_flash'] = '❌ Lien introuvable, déjà payé ou sans numéro.';
-            }
-        } catch (PDOException $e) {
-            $_SESSION['admin_reglements_flash'] = '❌ ' . $e->getMessage();
-        }
-    }
-    header('Location: index.php?p=admin_reglements');
-    exit;
-}
+$form_repost = [];
 
 if (!empty($_SESSION['admin_reglements_flash'])) {
     $sms_status_message = (string) $_SESSION['admin_reglements_flash'];
@@ -124,7 +60,6 @@ if (!empty($_SESSION['admin_reglements_flash'])) {
     unset($_SESSION['admin_reglements_flash']);
 }
 
-/** Après création de lien : PRG pour formulaire vide + message succès une seule fois */
 if (!empty($_SESSION['admin_reglements_post_create']) && is_array($_SESSION['admin_reglements_post_create'])) {
     $pc = $_SESSION['admin_reglements_post_create'];
     $created_url = (string) ($pc['url'] ?? '');
@@ -136,71 +71,18 @@ if (!empty($_SESSION['admin_reglements_post_create']) && is_array($_SESSION['adm
     unset($_SESSION['admin_reglements_post_create']);
 }
 
-// Annulation d'un lien
-if (!empty($_GET['annuler']) && isset($_GET['id'])) {
-    $id = (int) $_GET['id'];
-    $tok = $_GET['token_csrf'] ?? '';
-    if (hash_equals($csrf, $tok)) {
-        try {
-            $conn->prepare("UPDATE reglement_lien SET statut = 'annule' WHERE id = ? AND statut = 'en_attente'")->execute([$id]);
-        } catch (PDOException $e) {
-            $table_error = $e->getMessage();
-        }
+if (!empty($_SESSION['admin_reglements_creer_feedback']) && is_array($_SESSION['admin_reglements_creer_feedback'])) {
+    $fb = $_SESSION['admin_reglements_creer_feedback'];
+    if (!empty($fb['error'])) {
+        $table_error = (string) $fb['error'];
     }
-    header('Location: index.php?p=admin_reglements');
-    exit;
+    if (!empty($fb['post']) && is_array($fb['post'])) {
+        $form_repost = $fb['post'];
+    }
+    unset($_SESSION['admin_reglements_creer_feedback']);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
-    if (!hash_equals($csrf, (string) ($_POST['csrf'] ?? ''))) {
-        $table_error = 'Session expirée, rechargez la page.';
-    } else {
-        $libelle = trim($_POST['libelle_client'] ?? '');
-        $motif = trim($_POST['motif'] ?? '');
-        $montantStr = str_replace(',', '.', trim($_POST['montant'] ?? ''));
-        $montant = round((float) $montantStr, 2);
-        $email_c = trim($_POST['email_client'] ?? '') ?: null;
-        $tel_c = trim($_POST['telephone_client'] ?? '') ?: null;
-        $envoyer_sms = !empty($_POST['envoyer_sms']);
-
-        if ($libelle === '' || $motif === '' || $montant <= 0) {
-            $table_error = 'Libellé, motif et montant valide sont obligatoires.';
-        } else {
-            $token = bin2hex(random_bytes(16));
-            try {
-                $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?)');
-                $ins->execute([$token, $libelle, $motif, $montant, $email_c, $tel_c, 'en_attente']);
-                $ok_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
-                $montantFmt = number_format($montant, 2, ',', ' ');
-                $ok_sms = "Bonjour, pour régler votre situation Aquavelo ({$libelle}, {$montantFmt} €) : {$ok_url}";
-
-                $pcSmsMsg = '';
-                $pcSmsOk = false;
-                if ($envoyer_sms && $tel_c) {
-                    $sr = admin_reglements_envoyer_sms($tel_c, $ok_sms);
-                    $pcSmsOk = $sr['ok'];
-                    $pcSmsMsg = ($sr['ok'] ? '✅ ' : '❌ ') . $sr['detail'];
-                } elseif ($envoyer_sms && !$tel_c) {
-                    $pcSmsOk = false;
-                    $pcSmsMsg = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
-                }
-
-                $_SESSION['admin_reglements_post_create'] = [
-                    'url'  => $ok_url,
-                    'sms'  => $ok_sms,
-                    'sms_msg' => $pcSmsMsg,
-                    'sms_ok'  => $pcSmsOk,
-                ];
-                header('Location: index.php?p=admin_reglements', true, 303);
-                exit;
-            } catch (PDOException $e) {
-                $table_error = 'Erreur base : ' . $e->getMessage() . ' — Exécutez sql/reglement_lien.sql ou vérifiez la base utilisée par le site.';
-            }
-        }
-    }
-}
-
-$form_from_post = ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien']));
+$form_from_post = $form_repost !== [];
 
 $liste = [];
 try {
@@ -246,27 +128,27 @@ try {
         <input type="hidden" name="creer_lien" value="1">
         <div class="form-group">
           <label>Libellé client (ex. M. Durant — page de paiement, SMS ; prénom/nom sur le formulaire sont déduits : « Jean Dupont », « Mr Durand »)</label>
-          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($form_from_post ? ($_POST['libelle_client'] ?? '') : '') ?>">
+          <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($form_from_post ? ($form_repost['libelle_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Motif / détail (ex. 3 séances aquabiking — impayé)</label>
-          <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($form_from_post ? ($_POST['motif'] ?? '') : '') ?></textarea>
+          <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($form_from_post ? ($form_repost['motif'] ?? '') : '') ?></textarea>
         </div>
         <div class="form-group">
           <label>Montant (€)</label>
-          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="<?= htmlspecialchars($form_from_post ? ($_POST['montant'] ?? '') : '') ?>">
+          <input type="text" name="montant" class="form-control" required placeholder="90.00" value="<?= htmlspecialchars($form_from_post ? ($form_repost['montant'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Email client (optionnel — pré-rempli sur la page de paiement)</label>
-          <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($form_from_post ? ($_POST['email_client'] ?? '') : '') ?>">
+          <input type="email" name="email_client" class="form-control" value="<?= htmlspecialchars($form_from_post ? ($form_repost['email_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label>Téléphone mobile (pour envoi SMS — indicatif France 06/07)</label>
-          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($form_from_post ? ($_POST['telephone_client'] ?? '') : '') ?>">
+          <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="<?= htmlspecialchars($form_from_post ? ($form_repost['telephone_client'] ?? '') : '') ?>">
         </div>
         <div class="form-group">
           <label style="font-weight:normal;">
-            <input type="checkbox" name="envoyer_sms" value="1" <?= (!$form_from_post || !empty($_POST['envoyer_sms'])) ? 'checked' : '' ?>>
+            <input type="checkbox" name="envoyer_sms" value="1" <?= (!$form_from_post || !empty($form_repost['envoyer_sms'])) ? 'checked' : '' ?>>
             Envoyer automatiquement le SMS avec le lien de paiement (SMSFactor)
           </label>
         </div>

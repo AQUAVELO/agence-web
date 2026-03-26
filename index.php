@@ -47,6 +47,11 @@ if (preg_match('#^centres/([^/]+)/?$#', $request_uri, $matches)) {
 if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
+// Admin règlements : redirections / POST avant tout HTML (sinon page blanche si headers déjà envoyés)
+if ($page === 'admin_reglements') {
+    require_once __DIR__ . '/_admin_reglements_run.php';
+}
+
 // En-tête HTTP pour les crawlers (complément meta robots) — admin / paiement par lien
 if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning'], true)) {
     header('X-Robots-Tag: noindex, nofollow', false);

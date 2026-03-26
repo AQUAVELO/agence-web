@@ -108,7 +108,7 @@ if ($authenticated) {
         $motif = trim($_POST['motif'] ?? '');
         $montantStr = str_replace(',', '.', trim($_POST['montant'] ?? ''));
         $montant = round((float) $montantStr, 2);
-        $email_c = trim($_POST['email_client'] ?? '') ?: null;
+        $email_c = null;
         $tel_c = trim($_POST['telephone_client'] ?? '') ?: null;
         $envoyer_sms = !empty($_POST['envoyer_sms']);
 

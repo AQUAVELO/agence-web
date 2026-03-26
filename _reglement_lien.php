@@ -122,13 +122,15 @@ if ($db_error !== '') {
     $nomComplet = trim($_POST['nom_complet'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $tel = trim($_POST['telephone'] ?? '');
+    $emailDb = trim((string) ($row['email_client'] ?? ''));
+    $emailFieldShown = $emailDb !== '';
 
-    if (
-        $nomComplet === '' ||
-        !filter_var($email, FILTER_VALIDATE_EMAIL) ||
-        !preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)
-    ) {
+    if ($nomComplet === '' || !preg_match('/^[0-9\s\-\+\(\)]+$/', $tel)) {
         $error = 'Veuillez remplir correctement tous les champs.';
+    } elseif ($emailFieldShown && $email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Adresse e-mail invalide.';
+    } elseif ($emailFieldShown && $emailDb !== '' && $email === '') {
+        $error = 'L’e-mail est requis pour ce lien.';
     } else {
         $montant = (float) $row['montant'];
         if ($montant <= 0) {
@@ -138,10 +140,19 @@ if ($db_error !== '') {
             $detail = $row['motif'];
             $achatLabel = 'Règlement : ' . $row['libelle_client'] . ' — ' . $row['motif'];
 
+            $emailPourClient = '';
+            if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailPourClient = $email;
+            } elseif ($emailDb !== '' && filter_var($emailDb, FILTER_VALIDATE_EMAIL)) {
+                $emailPourClient = $emailDb;
+            }
+            // Monetico attend un e-mail valide : adresse générique si le client n’en fournit pas.
+            $mailMonetico = $emailPourClient !== '' ? $emailPourClient : 'service.clients@aquavelo.com';
+
             $texteLibreInfos = [
                 'reglement_id' => (string) $row['id'],
                 'token'        => $token,
-                'email'        => $email,
+                'email'        => $emailPourClient,
                 'nom'          => $nomComplet,
                 'prenom'       => '',
                 'telephone'    => $tel,
@@ -162,7 +173,7 @@ if ($db_error !== '') {
                 'version'           => '3.0',
                 'lgue'              => 'FR',
                 'societe'           => MONETICO_COMPANY,
-                'mail'              => $email,
+                'mail'              => $mailMonetico,
                 'url_retour_ok'     => MONETICO_RETURN_URL,
                 'url_retour_err'    => MONETICO_CANCEL_URL,
             ];
@@ -186,11 +197,18 @@ if ($db_error !== '') {
 $montant_display = $row ? number_format((float) $row['montant'], 2, ',', ' ') : '';
 
 $disp_nom_complet = '';
+$reglement_email_db = '';
+$reglement_show_email_field = false;
+$disp_email = '';
 if ($row && $blocked_message === '') {
+    $reglement_email_db = trim((string) ($row['email_client'] ?? ''));
+    $reglement_show_email_field = $reglement_email_db !== '';
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['payer_reglement'])) {
         $disp_nom_complet = trim((string) ($_POST['nom_complet'] ?? ''));
+        $disp_email = trim((string) ($_POST['email'] ?? ''));
     } else {
         $disp_nom_complet = reglement_libelle_nom_complet((string) ($row['libelle_client'] ?? ''));
+        $disp_email = $reglement_email_db;
     }
 }
 ?>
@@ -272,7 +290,9 @@ if ($row && $blocked_message === '') {
       <input type="hidden" name="payer_reglement" value="1">
       <label>Motif<textarea readonly rows="3"><?= htmlspecialchars($row['motif']) ?></textarea></label>
       <label>Nom et prénom *<input type="text" name="nom_complet" required value="<?= htmlspecialchars($disp_nom_complet) ?>" autocomplete="name"></label>
-      <label>Email *<input type="email" name="email" required value="<?= htmlspecialchars((string) ($_POST['email'] ?? $row['email_client'] ?? '')) ?>" autocomplete="email"></label>
+      <?php if ($reglement_show_email_field): ?>
+      <label>Email *<input type="email" name="email" required value="<?= htmlspecialchars($disp_email) ?>" autocomplete="email"></label>
+      <?php endif; ?>
       <label>Téléphone *<input type="tel" name="telephone" required value="<?= htmlspecialchars((string) ($_POST['telephone'] ?? $row['telephone_client'] ?? '')) ?>" autocomplete="tel"></label>
       <button type="submit">Payer <?= htmlspecialchars($montant_display) ?> € en ligne</button>
     </form>

@@ -134,16 +134,12 @@ try {
           <input type="text" name="montant" class="form-control" required placeholder="90.00" value="" autocomplete="off">
         </div>
         <div class="form-group">
-          <label>Email client (optionnel — pré-rempli sur la page de paiement)</label>
-          <input type="email" name="email_client" class="form-control" value="" autocomplete="off">
-        </div>
-        <div class="form-group">
           <label>Téléphone mobile (pour envoi SMS — indicatif France 06/07)</label>
           <input type="text" name="telephone_client" class="form-control" placeholder="06 12 34 56 78" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label style="font-weight:normal;">
-            <input type="checkbox" name="envoyer_sms" value="1">
+            <input type="checkbox" name="envoyer_sms" value="1" autocomplete="off">
             Envoyer automatiquement le SMS avec le lien de paiement (SMSFactor)
           </label>
         </div>

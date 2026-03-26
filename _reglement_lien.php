@@ -15,7 +15,7 @@ if (!defined('MONETICO_TPE')) {
 
 if (!function_exists('reglement_parse_libelle')) {
     /**
-     * Déduit prénom / nom depuis le libellé admin si les champs dédiés sont vides (retire M., Mme, Mr…).
+     * Pré-remplit le formulaire avant redirection Monetico (retire M., Mme, Mr… du libellé admin).
      *
      * @return array{prenom: string, nom: string}
      */
@@ -181,19 +181,13 @@ $montant_display = $row ? number_format((float) $row['montant'], 2, ',', ' ') : 
 $disp_prenom = '';
 $disp_nom = '';
 if ($row && $blocked_message === '') {
-    $base_prenom = trim((string) ($row['prenom_client'] ?? ''));
-    $base_nom = trim((string) ($row['nom_client'] ?? ''));
-    if ($base_prenom === '' && $base_nom === '') {
-        $parsed = reglement_parse_libelle((string) ($row['libelle_client'] ?? ''));
-        $base_prenom = $parsed['prenom'];
-        $base_nom = $parsed['nom'];
-    }
+    $parsed = reglement_parse_libelle((string) ($row['libelle_client'] ?? ''));
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['payer_reglement'])) {
         $disp_prenom = trim((string) ($_POST['prenom'] ?? ''));
         $disp_nom = trim((string) ($_POST['nom'] ?? ''));
     } else {
-        $disp_prenom = $base_prenom;
-        $disp_nom = $base_nom;
+        $disp_prenom = $parsed['prenom'];
+        $disp_nom = $parsed['nom'];
     }
 }
 ?>

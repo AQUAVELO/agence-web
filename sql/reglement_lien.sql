@@ -5,8 +5,6 @@ CREATE TABLE IF NOT EXISTS reglement_lien (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
   token VARCHAR(64) NOT NULL,
   libelle_client VARCHAR(255) NOT NULL,
-  prenom_client VARCHAR(100) DEFAULT NULL,
-  nom_client VARCHAR(100) DEFAULT NULL,
   motif TEXT NOT NULL,
   montant DECIMAL(10,2) NOT NULL,
   email_client VARCHAR(255) DEFAULT NULL,

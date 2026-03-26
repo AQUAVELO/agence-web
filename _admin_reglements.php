@@ -145,8 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
         $table_error = 'Session expirée, rechargez la page.';
     } else {
         $libelle = trim($_POST['libelle_client'] ?? '');
-        $prenom_c = trim($_POST['prenom_client'] ?? '') ?: null;
-        $nom_c = trim($_POST['nom_client'] ?? '') ?: null;
         $motif = trim($_POST['motif'] ?? '');
         $montantStr = str_replace(',', '.', trim($_POST['montant'] ?? ''));
         $montant = round((float) $montantStr, 2);
@@ -158,29 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
             $table_error = 'Libellé, motif et montant valide sont obligatoires.';
         } else {
             $token = bin2hex(random_bytes(16));
-            $insertOk = false;
             try {
-                $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, prenom_client, nom_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-                $ins->execute([$token, $libelle, $prenom_c, $nom_c, $motif, $montant, $email_c, $tel_c, 'en_attente']);
-                $insertOk = true;
-            } catch (PDOException $e) {
-                $msg = $e->getMessage();
-                // BDD sans migration prenom/nom : on retombe sur l'ancien schéma (prénom/nom déduits du libellé côté page publique).
-                if (strpos($msg, 'Unknown column') !== false && strpos($msg, 'prenom_client') !== false) {
-                    try {
-                        $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?)');
-                        $ins->execute([$token, $libelle, $motif, $montant, $email_c, $tel_c, 'en_attente']);
-                        $insertOk = true;
-                    } catch (PDOException $e2) {
-                        $hint = 'Exécutez sql/reglement_lien.sql ou vérifiez la connexion à la bonne base.';
-                        $table_error = 'Erreur base : ' . $e2->getMessage() . ' — ' . $hint;
-                    }
-                } else {
-                    $hint = 'Si la table existe déjà : exécutez sql/reglement_lien_add_prenom_nom.sql dans phpMyAdmin. Sinon : sql/reglement_lien.sql.';
-                    $table_error = 'Erreur base : ' . $e->getMessage() . ' — ' . $hint;
-                }
-            }
-            if ($insertOk) {
+                $ins = $conn->prepare('INSERT INTO reglement_lien (token, libelle_client, motif, montant, email_client, telephone_client, statut) VALUES (?, ?, ?, ?, ?, ?, ?)');
+                $ins->execute([$token, $libelle, $motif, $montant, $email_c, $tel_c, 'en_attente']);
                 $created_token = $token;
                 $created_url = 'https://www.aquavelo.com/index.php?p=reglement_lien&t=' . $token;
                 $montantFmt = number_format($montant, 2, ',', ' ');
@@ -194,6 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['creer_lien'])) {
                     $sms_status_ok = false;
                     $sms_status_message = '❌ Cochez « Envoyer le SMS » uniquement si un numéro de mobile est renseigné.';
                 }
+            } catch (PDOException $e) {
+                $table_error = 'Erreur base : ' . $e->getMessage() . ' — Exécutez sql/reglement_lien.sql ou vérifiez la base utilisée par le site.';
             }
         }
     }
@@ -242,20 +222,9 @@ try {
         <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf) ?>">
         <input type="hidden" name="creer_lien" value="1">
         <div class="form-group">
-          <label>Libellé client (ex. M. Durant — affiché sur la page et dans le SMS)</label>
+          <label>Libellé client (ex. M. Durant — page de paiement, SMS ; prénom/nom sur le formulaire sont déduits : « Jean Dupont », « Mr Durand »)</label>
           <input type="text" name="libelle_client" class="form-control" required maxlength="255" value="<?= htmlspecialchars($_POST['libelle_client'] ?? '') ?>">
         </div>
-        <div class="form-group" style="display:flex;gap:16px;flex-wrap:wrap;">
-          <div style="flex:1;min-width:160px;">
-            <label>Prénom client (pré-remplit le paiement)</label>
-            <input type="text" name="prenom_client" class="form-control" maxlength="100" value="<?= htmlspecialchars($_POST['prenom_client'] ?? '') ?>" autocomplete="given-name">
-          </div>
-          <div style="flex:1;min-width:160px;">
-            <label>Nom de famille (pré-remplit le paiement)</label>
-            <input type="text" name="nom_client" class="form-control" maxlength="100" value="<?= htmlspecialchars($_POST['nom_client'] ?? '') ?>" autocomplete="family-name">
-          </div>
-        </div>
-        <p class="help-block" style="margin-top:-8px;margin-bottom:16px;color:#666;font-size:0.9em;">Si prénom et nom sont vides, ils sont déduits du libellé (sans M./Mme/Mr). Ex. « Mr Durand » → nom Durand ; « Jean Dupont » → Jean / Dupont.</p>
         <div class="form-group">
           <label>Motif / détail (ex. 3 séances aquabiking — impayé)</label>
           <textarea name="motif" class="form-control" rows="3" required><?= htmlspecialchars($_POST['motif'] ?? '') ?></textarea>

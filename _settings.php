@@ -20,6 +20,9 @@ if (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') 
 }
 define('BASE_PATH', $base_url);
 
+/** Image de secours si la vignette centre (cloud/thumbnail/center_ID/1.jpg) est absente */
+define('CENTER_THUMB_FALLBACK', BASE_PATH . 'images/content/home-v1-slider-03.webp');
+
 // ⭐ Variables d'environnement Clever Cloud (avec fallback local)
 $settings['dbhost'] = getenv('MYSQL_ADDON_HOST') ?: '127.0.0.1';
 $settings['dbport'] = getenv('MYSQL_ADDON_PORT') ?: '8889';

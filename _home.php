@@ -55,7 +55,7 @@
         ?>
           <li>
             <article class="portfolio-item animated" data-fx="fadeInUp">
-              <div class="portfolio-thumbnail"> <a href="<?= BASE_PATH ?>centres/<?= $row_centers_last['city'] ?>"><img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= $row_centers_last['id']; ?>/1.jpg" alt="Aquavelo <?= $row_centers_last['city'] ?>"></a> <a href="<?= BASE_PATH ?>centres/<?= $row_centers_last['city'] ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
+              <div class="portfolio-thumbnail"> <a href="<?= BASE_PATH ?>centres/<?= rawurlencode($row_centers_last['city']) ?>"><img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= (int) $row_centers_last['id']; ?>/1.jpg" alt="Aquavelo <?= htmlspecialchars($row_centers_last['city'], ENT_QUOTES, 'UTF-8'); ?>" onerror="this.onerror=null;this.src=<?= json_encode(CENTER_THUMB_FALLBACK, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;"></a> <a href="<?= BASE_PATH ?>centres/<?= rawurlencode($row_centers_last['city']) ?>" class="overlay-img"><span class="overlay-ico"><i class="fa fa-plus"></i></span></a> </div>
               <div class="entry-meta"> <span class="cat-links"><a href="#"><?= $department; ?></a>, <a href="#"><?= $row_centers_last['country'] ?></a></span> </div>
               <h4 class="entry-title"><a href="#"><?= $row_centers_last['city'] ?>, <?= $row_centers_last['TypeAQUAVELO'] ?></a></h4>
             </article>

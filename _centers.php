@@ -64,8 +64,8 @@
           <!-- Image du centre -->
           <div class="portfolio-thumbnail" style="position: relative; overflow: hidden; background: linear-gradient(135deg, #00d4ff, #00a8cc);">
             <a href="/centres/<?= strtolower($row_centers_list['city']); ?>">
-              <img src="/cloud/thumbnail/center_<?= $row_centers_list['id']; ?>/1.jpg" 
-                   onerror="this.src='/images/aquagym-cours-collectif.jpg'"
+              <img src="<?= BASE_PATH ?>cloud/thumbnail/center_<?= (int) $row_centers_list['id']; ?>/1.jpg" 
+                   onerror="this.onerror=null;this.src=<?= json_encode(CENTER_THUMB_FALLBACK, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;"
                    alt="Centre Aquavélo <?= $row_centers_list['city']; ?> - Aquabiking et Aquagym"
                    style="width: 100%; height: 250px; object-fit: cover; transition: transform 0.3s ease;">
             </a>

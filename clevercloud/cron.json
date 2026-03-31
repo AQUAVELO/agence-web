@@ -20,6 +20,11 @@
     "schedule": "30 * * * *"
   },
   {
+    "id": "suivi-7j",
+    "command": "php cron_suivi_7j.php",
+    "schedule": "40 * * * *"
+  },
+  {
     "id": "sync-google-calendar",
     "command": "php cron_sync_google.php",
     "schedule": "*/15 * * * *"

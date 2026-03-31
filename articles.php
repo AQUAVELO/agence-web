@@ -89,7 +89,7 @@ fbq('track', 'PageView');
       if (array_key_exists($row_center['id'], $promotions)) { ?>
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="/images/promoJan24.webp" 
+            <img src="/images/promoAvril2026.png" 
                  alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same">
           </a>

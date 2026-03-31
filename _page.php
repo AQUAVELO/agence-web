@@ -504,12 +504,9 @@
           343 => "Merignac"
       ];
 
-      // Centres avec la nouvelle promo de mars 2026
-      $promo_mars = [305, 347, 349, 253]; // Cannes, Mandelieu, Vallauris, Antibes
-
       if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : 
         $center_id = $row_center['id'];
-        $promo_image = in_array($center_id, $promo_mars) ? 'promoMars2026.png' : 'promoJan24.webp';
+        $promo_image = 'promoAvril2026.png';
       ?>
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 

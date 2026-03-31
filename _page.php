@@ -513,10 +513,8 @@
              title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>">
             <img src="<?= BASE_PATH ?>images/<?= $promo_image ?>" 
                  alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="img-fluid img-same" 
-                 style="border-radius: 10px; border: 3px solid #ff9800;"
-                 width="300" 
-                 height="200"
+                 class="img-fluid" 
+                 style="border-radius: 10px; border: 3px solid #ff9800; width: 100%; height: auto; max-width: 420px; object-fit: contain; display: block; margin-left: auto; margin-right: auto;"
                  loading="lazy">
           </a>
         </div>

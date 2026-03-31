@@ -394,10 +394,16 @@ foreach ($all_free as $res) {
                         </div>
                         <?php if (!$is_locked): ?>
                             <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
-                            <!-- Indicateurs de relances Cron -->
-                            <div style="margin-top: 8px; display: flex; gap: 4px;" title="Statut des relances">
-                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['reminder_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">24h</span>
-                                <span style="font-size: 9px; padding: 1px 3px; border-radius: 3px; background: <?= $res['reminder_3h_sent'] ? '#4CAF50' : '#eee' ?>; color: white;">3h</span>
+                            <!-- Indicateurs de relances Cron (BDD : reminder_sent, reminder_3h_sent, after_session_sent) -->
+                            <?php
+                            $ok24 = (int) ($res['reminder_sent'] ?? 0) === 1;
+                            $ok3h = (int) ($res['reminder_3h_sent'] ?? 0) === 1;
+                            $okApres = array_key_exists('after_session_sent', $res) && (int) $res['after_session_sent'] === 1;
+                            ?>
+                            <div style="margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px;" title="Vert = relance envoyée par le cron">
+                                <span title="E-mail ~24 h avant le RDV (cron_rappel_24h)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok24 ? '#2e7d32' : '#ccc' ?>; background: <?= $ok24 ? '#4CAF50' : '#f5f5f5' ?>; color: <?= $ok24 ? '#fff' : '#555' ?>;">24h</span>
+                                <span title="E-mail + SMS ~3 h avant (cron_rappel_3h)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok3h ? '#2e7d32' : '#ccc' ?>; background: <?= $ok3h ? '#4CAF50' : '#f5f5f5' ?>; color: <?= $ok3h ? '#fff' : '#555' ?>;">3h</span>
+                                <span title="E-mail après séance (cron_apres_seance)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okApres ? '#1565c0' : '#ccc' ?>; background: <?= $okApres ? '#1976d2' : '#f5f5f5' ?>; color: <?= $okApres ? '#fff' : '#555' ?>;">après</span>
                             </div>
                         <?php endif; ?>
                       <?php else : ?>

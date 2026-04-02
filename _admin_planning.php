@@ -34,6 +34,21 @@ if (isset($_POST['login_pass'])) {
 
 // 2. ACTIONS (Suppression, Verrouillage, Déplacement)
 if ($authenticated) {
+
+    // ACTION: synchroniser manuellement les RDV vers Google Agenda (Cannes / Mandelieu / Vallauris)
+    if (isset($_POST['action_google_sync']) && $_POST['action_google_sync'] === '1') {
+        $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
+        if ($token_ok) {
+            require_once __DIR__ . '/google_calendar_rdv_helpers.php';
+            $sync_out = aquavelo_gc_sync_pending_rdvs($database);
+            $msg = 'Synchronisation Google : ' . $sync_out['synced'] . ' RDV traité(s)';
+            if ($sync_out['errors'] > 0) {
+                $msg .= ', ' . $sync_out['errors'] . ' erreur(s)';
+            }
+            echo '<script>alert(' . json_encode($msg, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '); window.location.replace("index.php?p=admin_planning");</script>';
+            exit;
+        }
+    }
     
     // ACTION: EMAIL NO-SHOW (absent au RDV)
     if (isset($_POST['action_noshow'])) {
@@ -208,37 +223,21 @@ if ($authenticated) {
             if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
                 $id = intval($_GET['id']);
                 
-                // --- SYNCHRO GOOGLE : Suppression de l'événement si présent ---
-                $check = $database->prepare("SELECT google_event_id, center_id FROM am_free WHERE id = ?");
+                // --- Google Agenda : suppression par event_id ou recherche créneau + nom (groupe Cannes) ---
+                $check = $database->prepare("SELECT id, name, google_event_id, center_id FROM am_free WHERE id = ?");
                 $check->execute([$id]);
-                $booking_to_del = $check->fetch();
+                $booking_to_del = $check->fetch(PDO::FETCH_ASSOC);
                 
-                if ($booking_to_del && !empty($booking_to_del['google_event_id'])) {
-                    try {
-                        if (file_exists('vendor/autoload.php')) {
-                            require_once 'vendor/autoload.php';
-                            require_once 'load_env.php';
-                            
-                            $keyFile = __DIR__ . '/google_key.json';
-                            $client = new Google\Client();
-                            $client->setAuthConfig($keyFile);
-                            $client->addScope(Google\Service\Calendar::CALENDAR);
-                            $service = new Google\Service\Calendar($client);
-                            
-                            // Déterminer l'agenda de destination
-                            if (in_array((int)$booking_to_del['center_id'], [305, 347, 349])) {
-                                $targetCalendarId = 'aqua.cannes@gmail.com';
-                            } else {
-                                $stmt_c = $database->prepare("SELECT email FROM am_centers WHERE id = ?");
-                                $stmt_c->execute([$booking_to_del['center_id']]);
-                                $c_info = $stmt_c->fetch();
-                                $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
-                            }
-                            
-                            $service->events->delete($targetCalendarId, $booking_to_del['google_event_id']);
+                if ($booking_to_del) {
+                    $try_google = !empty($booking_to_del['google_event_id'])
+                        || in_array((int) $booking_to_del['center_id'], [305, 347, 349], true);
+                    if ($try_google && file_exists(__DIR__ . '/vendor/autoload.php')) {
+                        require_once __DIR__ . '/load_env.php';
+                        require_once __DIR__ . '/google_calendar_rdv_helpers.php';
+                        $gc_service = aquavelo_gc_bootstrap();
+                        if ($gc_service) {
+                            aquavelo_gc_delete_booking_event($gc_service, $database, $booking_to_del);
                         }
-                    } catch (Exception $e) {
-                        error_log("⚠️ Admin: Erreur suppression Google Calendar: " . $e->getMessage());
                     }
                 }
                 
@@ -362,6 +361,15 @@ foreach ($all_free as $res) {
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris) v2</h2>
         <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
+    </div>
+
+    <div style="margin-bottom: 18px; padding: 14px 18px; background: #e3f2fd; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border: 1px solid #90caf9;">
+        <span style="font-size: 0.9rem; color: #0d47a1; max-width: 520px;">Les RDV avec <strong>google_sync = 0</strong> sont poussés vers <strong>aqua.cannes@gmail.com</strong> (cron toutes les 15 min ou bouton ci-dessous). Si l’événement existe déjà, la ligne est reliée sans doublon.</span>
+        <form method="post" action="index.php?p=admin_planning" style="margin:0;">
+            <input type="hidden" name="action_google_sync" value="1">
+            <input type="hidden" name="token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
+            <button type="submit" class="btn btn-primary" style="background:#1565c0;border:none;">↗ Synchroniser Google Agenda</button>
+        </form>
     </div>
 
     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">

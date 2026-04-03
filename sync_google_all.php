@@ -4,6 +4,7 @@
  */
 
 require '_settings.php';
+require_once __DIR__ . '/google_calendar_rdv_helpers.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -37,11 +38,11 @@ try {
 
     $count = 0;
     foreach ($bookings as $booking) {
-        preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
-        
-        if (count($matches) === 3) {
-            $rdv_start = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
-            
+        $parsed = aquavelo_gc_parse_rdv_from_name((string) $booking['name']);
+
+        if ($parsed !== null) {
+            $rdv_start = $parsed['start'];
+
             // On ne synchronise que si la date est valide
             if ($rdv_start) {
                 $rdv_end = clone $rdv_start;
@@ -57,8 +58,9 @@ try {
                 ]);
 
                 try {
-                    $service->events->insert($calendarId, $event);
-                    $database->prepare("UPDATE am_free SET google_sync = 1 WHERE id = ?")->execute([$booking['id']]);
+                    $createdEvt = $service->events->insert($calendarId, $event);
+                    $evId = $createdEvt->getId();
+                    $database->prepare("UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?")->execute([$evId, $booking['id']]);
                     $count++;
                     echo "✅ Synchro : $client_name (" . $rdv_start->format('d/m/Y H:i') . ")\n";
                     

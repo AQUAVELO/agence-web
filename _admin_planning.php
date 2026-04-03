@@ -364,7 +364,7 @@ foreach ($all_free as $res) {
     </div>
 
     <div style="margin-bottom: 18px; padding: 14px 18px; background: #e3f2fd; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border: 1px solid #90caf9;">
-        <span style="font-size: 0.9rem; color: #0d47a1; max-width: 520px;">Les RDV avec <strong>google_sync = 0</strong> sont poussés vers <strong>aqua.cannes@gmail.com</strong> (cron toutes les 15 min ou bouton ci-dessous). Si l’événement existe déjà, la ligne est reliée sans doublon.</span>
+        <span style="font-size: 0.9rem; color: #0d47a1; max-width: 560px;">Pousse vers <strong>aqua.cannes@gmail.com</strong> les RDV <strong>sans</strong> <code>google_event_id</code> (y compris anciennes lignes marquées synchro à tort). Cron ~15 min ou bouton ci-dessous. Si l’événement existe déjà sur le créneau, la ligne est reliée sans doublon.</span>
         <form method="post" action="index.php?p=admin_planning" style="margin:0;">
             <input type="hidden" name="action_google_sync" value="1">
             <input type="hidden" name="token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
@@ -416,6 +416,13 @@ foreach ($all_free as $res) {
                                 <span title="E-mail ~3 h après la séance, fenêtre 3–6 h après le début du RDV (cron_apres_seance)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok3hApres ? '#1565c0' : '#ccc' ?>; background: <?= $ok3hApres ? '#1976d2' : '#f5f5f5' ?>; color: <?= $ok3hApres ? '#fff' : '#555' ?>;">3h ap.</span>
                                 <span title="E-mail suivi J+2 (~44–60 h après le début du RDV) (cron_suivi_2j)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okJ2 ? '#e65100' : '#ccc' ?>; background: <?= $okJ2 ? '#f57c00' : '#f5f5f5' ?>; color: <?= $okJ2 ? '#fff' : '#555' ?>;">J+2</span>
                                 <span title="E-mail suivi J+7 (~7 jours après le début du RDV) (cron_suivi_7j)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okJ7 ? '#4a148c' : '#ccc' ?>; background: <?= $okJ7 ? '#7b1fa2' : '#f5f5f5' ?>; color: <?= $okJ7 ? '#fff' : '#555' ?>;">J+7</span>
+                            </div>
+                            <?php
+                            $gcalEv = trim((string) ($res['google_event_id'] ?? ''));
+                            $gcalOk = (int) ($res['google_sync'] ?? 0) === 1 && $gcalEv !== '';
+                            ?>
+                            <div style="margin-top: 6px;">
+                                <span title="<?= $gcalOk ? 'Événement lié sur aqua.cannes@gmail.com' : 'Pas encore sur Google Agenda — cliquez « Synchroniser Google Agenda » en haut' ?>" style="font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700; border: 1px solid <?= $gcalOk ? '#2e7d32' : '#ef6c00' ?>; background: <?= $gcalOk ? '#e8f5e9' : '#fff3e0' ?>; color: <?= $gcalOk ? '#1b5e20' : '#e65100' ?>;"><?= $gcalOk ? 'Agenda OK' : 'Agenda ?' ?></span>
                             </div>
                         <?php endif; ?>
                       <?php else : ?>

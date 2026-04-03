@@ -7,6 +7,35 @@ declare(strict_types=1);
 use Google\Service\Calendar;
 use Google\Service\Calendar\Event;
 
+function aquavelo_gc_normalize_rdv_text(string $text): string
+{
+    $s = str_replace(["\xc2\xa0", "\xe2\x80\xaf"], ' ', $text);
+
+    return trim(preg_replace('/\s+/u', ' ', $s) ?? '');
+}
+
+/**
+ * Extrait date/heure du libellé RDV (ex. "Lundi 31/03/2026 à 18:30 (AQUAVELO)").
+ *
+ * @return array{start: DateTime, date: string, time: string}|null
+ */
+function aquavelo_gc_parse_rdv_from_name(string $name): ?array
+{
+    $norm = aquavelo_gc_normalize_rdv_text($name);
+    if (!preg_match('/(\d{2}\/\d{2}\/\d{4})\s*à\s*(\d{1,2})[h:](\d{2})/iu', $norm, $m)) {
+        return null;
+    }
+    $h = str_pad((string) (int) $m[2], 2, '0', STR_PAD_LEFT);
+    $min = $m[3];
+    $time = $h . ':' . $min;
+    $start = DateTime::createFromFormat('d/m/Y H:i', $m[1] . ' ' . $time, new DateTimeZone('Europe/Paris'));
+    if (!$start) {
+        return null;
+    }
+
+    return ['start' => $start, 'date' => $m[1], 'time' => $time];
+}
+
 function aquavelo_gc_bootstrap(): ?Calendar
 {
     if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
@@ -73,16 +102,13 @@ function aquavelo_gc_delete_booking_event(Calendar $service, PDO $database, arra
         return false;
     }
 
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $name, $m);
-    if (count($m) !== 3) {
+    $parsed = aquavelo_gc_parse_rdv_from_name($name);
+    if ($parsed === null) {
         return false;
     }
 
-    $searchStart = DateTime::createFromFormat('d/m/Y H:i', $m[1] . ' ' . $m[2], new DateTimeZone('Europe/Paris'));
-    if (!$searchStart) {
-        return false;
-    }
-    $searchEnd = clone $searchStart;
+    $searchStart = clone $parsed['start'];
+    $searchEnd = clone $parsed['start'];
     $searchEnd->modify('+1 hour');
 
     try {
@@ -121,24 +147,30 @@ function aquavelo_gc_sync_pending_rdvs(PDO $database): array
         return $result;
     }
 
-    $stmt = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND google_sync = 0 AND center_id IN (305, 347, 349) ORDER BY id DESC");
+    // RDV jamais poussés OU marqués synchro sans google_event_id (ex. ancien sync_google_all.php)
+    $stmt = $database->prepare(
+        "SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND center_id IN (305, 347, 349) AND (
+            google_sync = 0
+            OR google_sync IS NULL
+            OR google_event_id IS NULL
+            OR TRIM(COALESCE(google_event_id, '')) = ''
+        ) ORDER BY id DESC"
+    );
     $stmt->execute();
     $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($bookings as $booking) {
-        preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', (string) $booking['name'], $matches);
         $clientName = trim(explode('(RDV:', (string) $booking['name'])[0]);
+        $parsed = aquavelo_gc_parse_rdv_from_name((string) $booking['name']);
 
-        if (count($matches) !== 3) {
-            $result['lines'][] = "⚠️ ID:{$booking['id']} | $clientName | Format date non parsé";
+        if ($parsed === null) {
+            $result['lines'][] = "⚠️ ID:{$booking['id']} | $clientName | Format date non parsé dans le nom";
             continue;
         }
 
-        $rdvStart = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2], new DateTimeZone('Europe/Paris'));
-        if (!$rdvStart) {
-            $result['lines'][] = "⚠️ ID:{$booking['id']} | $clientName | Date non reconnue";
-            continue;
-        }
+        $rdvStart = $parsed['start'];
+        $matchesDate = $parsed['date'];
+        $matchesTime = $parsed['time'];
 
         try {
             $rdvEnd = clone $rdvStart;
@@ -152,9 +184,12 @@ function aquavelo_gc_sync_pending_rdvs(PDO $database): array
             $city = $cInfo['city'] ?? 'Cannes';
             $calendarId = 'aqua.cannes@gmail.com';
 
+            $windowStart = (clone $rdvStart)->modify('-30 minutes');
+            $windowEnd = (clone $rdvStart)->modify('+90 minutes');
+
             $existing = $service->events->listEvents($calendarId, [
-                'timeMin'      => $rdvStart->format(DateTime::RFC3339),
-                'timeMax'      => $rdvEnd->format(DateTime::RFC3339),
+                'timeMin'      => $windowStart->format(DateTime::RFC3339),
+                'timeMax'      => $windowEnd->format(DateTime::RFC3339),
                 'singleEvents' => true,
             ]);
             $linked = false;
@@ -186,7 +221,7 @@ function aquavelo_gc_sync_pending_rdvs(PDO $database): array
             $database->prepare('UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?')
                 ->execute([$googleEventId, $booking['id']]);
 
-            $result['lines'][] = "✅ ID:{$booking['id']} | $clientName | {$matches[1]} à {$matches[2]} → $googleEventId";
+            $result['lines'][] = "✅ ID:{$booking['id']} | $clientName | {$matchesDate} à {$matchesTime} → $googleEventId";
             $result['synced']++;
         } catch (Throwable $e) {
             $result['lines'][] = "❌ ID:{$booking['id']} | $clientName | " . $e->getMessage();

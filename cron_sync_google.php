@@ -17,7 +17,7 @@ foreach ($out['lines'] as $line) {
     echo $line . "\n";
 }
 if (empty($out['lines'])) {
-    echo "Aucun RDV en attente (google_sync = 0, centres 305/347/349).\n";
+    echo "Aucun RDV à traiter (tous ont un google_event_id, ou hors centres 305/347/349).\n";
 }
 echo "\n=== RÉSULTAT ===\n";
 echo '✅ Synchronisés / reliés : ' . $out['synced'] . "\n";

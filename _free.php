@@ -223,10 +223,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $gc_center = $stmt_gc->fetch();
                     $gc_location = $gc_center['address'] ?? '60 Avenue du Dr Raymond Picaud, 06150 Cannes';
 
-                    // Parser la date/heure (format "Lundi 16/02/2026 à 10:15 (AQUAVELO)")
-                    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $date_heure, $gc_matches);
-                    if (count($gc_matches) === 3) {
-                        $rdv_start = \DateTime::createFromFormat('d/m/Y H:i', $gc_matches[1] . ' ' . $gc_matches[2], new \DateTimeZone('Europe/Paris'));
+                    // Parser la date/heure (format "Lundi 16/02/2026 à 10:15 (AQUAVELO)" — tolère 18h30, espaces insécables)
+                    require_once __DIR__ . '/google_calendar_rdv_helpers.php';
+                    $gcParsed = aquavelo_gc_parse_rdv_from_name($date_heure);
+                    if ($gcParsed !== null) {
+                        $rdv_start = $gcParsed['start'];
                         $rdv_end   = clone $rdv_start;
                         $rdv_end->modify('+45 minutes');
 

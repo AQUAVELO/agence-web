@@ -20,6 +20,17 @@ $authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === t
 // Liste des centres partageant le même planning
 $shared_centers = [305, 347, 349];
 $centers_names = [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris'];
+try {
+    $stmt_cn = $database->query('SELECT id, city FROM am_centers WHERE online = 1 AND aquavelo = 1');
+    while ($row = $stmt_cn->fetch(PDO::FETCH_ASSOC)) {
+        $centers_names[(int) $row['id']] = $row['city'];
+    }
+} catch (Throwable $e) {
+    /* garde $centers_names par défaut */
+}
+
+/** Lundi de Pâques : affichage admin séances d'essai jusqu'à 13 h + résas tous centres */
+$admin_special_lundi_essai = '2026-04-06';
 
 if (isset($_POST['login_pass'])) {
     if ($_POST['login_pass'] === $password_secret) {
@@ -335,21 +346,50 @@ for ($i = 0; $i < 21; $i++) {
         }
     }
     if (!empty($current_slots)) {
-        $calendar[] = ['full_date' => $date->format('d/m/Y'), 'raw_date' => $date->format('Y-m-d'), 'day_name' => $day_fr, 'slots' => $current_slots];
+        $rawD = $date->format('Y-m-d');
+        if ($rawD === $admin_special_lundi_essai) {
+            $current_slots = array_values(array_filter($current_slots, static function ($slot) {
+                return strcmp($slot['time'], '13:30') < 0;
+            }));
+        }
+        if (!empty($current_slots)) {
+            $calendar[] = [
+                'full_date' => $date->format('d/m/Y'),
+                'raw_date'  => $rawD,
+                'day_name'  => $day_fr,
+                'slots'     => $current_slots,
+                'special_essai_jusqua_13h' => ($rawD === $admin_special_lundi_essai),
+            ];
+        }
     }
 }
 
-// 4. RÉCUPÉRATION DES RÉSERVATIONS
+// 4. RÉCUPÉRATION DES RÉSERVATIONS (Cannes/Mandelieu/Vallauris + le 06/04/2026 tous centres)
 $all_free_query = $database->prepare("SELECT * FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
 $all_free_query->execute();
 $all_free = $all_free_query->fetchAll(PDO::FETCH_ASSOC);
+
+$by_id = [];
+foreach ($all_free as $r) {
+    $by_id[(int) $r['id']] = $r;
+}
+$extra = $database->prepare("SELECT * FROM am_free WHERE name LIKE '%(RDV:%' AND name LIKE '%06/04/2026%' AND center_id NOT IN (305, 347, 349)");
+$extra->execute();
+foreach ($extra->fetchAll(PDO::FETCH_ASSOC) as $r) {
+    $by_id[(int) $r['id']] = $r;
+}
+$all_free = array_values($by_id);
 
 $bookings_visuel = [];
 foreach ($all_free as $res) {
     foreach ($calendar as $day) {
         foreach ($day['slots'] as $s) {
-            if (strpos($res['name'], $day['full_date'] . " à " . $s['time']) !== false) {
-                $bookings_visuel[$day['full_date'] . '|' . $s['time']] = $res;
+            if (strpos($res['name'], $day['full_date'] . ' à ' . $s['time']) !== false) {
+                $k = $day['full_date'] . '|' . $s['time'];
+                if (!isset($bookings_visuel[$k])) {
+                    $bookings_visuel[$k] = [];
+                }
+                $bookings_visuel[$k][] = $res;
             }
         }
     }
@@ -379,29 +419,53 @@ foreach ($all_free as $res) {
             <div style="text-align: center; font-weight: bold; border-bottom: 2px solid #eee; margin-bottom: 12px; padding-bottom: 8px;">
                 <?= $day['day_name'] ?><br><small><?= $day['full_date'] ?></small>
             </div>
+            <?php if (!empty($day['special_essai_jusqua_13h'])) : ?>
+            <div style="font-size: 0.68rem; color: #b71c1c; margin: -4px 0 10px; line-height: 1.35; text-align: center; background: #ffebee; padding: 6px; border-radius: 6px;">Séances d’essai <strong>jusqu’à 13 h</strong> — réservations de <strong>tous les centres</strong> Aquavelo visibles pour ce jour.</div>
+            <?php endif; ?>
             <?php foreach ($day['slots'] as $s) : 
                 $key = $day['full_date'] . '|' . $s['time'];
-                $res = $bookings_visuel[$key] ?? null;
-                $is_locked = ($res && (strpos($res['name'], 'VERROUILLÉ') !== false || strpos($res['name'], 'BLOQUE') !== false));
-                $center_label = ($res && isset($centers_names[$res['center_id']])) ? $centers_names[$res['center_id']] : '';
-                $client_name_only = $res ? trim(explode('(RDV:', $res['name'])[0]) : '';
+                $slot_entries = $bookings_visuel[$key] ?? [];
             ?>
-                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $res ? ($is_locked ? '#f5f5f5' : '#fff9c4') : '#fff' ?>; border: 1px solid <?= $res ? ($is_locked ? '#ddd' : '#fbc02d') : '#eee' ?>; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between;">
+            <?php if (empty($slot_entries)) :
+                $res = null;
+                $is_locked = false;
+                $center_label = '';
+                $client_name_only = '';
+            ?>
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: #fff; border: 1px solid #eee; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <b><?= $s['time'] ?></b>
+                      </div>
+                      <span style="font-size: 0.65rem; color: #999;"><?= $s['activity'] ?></span>
+                      <div style="color: #bbb; margin-top: 5px;">Disponible</div>
+                  </div>
+                  <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px; display: flex; justify-content: space-between;">
+                        <a href="index.php?p=admin_planning&action=lock&date=<?= $day['full_date'] ?>&dayname=<?= $day['day_name'] ?>&time=<?= $s['time'] ?>&activity=<?= $s['activity'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 
+                           onclick="return confirm('Verrouiller ce créneau pour les clients ?')"
+                           style="color: #00a8cc; font-size: 0.7rem; font-weight: bold; text-decoration: none;">🔒 VERROUILLER</a>
+                  </div>
+                </div>
+            <?php else : ?>
+                <?php foreach ($slot_entries as $res) :
+                $is_locked = (strpos($res['name'], 'VERROUILLÉ') !== false || strpos($res['name'], 'BLOQUE') !== false);
+                $center_label = isset($centers_names[$res['center_id']]) ? $centers_names[$res['center_id']] : ('#' . (int) $res['center_id']);
+                $client_name_only = trim(explode('(RDV:', $res['name'])[0]);
+            ?>
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; background: <?= $is_locked ? '#f5f5f5' : '#fff9c4' ?>; border: 1px solid <?= $is_locked ? '#ddd' : '#fbc02d' ?>; min-height: 105px; display: flex; flex-direction: column; justify-content: space-between;">
                   <div>
                       <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <b><?= $s['time'] ?></b>
                         <?php if ($center_label && !$is_locked): ?>
-                            <span style="font-size: 0.6rem; background: #00a8cc; color: white; padding: 1px 4px; border-radius: 3px;"><?= $center_label ?></span>
+                            <span style="font-size: 0.6rem; background: #00a8cc; color: white; padding: 1px 4px; border-radius: 3px;"><?= htmlspecialchars($center_label, ENT_QUOTES, 'UTF-8') ?></span>
                         <?php endif; ?>
                       </div>
                       <span style="font-size: 0.65rem; color: #999;"><?= $s['activity'] ?></span>
-                      
-                      <?php if ($res) : ?>
                         <div style="margin-top: 5px; font-weight: bold; color: <?= $is_locked ? '#999' : '#333' ?>; line-height: 1.1;">
-                            <?= $client_name_only ?>
+                            <?= htmlspecialchars($client_name_only, ENT_QUOTES, 'UTF-8') ?>
                         </div>
                         <?php if (!$is_locked): ?>
-                            <div style="color: #666; font-size: 0.75rem;"><?= $res['phone'] ?></div>
+                            <div style="color: #666; font-size: 0.75rem;"><?= htmlspecialchars((string) $res['phone'], ENT_QUOTES, 'UTF-8') ?></div>
                             <!-- Indicateurs relances : avant RDV, puis après séance (3h ap., J+2, J+7) -->
                             <?php
                             $ok24 = (int) ($res['reminder_sent'] ?? 0) === 1;
@@ -425,29 +489,20 @@ foreach ($all_free as $res) {
                                 <span title="<?= $gcalOk ? 'Événement lié sur aqua.cannes@gmail.com' : 'Pas encore sur Google Agenda — cliquez « Synchroniser Google Agenda » en haut' ?>" style="font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 700; border: 1px solid <?= $gcalOk ? '#2e7d32' : '#ef6c00' ?>; background: <?= $gcalOk ? '#e8f5e9' : '#fff3e0' ?>; color: <?= $gcalOk ? '#1b5e20' : '#e65100' ?>;"><?= $gcalOk ? 'Agenda OK' : 'Agenda ?' ?></span>
                             </div>
                         <?php endif; ?>
-                      <?php else : ?>
-                        <div style="color: #bbb; margin-top: 5px;">Disponible</div>
-                      <?php endif; ?>
                   </div>
                   
                   <div style="margin-top: 8px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px; display: flex; justify-content: space-between;">
-                    <?php if ($res) : ?>
-                        <a href="index.php?p=admin_planning&action=delete&id=<?= $res['id'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 
+                        <a href="index.php?p=admin_planning&action=delete&id=<?= (int) $res['id'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 
                            onclick="return confirm('<?= $is_locked ? 'Déverrouiller ce créneau ?' : 'Annuler ce RDV ?' ?>')" 
                            style="color: #d32f2f; font-size: 0.7rem; font-weight: bold; text-decoration: none;">
                            <?= $is_locked ? '🔓 DÉVERROUILLER' : '❌ ANNULER' ?>
                         </a>
                         <?php if (!$is_locked): ?>
-                            <a href="#" onclick="openMoveModal(<?= $res['id'] ?>, '<?= htmlspecialchars($client_name_only, ENT_QUOTES) ?>')" 
+                            <a href="#" onclick="openMoveModal(<?= (int) $res['id'] ?>, '<?= htmlspecialchars($client_name_only, ENT_QUOTES) ?>')" 
                                style="color: #00a8cc; font-size: 0.7rem; font-weight: bold; text-decoration: none;">
                                🔄 DÉPLACER
                             </a>
                         <?php endif; ?>
-                    <?php else : ?>
-                        <a href="index.php?p=admin_planning&action=lock&date=<?= $day['full_date'] ?>&dayname=<?= $day['day_name'] ?>&time=<?= $s['time'] ?>&activity=<?= $s['activity'] ?>&token=<?= $_SESSION['csrf_token'] ?>" 
-                           onclick="return confirm('Verrouiller ce créneau pour les clients ?')"
-                           style="color: #00a8cc; font-size: 0.7rem; font-weight: bold; text-decoration: none;">🔒 VERROUILLER</a>
-                    <?php endif; ?>
                   </div>
                   <?php if ($res && !$is_locked): ?>
                   <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 5px; margin-top: 4px;">
@@ -458,6 +513,8 @@ foreach ($all_free as $res) {
                   </div>
                   <?php endif; ?>
                 </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
             <?php endforeach; ?>
           </div>
         <?php endforeach; ?>

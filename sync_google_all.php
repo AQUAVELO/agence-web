@@ -3,12 +3,13 @@
  * Script de RATTRAPAGE pour synchroniser tous les anciens RDV vers Google Calendar
  */
 
-require '_settings.php';
+require __DIR__ . '/_settings.php';
+require_once __DIR__ . '/load_env.php';
 require_once __DIR__ . '/google_calendar_rdv_helpers.php';
 date_default_timezone_set('Europe/Paris');
 
-if (file_exists('vendor/autoload.php')) {
-    require_once 'vendor/autoload.php';
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
 }
 
 use Google\Client;
@@ -18,8 +19,13 @@ use Google\Service\Calendar\Event;
 echo "<pre>";
 echo "Démarrage du rattrapage Google Calendar...\n";
 
-$keyFile = 'google_key.json';
-if (!file_exists($keyFile)) { die("❌ Erreur : Fichier google_key.json manquant."); }
+$keyFile = __DIR__ . '/google_key.json';
+if (!file_exists($keyFile)) {
+    generateGoogleKeyFile();
+}
+if (!file_exists($keyFile)) {
+    die("❌ Erreur : Fichier google_key.json manquant (vérifiez GOOGLE_CALENDAR_KEY_JSON_BASE64 sur Clever Cloud).");
+}
 
 try {
     $client = new Client();

@@ -141,7 +141,15 @@ function aquavelo_gc_sync_pending_rdvs(PDO $database): array
     $result = ['synced' => 0, 'errors' => 0, 'lines' => []];
     $service = aquavelo_gc_bootstrap();
     if (!$service) {
-        $result['lines'][] = '❌ API Google indisponible (vendor ou google_key.json)';
+        $vendorOk = file_exists(__DIR__ . '/vendor/autoload.php');
+        $keyPath = __DIR__ . '/google_key.json';
+        $b64Len = 0;
+        if (function_exists('aquavelo_env')) {
+            $b64Len = strlen(preg_replace('/\s+/', '', aquavelo_env('GOOGLE_CALENDAR_KEY_JSON_BASE64')));
+        }
+        $result['lines'][] = '❌ API Google indisponible — vendor: ' . ($vendorOk ? 'OK' : 'manquant')
+            . ' | google_key.json: ' . (file_exists($keyPath) ? 'OK' : 'absent')
+            . ' | env BASE64 (longueur): ' . ($b64Len > 0 ? (string) $b64Len : '0');
         $result['errors']++;
 
         return $result;

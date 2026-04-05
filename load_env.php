@@ -63,15 +63,22 @@ function generateGoogleKeyFile() {
     $keyFile = __DIR__ . '/google_key.json';
     
     // Option 1 : Si le JSON complet est stocké en base64 (Clever Cloud : GOOGLE_CALENDAR_KEY_JSON_BASE64)
-    $b64 = aquavelo_env('GOOGLE_CALENDAR_KEY_JSON_BASE64');
+    $b64 = preg_replace('/\s+/', '', aquavelo_env('GOOGLE_CALENDAR_KEY_JSON_BASE64'));
     if ($b64 !== '') {
         $jsonContent = base64_decode($b64, true);
-        if ($jsonContent !== false && json_decode($jsonContent) !== null) {
-            file_put_contents($keyFile, $jsonContent);
-
-            return true;
+        $decoded = is_string($jsonContent) ? json_decode($jsonContent, true) : null;
+        $valid = is_array($decoded)
+            && !empty($decoded['private_key'])
+            && !empty($decoded['client_email']);
+        if ($valid) {
+            if (file_put_contents($keyFile, $jsonContent) === false) {
+                error_log('generateGoogleKeyFile: écriture impossible vers ' . $keyFile);
+            } else {
+                return true;
+            }
+        } else {
+            error_log('generateGoogleKeyFile: GOOGLE_CALENDAR_KEY_JSON_BASE64 invalide (base64, JSON ou champs service_account manquants)');
         }
-        error_log('generateGoogleKeyFile: GOOGLE_CALENDAR_KEY_JSON_BASE64 invalide (base64 ou JSON)');
     }
     
     // Option 2 : Si les champs sont stockés individuellement

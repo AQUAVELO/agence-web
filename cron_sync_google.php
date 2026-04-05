@@ -3,8 +3,8 @@
  * Script de synchronisation vers Google Calendar (cron Clever Cloud)
  */
 
-require '_settings.php';
-require 'load_env.php';
+require __DIR__ . '/_settings.php';
+require __DIR__ . '/load_env.php';
 date_default_timezone_set('Europe/Paris');
 
 require_once __DIR__ . '/google_calendar_rdv_helpers.php';

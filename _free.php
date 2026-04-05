@@ -226,6 +226,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     // Parser la date/heure (format "Lundi 16/02/2026 à 10:15 (AQUAVELO)" — tolère 18h30, espaces insécables)
                     require_once __DIR__ . '/google_calendar_rdv_helpers.php';
                     $gcParsed = aquavelo_gc_parse_rdv_from_name($date_heure);
+                    if ($gcParsed === null && !empty($input_name_db)) {
+                        $gcParsed = aquavelo_gc_parse_rdv_from_name($input_name_db);
+                    }
                     if ($gcParsed !== null) {
                         $rdv_start = $gcParsed['start'];
                         $rdv_end   = clone $rdv_start;
@@ -254,11 +257,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                         error_log("✅ Google Calendar: RDV créé (ID:$new_booking_id) pour $input_nom_complet ($city) - Event: $googleEventId - Rows updated: " . $upd->rowCount());
                     } else {
-                        error_log("⚠️ Google Calendar: format date non reconnu pour '$date_heure'");
+                        error_log("⚠️ Google Calendar: impossible de parser la date (date_heure='$date_heure', name_db='" . substr($input_name_db, 0, 200) . "') booking_id=$new_booking_id");
                     }
                 } catch (\Exception $e) {
-                    // Ne pas bloquer la réservation si Google Calendar échoue
-                    error_log("⚠️ Google Calendar sync échouée pour ID $new_booking_id: " . $e->getMessage() . " | date_heure=$date_heure | center=$center_id");
+                    // Ne pas bloquer la réservation si Google Calendar échoue — la ligne reste google_sync=0, le cron / bouton admin peuvent rattraper
+                    error_log("⚠️ Google Calendar sync échouée pour ID $new_booking_id: " . $e->getMessage() . " | date_heure=$date_heure | center=$center_id | trace=" . $e->getFile() . ':' . $e->getLine());
                 }
             }
 

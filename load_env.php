@@ -39,30 +39,56 @@ if (file_exists($envFile)) {
     }
 }
 
+/**
+ * Lit une variable d'environnement (Clever Cloud / PHP-FPM : souvent getenv, pas $_ENV).
+ */
+function aquavelo_env(string $key): string
+{
+    $v = getenv($key);
+    if ($v !== false && $v !== '') {
+        return $v;
+    }
+    if (isset($_SERVER[$key]) && (string) $_SERVER[$key] !== '') {
+        return (string) $_SERVER[$key];
+    }
+    if (isset($_ENV[$key]) && (string) $_ENV[$key] !== '') {
+        return (string) $_ENV[$key];
+    }
+
+    return '';
+}
+
 // 2. Générer dynamiquement google_key.json depuis les variables d'environnement
 function generateGoogleKeyFile() {
     $keyFile = __DIR__ . '/google_key.json';
     
-    // Option 1 : Si le JSON complet est stocké en base64
-    if (!empty($_ENV['GOOGLE_CALENDAR_KEY_JSON_BASE64'])) {
-        $jsonContent = base64_decode($_ENV['GOOGLE_CALENDAR_KEY_JSON_BASE64']);
-        file_put_contents($keyFile, $jsonContent);
-        return true;
+    // Option 1 : Si le JSON complet est stocké en base64 (Clever Cloud : GOOGLE_CALENDAR_KEY_JSON_BASE64)
+    $b64 = aquavelo_env('GOOGLE_CALENDAR_KEY_JSON_BASE64');
+    if ($b64 !== '') {
+        $jsonContent = base64_decode($b64, true);
+        if ($jsonContent !== false && json_decode($jsonContent) !== null) {
+            file_put_contents($keyFile, $jsonContent);
+
+            return true;
+        }
+        error_log('generateGoogleKeyFile: GOOGLE_CALENDAR_KEY_JSON_BASE64 invalide (base64 ou JSON)');
     }
     
     // Option 2 : Si les champs sont stockés individuellement
-    if (!empty($_ENV['GOOGLE_CLIENT_EMAIL']) && !empty($_ENV['GOOGLE_PRIVATE_KEY'])) {
+    $gEmail = aquavelo_env('GOOGLE_CLIENT_EMAIL');
+    $gKey = aquavelo_env('GOOGLE_PRIVATE_KEY');
+    if ($gEmail !== '' && $gKey !== '') {
         $keyData = [
             'type' => 'service_account',
-            'project_id' => $_ENV['GOOGLE_PROJECT_ID'] ?? 'aquavelo-calendar',
-            'private_key_id' => $_ENV['GOOGLE_PRIVATE_KEY_ID'] ?? '',
-            'private_key' => str_replace('\\n', "\n", $_ENV['GOOGLE_PRIVATE_KEY']),
-            'client_email' => $_ENV['GOOGLE_CLIENT_EMAIL'],
-            'client_id' => $_ENV['GOOGLE_CLIENT_ID'] ?? '',
+            'project_id' => aquavelo_env('GOOGLE_PROJECT_ID') ?: 'aquavelo-calendar',
+            'private_key_id' => aquavelo_env('GOOGLE_PRIVATE_KEY_ID'),
+            'private_key' => str_replace('\\n', "\n", $gKey),
+            'client_email' => $gEmail,
+            'client_id' => aquavelo_env('GOOGLE_CLIENT_ID'),
             'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
             'token_uri' => 'https://oauth2.googleapis.com/token',
             'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
-            'client_x509_cert_url' => 'https://www.googleapis.com/robot/v1/metadata/x509/' . urlencode($_ENV['GOOGLE_CLIENT_EMAIL']),
+            'client_x509_cert_url' => 'https://www.googleapis.com/robot/v1/metadata/x509/' . urlencode($gEmail),
             'universe_domain' => 'googleapis.com'
         ];
         

@@ -880,6 +880,14 @@
               <i class="fa fa-snowflake-o"></i> Minceur Cryolipolyse
             </a>
             <?php endif; ?>
+
+            <?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>
+            <a href="<?= BASE_PATH ?>soin-madeiro-drainage"
+               class="btn btn-default btn-block"
+               style="margin-bottom: 10px; padding: 12px; font-weight: 600; line-height: 1.35; text-transform: uppercase; font-size: 0.78rem;">
+              Soin madérothérapie ou drainage lymphatique — lundi 4 mai — 9h à 14h
+            </a>
+            <?php endif; ?>
           </div>
 
           <?php if (!empty($row_center['description'])) : ?>

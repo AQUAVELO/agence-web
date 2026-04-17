@@ -110,6 +110,11 @@ if ($page == 'conseilminceur') {
     $meta_description = 'Recettes minceur quotidiennes, menus équilibrés et conseils nutrition pour accompagner vos séances d\'aquabiking. Programme perte de poids complet avec coaching alimentaire gratuit.';
 }
 
+if ($page == 'soin_madeiro_drainage') {
+    $title = 'Madérothérapie ou drainage lymphatique — 4 mai 2026, 9h–14h | 90 € | Aquavelo Cannes';
+    $meta_description = 'Réservez votre soin madérothérapie ou drainage lymphatique à Aquavelo Cannes : lundi 4 mai 2026, créneaux horaires de 9h à 14h, 90 € la séance. Confirmation par email.';
+}
+
 if ($page == 'vente_formule') {
     $title = 'Formules et Tarifs Aquabiking | Abonnements à partir de 8€/séance';
     $meta_description = 'Découvrez nos formules d\'abonnement aquabiking : séances à l\'unité, cartes 10 séances ou abonnements mensuels illimités. Tarifs dégressifs à partir de 8€/séance et offres promotionnelles.';
@@ -289,8 +294,8 @@ if (isset($_GET['city'])) {
       $canonical_url .= '/centres';
   }
   // Pages avec URLs propres
-  elseif (in_array($page, ['aquagym', 'natation', 'cryolipolyse'])) {
-      $canonical_url .= '/' . $page;
+  elseif (in_array($page, ['aquagym', 'natation', 'cryolipolyse', 'soin_madeiro_drainage'])) {
+      $canonical_url .= '/' . ($page === 'soin_madeiro_drainage' ? 'soin-madeiro-drainage' : $page);
   }
   // Pages de vente (utiliser pretty URL sans .php)
   elseif (in_array($page, ['vente_formule', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {

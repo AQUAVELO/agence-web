@@ -884,9 +884,9 @@
             <?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>
             <a href="<?= BASE_PATH ?>soin-madeiro-drainage"
                class="btn btn-default btn-block"
-               style="margin-bottom: 10px; padding: 12px 14px; font-weight: 600; line-height: 1.4; text-align: center; text-transform: uppercase; font-size: 0.72rem; white-space: normal; word-break: break-word; hyphens: auto;">
-              <span style="display: block;">Soin madérothérapie ou drainage lymphatique</span>
-              <span style="display: block; margin-top: 4px; font-size: 0.92em; opacity: 0.95;">Lundi 4 mai — 9h à 14h</span>
+               style="margin-bottom: 10px; padding: 14px 16px; font-weight: 800; line-height: 1.35; text-align: center; text-transform: uppercase; color: #1a1a1a; white-space: normal; word-break: break-word; hyphens: auto;">
+              <span style="display: block; font-size: clamp(0.82rem, 2.6vw, 1rem); font-weight: 800; letter-spacing: 0.02em;">Soin madérothérapie ou drainage lymphatique</span>
+              <span style="display: block; margin-top: 6px; font-size: clamp(0.75rem, 2.2vw, 0.9rem); font-weight: 700; color: #222;">Lundi 4 mai — 9h à 14h</span>
             </a>
             <?php endif; ?>
           </div>

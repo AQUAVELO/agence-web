@@ -394,6 +394,18 @@ foreach ($all_free as $res) {
         }
     }
 }
+/** RDV page soin madéro / drainage (même valeur que SMD_AMFREE_SEGMENT dans _soin_madeiro_drainage.php) */
+$smd_massage_segment = 'soin-madeiro-drainage';
+$smd_massage_bookings = [];
+try {
+    $smd_massage_stmt = $database->prepare(
+        'SELECT id, date, name, email, phone, reference FROM am_free WHERE segment_id = ? ORDER BY id DESC LIMIT 80'
+    );
+    $smd_massage_stmt->execute([$smd_massage_segment]);
+    $smd_massage_bookings = $smd_massage_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Throwable $e) {
+    $smd_massage_bookings = [];
+}
 ?>
 
 <section class="content-area bg1" style="padding: 40px 0;">
@@ -519,6 +531,50 @@ foreach ($all_free as $res) {
           </div>
         <?php endforeach; ?>
       </div>
+
+    <?php if (!empty($smd_massage_bookings)) : ?>
+    <div style="margin-top: 28px; padding-top: 22px; border-top: 2px solid #e3f2fd;">
+      <h3 style="color: #1565c0; margin: 0 0 12px; font-size: 1.1rem;">💆 Réservations soin madéro / drainage (Cannes)</h3>
+      <p style="color: #666; font-size: 0.88rem; margin-bottom: 14px; line-height: 1.45;">
+        Demandes enregistrées via la page dédiée (hors planning séance d’essai). Supprimer retire uniquement la fiche en base — les e-mails déjà envoyés ne sont pas annulés.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" style="font-size: 0.78rem; margin-bottom: 0;">
+          <thead style="background: #1565c0; color: #fff;">
+            <tr>
+              <th style="color: #fff;">ID</th>
+              <th style="color: #fff;">Enregistré</th>
+              <th style="color: #fff;">Détail</th>
+              <th style="color: #fff;">Email</th>
+              <th style="color: #fff;">Tél.</th>
+              <th style="color: #fff; width: 90px;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($smd_massage_bookings as $smd_row) : ?>
+            <tr>
+              <td><?= (int) $smd_row['id'] ?></td>
+              <td><?= htmlspecialchars((string) ($smd_row['date'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= htmlspecialchars((string) ($smd_row['name'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+              <td><a href="mailto:<?= htmlspecialchars((string) ($smd_row['email'] ?? ''), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars((string) ($smd_row['email'] ?? ''), ENT_QUOTES, 'UTF-8') ?></a></td>
+              <td><?= htmlspecialchars((string) ($smd_row['phone'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+              <td class="text-center">
+                <a href="index.php?p=admin_planning&amp;action=delete&amp;id=<?= (int) $smd_row['id'] ?>&amp;token=<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>"
+                   onclick="return confirm('Supprimer cette réservation soin de la liste ?');"
+                   style="color: #c62828; font-weight: 700; text-decoration: none;">Supprimer</a>
+              </td>
+            </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <?php else : ?>
+    <div style="margin-top: 28px; padding: 16px 18px; background: #fafafa; border-radius: 10px; border: 1px dashed #bdbdbd;">
+      <h3 style="color: #1565c0; margin: 0 0 8px; font-size: 1.05rem;">💆 Réservations soin madéro / drainage</h3>
+      <p style="margin: 0; color: #777; font-size: 0.88rem;">Aucune demande enregistrée pour le moment. Les prochaines réservations via le site apparaîtront ici avec possibilité de suppression.</p>
+    </div>
+    <?php endif; ?>
     </div>
   </div>
 </section>
@@ -536,7 +592,7 @@ foreach ($all_free as $res) {
       $target_centers = [305, 347, 349, 253, 345, 271, 343, 308, 338, 324, 341, 179, 339, 320, 312, 321, 315];
       $center_labels = [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris', 253 => 'Antibes', 345 => 'Aix', 271 => 'Toulouse', 343 => 'Mérignac', 308 => 'St Raphaël', 338 => 'Puget', 324 => 'Villebon', 341 => 'Senlis', 179 => 'Nice', 339 => 'Hyères', 320 => 'Dijon', 312 => 'Valence', 321 => 'Grasse', 315 => 'St Étienne'];
       $in_clause = implode(',', $target_centers);
-      $stats_query = $database->prepare("SELECT center_id, email, date FROM am_free WHERE center_id IN ($in_clause) AND date LIKE ? AND name NOT LIKE '%BLOQUE%' AND name NOT LIKE '%VERROUILLÉ%'");
+      $stats_query = $database->prepare("SELECT center_id, email, date FROM am_free WHERE center_id IN ($in_clause) AND date LIKE ? AND name NOT LIKE '%BLOQUE%' AND name NOT LIKE '%VERROUILLÉ%' AND COALESCE(segment_id, '') <> 'soin-madeiro-drainage'");
       $stats_query->execute([date('Y-m') . "%"]);
       $all_stats = $stats_query->fetchAll(PDO::FETCH_ASSOC);
       $stats_data = []; $seen_today = [];

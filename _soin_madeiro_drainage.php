@@ -11,6 +11,8 @@ use PHPMailer\PHPMailer\Exception;
 const SOIN_EVENT_ISO = '2026-05-04';
 const SOIN_EVENT_LABEL_FR = 'lundi 4 mai 2026';
 const SOIN_PRIX_EUROS = 90;
+/** am_free.segment_id — hors planning séance d’essai / crons / synchro Google */
+const SMD_AMFREE_SEGMENT = 'soin-madeiro-drainage';
 
 $creneaux_horaires = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
 
@@ -47,7 +49,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['smd_submit'])) {
         $hp = explode(':', $creneau);
         $creneau_label = (isset($hp[0], $hp[1]) ? ((int) $hp[0]) . 'h' . $hp[1] : $creneau);
 
+        $smd_db_ok = false;
         try {
+            $reference = 'SMD' . date('dmHis') . bin2hex(random_bytes(2));
+            $name_db = $prenom . ' ' . $nom . ' — ' . $type_soin . ' — créneau ' . $creneau_label . ' — ' . SOIN_EVENT_LABEL_FR;
+            $ins = $database->prepare(
+                'INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)'
+            );
+            $ins->execute([$reference, 305, 3, $name_db, $email, $telephone, SMD_AMFREE_SEGMENT]);
+            $smd_db_ok = true;
+        } catch (Throwable $e) {
+            error_log('SMD insert am_free : ' . $e->getMessage());
+            $smd_error = 'Enregistrement impossible pour le moment. Merci de réessayer ou de nous appeler au 04 93 93 05 65.';
+        }
+
+        if ($smd_db_ok) {
+            try {
             $mailCentre = new PHPMailer(true);
             $mailCentre->isSMTP();
             $mailCentre->Host = $settings['mjhost'];
@@ -137,7 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['smd_submit'])) {
             error_log('Erreur envoi email prospect soin madéro/drainage : ' . $e->getMessage());
         }
 
-        $smd_success = true;
+            $smd_success = true;
+        }
     }
 }
 

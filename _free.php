@@ -54,14 +54,8 @@ if (!function_exists('aquavelo_is_google_calendar_address')) {
         if ($e === '') {
             return false;
         }
-        if (strpos($e, '@group.calendar.google.com') !== false) {
-            return true;
-        }
-        if (strpos($e, '@resource.calendar.google.com') !== false) {
-            return true;
-        }
-
-        return strpos($e, '@import.calendar.google.com') !== false;
+        // IDs agenda Google du type *@group.calendar.google.com, *@resource.calendar.google.com, etc.
+        return (bool) preg_match('/@[a-z0-9.-]+\.calendar\.google\.com$/i', $e);
     }
 }
 
@@ -455,6 +449,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                               "📞 $tel";
                 }
                 sendTelegram($tg_msg);
+            } elseif ((int)$center_id === 332) {
+                // Valbonne : pas dans le planning Telegram Cannes — alerte équipe (dirigeant ne reçoit pas toujours l’email admin)
+                if ($segment == 'calendrier-cannes') {
+                    $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" .
+                              "👤 $input_nom_complet\n" .
+                              "📧 $email\n" .
+                              "📞 $tel\n" .
+                              "🗓️ $date_heure";
+                    if ($rescheduling_alert) {
+                        $tg_msg = "<b>🔄 REPLANIFICATION - $city</b>\n" .
+                                  "👤 $input_nom_complet\n" .
+                                  "📧 $email\n" .
+                                  "📞 $tel\n" .
+                                  "🗓️ Nouveau : $date_heure\n" .
+                                  "❌ Ancien : $old_rdv";
+                    }
+                } else {
+                    $tg_msg = "<b>🎁 NOUVEAU PROSPECT - $city</b>\n" .
+                              "👤 $input_nom_complet\n" .
+                              "📧 $email\n" .
+                              "📞 $tel";
+                }
+                sendTelegram($tg_msg);
             }
 
             // 3. Envoi des Emails
@@ -505,6 +522,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             }
                         }
                     }
+                    // Valbonne : si aucune boîte « humaine » en BDD, email du dirigeant (Clever Cloud AQUAVELO_VALBONNE_NOTIFY_EMAIL)
+                    if ((int)$center_id === 332 && $adminRecipientsAdded === 0) {
+                        $vbCfg = isset($settings['valbonne_notify_email']) ? trim((string) $settings['valbonne_notify_email']) : '';
+                        $vbCfgParsed = aquavelo_parse_recipient_email($vbCfg);
+                        if ($vbCfgParsed !== '' && !aquavelo_is_google_calendar_address($vbCfgParsed)) {
+                            $mail->addAddress($vbCfgParsed);
+                            $adminRecipientsAdded++;
+                            if ($use_nice_style_email && strtolower($vbCfgParsed) !== 'claude@alesiaminceur.com') {
+                                $mail->addBCC('claude@alesiaminceur.com');
+                            }
+                        }
+                    }
                     if ($adminRecipientsAdded === 0) {
                         aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
                         if ($use_nice_style_email) {
@@ -548,7 +577,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       <small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
                     }
                     try {
-                        $mail->send();
+                        $adminTo = array_map(static function ($row) {
+                            return $row[0] ?? '';
+                        }, $mail->getToAddresses());
+                        $adminTo = array_values(array_filter($adminTo));
+                        if ($adminTo === []) {
+                            error_log("⚠️ Email admin $city : aucun destinataire To (centre_id=$center_id) — envoi ignoré.");
+                        } else {
+                            $mail->send();
+                            error_log("Email admin envoyé $city: " . implode(', ', $adminTo) . " | message_id=" . $mail->getLastMessageID());
+                        }
                     } catch (Exception $adminEmailException) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);
                     }

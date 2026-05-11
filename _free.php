@@ -42,7 +42,7 @@ if (!function_exists('aquavelo_add_mail_recipients')) {
 }
 
 if (!function_exists('aquavelo_create_mailer')) {
-    function aquavelo_create_mailer(array $settings, string $city): PHPMailer
+    function aquavelo_create_mailer(array $settings, string $city, string $fromEmail = 'service.clients@aquavelo.com', string $fromNamePrefix = 'Aquavelo'): PHPMailer
     {
         $mail = new PHPMailer(true);
         $mail->isSMTP();
@@ -53,10 +53,18 @@ if (!function_exists('aquavelo_create_mailer')) {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
-        $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $city);
+        $mail->setFrom($fromEmail, $fromNamePrefix . ' ' . $city);
         $mail->isHTML(true);
 
         return $mail;
+    }
+}
+
+if (!function_exists('aquavelo_set_mail_body')) {
+    function aquavelo_set_mail_body(PHPMailer $mail, string $html): void
+    {
+        $mail->Body = $html;
+        $mail->AltBody = trim(preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $html)), ENT_QUOTES, 'UTF-8')));
     }
 }
 
@@ -420,7 +428,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
-                        $clientMail = aquavelo_create_mailer($settings, $city);
+                        $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
                         $clientMail->addAddress($email);
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
@@ -431,11 +439,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                         if ($is_coming_soon_center) {
                             $clientMail->Subject = "Votre demande - Centre Aquavelo $city";
-                            $clientMail->Body = "Bonjour " . htmlspecialchars($input_nom_complet) . ",<br><br>
+                            aquavelo_set_mail_body($clientMail, "Bonjour " . htmlspecialchars($input_nom_complet) . ",<br><br>
                                           Nous sommes ravis de votre intérêt pour une séance découverte gratuite au centre Aquavélo de <b>$city</b>, cependant le centre n'est pas encore ouvert sur $city, nous reviendrons vers vous lors de son ouverture.<br><br>
                                           Cordialement,<br>
                                           L'équipe Aquavélo<br>
-                                          <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
+                                          <a href='https://www.aquavelo.com'>www.aquavelo.com</a>");
                         } else {
                             $clientMail->Subject = "Votre séance découverte gratuite à Aquavelo $city";
 
@@ -444,7 +452,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                 $rdv_text = "Prenez dès maintenant rendez-vous directement sur <a href='https://calendly.com/aquavelo-antibes'>https://calendly.com/aquavelo-antibes</a>, ou en appelant le <b>" . $row_center_contact['phone'] . "</b>.";
                             }
 
-                            $clientMail->Body = "Bonjour " . htmlspecialchars($input_nom_complet) . ",<br><br>
+                            aquavelo_set_mail_body($clientMail, "Bonjour " . htmlspecialchars($input_nom_complet) . ",<br><br>
                                           Nous sommes ravis de vous offrir une séance découverte gratuite au centre Aquavélo de <b>$city</b>.<br><br>
                                           Lors de votre visite, vous profiterez d'un cours d'aquabiking coaché, encadré par nos professeurs de sport diplômés. Nous commencerons par un bilan personnalisé pour mieux comprendre vos besoins et vous aider à atteindre vos objectifs forme et bien-être.<br><br>
                                           $rdv_text<br><br>
@@ -458,11 +466,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                           <i>*Offre non cumulable. Réservez vite, les places sont limitées.</i><br><br>
                                           Cordialement,<br>
                                           L'équipe Aquavélo<br>
-                                          <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
+                                          <a href='https://www.aquavelo.com'>www.aquavelo.com</a>");
                         }
                         try {
                             $clientMail->send();
-                            error_log("Email client envoyé $city: $email");
+                            error_log("Email client envoyé $city: $email | message_id=" . $clientMail->getLastMessageID());
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email client $city: " . $clientError);
@@ -474,7 +482,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     // Email pour le CLIENT (RDV CONFIRMÉ sur Planning)
                     if ($date_heure) {
-                        $clientMail = aquavelo_create_mailer($settings, $city);
+                        $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
                         $clientMail->addAddress($email);
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
@@ -500,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&old_rdv=" . urlencode($date_heure);
 
                         $signature = in_array((int)$center_id, [305, 347, 349]) ? "Cordialement Claude" : "Cordialement,<br>Aquavelo $city";
-                        $clientMail->Body = "Bonjour $input_nom_complet,<br><br>Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
+                        aquavelo_set_mail_body($clientMail, "Bonjour $input_nom_complet,<br><br>Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
                                       Lieu : $lieu_rdv<br>Tél : $tel_rdv<br><br>
                                       <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
                                       <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
@@ -514,10 +522,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a></td>
                                       <td width='10'></td>
                                       <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a></td>
-                                      </tr></table>";
+                                      </tr></table>");
                         try {
                             $clientMail->send();
-                            error_log("Email confirmation client envoyé $city: $email");
+                            error_log("Email confirmation client envoyé $city: $email | message_id=" . $clientMail->getLastMessageID());
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email confirmation client $city: " . $clientError);

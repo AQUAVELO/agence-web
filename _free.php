@@ -380,8 +380,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 } else {
                 try {
 
-                    // Nice (179) et Collioure (272) : même flux email que Nice
-                    $nice_style_email_center_ids = [179, 272];
+                    // Nice (179), Collioure (272), Valbonne (332) : même flux email que Nice
+                    $nice_style_email_center_ids = [179, 272, 332];
                     $use_nice_style_email = in_array((int)$center_id, $nice_style_email_center_ids, true);
 
                     $mail = aquavelo_create_mailer($settings, $city);

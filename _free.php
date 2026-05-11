@@ -134,6 +134,16 @@ if (!function_exists('aquavelo_first_human_center_reply_email')) {
     }
 }
 
+if (!function_exists('aquavelo_is_prospect_admin_technical_to')) {
+    /**
+     * Boîte d’expédition / contrôle Mailjet « nice » : ne doit pas être le seul destinataire To de la notif dirigeant.
+     */
+    function aquavelo_is_prospect_admin_technical_to(string $em): bool
+    {
+        return strtolower(trim($em)) === 'claude@alesiaminceur.com';
+    }
+}
+
 if (!function_exists('aquavelo_collect_center_director_emails')) {
     /**
      * Adresses dirigeant extraites de am_centers.email (hors Google Agenda), valides pour SMTP.
@@ -150,6 +160,9 @@ if (!function_exists('aquavelo_collect_center_director_emails')) {
                 continue;
             }
             if (!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+                continue;
+            }
+            if (aquavelo_is_prospect_admin_technical_to($em)) {
                 continue;
             }
             $k = strtolower($em);
@@ -649,7 +662,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         foreach ($directorEmails as $dirTo) {
                             $mail = aquavelo_create_mailer($settings, $city);
                             $mail->addAddress($dirTo);
-                            if ($use_nice_style_email && strtolower($dirTo) !== 'claude@alesiaminceur.com') {
+                            if ($use_nice_style_email && !aquavelo_is_prospect_admin_technical_to($dirTo)) {
                                 $mail->addBCC('claude@alesiaminceur.com');
                             }
                             $addDirectionCcIfMissing($mail, $fbCc);
@@ -667,22 +680,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $adminRecipientsAdded = 0;
                         $adminHasNonClaudeTo = false;
                         $fbAdm = aquavelo_parse_recipient_email($fbCcRaw);
-                        if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm)) {
+                        if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm) && !aquavelo_is_prospect_admin_technical_to($fbAdm)) {
                             $mail->addAddress($fbAdm);
                             $adminRecipientsAdded++;
-                            if (strtolower($fbAdm) !== 'claude@alesiaminceur.com') {
-                                $adminHasNonClaudeTo = true;
-                            }
+                            $adminHasNonClaudeTo = true;
                         }
                         if ($adminRecipientsAdded === 0) {
                             aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
                             foreach ($mail->getToAddresses() as $admRow) {
-                                if (!empty($admRow[0]) && strtolower((string) $admRow[0]) !== 'claude@alesiaminceur.com') {
+                                if (!empty($admRow[0]) && !aquavelo_is_prospect_admin_technical_to((string) $admRow[0])) {
                                     $adminHasNonClaudeTo = true;
                                     break;
                                 }
                             }
                             $adminRecipientsAdded = count($mail->getToAddresses());
+                        }
+                        // Si tous les To sont uniquement l’adresse technique, ajouter le repli direction en To (sinon seul Cc reçoit le détail prospect)
+                        $hasHumanTo = false;
+                        foreach ($mail->getToAddresses() as $admRow) {
+                            if (!empty($admRow[0]) && !aquavelo_is_prospect_admin_technical_to((string) $admRow[0])) {
+                                $hasHumanTo = true;
+                                break;
+                            }
+                        }
+                        if (!$hasHumanTo && $mail->getToAddresses() !== []) {
+                            $fbHuman = aquavelo_parse_recipient_email($fbCcRaw);
+                            if ($fbHuman !== '' && !aquavelo_is_google_calendar_address($fbHuman)
+                                && !aquavelo_is_prospect_admin_technical_to($fbHuman)
+                                && filter_var($fbHuman, FILTER_VALIDATE_EMAIL)) {
+                                $toLower = [];
+                                foreach ($mail->getToAddresses() as $admRow) {
+                                    if (!empty($admRow[0])) {
+                                        $toLower[] = strtolower((string) $admRow[0]);
+                                    }
+                                }
+                                if (!in_array(strtolower($fbHuman), $toLower, true)) {
+                                    $mail->addAddress($fbHuman);
+                                    $adminHasNonClaudeTo = true;
+                                }
+                            }
                         }
                         if ($use_nice_style_email && $adminHasNonClaudeTo) {
                             $mail->addBCC('claude@alesiaminceur.com');

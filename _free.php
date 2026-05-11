@@ -50,6 +50,7 @@ if (!function_exists('aquavelo_create_mailer')) {
         $mail->SMTPAuth = true;
         $mail->Username = $settings['mjusername'];
         $mail->Password = $settings['mjpassword'];
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $city);
@@ -459,7 +460,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                           L'équipe Aquavélo<br>
                                           <a href='https://www.aquavelo.com'>www.aquavelo.com</a>";
                         }
-                        $clientMail->send();
+                        try {
+                            $clientMail->send();
+                            error_log("Email client envoyé $city: $email");
+                        } catch (Exception $clientEmailException) {
+                            $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
+                            error_log("Erreur Email client $city: " . $clientError);
+                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email client Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            }
+                        }
                     }
 
                     // Email pour le CLIENT (RDV CONFIRMÉ sur Planning)
@@ -505,7 +515,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       <td width='10'></td>
                                       <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a></td>
                                       </tr></table>";
-                        $clientMail->send();
+                        try {
+                            $clientMail->send();
+                            error_log("Email confirmation client envoyé $city: $email");
+                        } catch (Exception $clientEmailException) {
+                            $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
+                            error_log("Erreur Email confirmation client $city: " . $clientError);
+                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email confirmation Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            }
+                        }
                     }
                 } catch (Exception $e) {
                     error_log("Erreur Email $city: " . $e->getMessage());

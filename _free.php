@@ -380,15 +380,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 } else {
                 try {
 
-                    // Même flux email « régional » que Nice : tous les centres sauf Cannes, Mandelieu, Vallauris, Antibes, Mérignac
-                    $planning_centers_standard = [305, 347, 349, 343, 253];
-                    $use_regional_client_email_flow = !in_array((int)$center_id, $planning_centers_standard, true);
-
                     $mail = aquavelo_create_mailer($settings, $city);
 
                     // Email pour l'ADMIN (Dirigeant)
                     aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
-                    if ($use_regional_client_email_flow) {
+                    if ((int)$center_id === 179) {
                         $mail->addBCC('claude@alesiaminceur.com');
                     }
                     $mail->addReplyTo($email, $input_nom_complet);
@@ -433,13 +429,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);
                     }
 
-                    $clientFromEmail = $use_regional_client_email_flow ? 'claude@alesiaminceur.com' : 'contact@aquavelo.com';
+                    $clientFromEmail = ((int)$center_id === 179) ? 'claude@alesiaminceur.com' : 'contact@aquavelo.com';
 
                     // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
-                        if ($use_regional_client_email_flow) {
+                        if ((int)$center_id === 179) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
                             if (strtolower($email) !== 'claude@alesiaminceur.com') {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
@@ -489,8 +485,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email client $city: " . $clientError);
-                            if ($use_regional_client_email_flow && function_exists('sendTelegram')) {
-                                sendTelegram("<b>⚠️ Email client $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email client Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }
                     }
@@ -499,7 +495,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if ($date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
-                        if ($use_regional_client_email_flow) {
+                        if ((int)$center_id === 179) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
                             if (strtolower($email) !== 'claude@alesiaminceur.com') {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
@@ -550,8 +546,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email confirmation client $city: " . $clientError);
-                            if ($use_regional_client_email_flow && function_exists('sendTelegram')) {
-                                sendTelegram("<b>⚠️ Email confirmation $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email confirmation Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }
                     }

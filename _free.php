@@ -380,11 +380,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 } else {
                 try {
 
+                    // Nice (179) et Collioure (272) : même flux email que Nice
+                    $nice_style_email_center_ids = [179, 272];
+                    $use_nice_style_email = in_array((int)$center_id, $nice_style_email_center_ids, true);
+
                     $mail = aquavelo_create_mailer($settings, $city);
 
                     // Email pour l'ADMIN (Dirigeant)
                     aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
-                    if ((int)$center_id === 179) {
+                    if ($use_nice_style_email) {
                         $mail->addBCC('claude@alesiaminceur.com');
                     }
                     $mail->addReplyTo($email, $input_nom_complet);
@@ -429,13 +433,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);
                     }
 
-                    $clientFromEmail = ((int)$center_id === 179) ? 'claude@alesiaminceur.com' : 'contact@aquavelo.com';
+                    $clientFromEmail = $use_nice_style_email ? 'claude@alesiaminceur.com' : 'contact@aquavelo.com';
 
                     // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
-                        if ((int)$center_id === 179) {
+                        if ($use_nice_style_email) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
                             if (strtolower($email) !== 'claude@alesiaminceur.com') {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
@@ -485,8 +489,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email client $city: " . $clientError);
-                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
-                                sendTelegram("<b>⚠️ Email client Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            if ($use_nice_style_email && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email client $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }
                     }
@@ -495,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if ($date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
-                        if ((int)$center_id === 179) {
+                        if ($use_nice_style_email) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
                             if (strtolower($email) !== 'claude@alesiaminceur.com') {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
@@ -546,8 +550,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email confirmation client $city: " . $clientError);
-                            if ((int)$center_id === 179 && function_exists('sendTelegram')) {
-                                sendTelegram("<b>⚠️ Email confirmation Nice non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                            if ($use_nice_style_email && function_exists('sendTelegram')) {
+                                sendTelegram("<b>⚠️ Email confirmation $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }
                     }

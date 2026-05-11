@@ -46,6 +46,52 @@ if (!function_exists('aquavelo_parse_recipient_email')) {
     }
 }
 
+if (!function_exists('aquavelo_is_google_calendar_address')) {
+    /** Adresses techniques Google Agenda (non boîtes mail du dirigeant). */
+    function aquavelo_is_google_calendar_address(string $email): bool
+    {
+        $e = strtolower(trim($email));
+        if ($e === '') {
+            return false;
+        }
+        if (strpos($e, '@group.calendar.google.com') !== false) {
+            return true;
+        }
+        if (strpos($e, '@resource.calendar.google.com') !== false) {
+            return true;
+        }
+
+        return strpos($e, '@import.calendar.google.com') !== false;
+    }
+}
+
+if (!function_exists('aquavelo_recipient_raw_parts')) {
+    /**
+     * @return list<string>
+     */
+    function aquavelo_recipient_raw_parts(string $r): array
+    {
+        $r = trim($r);
+        if ($r === '') {
+            return [];
+        }
+        if (strpos($r, '<') !== false) {
+            $parts = preg_split('/\s*[,;]\s*/', $r) ?: [];
+        } else {
+            $parts = preg_split('/[\s,;]+/', $r) ?: [];
+        }
+        $out = [];
+        foreach ($parts as $part) {
+            $part = trim((string) $part);
+            if ($part !== '') {
+                $out[] = $part;
+            }
+        }
+
+        return $out;
+    }
+}
+
 if (!function_exists('aquavelo_add_mail_recipients')) {
     function aquavelo_add_mail_recipients(PHPMailer $mail, string $recipients, string $fallback = ''): int
     {
@@ -59,20 +105,10 @@ if (!function_exists('aquavelo_add_mail_recipients')) {
 
             return 0;
         }
-        // Avec "Nom Prénom <mail@…>", ne pas découper sur les espaces du display name.
-        if (strpos($r, '<') !== false) {
-            $parts = preg_split('/\s*[,;]\s*/', $r);
-        } else {
-            $parts = preg_split('/[\s,;]+/', $r);
-        }
 
-        foreach ($parts as $part) {
-            $part = trim($part);
-            if ($part === '') {
-                continue;
-            }
+        foreach (aquavelo_recipient_raw_parts($r) as $part) {
             $email = aquavelo_parse_recipient_email($part);
-            if ($email === '') {
+            if ($email === '' || aquavelo_is_google_calendar_address($email)) {
                 continue;
             }
 
@@ -436,18 +472,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail = aquavelo_create_mailer($settings, $city);
 
                     // Email pour l'ADMIN (Dirigeant)
-                    // Valbonne (332) : priorité au parsing du champ brut (évite les formats atypiques en BDD).
+                    // Valbonne (332) : am_centers.email contient souvent l'ID Google Agenda — ne pas l'utiliser comme destinataire ; n'envoyer qu'aux adresses « humaines » du champ.
                     $adminRecipientsAdded = 0;
                     if ((int)$center_id === 332) {
-                        $vbDirector = aquavelo_parse_recipient_email($rawEmailCenter);
-                        if ($vbDirector !== '') {
-                            $mail->addAddress($vbDirector);
-                            $adminRecipientsAdded = 1;
-                            if ($use_nice_style_email && strtolower($vbDirector) !== 'claude@alesiaminceur.com') {
-                                $mail->addBCC('claude@alesiaminceur.com');
+                        $vbBccClaude = false;
+                        foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $vbPart) {
+                            $vbEm = aquavelo_parse_recipient_email($vbPart);
+                            if ($vbEm === '' || aquavelo_is_google_calendar_address($vbEm)) {
+                                continue;
                             }
-                        } elseif ($rawEmailCenter !== '') {
-                            error_log('Valbonne 332: email centre présent mais non reconnu (am_centers.email).');
+                            $mail->addAddress($vbEm);
+                            $adminRecipientsAdded++;
+                            if (strtolower($vbEm) !== 'claude@alesiaminceur.com') {
+                                $vbBccClaude = true;
+                            }
+                        }
+                        if ($adminRecipientsAdded > 0 && $use_nice_style_email && $vbBccClaude) {
+                            $mail->addBCC('claude@alesiaminceur.com');
+                        }
+                        if ($adminRecipientsAdded === 0 && $rawEmailCenter !== '') {
+                            $hadParsable = false;
+                            foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $vbPart) {
+                                if (aquavelo_parse_recipient_email($vbPart) !== '') {
+                                    $hadParsable = true;
+                                    break;
+                                }
+                            }
+                            if (!$hadParsable) {
+                                error_log('Valbonne 332: email centre présent mais non reconnu (am_centers.email).');
+                            } else {
+                                error_log('Valbonne 332: uniquement adresse(s) Google Agenda dans am_centers.email — notification admin au repli central.');
+                            }
                         }
                     }
                     if ($adminRecipientsAdded === 0) {

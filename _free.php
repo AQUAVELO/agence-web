@@ -506,21 +506,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     $mail = aquavelo_create_mailer($settings, $city);
 
-                    // Email pour l'ADMIN (dirigeant) : toutes les adresses humaines de am_centers.email (ignore les IDs Google Agenda), tous centres
-                    $adminRecipientsAdded = 0;
-                    $adminHasNonClaudeTo = false;
+                    // Email admin (coordonnees prospect) : un seul To fiable (evite blocage Mailjet si une adresse centre rebondit).
+                    // Dirigeants centre + direction en Bcc uniquement.
+                    $adminPrimaryTo = 'claude@alesiaminceur.com';
+                    $adminBccSeen = [];
+                    $adminBccList = [];
                     foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $admPart) {
                         $admEm = aquavelo_parse_recipient_email($admPart);
                         if ($admEm === '' || aquavelo_is_google_calendar_address($admEm)) {
                             continue;
                         }
-                        $mail->addAddress($admEm);
-                        $adminRecipientsAdded++;
-                        if (strtolower($admEm) !== 'claude@alesiaminceur.com') {
-                            $adminHasNonClaudeTo = true;
+                        if (!filter_var($admEm, FILTER_VALIDATE_EMAIL)) {
+                            continue;
                         }
+                        $le = strtolower($admEm);
+                        if ($le === strtolower($adminPrimaryTo)) {
+                            continue;
+                        }
+                        if (isset($adminBccSeen[$le])) {
+                            continue;
+                        }
+                        $adminBccSeen[$le] = true;
+                        $adminBccList[] = $admEm;
                     }
-                    if ($adminRecipientsAdded === 0 && $rawEmailCenter !== '') {
+                    if ($adminBccList === [] && $rawEmailCenter !== '') {
                         $hadParsable = false;
                         foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $admPart) {
                             if (aquavelo_parse_recipient_email($admPart) !== '') {
@@ -531,53 +540,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         if (!$hadParsable) {
                             error_log("Centre id=$center_id ($city): email centre present mais non reconnu (am_centers.email).");
                         } else {
-                            error_log("Centre id=$center_id ($city): uniquement adresse(s) Google Agenda dans am_centers.email — repli notification admin.");
+                            error_log("Centre id=$center_id ($city): uniquement adresse(s) Google Agenda dans am_centers.email — dirigeants en Bcc via repli.");
                         }
                     }
-                    // Repli global (direction) si aucun dirigeant extrait du champ centre (defaut inline si cle absente / opcache)
-                    if ($adminRecipientsAdded === 0) {
-                        $fbRawCfg = trim((string) ($settings['prospect_admin_fallback_email'] ?? ''));
-                        if ($fbRawCfg === '') {
-                            $fbRawCfg = 'directionalesiaminceur@gmail.com';
-                        }
-                        $fbAdm = aquavelo_parse_recipient_email($fbRawCfg);
-                        if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm)) {
-                            $mail->addAddress($fbAdm);
-                            $adminRecipientsAdded++;
-                            if (strtolower($fbAdm) !== 'claude@alesiaminceur.com') {
-                                $adminHasNonClaudeTo = true;
-                            }
+                    $fbRawCfg = trim((string) ($settings['prospect_admin_fallback_email'] ?? ''));
+                    if ($fbRawCfg === '') {
+                        $fbRawCfg = 'directionalesiaminceur@gmail.com';
+                    }
+                    $fbAdm = aquavelo_parse_recipient_email($fbRawCfg);
+                    if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm) && filter_var($fbAdm, FILTER_VALIDATE_EMAIL)) {
+                        $lf = strtolower($fbAdm);
+                        if ($lf !== strtolower($adminPrimaryTo) && empty($adminBccSeen[$lf])) {
+                            $adminBccSeen[$lf] = true;
+                            $adminBccList[] = $fbAdm;
                         }
                     }
-                    if ($adminRecipientsAdded === 0) {
-                        aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
-                        foreach ($mail->getToAddresses() as $admRow) {
-                            if (!empty($admRow[0]) && strtolower((string) $admRow[0]) !== 'claude@alesiaminceur.com') {
-                                $adminHasNonClaudeTo = true;
-                                break;
-                            }
-                        }
-                        $adminRecipientsAdded = count($mail->getToAddresses());
-                    }
-                    if ($use_nice_style_email && $adminHasNonClaudeTo) {
-                        $mail->addBCC('claude@alesiaminceur.com');
-                    }
-                    // Copie direction (repli global) pour tout centre, si pas deja To/Cc/Bcc
-                    $fbCcRaw = trim((string) ($settings['prospect_admin_fallback_email'] ?? ''));
-                    if ($fbCcRaw === '') {
-                        $fbCcRaw = 'directionalesiaminceur@gmail.com';
-                    }
-                    $fbCc = aquavelo_parse_recipient_email($fbCcRaw);
-                    if ($fbCc !== '' && !aquavelo_is_google_calendar_address($fbCc)) {
-                        $fbSeen = [];
-                        foreach (array_merge($mail->getToAddresses(), $mail->getCcAddresses(), $mail->getBccAddresses()) as $fbRow) {
-                            if (!empty($fbRow[0])) {
-                                $fbSeen[strtolower((string) $fbRow[0])] = true;
-                            }
-                        }
-                        if (empty($fbSeen[strtolower($fbCc)])) {
-                            $mail->addCC($fbCc);
-                        }
+                    $mail->addAddress($adminPrimaryTo);
+                    foreach ($adminBccList as $bccEm) {
+                        $mail->addBCC($bccEm);
                     }
                     $mail->addReplyTo($email, $input_nom_complet);
                     
@@ -630,20 +610,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             return $row[0] ?? '';
                         }, $mail->getToAddresses());
                         $adminTo = array_values(array_filter($adminTo));
-                        if ($adminTo === []) {
-                            error_log("⚠️ Email admin $city : aucun destinataire To (centre_id=$center_id) — envoi ignoré.");
-                        } else {
-                            $ccLog = $adminAddrLine($mail->getCcAddresses());
-                            $bccLog = $adminAddrLine($mail->getBccAddresses());
-                            $logDest = 'To: ' . implode(', ', $adminTo);
-                            if ($ccLog !== '') {
-                                $logDest .= ' | Cc: ' . $ccLog;
-                            }
-                            if ($bccLog !== '') {
-                                $logDest .= ' | Bcc: ' . $bccLog;
-                            }
+                        $ccLog = $adminAddrLine($mail->getCcAddresses());
+                        $bccLog = $adminAddrLine($mail->getBccAddresses());
+                        $logDest = 'To: ' . implode(', ', $adminTo);
+                        if ($ccLog !== '') {
+                            $logDest .= ' | Cc: ' . $ccLog;
+                        }
+                        if ($bccLog !== '') {
+                            $logDest .= ' | Bcc: ' . $bccLog;
+                        }
+                        try {
                             $mail->send();
                             error_log("Email admin envoyé $city ($logDest) | message_id=" . $mail->getLastMessageID());
+                        } catch (Exception $adminSendFirst) {
+                            if ($bccLog !== '') {
+                                error_log("Email admin $city echec avec Bcc (possible rebond Mailjet): " . $mail->ErrorInfo . " — nouvel essai sans Bcc.");
+                                $mail->clearBCCs();
+                                $mail->clearCCs();
+                                $mail->send();
+                                error_log("Email admin envoyé $city (To: " . implode(', ', $adminTo) . " seul, Bcc retires) | message_id=" . $mail->getLastMessageID());
+                            } else {
+                                throw $adminSendFirst;
+                            }
                         }
                     } catch (Exception $adminEmailException) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);

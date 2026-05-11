@@ -558,6 +558,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             $mail->addBCC('claude@alesiaminceur.com');
                         }
                     }
+                    // Valbonne : copie direction pour l'email admin (coordonnees prospect), si pas deja To/Cc/Bcc
+                    if ((int)$center_id === 332) {
+                        $vbLeadDir = aquavelo_parse_recipient_email(trim((string) ($settings['valbonne_notify_email'] ?? '')));
+                        if ($vbLeadDir !== '' && !aquavelo_is_google_calendar_address($vbLeadDir)) {
+                            $vbSeen = [];
+                            foreach (array_merge($mail->getToAddresses(), $mail->getCcAddresses(), $mail->getBccAddresses()) as $vbRow) {
+                                if (!empty($vbRow[0])) {
+                                    $vbSeen[strtolower((string) $vbRow[0])] = true;
+                                }
+                            }
+                            if (empty($vbSeen[strtolower($vbLeadDir)])) {
+                                $mail->addCC($vbLeadDir);
+                            }
+                        }
+                    }
                     $mail->addReplyTo($email, $input_nom_complet);
                     
                     $date_now = date('d-m-Y H:i:s');

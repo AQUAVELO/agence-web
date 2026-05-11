@@ -35,8 +35,8 @@ $settings['mjhost'] = getenv('MAILJET_HOST') ?: 'in-v3.mailjet.com';
 $settings['mjusername'] = getenv('MAILJET_USERNAME') ?: 'adf33e0c77039ed69396e3a8a07400cb';
 $settings['mjpassword'] = getenv('MAILJET_PASSWORD') ?: '05906e966c8e2933b1dc8b0f8bb1e18b';
 
-// Email du dirigeant Valbonne (332) : à définir sur Clever Cloud si am_centers.email ne contient que l’ID Google Agenda.
-$settings['valbonne_notify_email'] = trim((string) (getenv('AQUAVELO_VALBONNE_NOTIFY_EMAIL') ?: ''));
+// Valbonne (332) : destinataire des emails admin "coordonnees prospect". Clever : AQUAVELO_VALBONNE_NOTIFY_EMAIL pour surcharger.
+$settings['valbonne_notify_email'] = trim((string) (getenv('AQUAVELO_VALBONNE_NOTIFY_EMAIL') ?: 'directionalesiaminceur@gmail.com'));
 
 // ⭐ Configuration Telegram
 $settings['tg_token'] = '8517515830:AAFWzlEOlxlrzo01l91836int0n5fTWVOZI';

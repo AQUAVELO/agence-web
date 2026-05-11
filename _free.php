@@ -119,6 +119,21 @@ if (!function_exists('aquavelo_add_mail_recipients')) {
     }
 }
 
+if (!function_exists('aquavelo_first_human_center_reply_email')) {
+    /** Première adresse « humaine » du champ centre (ignore les IDs Google Agenda). */
+    function aquavelo_first_human_center_reply_email(string $raw): string
+    {
+        foreach (aquavelo_recipient_raw_parts($raw) as $part) {
+            $e = aquavelo_parse_recipient_email($part);
+            if ($e !== '' && !aquavelo_is_google_calendar_address($e)) {
+                return $e;
+            }
+        }
+
+        return '';
+    }
+}
+
 if (!function_exists('aquavelo_create_mailer')) {
     function aquavelo_create_mailer(array $settings, string $city, string $fromEmail = 'service.clients@aquavelo.com', string $fromNamePrefix = 'Aquavelo'): PHPMailer
     {
@@ -171,8 +186,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     $input_nom_complet = strip_tags(trim($_POST['nom'] ?? ''));
     $email = strip_tags(trim($_POST['email'] ?? ''));
     $tel = strip_tags(trim($_POST['phone'] ?? ''));
-    $date_heure = isset($_POST['date_heure']) ? strip_tags($_POST['date_heure']) : '';
-    $segment = isset($_POST['segment']) ? strip_tags($_POST['segment']) : 'free-trial';
+    $segment = isset($_POST['segment']) ? trim(strip_tags((string) $_POST['segment'])) : 'free-trial';
+    $date_heure = isset($_POST['date_heure']) ? trim(strip_tags((string) $_POST['date_heure'])) : '';
+    if ($segment === 'calendrier-cannes' && $date_heure === '') {
+        $error[] = 'Veuillez sélectionner un créneau horaire sur le calendrier avant de valider.';
+    }
 
     if (empty($input_nom_complet)) $error[] = "Le nom et prénom sont obligatoires.";
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $error[] = "Une adresse email valide est obligatoire.";
@@ -424,7 +442,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             }
             
             // 2. Détermination du message Telegram normal
-            $planning_centers = [305, 347, 349]; // Cannes, Mandelieu, Vallauris (Mérignac et Antibes retirés)
+            $planning_centers = [305, 347, 349, 343, 253]; // Cannes, Mandelieu, Vallauris, Mérignac, Antibes
             if (in_array((int)$center_id, $planning_centers)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris
@@ -482,8 +500,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 } else {
                 try {
 
-                    // Nice (179), Collioure (272), Valbonne (332) : même flux email que Nice
-                    $nice_style_email_center_ids = [179, 272, 332];
+                    // Nice (179), Collioure (272), Valbonne (332) + planning 5 centres : expéditeur Mailjet vérifié (claude@…), meilleure délivrabilité
+                    $nice_style_email_center_ids = [179, 272, 332, 305, 347, 349, 343, 253];
                     $use_nice_style_email = in_array((int)$center_id, $nice_style_email_center_ids, true);
 
                     $mail = aquavelo_create_mailer($settings, $city);
@@ -603,8 +621,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
                             }
                         }
-                        $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
-                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL)) {
+                        $replyCenterEmail = aquavelo_first_human_center_reply_email($rawEmailCenter);
+                        if ($replyCenterEmail === '') {
+                            $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
+                        }
+                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL) && !aquavelo_is_google_calendar_address($replyCenterEmail)) {
                             $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);
                         }
 
@@ -664,8 +685,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
                             }
                         }
-                        $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
-                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL)) {
+                        $replyCenterEmail = aquavelo_first_human_center_reply_email($rawEmailCenter);
+                        if ($replyCenterEmail === '') {
+                            $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
+                        }
+                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL) && !aquavelo_is_google_calendar_address($replyCenterEmail)) {
                             $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);
                         }
                         $clientMail->Subject = "Confirmation de votre séance à Aquavelo $city";
@@ -676,8 +700,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             $stmt_cannes = $database->prepare('SELECT address, city, phone FROM am_centers WHERE id = 305');
                             $stmt_cannes->execute();
                             $cannes_info = $stmt_cannes->fetch();
-                            $lieu_rdv = $cannes_info['address'] . ", " . $cannes_info['city'];
-                            $tel_rdv = $cannes_info['phone'];
+                            if ($cannes_info && !empty($cannes_info['address'])) {
+                                $lieu_rdv = $cannes_info['address'] . ", " . ($cannes_info['city'] ?? 'Cannes');
+                                $tel_rdv = $cannes_info['phone'] ?? '';
+                            } else {
+                                $lieu_rdv = '60 avenue du Docteur Raymond Picaud, Cannes';
+                                $tel_rdv = '04 93 93 05 65';
+                            }
                         } else {
                             // Infos centre pour l'email
                             $lieu_rdv = $row_center_contact['address'] . ", " . $row_center_contact['city'];

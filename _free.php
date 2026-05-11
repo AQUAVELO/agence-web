@@ -429,12 +429,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);
                     }
 
+                    $clientFromEmail = ((int)$center_id === 179) ? 'jacquesverdier4@gmail.com' : 'contact@aquavelo.com';
+
                     // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
-                        $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
+                        $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
                         if ((int)$center_id === 179) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
+                            if (strtolower($email) !== 'claude@alesiaminceur.com') {
+                                $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
+                            }
                         }
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
@@ -488,10 +493,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     // Email pour le CLIENT (RDV CONFIRMÉ sur Planning)
                     if ($date_heure) {
-                        $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
+                        $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
                         if ((int)$center_id === 179) {
                             $clientMail->addBCC('claude@alesiaminceur.com');
+                            if (strtolower($email) !== 'claude@alesiaminceur.com') {
+                                $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
+                            }
                         }
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);

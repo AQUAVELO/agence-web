@@ -506,71 +506,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     $mail = aquavelo_create_mailer($settings, $city);
 
-                    // Email pour l'ADMIN (Dirigeant)
-                    // Valbonne (332) : am_centers.email contient souvent l'ID Google Agenda — ne pas l'utiliser comme destinataire ; n'envoyer qu'aux adresses « humaines » du champ.
+                    // Email pour l'ADMIN (dirigeant) : toutes les adresses humaines de am_centers.email (ignore les IDs Google Agenda), tous centres
                     $adminRecipientsAdded = 0;
-                    if ((int)$center_id === 332) {
-                        $vbBccClaude = false;
-                        foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $vbPart) {
-                            $vbEm = aquavelo_parse_recipient_email($vbPart);
-                            if ($vbEm === '' || aquavelo_is_google_calendar_address($vbEm)) {
-                                continue;
-                            }
-                            $mail->addAddress($vbEm);
-                            $adminRecipientsAdded++;
-                            if (strtolower($vbEm) !== 'claude@alesiaminceur.com') {
-                                $vbBccClaude = true;
-                            }
+                    $adminHasNonClaudeTo = false;
+                    foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $admPart) {
+                        $admEm = aquavelo_parse_recipient_email($admPart);
+                        if ($admEm === '' || aquavelo_is_google_calendar_address($admEm)) {
+                            continue;
                         }
-                        if ($adminRecipientsAdded > 0 && $use_nice_style_email && $vbBccClaude) {
-                            $mail->addBCC('claude@alesiaminceur.com');
-                        }
-                        if ($adminRecipientsAdded === 0 && $rawEmailCenter !== '') {
-                            $hadParsable = false;
-                            foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $vbPart) {
-                                if (aquavelo_parse_recipient_email($vbPart) !== '') {
-                                    $hadParsable = true;
-                                    break;
-                                }
-                            }
-                            if (!$hadParsable) {
-                                error_log('Valbonne 332: email centre présent mais non reconnu (am_centers.email).');
-                            } else {
-                                error_log('Valbonne 332: uniquement adresse(s) Google Agenda dans am_centers.email — notification admin au repli central.');
-                            }
+                        $mail->addAddress($admEm);
+                        $adminRecipientsAdded++;
+                        if (strtolower($admEm) !== 'claude@alesiaminceur.com') {
+                            $adminHasNonClaudeTo = true;
                         }
                     }
-                    // Valbonne : si aucune boîte « humaine » en BDD, email du dirigeant (Clever Cloud AQUAVELO_VALBONNE_NOTIFY_EMAIL)
-                    if ((int)$center_id === 332 && $adminRecipientsAdded === 0) {
-                        $vbCfg = isset($settings['valbonne_notify_email']) ? trim((string) $settings['valbonne_notify_email']) : '';
-                        $vbCfgParsed = aquavelo_parse_recipient_email($vbCfg);
-                        if ($vbCfgParsed !== '' && !aquavelo_is_google_calendar_address($vbCfgParsed)) {
-                            $mail->addAddress($vbCfgParsed);
+                    if ($adminRecipientsAdded === 0 && $rawEmailCenter !== '') {
+                        $hadParsable = false;
+                        foreach (aquavelo_recipient_raw_parts($rawEmailCenter) as $admPart) {
+                            if (aquavelo_parse_recipient_email($admPart) !== '') {
+                                $hadParsable = true;
+                                break;
+                            }
+                        }
+                        if (!$hadParsable) {
+                            error_log("Centre id=$center_id ($city): email centre present mais non reconnu (am_centers.email).");
+                        } else {
+                            error_log("Centre id=$center_id ($city): uniquement adresse(s) Google Agenda dans am_centers.email — repli notification admin.");
+                        }
+                    }
+                    // Repli global (direction) si aucun dirigeant extrait du champ centre
+                    if ($adminRecipientsAdded === 0) {
+                        $fbAdm = aquavelo_parse_recipient_email(trim((string) ($settings['prospect_admin_fallback_email'] ?? '')));
+                        if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm)) {
+                            $mail->addAddress($fbAdm);
                             $adminRecipientsAdded++;
-                            if ($use_nice_style_email && strtolower($vbCfgParsed) !== 'claude@alesiaminceur.com') {
-                                $mail->addBCC('claude@alesiaminceur.com');
+                            if (strtolower($fbAdm) !== 'claude@alesiaminceur.com') {
+                                $adminHasNonClaudeTo = true;
                             }
                         }
                     }
                     if ($adminRecipientsAdded === 0) {
                         aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
-                        if ($use_nice_style_email) {
-                            $mail->addBCC('claude@alesiaminceur.com');
+                        foreach ($mail->getToAddresses() as $admRow) {
+                            if (!empty($admRow[0]) && strtolower((string) $admRow[0]) !== 'claude@alesiaminceur.com') {
+                                $adminHasNonClaudeTo = true;
+                                break;
+                            }
                         }
+                        $adminRecipientsAdded = count($mail->getToAddresses());
                     }
-                    // Valbonne : copie direction pour l'email admin (coordonnees prospect), si pas deja To/Cc/Bcc
-                    if ((int)$center_id === 332) {
-                        $vbLeadDir = aquavelo_parse_recipient_email(trim((string) ($settings['valbonne_notify_email'] ?? '')));
-                        if ($vbLeadDir !== '' && !aquavelo_is_google_calendar_address($vbLeadDir)) {
-                            $vbSeen = [];
-                            foreach (array_merge($mail->getToAddresses(), $mail->getCcAddresses(), $mail->getBccAddresses()) as $vbRow) {
-                                if (!empty($vbRow[0])) {
-                                    $vbSeen[strtolower((string) $vbRow[0])] = true;
-                                }
+                    if ($use_nice_style_email && $adminHasNonClaudeTo) {
+                        $mail->addBCC('claude@alesiaminceur.com');
+                    }
+                    // Copie direction (repli global) pour tout centre, si pas deja To/Cc/Bcc
+                    $fbCc = aquavelo_parse_recipient_email(trim((string) ($settings['prospect_admin_fallback_email'] ?? '')));
+                    if ($fbCc !== '' && !aquavelo_is_google_calendar_address($fbCc)) {
+                        $fbSeen = [];
+                        foreach (array_merge($mail->getToAddresses(), $mail->getCcAddresses(), $mail->getBccAddresses()) as $fbRow) {
+                            if (!empty($fbRow[0])) {
+                                $fbSeen[strtolower((string) $fbRow[0])] = true;
                             }
-                            if (empty($vbSeen[strtolower($vbLeadDir)])) {
-                                $mail->addCC($vbLeadDir);
-                            }
+                        }
+                        if (empty($fbSeen[strtolower($fbCc)])) {
+                            $mail->addCC($fbCc);
                         }
                     }
                     $mail->addReplyTo($email, $input_nom_complet);

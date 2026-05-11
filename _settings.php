@@ -35,8 +35,17 @@ $settings['mjhost'] = getenv('MAILJET_HOST') ?: 'in-v3.mailjet.com';
 $settings['mjusername'] = getenv('MAILJET_USERNAME') ?: 'adf33e0c77039ed69396e3a8a07400cb';
 $settings['mjpassword'] = getenv('MAILJET_PASSWORD') ?: '05906e966c8e2933b1dc8b0f8bb1e18b';
 
-// Valbonne (332) : destinataire des emails admin "coordonnees prospect". Clever : AQUAVELO_VALBONNE_NOTIFY_EMAIL pour surcharger.
-$settings['valbonne_notify_email'] = trim((string) (getenv('AQUAVELO_VALBONNE_NOTIFY_EMAIL') ?: 'directionalesiaminceur@gmail.com'));
+// Repli si am_centers.email n’a aucune boîte humaine (ex. uniquement agenda Google). Variables : AQUAVELO_PROSPECT_ADMIN_FALLBACK_EMAIL ou AQUAVELO_VALBONNE_NOTIFY_EMAIL (ancien nom).
+$__paf = trim((string) (getenv('AQUAVELO_PROSPECT_ADMIN_FALLBACK_EMAIL') ?: ''));
+if ($__paf === '') {
+    $__paf = trim((string) (getenv('AQUAVELO_VALBONNE_NOTIFY_EMAIL') ?: ''));
+}
+if ($__paf === '') {
+    $__paf = 'directionalesiaminceur@gmail.com';
+}
+$settings['prospect_admin_fallback_email'] = $__paf;
+$settings['valbonne_notify_email'] = $__paf; // compat ancien code / Clever
+unset($__paf);
 
 // ⭐ Configuration Telegram
 $settings['tg_token'] = '8517515830:AAFWzlEOlxlrzo01l91836int0n5fTWVOZI';

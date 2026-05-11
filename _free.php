@@ -534,9 +534,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             error_log("Centre id=$center_id ($city): uniquement adresse(s) Google Agenda dans am_centers.email — repli notification admin.");
                         }
                     }
-                    // Repli global (direction) si aucun dirigeant extrait du champ centre
+                    // Repli global (direction) si aucun dirigeant extrait du champ centre (defaut inline si cle absente / opcache)
                     if ($adminRecipientsAdded === 0) {
-                        $fbAdm = aquavelo_parse_recipient_email(trim((string) ($settings['prospect_admin_fallback_email'] ?? '')));
+                        $fbRawCfg = trim((string) ($settings['prospect_admin_fallback_email'] ?? ''));
+                        if ($fbRawCfg === '') {
+                            $fbRawCfg = 'directionalesiaminceur@gmail.com';
+                        }
+                        $fbAdm = aquavelo_parse_recipient_email($fbRawCfg);
                         if ($fbAdm !== '' && !aquavelo_is_google_calendar_address($fbAdm)) {
                             $mail->addAddress($fbAdm);
                             $adminRecipientsAdded++;
@@ -559,7 +563,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         $mail->addBCC('claude@alesiaminceur.com');
                     }
                     // Copie direction (repli global) pour tout centre, si pas deja To/Cc/Bcc
-                    $fbCc = aquavelo_parse_recipient_email(trim((string) ($settings['prospect_admin_fallback_email'] ?? '')));
+                    $fbCcRaw = trim((string) ($settings['prospect_admin_fallback_email'] ?? ''));
+                    if ($fbCcRaw === '') {
+                        $fbCcRaw = 'directionalesiaminceur@gmail.com';
+                    }
+                    $fbCc = aquavelo_parse_recipient_email($fbCcRaw);
                     if ($fbCc !== '' && !aquavelo_is_google_calendar_address($fbCc)) {
                         $fbSeen = [];
                         foreach (array_merge($mail->getToAddresses(), $mail->getCcAddresses(), $mail->getBccAddresses()) as $fbRow) {
@@ -608,6 +616,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                       <small>(Demande effectuée à partir du site aquavelo.com, le $date_now)</small>";
                     }
                     try {
+                        $adminAddrLine = static function (array $rows): string {
+                            $out = [];
+                            foreach ($rows as $row) {
+                                if (!empty($row[0])) {
+                                    $out[] = (string) $row[0];
+                                }
+                            }
+
+                            return implode(', ', $out);
+                        };
                         $adminTo = array_map(static function ($row) {
                             return $row[0] ?? '';
                         }, $mail->getToAddresses());
@@ -615,8 +633,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         if ($adminTo === []) {
                             error_log("⚠️ Email admin $city : aucun destinataire To (centre_id=$center_id) — envoi ignoré.");
                         } else {
+                            $ccLog = $adminAddrLine($mail->getCcAddresses());
+                            $bccLog = $adminAddrLine($mail->getBccAddresses());
+                            $logDest = 'To: ' . implode(', ', $adminTo);
+                            if ($ccLog !== '') {
+                                $logDest .= ' | Cc: ' . $ccLog;
+                            }
+                            if ($bccLog !== '') {
+                                $logDest .= ' | Bcc: ' . $bccLog;
+                            }
                             $mail->send();
-                            error_log("Email admin envoyé $city: " . implode(', ', $adminTo) . " | message_id=" . $mail->getLastMessageID());
+                            error_log("Email admin envoyé $city ($logDest) | message_id=" . $mail->getLastMessageID());
                         }
                     } catch (Exception $adminEmailException) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);

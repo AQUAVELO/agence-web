@@ -384,6 +384,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
 
                     // Email pour l'ADMIN (Dirigeant)
                     aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
+                    if ((int)$center_id === 179) {
+                        $mail->addBCC('claude@alesiaminceur.com');
+                    }
                     $mail->addReplyTo($email, $input_nom_complet);
                     
                     $date_now = date('d-m-Y H:i:s');
@@ -430,6 +433,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
                         $clientMail->addAddress($email);
+                        if ((int)$center_id === 179) {
+                            $clientMail->addBCC('claude@alesiaminceur.com');
+                        }
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
                         }
@@ -484,6 +490,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if ($date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, 'contact@aquavelo.com', 'Aquavelo');
                         $clientMail->addAddress($email);
+                        if ((int)$center_id === 179) {
+                            $clientMail->addBCC('claude@alesiaminceur.com');
+                        }
                         if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
                             $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
                         }

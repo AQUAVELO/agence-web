@@ -16,15 +16,45 @@ use PHPMailer\PHPMailer\Exception;
 $error_message = '';
 $success_message = '';
 
+if (!function_exists('aquavelo_parse_recipient_email')) {
+    /**
+     * Extrait une adresse valide depuis un fragment (email seul, "Nom <email>", espaces insécables).
+     */
+    function aquavelo_parse_recipient_email(string $raw): string
+    {
+        $raw = trim(str_replace(["\xc2\xa0", "\xe2\x80\xaf"], ' ', $raw));
+        if ($raw === '') {
+            return '';
+        }
+        if (filter_var($raw, FILTER_VALIDATE_EMAIL)) {
+            return $raw;
+        }
+        if (preg_match('/<([^>]+@[^>]+)>/', $raw, $m)) {
+            $inner = trim($m[1]);
+            if (filter_var($inner, FILTER_VALIDATE_EMAIL)) {
+                return $inner;
+            }
+        }
+        if (preg_match('/[\w.+%-]+@[\w.-]+\.[\w.-]+/u', $raw, $m)) {
+            $c = $m[0];
+            if (filter_var($c, FILTER_VALIDATE_EMAIL)) {
+                return $c;
+            }
+        }
+
+        return '';
+    }
+}
+
 if (!function_exists('aquavelo_add_mail_recipients')) {
     function aquavelo_add_mail_recipients(PHPMailer $mail, string $recipients, string $fallback = ''): int
     {
         $added = 0;
         $emails = preg_split('/[\s,;]+/', trim($recipients));
 
-        foreach ($emails ?: [] as $email) {
-            $email = trim($email);
-            if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        foreach ($emails ?: [] as $part) {
+            $email = aquavelo_parse_recipient_email($part);
+            if ($email === '') {
                 continue;
             }
 
@@ -202,7 +232,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
     if (empty($error) && empty($error_message)) {
         $is_second_session = false; // Variable pour compatibilité (fonctionnalité désactivée)
         $city = $row_center_contact['city'];
-        $email_center = $row_center_contact['email'] ?: 'claude@alesiaminceur.com';
+        $rawEmailCenter = isset($row_center_contact['email']) ? trim(str_replace(["\xc2\xa0", "\xe2\x80\xaf"], ' ', (string) $row_center_contact['email'])) : '';
+        $email_center = $rawEmailCenter !== '' ? $rawEmailCenter : 'claude@alesiaminceur.com';
         $reference = 'AQ' . date('dmhis');
         $input_name_db = ($date_heure) ? $input_nom_complet . " (RDV: " . $date_heure . ")" : $input_nom_complet;
 
@@ -445,8 +476,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
                             }
                         }
-                        if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
-                            $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
+                        $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
+                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL)) {
+                            $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);
                         }
 
                         // Centres pas encore ouverts : email spécifique
@@ -505,8 +537,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                 $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
                             }
                         }
-                        if (filter_var($email_center, FILTER_VALIDATE_EMAIL)) {
-                            $clientMail->addReplyTo($email_center, 'Aquavelo ' . $city);
+                        $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
+                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL)) {
+                            $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);
                         }
                         $clientMail->Subject = "Confirmation de votre séance à Aquavelo $city";
                         $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);

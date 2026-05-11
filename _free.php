@@ -429,7 +429,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         error_log("Erreur Email admin $city: " . $mail->ErrorInfo);
                     }
 
-                    $clientFromEmail = ((int)$center_id === 179) ? 'aqua.cannes@gmail.com' : 'contact@aquavelo.com';
+                    $clientFromEmail = ((int)$center_id === 179) ? 'claude@alesiaminceur.com' : 'contact@aquavelo.com';
 
                     // 3. Email de bienvenue pour les centres HORS PLANNING (Cannes, Mandelieu, Vallauris, Mérignac, Antibes gérés plus bas)
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {

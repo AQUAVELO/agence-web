@@ -50,9 +50,27 @@ if (!function_exists('aquavelo_add_mail_recipients')) {
     function aquavelo_add_mail_recipients(PHPMailer $mail, string $recipients, string $fallback = ''): int
     {
         $added = 0;
-        $emails = preg_split('/[\s,;]+/', trim($recipients));
+        $r = trim($recipients);
+        if ($r === '') {
+            if ($fallback !== '' && filter_var($fallback, FILTER_VALIDATE_EMAIL)) {
+                $mail->addAddress($fallback);
+                return 1;
+            }
 
-        foreach ($emails ?: [] as $part) {
+            return 0;
+        }
+        // Avec "Nom Prénom <mail@…>", ne pas découper sur les espaces du display name.
+        if (strpos($r, '<') !== false) {
+            $parts = preg_split('/\s*[,;]\s*/', $r);
+        } else {
+            $parts = preg_split('/[\s,;]+/', $r);
+        }
+
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if ($part === '') {
+                continue;
+            }
             $email = aquavelo_parse_recipient_email($part);
             if ($email === '') {
                 continue;
@@ -418,9 +436,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $mail = aquavelo_create_mailer($settings, $city);
 
                     // Email pour l'ADMIN (Dirigeant)
-                    aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
-                    if ($use_nice_style_email) {
-                        $mail->addBCC('claude@alesiaminceur.com');
+                    // Valbonne (332) : priorité au parsing du champ brut (évite les formats atypiques en BDD).
+                    $adminRecipientsAdded = 0;
+                    if ((int)$center_id === 332) {
+                        $vbDirector = aquavelo_parse_recipient_email($rawEmailCenter);
+                        if ($vbDirector !== '') {
+                            $mail->addAddress($vbDirector);
+                            $adminRecipientsAdded = 1;
+                            if ($use_nice_style_email && strtolower($vbDirector) !== 'claude@alesiaminceur.com') {
+                                $mail->addBCC('claude@alesiaminceur.com');
+                            }
+                        } elseif ($rawEmailCenter !== '') {
+                            error_log('Valbonne 332: email centre présent mais non reconnu (am_centers.email).');
+                        }
+                    }
+                    if ($adminRecipientsAdded === 0) {
+                        aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
+                        if ($use_nice_style_email) {
+                            $mail->addBCC('claude@alesiaminceur.com');
+                        }
                     }
                     $mail->addReplyTo($email, $input_nom_complet);
                     

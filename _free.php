@@ -621,6 +621,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         if ($fbCcParsed === '' || !filter_var($fbCcParsed, FILTER_VALIDATE_EMAIL)) {
                             return;
                         }
+                        if (strtolower($fbCcParsed) === 'aqua.cannes@gmail.com') {
+                            return;
+                        }
                         if (aquavelo_is_google_calendar_address($fbCcParsed)) {
                             return;
                         }

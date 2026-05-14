@@ -668,7 +668,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             if ($use_nice_style_email && !aquavelo_is_prospect_admin_technical_to($dirTo)) {
                                 $mail->addBCC('claude@alesiaminceur.com');
                             }
-                            $addDirectionCcIfMissing($mail, $fbCc);
+                            //$addDirectionCcIfMissing($mail, $fbCc);
                             $mail->addReplyTo($email, $input_nom_complet);
                             $mail->Subject = $subject_admin;
                             $mail->Body = $body_admin;
@@ -726,7 +726,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         if ($use_nice_style_email && $adminHasNonClaudeTo) {
                             $mail->addBCC('claude@alesiaminceur.com');
                         }
-                        $addDirectionCcIfMissing($mail, $fbCc);
+                        //$addDirectionCcIfMissing($mail, $fbCc);
                         $mail->addReplyTo($email, $input_nom_complet);
                         $mail->Subject = $subject_admin;
                         $mail->Body = $body_admin;

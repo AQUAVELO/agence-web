@@ -470,9 +470,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             }
 
             // D. NOTIFICATIONS (Email et Telegram)
+            // Telegram : Cannes, Mandelieu, Vallauris, Valbonne — pas Antibes (253) ni Mérignac (343)
+            $telegram_centers = [305, 347, 349, 332];
             
             // 1. Alerte Telegram pour double inscription (Cannes/Mandelieu/Vallauris)
-            if ($is_double_booking) {
+            if ($is_double_booking && in_array((int)$center_id, [305, 347, 349], true)) {
                 $alert_msg = "<b>🚨 ALERTE DOUBLE INSCRIPTION - $city</b>\n" . 
                              "👤 $input_nom_complet\n" . 
                              "📧 $email\n" .
@@ -485,8 +487,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             }
             
             // 2. Détermination du message Telegram normal
-            $planning_centers = [305, 347, 349, 343, 253]; // Cannes, Mandelieu, Vallauris, Mérignac, Antibes
-            if (in_array((int)$center_id, $planning_centers)) {
+            if (in_array((int)$center_id, [305, 347, 349], true)) {
                 if ($segment == 'calendrier-cannes') {
                     // Étape 2 : Le rendez-vous vient d'être pris
                     $tg_msg = "<b>✅ RDV CONFIRMÉ - $city</b>\n" . 
@@ -797,7 +798,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email client $city: " . $clientError);
-                            if ($use_nice_style_email && function_exists('sendTelegram')) {
+                            if ($use_nice_style_email && in_array((int)$center_id, $telegram_centers, true) && function_exists('sendTelegram')) {
                                 sendTelegram("<b>⚠️ Email client $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }
@@ -867,7 +868,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         } catch (Exception $clientEmailException) {
                             $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
                             error_log("Erreur Email confirmation client $city: " . $clientError);
-                            if ($use_nice_style_email && function_exists('sendTelegram')) {
+                            if ($use_nice_style_email && in_array((int)$center_id, $telegram_centers, true) && function_exists('sendTelegram')) {
                                 sendTelegram("<b>⚠️ Email confirmation $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
                             }
                         }

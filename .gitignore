@@ -1,4 +1,5 @@
 vendor
+.venv-img
 .DS_Store
 .playwright-mcp/
 images/recette/taboulé printannier.jpg

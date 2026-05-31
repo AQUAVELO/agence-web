@@ -92,7 +92,7 @@ fbq('track', 'PageView');
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>"
              style="display: block; width: 100%;">
-            <img src="/images/offre-av-juin-2026.png?v=2" 
+            <img src="/images/offre-av-juin-2026.png?v=3" 
                  alt="Promotion juin 2026 — 5 premières séances offertes Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same"
                  style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"

@@ -22,6 +22,7 @@ $tasks = [
     'Rappels 24h' => 'cron_rappel_24h.php',
     'Rappels 3h' => 'cron_rappel_3h.php',
     'Suivi après séance' => 'cron_apres_seance.php',
+    'Suivi 48h' => 'cron_suivi_48h.php',
     'Suivi J+2' => 'cron_suivi_2j.php',
     'Suivi J+7' => 'cron_suivi_7j.php',
     'Sync Google Calendar' => 'cron_sync_google.php'

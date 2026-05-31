@@ -69,14 +69,16 @@ $models = [
                   Claude<br>
                   Tél : 06 22 64 70 95"
     ],
-    '5. Suivi J+2' => [
-        'subject' => "Votre séance Aquavelo vous a plu ? 💦",
+    '5. Suivi 48h' => [
+        'subject' => "Suite à votre séance découverte Aquavelo 😊",
         'body' => "Bonjour Jean,<br><br>
-                  J’espère que votre séance découverte Aquavelo vous a plu 💦 !<br>
-                  Si vous avez un moment, donnez-nous votre avis par retour email — cela nous aide à progresser 🌟.<br><br>
-                  Et si vous souhaitez continuer, vous pouvez dès maintenant vous inscrire en ligne via ce lien si cela n'a pas été fait :<br>
-                  👉 <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
-                  À très bientôt dans l’eau 🌊<br>
+                  J’espère que vous allez bien 😊<br><br>
+                  Je me permets de revenir vers vous suite à votre séance découverte d’Aquavelo🚴‍♀️💦.<br><br>
+                  Beaucoup de personnes ressentent déjà les bienfaits après quelques séances : tonicité, bien-être, jambes plus légères et un vrai moment de détente 🌊.<br><br>
+                  Si vous souhaitez poursuivre l’expérience et finaliser votre inscription, vous pouvez le faire directement ici : <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
+                  Je reste bien sûr disponible si vous avez la moindre question ou besoin d’informations complémentaires.<br><br>
+                  Au plaisir de vous revoir prochainement 😊<br><br>
+                  Cordialement,<br>
                   Claude<br>
                   Tél : 06 22 64 70 95"
     ]

@@ -39,6 +39,11 @@ foreach ($bookings as $booking) {
             if ($is_past && $hours_passed >= 44 && $hours_passed <= 60) {
                 try {
                     $center_id = $booking['center_id'] ?: 305;
+
+                    // Cannes / Mandelieu / Vallauris : suivi à 48h (cron_suivi_48h.php)
+                    if (in_array((int)$center_id, [305, 347, 349])) {
+                        continue;
+                    }
                     
                     // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
                     $lookup_center_id = in_array((int)$center_id, [305, 347, 349]) ? 305 : $center_id;

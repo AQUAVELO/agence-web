@@ -132,7 +132,7 @@ if ($authenticated) {
                 $new_name_db = $client_name . " (RDV: " . $new_date_fr . " à " . $new_time . ")";
                 
                 // 2. Mise à jour Base de Données
-                $update = $database->prepare("UPDATE am_free SET name = ?, date = ?, google_sync = 0, reminder_sent = 0, reminder_3h_sent = 0, after_session_sent = 0, followup_2d_sent = 0, followup_7d_sent = 0 WHERE id = ?");
+                $update = $database->prepare("UPDATE am_free SET name = ?, date = ?, google_sync = 0, reminder_sent = 0, reminder_3h_sent = 0, after_session_sent = 0, followup_48h_sent = 0, followup_2d_sent = 0, followup_7d_sent = 0 WHERE id = ?");
                 $update->execute([$new_name_db, $new_date . ' ' . $new_time . ':00', $booking_id]);
                 
                 // 3. Gestion Google Calendar
@@ -478,11 +478,12 @@ try {
                         </div>
                         <?php if (!$is_locked): ?>
                             <div style="color: #666; font-size: 0.75rem;"><?= htmlspecialchars((string) $res['phone'], ENT_QUOTES, 'UTF-8') ?></div>
-                            <!-- Indicateurs relances : avant RDV, puis après séance (3h ap., J+2, J+7) -->
+                            <!-- Indicateurs relances : avant RDV, puis après séance (3h ap., 48h, J+2, J+7) -->
                             <?php
                             $ok24 = (int) ($res['reminder_sent'] ?? 0) === 1;
                             $ok3hAvant = (int) ($res['reminder_3h_sent'] ?? 0) === 1;
                             $ok3hApres = array_key_exists('after_session_sent', $res) && (int) $res['after_session_sent'] === 1;
+                            $ok48h = array_key_exists('followup_48h_sent', $res) && (int) $res['followup_48h_sent'] === 1;
                             $okJ2 = array_key_exists('followup_2d_sent', $res) && (int) $res['followup_2d_sent'] === 1;
                             $okJ7 = array_key_exists('followup_7d_sent', $res) && (int) $res['followup_7d_sent'] === 1;
                             ?>
@@ -490,7 +491,8 @@ try {
                                 <span title="E-mail ~24 h avant le RDV (cron_rappel_24h)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok24 ? '#2e7d32' : '#ccc' ?>; background: <?= $ok24 ? '#4CAF50' : '#f5f5f5' ?>; color: <?= $ok24 ? '#fff' : '#555' ?>;">24h</span>
                                 <span title="E-mail + SMS ~3 h avant le RDV (cron_rappel_3h)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok3hAvant ? '#2e7d32' : '#ccc' ?>; background: <?= $ok3hAvant ? '#4CAF50' : '#f5f5f5' ?>; color: <?= $ok3hAvant ? '#fff' : '#555' ?>;">3h av.</span>
                                 <span title="E-mail ~3 h après la séance, fenêtre 3–6 h après le début du RDV (cron_apres_seance)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok3hApres ? '#1565c0' : '#ccc' ?>; background: <?= $ok3hApres ? '#1976d2' : '#f5f5f5' ?>; color: <?= $ok3hApres ? '#fff' : '#555' ?>;">3h ap.</span>
-                                <span title="E-mail suivi J+2 (~44–60 h après le début du RDV) (cron_suivi_2j)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okJ2 ? '#e65100' : '#ccc' ?>; background: <?= $okJ2 ? '#f57c00' : '#f5f5f5' ?>; color: <?= $okJ2 ? '#fff' : '#555' ?>;">J+2</span>
+                                <span title="E-mail suivi ~48 h après le début du RDV (cron_suivi_48h)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $ok48h ? '#bf360c' : '#ccc' ?>; background: <?= $ok48h ? '#e64a19' : '#f5f5f5' ?>; color: <?= $ok48h ? '#fff' : '#555' ?>;">48h</span>
+                                <span title="E-mail suivi J+2 (~44–60 h après le début du RDV, hors groupe Cannes) (cron_suivi_2j)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okJ2 ? '#e65100' : '#ccc' ?>; background: <?= $okJ2 ? '#f57c00' : '#f5f5f5' ?>; color: <?= $okJ2 ? '#fff' : '#555' ?>;">J+2</span>
                                 <span title="E-mail suivi J+7 (~7 jours après le début du RDV) (cron_suivi_7j)" style="font-size: 9px; padding: 2px 5px; border-radius: 3px; font-weight: 600; border: 1px solid <?= $okJ7 ? '#4a148c' : '#ccc' ?>; background: <?= $okJ7 ? '#7b1fa2' : '#f5f5f5' ?>; color: <?= $okJ7 ? '#fff' : '#555' ?>;">J+7</span>
                             </div>
                             <?php

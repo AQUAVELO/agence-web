@@ -52,6 +52,15 @@ try {
     }
     $database->exec("UPDATE am_free SET followup_7d_sent = 0 WHERE followup_7d_sent IS NULL");
 
+    // 5b. Vérifier la colonne followup_48h_sent (Suivi 48h)
+    echo "Vérification de la colonne followup_48h_sent...\n";
+    $check48h = $database->query("SHOW COLUMNS FROM am_free LIKE 'followup_48h_sent'");
+    if ($check48h->rowCount() == 0) {
+        echo "Ajout de la colonne followup_48h_sent...\n";
+        $database->exec("ALTER TABLE am_free ADD COLUMN followup_48h_sent TINYINT(1) DEFAULT 0");
+    }
+    $database->exec("UPDATE am_free SET followup_48h_sent = 0 WHERE followup_48h_sent IS NULL");
+
     // 6. Vérifier la colonne google_sync (Agenda)
     echo "Vérification de la colonne google_sync...\n";
     $checkSync = $database->query("SHOW COLUMNS FROM am_free LIKE 'google_sync'");

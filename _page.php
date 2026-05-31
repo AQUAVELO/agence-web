@@ -510,8 +510,8 @@
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
              title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="<?= BASE_PATH ?>images/offre-av-mai-2026.png" 
-                 alt="Promotion séance découverte gratuite 45min Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
+            <img src="<?= BASE_PATH ?>images/offre-av-juin-2026.png" 
+                 alt="Promotion juin 2026 — 5 premières séances offertes Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same" 
                  style="border-radius: 10px; border: 3px solid #ff9800; display: block; margin-left: auto; margin-right: auto;"
                  width="300"

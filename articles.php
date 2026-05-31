@@ -91,8 +91,8 @@ fbq('track', 'PageView');
       if (array_key_exists($row_center['id'], $promotions)) { ?>
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="/images/offre-av-mai-2026.png" 
-                 alt="Promotion spéciale pour le centre <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+            <img src="/images/offre-av-juin-2026.png" 
+                 alt="Promotion juin 2026 — 5 premières séances offertes Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid" 
                  style="width: 100%; height: auto; max-width: 420px; object-fit: contain; display: block; margin: 0 auto;">
           </a>

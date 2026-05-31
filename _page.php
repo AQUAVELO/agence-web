@@ -114,27 +114,6 @@
       opacity: 0.95;
     }
 
-    .img-promo-offer {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: contain;
-      object-position: center;
-      border-radius: 10px;
-      border: 3px solid #ff9800;
-      margin: 0 auto;
-    }
-
-    .promo-offer-col {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .promo-offer-col a {
-      width: 100%;
-    }
-
     .form-container {
       background: white;
       padding: 30px;
@@ -528,12 +507,16 @@
       if (isset($row_center['id']) && array_key_exists($row_center['id'], $promotions)) : 
         $center_id = $row_center['id'];
       ?>
-        <div class="col-md-3 col-6 text-center promo-offer-col">
+        <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
-             title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>">
-            <img src="<?= BASE_PATH ?>images/offre-av-juin-2026.png" 
+             title="Offre séance découverte gratuite Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>"
+             style="display: block; width: 100%;">
+            <img src="<?= BASE_PATH ?>images/offre-av-juin-2026.png?v=2" 
                  alt="Promotion juin 2026 — 5 premières séances offertes Aquavélo <?= htmlspecialchars($promotions[$center_id], ENT_QUOTES, 'UTF-8'); ?>" 
-                 class="img-promo-offer" 
+                 class="img-fluid img-same" 
+                 style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                 width="300"
+                 height="200"
                  loading="lazy">
           </a>
         </div>

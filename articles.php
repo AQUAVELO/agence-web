@@ -89,11 +89,16 @@ fbq('track', 'PageView');
       ];
 
       if (array_key_exists($row_center['id'], $promotions)) { ?>
-        <div class="col-md-3 col-6 text-center" style="display: flex; align-items: center; justify-content: center;">
-          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" style="width: 100%;">
-            <img src="/images/offre-av-juin-2026.png" 
+        <div class="col-md-3 col-6 text-center">
+          <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>"
+             style="display: block; width: 100%;">
+            <img src="/images/offre-av-juin-2026.png?v=2" 
                  alt="Promotion juin 2026 — 5 premières séances offertes Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
-                 style="width: 100%; height: auto; object-fit: contain; border-radius: 10px; border: 3px solid #ff9800; display: block; margin: 0 auto;">
+                 class="img-fluid img-same"
+                 style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
+                 width="300"
+                 height="200"
+                 loading="lazy">
           </a>
         </div>
       <?php } ?>

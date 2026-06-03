@@ -1,161 +1,7 @@
 <?php
-// ========== TRAITEMENT DU FORMULAIRE CRYOLIPOLYSE ==========
-require_once '_settings.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-$cryo_success = false;
-$cryo_error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
-    
-    // Récupération des données
-    $prenom = htmlspecialchars(trim($_POST['cryo_prenom'] ?? ''));
-    $nom = htmlspecialchars(trim($_POST['cryo_nom'] ?? ''));
-    $email = filter_var(trim($_POST['cryo_email'] ?? ''), FILTER_SANITIZE_EMAIL);
-    $telephone = htmlspecialchars(trim($_POST['cryo_telephone'] ?? ''));
-    $zone = htmlspecialchars(trim($_POST['cryo_zone'] ?? ''));
-    $horaire = htmlspecialchars(trim($_POST['cryo_horaire'] ?? ''));
-    $message = htmlspecialchars(trim($_POST['cryo_message'] ?? ''));
-    
-    // Validation
-    if (empty($prenom) || empty($nom) || empty($email) || empty($telephone) || empty($zone) || empty($horaire)) {
-        $cryo_error = "Veuillez remplir tous les champs obligatoires.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $cryo_error = "Veuillez entrer une adresse email valide.";
-    } else {
-        try {
-            // ========== EMAIL 1 : Notification au centre ==========
-            $mailCentre = new PHPMailer(true);
-            $mailCentre->isSMTP();
-            $mailCentre->Host = $settings['mjhost'];
-            $mailCentre->SMTPAuth = true;
-            $mailCentre->Username = $settings['mjusername'];
-            $mailCentre->Password = $settings['mjpassword'];
-            $mailCentre->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mailCentre->Port = 587;
-            $mailCentre->CharSet = 'UTF-8';
-            
-            $mailCentre->setFrom('contact@aquavelo.com', 'Aquavelo Cryolipolyse');
-            $mailCentre->addAddress('aqua.cannes@gmail.com');
-            $mailCentre->addReplyTo($email, $prenom . ' ' . $nom);
-            
-            $mailCentre->isHTML(true);
-            $mailCentre->Subject = "🧊 Nouvelle réservation Cryolipolyse - {$prenom} {$nom}";
-            $mailCentre->Body = "
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                    <div style='background-color: #e0f7fa; padding: 30px; border-radius: 15px 15px 0 0; text-align: center; border: 2px solid #00a8cc;'>
-                        <h1 style='color: #00a8cc; margin: 0; font-size: 24px;'>🧊 Nouvelle Réservation Cryolipolyse</h1>
-                        <p style='color: #00a8cc; margin-top: 10px; font-weight: bold;'>Offre découverte à 99€</p>
-                    </div>
-                    <div style='background: #f8f9fa; padding: 30px; border-radius: 0 0 15px 15px;'>
-                        <h2 style='color: #00a8cc; margin-top: 0;'>Informations du prospect</h2>
-                        <table style='width: 100%; border-collapse: collapse;'>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Prénom :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$prenom}</td>
-                            </tr>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Nom :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$nom}</td>
-                            </tr>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Email :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><a href='mailto:{$email}'>{$email}</a></td>
-                            </tr>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Téléphone :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><a href='tel:{$telephone}'>{$telephone}</a></td>
-                            </tr>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Zone à traiter :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$zone}</td>
-                            </tr>
-                            <tr>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'><strong>Horaire préféré :</strong></td>
-                                <td style='padding: 10px; border-bottom: 1px solid #eee;'>{$horaire}</td>
-                            </tr>
-                            " . (!empty($message) ? "<tr>
-                                <td style='padding: 10px;'><strong>Message :</strong></td>
-                                <td style='padding: 10px;'>{$message}</td>
-                            </tr>" : "") . "
-                        </table>
-                        <div style='margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 10px; border-left: 4px solid #ffc107;'>
-                            <p style='margin: 0; color: #856404;'><strong>⚡ Action requise :</strong> Contactez ce prospect rapidement pour confirmer son rendez-vous de cryolipolyse.</p>
-                        </div>
-                    </div>
-                </div>
-            ";
-            $mailCentre->AltBody = "Nouvelle réservation Cryolipolyse\n\nPrénom: {$prenom}\nNom: {$nom}\nEmail: {$email}\nTéléphone: {$telephone}\nZone: {$zone}\nHoraire: {$horaire}\nMessage: {$message}";
-            
-            $mailCentre->send();
-            
-        } catch (Exception $e) {
-            error_log("Erreur envoi email Centre Cryolipolyse: " . $e->getMessage());
-        }
-        
-        // ========== EMAIL 2 : Confirmation au prospect ==========
-        try {
-            $mailProspect = new PHPMailer(true);
-            $mailProspect->isSMTP();
-            $mailProspect->Host = $settings['mjhost'];
-            $mailProspect->SMTPAuth = true;
-            $mailProspect->Username = $settings['mjusername'];
-            $mailProspect->Password = $settings['mjpassword'];
-            $mailProspect->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mailProspect->Port = 587;
-            $mailProspect->CharSet = 'UTF-8';
-            
-            $mailProspect->setFrom('noreply@aquavelo.com', 'Aquavelo Cannes');
-            $mailProspect->addAddress($email, $prenom . ' ' . $nom);
-            $mailProspect->addReplyTo('aqua.cannes@gmail.com', 'Aquavelo Cannes');
-            
-            $mailProspect->isHTML(true);
-            $mailProspect->Subject = "✅ Votre demande de séance Cryolipolyse a bien été reçue !";
-            $mailProspect->Body = "
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;'>
-                    <div style='text-align: center; margin-bottom: 30px;'>
-                        <img src='https://aquavelo.com/images/content/logo.png' alt='Aquavelo' style='max-width: 150px;'>
-                    </div>
-                    <div style='background-color: #e0f7fa; padding: 15px; border-radius: 10px; text-align: center; border: 1px solid #00a8cc;'>
-                        <p style='color: #00a8cc; margin: 0; font-size: 16px; font-weight: bold;'>🧊 Merci {$prenom}, demande reçue nous allons vous contacter !</p>
-                    </div>
-                    <div style='padding: 30px 0;'>
-                        <h2 style='color: #00a8cc;'>Récapitulatif de votre demande</h2>
-                        <div style='background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;'>
-                            <p><strong>🎯 Zone à traiter :</strong> {$zone}</p>
-                            <p><strong>🕐 Horaire préféré :</strong> {$horaire}</p>
-                            <p><strong>💰 Offre :</strong> Séance découverte à <span style='color: #00a8cc; font-weight: bold;'>99€</span> au lieu de 149€</p>
-                        </div>
-                        <div style='background: #d4edda; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;'>
-                            <p style='color: #155724; margin: 0;'>Notre équipe va vous contacter très rapidement pour confirmer votre rendez-vous et répondre à toutes vos questions.</p>
-                        </div>
-                    </div>
-                    <div style='text-align: center; padding: 20px; border-top: 1px solid #eee;'>
-                        <p style='color: #666; font-size: 0.9rem;'>Une question ? Contactez-nous :</p>
-                        <p style='margin: 10px 0;'>
-                            <a href='tel:0493930565' style='color: #00a8cc; text-decoration: none; font-weight: bold;'>📞 04 93 93 05 65</a>
-                        </p>
-                        <p style='color: #999; font-size: 0.85rem;'>
-                            Aquavelo Cannes - 60 avenue du Docteur Picaud, 06150 Cannes
-                        </p>
-                    </div>
-                </div>
-            ";
-            $mailProspect->AltBody = "Bonjour {$prenom},\n\nMerci pour votre demande de séance Cryolipolyse !\n\nRécapitulatif :\n- Zone à traiter : {$zone}\n- Horaire préféré : {$horaire}\n- Offre : 99€ au lieu de 149€\n\nNotre équipe va vous contacter très rapidement pour confirmer votre rendez-vous.\n\nÀ très bientôt !\nL'équipe Aquavelo Cannes";
-            
-            $mailProspect->send();
-            
-        } catch (Exception $e) {
-            error_log("Erreur envoi email Prospect Cryolipolyse: " . $e->getMessage());
-            // On ne bloque pas si l'email prospect échoue
-        }
-        
-        // Succès global (au moins l'email centre a été envoyé)
-        $cryo_success = true;
-    }
-}
+// Affichage landing cryolipolyse — traitement POST : Include/cryolipolyse_submit.php (via index.php)
+$cryo_success = $cryo_success ?? false;
+$cryo_error = $cryo_error ?? '';
 ?>
 <!-- 
     Landing Page Cryolipolyse - Offre 99€ au lieu de 149€
@@ -1227,7 +1073,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
                 <h3>Merci pour votre réservation !</h3>
                 <p>Nous avons bien reçu votre demande. Notre équipe va vous recontacter rapidement pour confirmer votre rendez-vous de cryolipolyse.</p>
                 <p style="margin-top: 15px; font-weight: 600; color: var(--cryo-primary-dark);">
-                    Un email de confirmation vous a été envoyé.
+                    <?php if ($cryo_success): ?>
+                    Un email de confirmation vous a été envoyé si votre adresse est correcte.
+                    <?php endif; ?>
                 </p>
                 <div style="margin-top: 30px;">
                     <a href="https://aquavelo.com" style="display: inline-block; background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 5px 20px rgba(0,168,204,0.3); transition: all 0.3s ease;">

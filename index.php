@@ -55,6 +55,12 @@ if (preg_match('#^soin-madeiro-drainage/?$#', $request_uri)
 if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
+$cryo_success = false;
+$cryo_error = '';
+if ($page === 'cryolipolyse' && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cryo_submit'])) {
+    require __DIR__ . '/Include/cryolipolyse_submit.php';
+}
+
 // Admin règlements : redirections / POST avant tout HTML (sinon page blanche si headers déjà envoyés)
 if ($page === 'admin_reglements') {
     require_once __DIR__ . '/_admin_reglements_run.php';

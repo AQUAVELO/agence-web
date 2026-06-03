@@ -394,7 +394,7 @@ foreach ($all_free as $res) {
         }
     }
 }
-/** RDV page soin madéro / drainage (même valeur que SMD_AMFREE_SEGMENT dans _soin_madeiro_drainage.php) */
+/** RDV ancienne page soin madéro / drainage (page publique retirée, segment conservé en base) */
 $smd_massage_segment = 'soin-madeiro-drainage';
 $smd_massage_bookings = [];
 try {

@@ -45,6 +45,13 @@ if (preg_match('#^centres/([^/]+)/?$#', $request_uri, $matches)) {
 
 // ===== FIN ROUTEUR =====
 
+// Page soin madéro/drainage retirée — redirection permanente vers Cannes
+if (preg_match('#^soin-madeiro-drainage/?$#', $request_uri)
+    || (isset($_GET['p']) && $_GET['p'] === 'soin_madeiro_drainage')) {
+    header('Location: ' . BASE_PATH . 'centres/Cannes', true, 301);
+    exit;
+}
+
 if (isset($_GET['p']) && is_file(__DIR__ . '/_' . strip_tags($_GET['p']) . '.php')) $page = strip_tags($_GET['p']);
 else $page = 'home';
 
@@ -109,11 +116,6 @@ if ($page == 'partenaires') {
 if ($page == 'conseilminceur') {
     $title = 'Conseils Minceur & Nutrition | Menu du Jour | Aquavelo';
     $meta_description = 'Recettes minceur quotidiennes, menus équilibrés et conseils nutrition pour accompagner vos séances d\'aquabiking. Programme perte de poids complet avec coaching alimentaire gratuit.';
-}
-
-if ($page == 'soin_madeiro_drainage') {
-    $title = 'Madérothérapie ou drainage lymphatique — 4 mai 2026, 9h–14h | 90 € | Aquavelo Cannes';
-    $meta_description = 'Réservez votre soin madérothérapie ou drainage lymphatique à Aquavelo Cannes : lundi 4 mai 2026, créneaux horaires de 9h à 14h, 90 € la séance. Confirmation par email.';
 }
 
 if ($page == 'vente_formule') {
@@ -303,8 +305,8 @@ if (isset($_GET['city'])) {
       $canonical_url .= '/centres';
   }
   // Pages avec URLs propres
-  elseif (in_array($page, ['aquagym', 'natation', 'cryolipolyse', 'soin_madeiro_drainage'])) {
-      $canonical_url .= '/' . ($page === 'soin_madeiro_drainage' ? 'soin-madeiro-drainage' : $page);
+  elseif (in_array($page, ['aquagym', 'natation', 'cryolipolyse'])) {
+      $canonical_url .= '/' . $page;
   }
   // Pages de vente (utiliser pretty URL sans .php)
   elseif (in_array($page, ['vente_formule', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {

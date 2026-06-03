@@ -44,7 +44,7 @@
     RewriteRule ^$ /cryolipolyse? [R=301,L]
     
     RewriteCond %{QUERY_STRING} ^p=soin_madeiro_drainage$
-    RewriteRule ^$ /soin-madeiro-drainage? [R=301,L]
+    RewriteRule ^$ /centres/Cannes? [R=301,L]
     
     RewriteCond %{QUERY_STRING} ^p=vente_formule$
     RewriteRule ^$ /vente_formule? [R=301,L]
@@ -101,7 +101,7 @@
     RewriteRule ^centres/?$ index.php?p=centers [QSA,L]
 
     # Pages de contenu et divers
-    RewriteRule ^soin-madeiro-drainage/?$ index.php?p=soin_madeiro_drainage [QSA,L]
+    RewriteRule ^soin-madeiro-drainage/?$ /centres/Cannes [R=301,L]
     RewriteRule ^politique-confidentialite/?$ index.php?p=politique_confidentialite [QSA,L]
     RewriteRule ^(aquabiking|aquagym|contact|free|franchise|conseilminceur|cryolipolyse|natation)/?$ index.php?p=$1 [QSA,L]
 

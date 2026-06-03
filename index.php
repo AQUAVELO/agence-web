@@ -27,6 +27,7 @@ $routes = [
     'contact' => ['p' => 'contact'],
     'free' => ['p' => 'free'],
     'franchise' => ['p' => 'franchise'],
+    'politique-confidentialite' => ['p' => 'politique_confidentialite'],
 ];
 
 // Vérifier les routes exactes
@@ -170,6 +171,11 @@ if ($page == 'contact') {
     $meta_description = 'Contactez-nous pour toute question sur l\'aquabiking ou consultez nos offres d\'emploi. Équipe disponible par téléphone au 06 22 64 70 95, email ou formulaire en ligne.';
 }
 
+if ($page == 'politique_confidentialite') {
+    $title = 'Politique de Confidentialité et Protection des Données | Aquavelo';
+    $meta_description = 'Politique de confidentialité du site Aquavelo : collecte des données, cookies, droits RGPD (accès, rectification, effacement), durée de conservation et contact.';
+}
+
 
 #nav
 $centers_list_d_cache = $redis->getItem('centers_list');
@@ -289,6 +295,9 @@ if (isset($_GET['city'])) {
   }
   elseif ($page == 'conseilminceur') {
       $canonical_url .= '/conseilminceur';
+  }
+  elseif ($page == 'politique_confidentialite') {
+      $canonical_url .= '/politique-confidentialite';
   }
   elseif ($page == 'centers') {
       $canonical_url .= '/centres';
@@ -1047,6 +1056,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <li><a href="<?= BASE_PATH ?>centres">Trouver un Centre</a></li>
               <li><a href="<?= BASE_PATH ?>franchise" style="color: #ff9800; font-weight: 600;">Ouvrir un Centre</a></li>
               <li><a href="<?= BASE_PATH ?>contact">Contact</a></li>
+              <li><a href="<?= BASE_PATH ?>politique-confidentialite">Politique de confidentialité</a></li>
             </ul>
           </aside>
           <aside class="col-md-3 widget">
@@ -1220,7 +1230,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const banner = document.createElement("div");
         banner.id = "cookie-banner";
         banner.innerHTML = `
-            <p>Nous utilisons des cookies pour améliorer votre expérience. En acceptant, vous nous autorisez à collecter des statistiques de navigation.</p>
+            <p>Nous utilisons des cookies pour améliorer votre expérience. En acceptant, vous nous autorisez à collecter des statistiques de navigation. <a href="<?= BASE_PATH ?>politique-confidentialite" style="color:#7dd3fc;text-decoration:underline;">Politique de confidentialité</a></p>
             <button id="accept-cookies">Accepter</button>
             <button id="reject-cookies">Refuser</button>
         `;

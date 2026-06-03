@@ -73,6 +73,13 @@
 </url>
 
 <url>
+    <loc>https://www.aquavelo.com/politique-confidentialite</loc>
+    <priority>0.4</priority>
+    <changefreq>yearly</changefreq>
+    <lastmod>2026-05-31</lastmod>
+</url>
+
+<url>
     <loc>https://www.aquavelo.com/vente_formule</loc>
     <priority>0.75</priority>
     <changefreq>monthly</changefreq>

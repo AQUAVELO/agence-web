@@ -392,13 +392,11 @@ if (!isset($_SESSION['captcha_answer'])) {
             <i class="fa fa-info-circle"></i> Mentions Légales
           </button>
           
-          <button type="button" 
-                  data-toggle="modal" 
-                  data-target="#politique" 
-                  class="btn btn-default btn-block"
-                  style="padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; color: #00a8cc; font-weight: 600; background: white;">
+          <a href="<?= BASE_PATH ?>politique-confidentialite"
+             class="btn btn-default btn-block"
+             style="padding: 15px; border-radius: 10px; border: 2px solid #00d4ff; color: #00a8cc; font-weight: 600; background: white; text-decoration: none; display: block;">
             <i class="fa fa-shield"></i> Politique de Confidentialité
-          </button>
+          </a>
         </div>
 
       </div>
@@ -464,69 +462,6 @@ if (!isset($_SESSION['captcha_answer'])) {
 
         <h3>7. Droit applicable</h3>
         <p>Tout litige en relation avec l'utilisation du site est soumis au droit français. Attribution exclusive de juridiction aux tribunaux compétents de Paris.</p>
-      </div>
-      <div class="modal-footer" style="padding: 20px;">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" style="background: #00a8cc; border: none; padding: 12px 30px; border-radius: 25px;">
-          <i class="fa fa-times"></i> Fermer
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Politique de Confidentialité -->
-<div class="modal fade" id="politique" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="border-radius: 15px;">
-      <div class="modal-header" style="background: linear-gradient(135deg, #00d4ff, #00a8cc); color: white; border-radius: 15px 15px 0 0; padding: 25px;">
-        <button type="button" class="close" data-dismiss="modal" style="color: white; opacity: 1;">&times;</button>
-        <h4 class="modal-title" style="color: white; font-size: 1.5rem;">
-          <i class="fa fa-shield"></i> Politique de Confidentialité
-        </h4>
-      </div>
-      <div class="modal-body" style="padding: 30px; max-height: 70vh; overflow-y: auto;">
-        <h3>Politique de confidentialité</h3>
-        <p>Nous nous engageons à respecter la confidentialité des renseignements personnels que nous collectons.</p>
-
-        <h4>Collecte des renseignements personnels</h4>
-        <p>Nous collectons les renseignements suivants :</p>
-        <ul>
-          <li>Nom et Prénom</li>
-          <li>Numéro de téléphone</li>
-          <li>Adresse email</li>
-          <li>Ville de résidence</li>
-        </ul>
-
-        <h4>Finalités</h4>
-        <p>Nous utilisons les renseignements collectés pour :</p>
-        <ul>
-          <li>Prise de contact</li>
-          <li>Répondre à vos demandes</li>
-          <li>Envoi d'emailings marketing (avec consentement)</li>
-        </ul>
-
-        <h4>Cookies</h4>
-        <p>Nous recueillons certaines informations par le biais de cookies :</p>
-        <ul>
-          <li>Adresse IP</li>
-          <li>Système d'exploitation</li>
-          <li>Pages visitées</li>
-          <li>Heure et jour de connexion</li>
-        </ul>
-
-        <h4>Droit d'opposition et de retrait</h4>
-        <p>Vous pouvez exercer vos droits en nous écrivant à : <a href="mailto:claude@alesiaminceur.com">claude@alesiaminceur.com</a></p>
-
-        <h4>Sécurité</h4>
-        <p>Vos données sont conservées dans un environnement sécurisé. Nous utilisons :</p>
-        <ul>
-          <li>Protocole SSL (Secure Sockets Layer)</li>
-          <li>Sauvegarde informatique</li>
-          <li>Pare-feu (Firewalls)</li>
-        </ul>
-
-        <h4>Législation</h4>
-        <p>Nous respectons les dispositions du RGPD : <a href="https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees" target="_blank">https://www.cnil.fr/fr/textes-officiels-europeens-protection-donnees</a></p>
       </div>
       <div class="modal-footer" style="padding: 20px;">
         <button type="button" class="btn btn-primary" data-dismiss="modal" style="background: #00a8cc; border: none; padding: 12px 30px; border-radius: 25px;">

@@ -1,276 +1,16 @@
 <?php
 /**
- * Admin Planning - Synchronisation Totale avec Restriction 9h45/10h00
+ * Admin Planning — affichage (auth + actions : Include/admin_planning_run.php via index.php).
  */
+$authenticated = $authenticated ?? false;
+$login_error = $login_error ?? null;
+$shared_centers = $shared_centers ?? [305, 347, 349];
+$centers_names = $centers_names ?? [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris'];
+$admin_special_lundi_essai = $admin_special_lundi_essai ?? '2026-04-06';
 
-require '_settings.php';
-
-// 1. AUTHENTIFICATION ET CONFIGURATION
-if (isset($_GET['logout'])) {
-    $_SESSION['admin_auth'] = false;
-    unset($_SESSION['admin_auth']);
-    unset($_SESSION['csrf_token']);
-    header("Location: index.php?p=admin_planning");
-    exit;
-}
-
-$password_secret = "aquavelo2026";
-$authenticated = isset($_SESSION['admin_auth']) && $_SESSION['admin_auth'] === true;
-
-// Liste des centres partageant le même planning
-$shared_centers = [305, 347, 349];
-$centers_names = [305 => 'Cannes', 347 => 'Mandelieu', 349 => 'Vallauris'];
-try {
-    $stmt_cn = $database->query('SELECT id, city FROM am_centers WHERE online = 1 AND aquavelo = 1');
-    while ($row = $stmt_cn->fetch(PDO::FETCH_ASSOC)) {
-        $centers_names[(int) $row['id']] = $row['city'];
-    }
-} catch (Throwable $e) {
-    /* garde $centers_names par défaut */
-}
-
-/** Lundi de Pâques : affichage admin séances d'essai jusqu'à 13 h + résas tous centres */
-$admin_special_lundi_essai = '2026-04-06';
-
-if (isset($_POST['login_pass'])) {
-    if ($_POST['login_pass'] === $password_secret) {
-        $_SESSION['admin_auth'] = true;
-        $authenticated = true;
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    } else {
-        sleep(1);
-        $login_error = "Mot de passe incorrect";
-    }
-}
-
-// 2. ACTIONS (Suppression, Verrouillage, Déplacement)
-if ($authenticated) {
-
-    // ACTION: synchroniser manuellement les RDV vers Google Agenda (Cannes / Mandelieu / Vallauris)
-    if (isset($_POST['action_google_sync']) && $_POST['action_google_sync'] === '1') {
-        $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
-        if ($token_ok) {
-            require_once __DIR__ . '/google_calendar_rdv_helpers.php';
-            $sync_out = aquavelo_gc_sync_pending_rdvs($database);
-            $msg = 'Synchronisation Google : ' . $sync_out['synced'] . ' RDV traité(s)';
-            if ($sync_out['errors'] > 0) {
-                $msg .= ', ' . $sync_out['errors'] . ' erreur(s)';
-            }
-            echo '<script>alert(' . json_encode($msg, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . '); window.location.replace("index.php?p=admin_planning");</script>';
-            exit;
-        }
-    }
-    
-    // ACTION: EMAIL NO-SHOW (absent au RDV)
-    if (isset($_POST['action_noshow'])) {
-        $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
-        if ($token_ok) {
-            $booking_id = intval($_POST['booking_id']);
-            $email_text = trim($_POST['email_text'] ?? '');
-
-            $stmt_get = $database->prepare("SELECT * FROM am_free WHERE id = ?");
-            $stmt_get->execute([$booking_id]);
-            $booking = $stmt_get->fetch();
-
-            if ($booking && !empty($email_text) && !empty($settings['mjusername'])) {
-                try {
-                    // Convertir les URLs en liens cliquables et les sauts de ligne en <br>
-                    $email_html = nl2br(htmlspecialchars($email_text, ENT_QUOTES, 'UTF-8'));
-                    $email_html = preg_replace(
-                        '/(https?:\/\/[^\s<]+)/',
-                        '<a href="$1" style="color:#00a8cc;">$1</a>',
-                        $email_html
-                    );
-
-                    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-                    $mail->isSMTP();
-                    $mail->Host       = $settings['mjhost'];
-                    $mail->SMTPAuth   = true;
-                    $mail->Username   = $settings['mjusername'];
-                    $mail->Password   = $settings['mjpassword'];
-                    $mail->Port       = 587;
-                    $mail->CharSet    = 'UTF-8';
-
-                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo Cannes');
-                    $mail->addAddress($booking['email']);
-                    $mail->addReplyTo('claude@alesiaminceur.com', 'Claude - Aquavelo');
-                    $mail->isHTML(true);
-                    $mail->Subject = "Votre séance d'essai à Aquavelo";
-                    $mail->Body    = $email_html;
-
-                    $mail->send();
-                    echo "<script>alert('✅ Email envoyé à " . addslashes($booking['email']) . "'); window.location.replace('index.php?p=admin_planning');</script>";
-                } catch (Exception $e) {
-                    echo "<script>alert('❌ Erreur envoi : " . addslashes($mail->ErrorInfo) . "'); window.history.back();</script>";
-                }
-                exit;
-            }
-        }
-    }
-
-    // ACTION: DÉPLACER UN RDV (POST)
-    if (isset($_POST['action_move']) && $_POST['action_move'] === 'move_rdv') {
-        $token_ok = (isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token']);
-        
-        if ($token_ok) {
-            $booking_id = intval($_POST['booking_id']);
-            $new_date = $_POST['new_date']; // Format YYYY-MM-DD
-            $new_time = $_POST['new_time']; // Format HH:MM
-            
-            // 1. Récupérer les infos actuelles
-            $stmt_get = $database->prepare("SELECT * FROM am_free WHERE id = ?");
-            $stmt_get->execute([$booking_id]);
-            $booking = $stmt_get->fetch();
-            
-            if ($booking) {
-                // Formater la nouvelle date pour le champ 'name'
-                $client_name = trim(explode('(RDV:', $booking['name'])[0]);
-                $new_datetime_str = $new_date . ' ' . $new_time;
-                $new_dt = DateTime::createFromFormat('Y-m-d H:i', $new_datetime_str);
-                $new_date_fr = $new_dt->format('d/m/Y');
-                
-                $new_name_db = $client_name . " (RDV: " . $new_date_fr . " à " . $new_time . ")";
-                
-                // 2. Mise à jour Base de Données
-                $update = $database->prepare("UPDATE am_free SET name = ?, date = ?, google_sync = 0, reminder_sent = 0, reminder_3h_sent = 0, after_session_sent = 0, followup_48h_sent = 0, followup_2d_sent = 0, followup_7d_sent = 0 WHERE id = ?");
-                $update->execute([$new_name_db, $new_date . ' ' . $new_time . ':00', $booking_id]);
-                
-                // 3. Gestion Google Calendar
-                try {
-                    if (file_exists('vendor/autoload.php')) {
-                        require_once 'vendor/autoload.php';
-                        require_once 'load_env.php';
-                        
-                        $keyFile = __DIR__ . '/google_key.json';
-                        $client = new Google\Client();
-                        $client->setAuthConfig($keyFile);
-                        $client->addScope(Google\Service\Calendar::CALENDAR);
-                        $service = new Google\Service\Calendar($client);
-                        
-                        // Déterminer l'agenda
-                        $stmt_c = $database->prepare("SELECT email, address, city FROM am_centers WHERE id = ?");
-                        $stmt_c->execute([$booking['center_id']]);
-                        $c_info = $stmt_c->fetch();
-                        
-                        if (in_array((int)$booking['center_id'], [305, 347, 349])) {
-                            $targetCalendarId = 'aqua.cannes@gmail.com';
-                        } else {
-                            $targetCalendarId = !empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com';
-                        }
-                        
-                        // A. Supprimer l'ancien événement
-                        if (!empty($booking['google_event_id'])) {
-                            try {
-                                $service->events->delete($targetCalendarId, $booking['google_event_id']);
-                            } catch (Exception $e) { /* Ignore */ }
-                        }
-                        
-                        // B. Créer le nouvel événement
-                        $rdv_start = new DateTime($new_date . ' ' . $new_time, new DateTimeZone('Europe/Paris'));
-                        $rdv_end = clone $rdv_start;
-                        $rdv_end->modify('+45 minutes');
-                        
-                        $event = new Google\Service\Calendar\Event([
-                            'summary' => '🏊 ' . $client_name . ' - ' . ($c_info['city'] ?? 'Cannes'),
-                            'location' => $c_info['address'] ?? 'Cannes',
-                            'description' => "Client: $client_name\nEmail: {$booking['email']}\nTél: {$booking['phone']}\nID: $booking_id\n(Déplacé par Admin)",
-                            'start' => ['dateTime' => $rdv_start->format(DateTime::RFC3339), 'timeZone' => 'Europe/Paris'],
-                            'end' => ['dateTime' => $rdv_end->format(DateTime::RFC3339), 'timeZone' => 'Europe/Paris'],
-                        ]);
-                        
-                        $createdEvent = $service->events->insert($targetCalendarId, $event);
-                        $new_google_id = $createdEvent->getId();
-                        
-                        // Mettre à jour l'ID Google
-                        $database->prepare("UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?")->execute([$new_google_id, $booking_id]);
-                    }
-                } catch (Exception $e) {
-                    error_log("Erreur Google Calendar Move: " . $e->getMessage());
-                }
-                
-                // 4. Envoi Email Confirmation
-                if (!empty($settings['mjusername'])) {
-                    try {
-                        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-                        $mail->isSMTP();
-                        $mail->Host = $settings['mjhost'];
-                        $mail->SMTPAuth = true;
-                        $mail->Username = $settings['mjusername'];
-                        $mail->Password = $settings['mjpassword'];
-                        $mail->Port = 587;
-                        $mail->CharSet = 'UTF-8';
-                        
-                        $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . ($c_info['city'] ?? ''));
-                        $mail->addAddress($booking['email']);
-                        $mail->isHTML(true);
-                        $mail->Subject = "Nouveau créneau confirmé : Votre séance à Aquavelo";
-                        
-                        $mail->Body = "Bonjour <b>$client_name</b>,<br><br>
-                        Suite à notre échange, nous vous confirmons le déplacement de votre séance découverte.<br><br>
-                        <b>Nouveau Rendez-vous :</b><br>
-                        📅 <b>$new_date_fr</b><br>
-                        🕐 <b>$new_time</b><br>
-                        📍 <b>Aquavelo " . ($c_info['city'] ?? '') . "</b><br><br>
-                        Nous avons hâte de vous accueillir !<br><br>
-                        Cordialement,<br>L'équipe Aquavelo";
-                        
-                        $mail->send();
-                    } catch (Exception $e) {
-                        error_log("Erreur Email Move: " . $e->getMessage());
-                    }
-                }
-                
-                echo "<script>alert('RDV déplacé avec succès ! Client notifié par email.'); window.location.replace('index.php?p=admin_planning');</script>";
-                exit;
-            }
-        }
-    }
-
-    // ACTION: SUPPRIMER ou VERROUILLER (GET)
-    if (isset($_GET['action'])) {
-        $token_ok = (isset($_GET['token']) && $_GET['token'] === $_SESSION['csrf_token']);
-        
-        if ($token_ok) {
-            if ($_GET['action'] === 'delete' && isset($_GET['id'])) {
-                $id = intval($_GET['id']);
-                
-                // --- Google Agenda : suppression par event_id ou recherche créneau + nom (groupe Cannes) ---
-                $check = $database->prepare("SELECT id, name, google_event_id, center_id FROM am_free WHERE id = ?");
-                $check->execute([$id]);
-                $booking_to_del = $check->fetch(PDO::FETCH_ASSOC);
-                
-                if ($booking_to_del) {
-                    $try_google = !empty($booking_to_del['google_event_id'])
-                        || in_array((int) $booking_to_del['center_id'], [305, 347, 349], true);
-                    if ($try_google && file_exists(__DIR__ . '/vendor/autoload.php')) {
-                        require_once __DIR__ . '/load_env.php';
-                        require_once __DIR__ . '/google_calendar_rdv_helpers.php';
-                        $gc_service = aquavelo_gc_bootstrap();
-                        if ($gc_service) {
-                            aquavelo_gc_delete_booking_event($gc_service, $database, $booking_to_del);
-                        }
-                    }
-                }
-                
-                $database->prepare("DELETE FROM am_free WHERE id = ?")->execute([$id]);
-            } 
-            elseif ($_GET['action'] === 'lock' && isset($_GET['date']) && isset($_GET['time'])) {
-                try {
-                    $date_str = $_GET['dayname'] . " " . $_GET['date'] . " à " . $_GET['time'] . " (" . $_GET['activity'] . ")";
-                    $lock_name = "BLOQUE (ADMIN) (RDV: " . $date_str . ")";
-                    $ref = 'LOCK' . date('dmhis');
-                    
-                    $stmt = $database->prepare("INSERT INTO am_free (reference, center_id, free, name, email, phone, segment_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->execute([$ref, 305, 3, $lock_name, 'admin@aquavelo.com', '0493930565', 'admin-lock']);
-                } catch (Exception $e) {
-                    die("Erreur lors du verrouillage : " . $e->getMessage());
-                }
-            }
-        }
-        echo "<script>window.location.replace('index.php?p=admin_planning');</script>";
-        exit;
-    }
-}
+$admin_planning_flash = $_SESSION['admin_planning_flash'] ?? '';
+$admin_planning_flash_type = $_SESSION['admin_planning_flash_type'] ?? 'ok';
+unset($_SESSION['admin_planning_flash'], $_SESSION['admin_planning_flash_type']);
 
 if (!$authenticated): ?>
     <section class="content-area bg1" style="padding: 100px 0;">
@@ -280,7 +20,7 @@ if (!$authenticated): ?>
           <?php if (isset($login_error)): ?>
             <div style="color: #d32f2f; margin-bottom: 15px; font-weight: bold;"><?= $login_error ?></div>
           <?php endif; ?>
-          <form method="POST" action="index.php?p=admin_planning" autocomplete="on">
+          <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning" autocomplete="on">
             <input type="text" name="username" value="admin" autocomplete="username" style="display:none;">
             <input type="password" name="login_pass" id="login_pass" placeholder="Mot de passe" required autocomplete="current-password" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;">
             <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button>
@@ -412,12 +152,21 @@ try {
   <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris) v2</h2>
-        <a href="index.php?p=admin_planning&logout=1" class="btn btn-default">Déconnexion</a>
+        <a href="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning&amp;logout=1" class="btn btn-default">Déconnexion</a>
     </div>
+
+    <?php if ($admin_planning_flash !== ''): ?>
+    <div style="margin-bottom: 18px; padding: 14px 18px; border-radius: 8px; font-weight: 600;
+        <?= $admin_planning_flash_type === 'error'
+            ? 'background: #ffebee; color: #b71c1c; border: 1px solid #ef9a9a;'
+            : 'background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7;' ?>">
+        <?= htmlspecialchars($admin_planning_flash, ENT_QUOTES, 'UTF-8') ?>
+    </div>
+    <?php endif; ?>
 
     <div style="margin-bottom: 18px; padding: 14px 18px; background: #e3f2fd; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border: 1px solid #90caf9;">
         <span style="font-size: 0.9rem; color: #0d47a1; max-width: 560px;">Pousse vers <strong>aqua.cannes@gmail.com</strong> les RDV <strong>sans</strong> <code>google_event_id</code> (y compris anciennes lignes marquées synchro à tort). Cron ~15 min ou bouton ci-dessous. Si l’événement existe déjà sur le créneau, la ligne est reliée sans doublon.</span>
-        <form method="post" action="index.php?p=admin_planning" style="margin:0;">
+        <form method="post" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning" style="margin:0;">
             <input type="hidden" name="action_google_sync" value="1">
             <input type="hidden" name="token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
             <button type="submit" class="btn btn-primary" style="background:#1565c0;border:none;">↗ Synchroniser Google Agenda</button>
@@ -654,7 +403,7 @@ try {
         <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
         <h4 class="modal-title">👻 Client absent — Envoyer un email de relance</h4>
       </div>
-      <form method="POST">
+      <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning">
         <div class="modal-body">
           <input type="hidden" name="action_noshow" value="1">
           <input type="hidden" name="booking_id" id="noShowBookingId">
@@ -688,7 +437,7 @@ try {
         <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
         <h4 class="modal-title">🔄 Déplacer le Rendez-vous</h4>
       </div>
-      <form method="POST">
+      <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning">
           <div class="modal-body">
             <input type="hidden" name="action_move" value="move_rdv">
             <input type="hidden" name="booking_id" id="moveBookingId">
@@ -767,7 +516,12 @@ function updateAvailableTimes() {
     select.innerHTML = '';
     
     if (dayOfWeek === 0) {
-        select.innerHTML = '<option value="">Fermé le dimanche</option>';
+        const closed = document.createElement('option');
+        closed.value = '';
+        closed.disabled = true;
+        closed.selected = true;
+        closed.innerText = 'Fermé le dimanche';
+        select.appendChild(closed);
         return;
     }
     

@@ -66,12 +66,17 @@ if ($page === 'admin_reglements') {
     require_once __DIR__ . '/_admin_reglements_run.php';
 }
 
+// Admin planning : déplacement RDV / suppressions avant tout HTML
+if ($page === 'admin_planning') {
+    require_once __DIR__ . '/Include/admin_planning_run.php';
+}
+
 // En-tête HTTP pour les crawlers (complément meta robots) — admin / paiement par lien
 if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning'], true)) {
     header('X-Robots-Tag: noindex, nofollow', false);
 }
 // Admin règlements : pas de mise en cache (formulaire et liste à jour à chaque ouverture)
-if ($page === 'admin_reglements') {
+if (in_array($page, ['admin_reglements', 'admin_planning'], true)) {
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0', false);
     header('Pragma: no-cache', false);
 }

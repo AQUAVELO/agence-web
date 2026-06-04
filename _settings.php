@@ -143,5 +143,3 @@ $cachePath = __DIR__ . '/cache';
 if (!is_dir($cachePath)) { mkdir($cachePath, 0777, true); }
 CacheManager::setDefaultConfig(new \Phpfastcache\Drivers\Files\Config(['path' => $cachePath]));
 $redis = CacheManager::getInstance('files');
-?>
- 

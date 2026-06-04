@@ -1,6 +1,7 @@
-<?php require '_settings.php'; ?>
-<?php require 'Include/planning_functions.php'; ?>
 <?php
+ob_start();
+require __DIR__ . '/_settings.php';
+require __DIR__ . '/Include/planning_functions.php';
 
 // ===== ROUTEUR PHP POUR PRETTY URLs =====
 // Gère les URLs comme /vente_formule, /centres/Cannes, etc.

@@ -12,8 +12,56 @@ if (!function_exists('aquavelo_admin_planning_redirect')) {
             $_SESSION['admin_planning_flash_type'] = $type;
         }
         $base = defined('BASE_PATH') ? (string) BASE_PATH : '/';
-        header('Location: ' . $base . 'index.php?p=admin_planning');
+        if ($base === '') {
+            $base = '/';
+        }
+        $url = $base . 'index.php?p=admin_planning';
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        if (!headers_sent()) {
+            header('Location: ' . $url, true, 303);
+            exit;
+        }
+        $safe = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
+        echo '<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url='
+            . $safe . '"></head><body><p><a href="' . $safe . '">Continuer</a></p></body></html>';
         exit;
+    }
+}
+
+if (!function_exists('aquavelo_admin_planning_reset_reminders')) {
+    /** Remet à zéro les flags de relance si les colonnes existent en base. */
+    function aquavelo_admin_planning_reset_reminders(PDO $database, int $booking_id): void
+    {
+        static $cols = null;
+        if ($cols === null) {
+            $cols = [];
+            $wanted = [
+                'google_sync', 'reminder_sent', 'reminder_3h_sent', 'after_session_sent',
+                'followup_48h_sent', 'followup_2d_sent', 'followup_7d_sent',
+            ];
+            try {
+                $st = $database->query('SHOW COLUMNS FROM am_free');
+                $existing = [];
+                while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+                    $existing[$row['Field']] = true;
+                }
+                foreach ($wanted as $c) {
+                    if (!empty($existing[$c])) {
+                        $cols[] = $c;
+                    }
+                }
+            } catch (Throwable $e) {
+                $cols = ['google_sync'];
+            }
+        }
+        if ($cols === []) {
+            return;
+        }
+        $sets = array_map(static fn ($c) => $c . ' = 0', $cols);
+        $sql = 'UPDATE am_free SET ' . implode(', ', $sets) . ' WHERE id = ?';
+        $database->prepare($sql)->execute([$booking_id]);
     }
 }
 
@@ -112,60 +160,58 @@ if ($authenticated) {
     }
 
     if (isset($_POST['action_move']) && $_POST['action_move'] === 'move_rdv') {
-        $token_ok = isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token'];
-        if (!$token_ok) {
-            aquavelo_admin_planning_redirect('Session expirée : rechargez la page et réessayez.', 'error');
-        }
-
-        $booking_id = (int) ($_POST['booking_id'] ?? 0);
-        $new_date = trim((string) ($_POST['new_date'] ?? ''));
-        $new_time = trim((string) ($_POST['new_time'] ?? ''));
-
-        if ($booking_id <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $new_date) || !preg_match('/^\d{1,2}:\d{2}$/', $new_time)) {
-            aquavelo_admin_planning_redirect('Date ou horaire invalide.', 'error');
-        }
-
-        $stmt_get = $database->prepare('SELECT * FROM am_free WHERE id = ?');
-        $stmt_get->execute([$booking_id]);
-        $booking = $stmt_get->fetch(PDO::FETCH_ASSOC);
-
-        if (!$booking) {
-            aquavelo_admin_planning_redirect('Réservation introuvable.', 'error');
-        }
-
-        $c_info = ['city' => 'Cannes', 'address' => ''];
-        $stmt_c = $database->prepare('SELECT email, address, city FROM am_centers WHERE id = ?');
-        $stmt_c->execute([$booking['center_id']]);
-        $row_c = $stmt_c->fetch(PDO::FETCH_ASSOC);
-        if ($row_c) {
-            $c_info = $row_c;
-        }
-
-        $client_name = trim(explode('(RDV:', (string) $booking['name'])[0]);
-        $new_datetime_str = $new_date . ' ' . $new_time;
-        $new_dt = DateTime::createFromFormat('Y-m-d G:i', $new_datetime_str)
-            ?: DateTime::createFromFormat('Y-m-d H:i', $new_datetime_str);
-
-        if (!$new_dt) {
-            aquavelo_admin_planning_redirect('Créneau invalide : ' . $new_datetime_str, 'error');
-        }
-
-        $new_date_fr = $new_dt->format('d/m/Y');
-        $new_time_db = $new_dt->format('H:i');
-        $new_name_db = $client_name . ' (RDV: ' . $new_date_fr . ' à ' . $new_time_db . ')';
-
-        $update = $database->prepare(
-            'UPDATE am_free SET name = ?, date = ?, google_sync = 0, reminder_sent = 0, reminder_3h_sent = 0,
-             after_session_sent = 0, followup_48h_sent = 0, followup_2d_sent = 0, followup_7d_sent = 0 WHERE id = ?'
-        );
-        $update->execute([$new_name_db, $new_date . ' ' . $new_time_db . ':00', $booking_id]);
-
         try {
-            if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-                require_once __DIR__ . '/../vendor/autoload.php';
-                require_once __DIR__ . '/../load_env.php';
+            $token_ok = isset($_POST['token']) && $_POST['token'] === $_SESSION['csrf_token'];
+            if (!$token_ok) {
+                aquavelo_admin_planning_redirect('Session expirée : rechargez la page et réessayez.', 'error');
+            }
+
+            $booking_id = (int) ($_POST['booking_id'] ?? 0);
+            $new_date = trim((string) ($_POST['new_date'] ?? ''));
+            $new_time = trim((string) ($_POST['new_time'] ?? ''));
+
+            if ($booking_id <= 0 || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $new_date) || !preg_match('/^\d{1,2}:\d{2}$/', $new_time)) {
+                aquavelo_admin_planning_redirect('Date ou horaire invalide.', 'error');
+            }
+
+            $stmt_get = $database->prepare('SELECT * FROM am_free WHERE id = ?');
+            $stmt_get->execute([$booking_id]);
+            $booking = $stmt_get->fetch(PDO::FETCH_ASSOC);
+
+            if (!$booking) {
+                aquavelo_admin_planning_redirect('Réservation introuvable.', 'error');
+            }
+
+            $c_info = ['city' => 'Cannes', 'address' => '', 'email' => ''];
+            $stmt_c = $database->prepare('SELECT email, address, city FROM am_centers WHERE id = ?');
+            $stmt_c->execute([$booking['center_id']]);
+            $row_c = $stmt_c->fetch(PDO::FETCH_ASSOC);
+            if ($row_c) {
+                $c_info = $row_c;
+            }
+
+            $client_name = trim(explode('(RDV:', (string) $booking['name'])[0]);
+            $new_datetime_str = $new_date . ' ' . $new_time;
+            $new_dt = DateTime::createFromFormat('Y-m-d G:i', $new_datetime_str)
+                ?: DateTime::createFromFormat('Y-m-d H:i', $new_datetime_str);
+
+            if (!$new_dt) {
+                aquavelo_admin_planning_redirect('Créneau invalide : ' . $new_datetime_str, 'error');
+            }
+
+            $new_date_fr = $new_dt->format('d/m/Y');
+            $new_time_db = $new_dt->format('H:i');
+            $new_name_db = $client_name . ' (RDV: ' . $new_date_fr . ' à ' . $new_time_db . ')';
+            $new_date_sql = $new_date . ' ' . $new_time_db . ':00';
+
+            $database->prepare('UPDATE am_free SET name = ?, date = ? WHERE id = ?')
+                ->execute([$new_name_db, $new_date_sql, $booking_id]);
+            aquavelo_admin_planning_reset_reminders($database, $booking_id);
+
+            try {
                 $keyFile = __DIR__ . '/../google_key.json';
-                if (is_readable($keyFile)) {
+                if (is_readable($keyFile) && class_exists('Google\Client')) {
+                    require_once __DIR__ . '/../load_env.php';
                     $client = new Google\Client();
                     $client->setAuthConfig($keyFile);
                     $client->addScope(Google\Service\Calendar::CALENDAR);
@@ -193,44 +239,47 @@ if ($authenticated) {
                     $database->prepare('UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?')
                         ->execute([$createdEvent->getId(), $booking_id]);
                 }
-            }
-        } catch (Throwable $e) {
-            error_log('Erreur Google Calendar Move: ' . $e->getMessage());
-        }
-
-        $mail_ok = false;
-        if (!empty($settings['mjusername'])) {
-            try {
-                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-                $mail->isSMTP();
-                $mail->Host = $settings['mjhost'];
-                $mail->SMTPAuth = true;
-                $mail->Username = $settings['mjusername'];
-                $mail->Password = $settings['mjpassword'];
-                $mail->Port = 587;
-                $mail->CharSet = 'UTF-8';
-                $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . ($c_info['city'] ?? ''));
-                $mail->addAddress($booking['email']);
-                $mail->isHTML(true);
-                $mail->Subject = 'Nouveau créneau confirmé : Votre séance à Aquavelo';
-                $mail->Body = "Bonjour <b>$client_name</b>,<br><br>
-                    Suite à notre échange, nous vous confirmons le déplacement de votre séance découverte.<br><br>
-                    <b>Nouveau Rendez-vous :</b><br>
-                    📅 <b>$new_date_fr</b><br>
-                    🕐 <b>$new_time_db</b><br>
-                    📍 <b>Aquavelo " . ($c_info['city'] ?? '') . "</b><br><br>
-                    Nous avons hâte de vous accueillir !<br><br>
-                    Cordialement,<br>L'équipe Aquavelo";
-                $mail->send();
-                $mail_ok = true;
             } catch (Throwable $e) {
-                error_log('Erreur Email Move: ' . $e->getMessage());
+                error_log('Erreur Google Calendar Move: ' . $e->getMessage());
             }
-        }
 
-        $flash = 'RDV déplacé avec succès.';
-        $flash .= $mail_ok ? ' Client notifié par email.' : ' (email client non envoyé — vérifiez les logs.)';
-        aquavelo_admin_planning_redirect($flash);
+            $mail_ok = false;
+            if (!empty($settings['mjusername'])) {
+                try {
+                    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+                    $mail->isSMTP();
+                    $mail->Host = $settings['mjhost'];
+                    $mail->SMTPAuth = true;
+                    $mail->Username = $settings['mjusername'];
+                    $mail->Password = $settings['mjpassword'];
+                    $mail->Port = 587;
+                    $mail->CharSet = 'UTF-8';
+                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . ($c_info['city'] ?? ''));
+                    $mail->addAddress($booking['email']);
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Nouveau créneau confirmé : Votre séance à Aquavelo';
+                    $mail->Body = "Bonjour <b>$client_name</b>,<br><br>
+                        Suite à notre échange, nous vous confirmons le déplacement de votre séance découverte.<br><br>
+                        <b>Nouveau Rendez-vous :</b><br>
+                        📅 <b>$new_date_fr</b><br>
+                        🕐 <b>$new_time_db</b><br>
+                        📍 <b>Aquavelo " . ($c_info['city'] ?? '') . "</b><br><br>
+                        Nous avons hâte de vous accueillir !<br><br>
+                        Cordialement,<br>L'équipe Aquavelo";
+                    $mail->send();
+                    $mail_ok = true;
+                } catch (Throwable $e) {
+                    error_log('Erreur Email Move: ' . $e->getMessage());
+                }
+            }
+
+            $flash = 'RDV déplacé avec succès.';
+            $flash .= $mail_ok ? ' Client notifié par email.' : ' (email client non envoyé — vérifiez les logs.)';
+            aquavelo_admin_planning_redirect($flash);
+        } catch (Throwable $e) {
+            error_log('Admin planning move: ' . $e->getMessage());
+            aquavelo_admin_planning_redirect('Erreur technique : ' . $e->getMessage(), 'error');
+        }
     }
 
     if (isset($_GET['action'])) {

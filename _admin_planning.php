@@ -20,7 +20,7 @@ if (!$authenticated): ?>
           <?php if (isset($login_error)): ?>
             <div style="color: #d32f2f; margin-bottom: 15px; font-weight: bold;"><?= $login_error ?></div>
           <?php endif; ?>
-          <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning" autocomplete="on">
+          <form method="POST" action="<?= htmlspecialchars(aquavelo_admin_planning_url()) ?>" autocomplete="on">
             <input type="text" name="username" value="admin" autocomplete="username" style="display:none;">
             <input type="password" name="login_pass" id="login_pass" placeholder="Mot de passe" required autocomplete="current-password" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px;">
             <button type="submit" class="btn btn-primary" style="width: 100%; background: #00a8cc; border: none; padding: 12px; color: white; font-weight: bold;">CONNEXION</button>
@@ -152,7 +152,7 @@ try {
   <div class="container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris) v2</h2>
-        <a href="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning&amp;logout=1" class="btn btn-default">Déconnexion</a>
+        <a href="<?= htmlspecialchars(aquavelo_admin_planning_url() . '&logout=1') ?>" class="btn btn-default">Déconnexion</a>
     </div>
 
     <?php if ($admin_planning_flash !== ''): ?>
@@ -166,7 +166,7 @@ try {
 
     <div style="margin-bottom: 18px; padding: 14px 18px; background: #e3f2fd; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border: 1px solid #90caf9;">
         <span style="font-size: 0.9rem; color: #0d47a1; max-width: 560px;">Pousse vers <strong>aqua.cannes@gmail.com</strong> les RDV <strong>sans</strong> <code>google_event_id</code> (y compris anciennes lignes marquées synchro à tort). Cron ~15 min ou bouton ci-dessous. Si l’événement existe déjà sur le créneau, la ligne est reliée sans doublon.</span>
-        <form method="post" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning" style="margin:0;">
+        <form method="post" action="<?= htmlspecialchars(aquavelo_admin_planning_url()) ?>" style="margin:0;">
             <input type="hidden" name="action_google_sync" value="1">
             <input type="hidden" name="token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
             <button type="submit" class="btn btn-primary" style="background:#1565c0;border:none;">↗ Synchroniser Google Agenda</button>
@@ -261,7 +261,9 @@ try {
                            <?= $is_locked ? '🔓 DÉVERROUILLER' : '❌ ANNULER' ?>
                         </a>
                         <?php if (!$is_locked): ?>
-                            <a href="#" onclick="openMoveModal(<?= (int) $res['id'] ?>, '<?= htmlspecialchars($client_name_only, ENT_QUOTES) ?>')" 
+                            <a href="#" class="js-move-rdv"
+                               data-id="<?= (int) $res['id'] ?>"
+                               data-name="<?= htmlspecialchars($client_name_only, ENT_QUOTES, 'UTF-8') ?>"
                                style="color: #00a8cc; font-size: 0.7rem; font-weight: bold; text-decoration: none;">
                                🔄 DÉPLACER
                             </a>
@@ -403,7 +405,7 @@ try {
         <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
         <h4 class="modal-title">👻 Client absent — Envoyer un email de relance</h4>
       </div>
-      <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning">
+      <form method="POST" action="<?= htmlspecialchars(aquavelo_admin_planning_url()) ?>">
         <div class="modal-body">
           <input type="hidden" name="action_noshow" value="1">
           <input type="hidden" name="booking_id" id="noShowBookingId">
@@ -437,7 +439,7 @@ try {
         <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
         <h4 class="modal-title">🔄 Déplacer le Rendez-vous</h4>
       </div>
-      <form method="POST" action="<?= htmlspecialchars(BASE_PATH) ?>index.php?p=admin_planning">
+      <form method="POST" action="<?= htmlspecialchars(aquavelo_admin_planning_url()) ?>">
           <div class="modal-body">
             <input type="hidden" name="action_move" value="move_rdv">
             <input type="hidden" name="booking_id" id="moveBookingId">
@@ -488,7 +490,7 @@ function openNoShowModal(id, prenom, email) {
 
 function openMoveModal(id, name) {
     document.getElementById('moveBookingId').value = id;
-    document.getElementById('moveClientName').innerText = name;
+    document.getElementById('moveClientName').innerText = name || '';
     
     // Set default date to today
     const today = new Date().toISOString().split('T')[0];
@@ -502,6 +504,13 @@ function openMoveModal(id, name) {
 }
 
 document.getElementById('newDateInput').addEventListener('change', updateAvailableTimes);
+
+document.querySelectorAll('.js-move-rdv').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+        e.preventDefault();
+        openMoveModal(el.getAttribute('data-id'), el.getAttribute('data-name') || '');
+    });
+});
 
 function updateAvailableTimes() {
     const dateVal = document.getElementById('newDateInput').value;

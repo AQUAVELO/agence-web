@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aquavelo-cache-v5';
+const CACHE_NAME = 'aquavelo-cache-v6';
 
 // Ressources statiques uniquement (pas les pages HTML dynamiques)
 const STATIC_ASSETS = [
@@ -39,9 +39,17 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
   const url = new URL(event.request.url);
+  const pageParam = url.searchParams.get('p');
+
+  // Admin / paiement : toujours réseau (jamais cache)
+  if (pageParam === 'admin_planning' || pageParam === 'admin_reglements' || pageParam === 'reglement_lien') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   // Ne jamais mettre en cache les pages PHP/HTML dynamiques
   if (event.request.mode === 'navigate' || 
+      event.request.method !== 'GET' ||
       url.pathname.endsWith('.php') ||
       url.pathname === '/' ||
       url.pathname.startsWith('/centres/') ||

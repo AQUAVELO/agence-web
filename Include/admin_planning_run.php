@@ -11,21 +11,25 @@ if (!function_exists('aquavelo_admin_planning_redirect')) {
             $_SESSION['admin_planning_flash'] = $flash;
             $_SESSION['admin_planning_flash_type'] = $type;
         }
-        $base = defined('BASE_PATH') ? (string) BASE_PATH : '/';
-        if ($base === '') {
-            $base = '/';
-        }
-        $url = $base . 'index.php?p=admin_planning';
-        while (ob_get_level() > 0) {
+        $url = function_exists('aquavelo_admin_planning_url')
+            ? aquavelo_admin_planning_url()
+            : ((defined('BASE_PATH') ? BASE_PATH : '/') . 'index.php?p=admin_planning');
+        while (ob_get_level() > 1) {
             ob_end_clean();
+        }
+        if (ob_get_level()) {
+            ob_clean();
         }
         if (!headers_sent()) {
             header('Location: ' . $url, true, 303);
-            exit;
         }
         $safe = htmlspecialchars($url, ENT_QUOTES, 'UTF-8');
-        echo '<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url='
-            . $safe . '"></head><body><p><a href="' . $safe . '">Continuer</a></p></body></html>';
+        $urlJs = json_encode($url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">'
+            . '<meta http-equiv="refresh" content="0;url=' . $safe . '">'
+            . '<title>Redirection…</title></head><body style="font-family:sans-serif;padding:2rem">'
+            . '<p>Redirection en cours…</p><p><a href="' . $safe . '">Continuer vers le planning</a></p>'
+            . '<script>location.replace(' . $urlJs . ');</script></body></html>';
         exit;
     }
 }
@@ -38,7 +42,7 @@ if (!function_exists('aquavelo_admin_planning_reset_reminders')) {
         if ($cols === null) {
             $cols = [];
             $wanted = [
-                'google_sync', 'reminder_sent', 'reminder_3h_sent', 'after_session_sent',
+                'google_sync', 'google_event_id', 'reminder_sent', 'reminder_3h_sent', 'after_session_sent',
                 'followup_48h_sent', 'followup_2d_sent', 'followup_7d_sent',
             ];
             try {
@@ -59,7 +63,10 @@ if (!function_exists('aquavelo_admin_planning_reset_reminders')) {
         if ($cols === []) {
             return;
         }
-        $sets = array_map(static fn ($c) => $c . ' = 0', $cols);
+        $sets = [];
+        foreach ($cols as $c) {
+            $sets[] = ($c === 'google_event_id') ? 'google_event_id = NULL' : $c . ' = 0';
+        }
         $sql = 'UPDATE am_free SET ' . implode(', ', $sets) . ' WHERE id = ?';
         $database->prepare($sql)->execute([$booking_id]);
     }
@@ -207,41 +214,7 @@ if ($authenticated) {
             $database->prepare('UPDATE am_free SET name = ?, date = ? WHERE id = ?')
                 ->execute([$new_name_db, $new_date_sql, $booking_id]);
             aquavelo_admin_planning_reset_reminders($database, $booking_id);
-
-            try {
-                $keyFile = __DIR__ . '/../google_key.json';
-                if (is_readable($keyFile) && class_exists('Google\Client')) {
-                    require_once __DIR__ . '/../load_env.php';
-                    $client = new Google\Client();
-                    $client->setAuthConfig($keyFile);
-                    $client->addScope(Google\Service\Calendar::CALENDAR);
-                    $service = new Google\Service\Calendar($client);
-                    $targetCalendarId = in_array((int) $booking['center_id'], [305, 347, 349], true)
-                        ? 'aqua.cannes@gmail.com'
-                        : (!empty($c_info['email']) ? $c_info['email'] : 'aqua.cannes@gmail.com');
-                    if (!empty($booking['google_event_id'])) {
-                        try {
-                            $service->events->delete($targetCalendarId, $booking['google_event_id']);
-                        } catch (Throwable $e) {
-                            /* ignore */
-                        }
-                    }
-                    $rdv_start = new DateTime($new_date . ' ' . $new_time_db, new DateTimeZone('Europe/Paris'));
-                    $rdv_end = (clone $rdv_start)->modify('+45 minutes');
-                    $event = new Google\Service\Calendar\Event([
-                        'summary' => '🏊 ' . $client_name . ' - ' . ($c_info['city'] ?? 'Cannes'),
-                        'location' => $c_info['address'] ?? 'Cannes',
-                        'description' => "Client: $client_name\nEmail: {$booking['email']}\nTél: {$booking['phone']}\nID: $booking_id\n(Déplacé par Admin)",
-                        'start' => ['dateTime' => $rdv_start->format(DateTime::RFC3339), 'timeZone' => 'Europe/Paris'],
-                        'end' => ['dateTime' => $rdv_end->format(DateTime::RFC3339), 'timeZone' => 'Europe/Paris'],
-                    ]);
-                    $createdEvent = $service->events->insert($targetCalendarId, $event);
-                    $database->prepare('UPDATE am_free SET google_sync = 1, google_event_id = ? WHERE id = ?')
-                        ->execute([$createdEvent->getId(), $booking_id]);
-                }
-            } catch (Throwable $e) {
-                error_log('Erreur Google Calendar Move: ' . $e->getMessage());
-            }
+            // Agenda Google : resynchro via cron / bouton admin (évite timeout → page blanche Safari)
 
             $mail_ok = false;
             if (!empty($settings['mjusername'])) {
@@ -275,6 +248,7 @@ if ($authenticated) {
 
             $flash = 'RDV déplacé avec succès.';
             $flash .= $mail_ok ? ' Client notifié par email.' : ' (email client non envoyé — vérifiez les logs.)';
+            $flash .= ' Agenda Google : utilisez « Synchroniser Google Agenda » si besoin.';
             aquavelo_admin_planning_redirect($flash);
         } catch (Throwable $e) {
             error_log('Admin planning move: ' . $e->getMessage());

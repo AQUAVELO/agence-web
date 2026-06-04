@@ -1,8 +1,24 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) { session_start(); }
 // _settings.php
 ini_set('display_errors', 0);
 error_reporting(0);
+
+$__aquavelo_is_local = isset($_SERVER['HTTP_HOST'])
+    && (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false);
+
+if (session_status() === PHP_SESSION_NONE) {
+    if (!$__aquavelo_is_local && !empty($_SERVER['HTTP_HOST']) && stripos($_SERVER['HTTP_HOST'], 'aquavelo.com') !== false) {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '.aquavelo.com',
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
+    session_start();
+}
 
 require __DIR__ . '/vendor/autoload.php';
 use Phpfastcache\CacheManager;
@@ -19,6 +35,25 @@ if (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'localhost') 
     }
 }
 define('BASE_PATH', $base_url);
+define('AQUAVELO_IS_LOCAL', $__aquavelo_is_local);
+
+if (!function_exists('aquavelo_canonical_base_url')) {
+    /** URL de base canonique (www en production). */
+    function aquavelo_canonical_base_url(): string
+    {
+        if (defined('AQUAVELO_IS_LOCAL') && AQUAVELO_IS_LOCAL) {
+            return defined('BASE_PATH') ? (string) BASE_PATH : '/';
+        }
+        return 'https://www.aquavelo.com/';
+    }
+}
+
+if (!function_exists('aquavelo_admin_planning_url')) {
+    function aquavelo_admin_planning_url(): string
+    {
+        return aquavelo_canonical_base_url() . 'index.php?p=admin_planning';
+    }
+}
 
 /** Image de secours si la vignette centre (cloud/thumbnail/center_ID/1.jpg) est absente */
 define('CENTER_THUMB_FALLBACK', BASE_PATH . 'images/content/home-v1-slider-03.webp');

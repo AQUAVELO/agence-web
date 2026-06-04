@@ -3,6 +3,12 @@ ob_start();
 require __DIR__ . '/_settings.php';
 require __DIR__ . '/Include/planning_functions.php';
 
+// Production : toujours www (session + formulaires admin cohérents entre aquvelo.com et www)
+if (!AQUAVELO_IS_LOCAL && isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === 'aquavelo.com') {
+    header('Location: https://www.aquavelo.com' . ($_SERVER['REQUEST_URI'] ?? '/'), true, 301);
+    exit;
+}
+
 // ===== ROUTEUR PHP POUR PRETTY URLs =====
 // Gère les URLs comme /vente_formule, /centres/Cannes, etc.
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -1157,6 +1163,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </script>
   
   <script>
+  <?php if (!in_array($page, ['admin_planning', 'admin_reglements', 'reglement_lien'], true)): ?>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('<?= BASE_PATH ?>service-worker.js')
     .then(function(registration) {
@@ -1166,6 +1173,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       console.log("Échec de l'enregistrement du Service Worker:", error);
     });
   }
+  <?php endif; ?>
   </script>
 
   <!-- ⭐ NOUVEAU : Script Pop-up Franchise -->

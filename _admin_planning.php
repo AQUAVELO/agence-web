@@ -165,7 +165,7 @@ try {
     <?php endif; ?>
 
     <div style="margin-bottom: 18px; padding: 14px 18px; background: #e3f2fd; border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px; border: 1px solid #90caf9;">
-        <span style="font-size: 0.9rem; color: #0d47a1; max-width: 560px;">Pousse vers <strong>aqua.cannes@gmail.com</strong> les RDV <strong>sans</strong> <code>google_event_id</code> (y compris anciennes lignes marquées synchro à tort). Cron ~15 min ou bouton ci-dessous. Si l’événement existe déjà sur le créneau, la ligne est reliée sans doublon.</span>
+        <span style="font-size: 0.9rem; color: #0d47a1; max-width: 560px;">Pousse vers <strong>aqua.cannes@gmail.com</strong> les RDV Cannes / Mandelieu / Vallauris <strong>sans</strong> événement Google (déplacements admin inclus, date lue aussi en base). Cron toutes les 15 min ou bouton ci-dessous — un déplacement tente aussi la synchro immédiate.</span>
         <form method="post" action="<?= htmlspecialchars(aquavelo_admin_planning_url()) ?>" style="margin:0;">
             <input type="hidden" name="action_google_sync" value="1">
             <input type="hidden" name="token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">

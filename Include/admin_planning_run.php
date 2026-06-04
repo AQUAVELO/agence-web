@@ -120,7 +120,11 @@ if ($authenticated) {
             if ($sync_out['errors'] > 0) {
                 $msg .= ', ' . $sync_out['errors'] . ' erreur(s)';
             }
-            aquavelo_admin_planning_redirect($msg);
+            if (!empty($sync_out['lines'])) {
+                $preview = array_slice($sync_out['lines'], 0, 5);
+                $msg .= ' — ' . implode(' | ', $preview);
+            }
+            aquavelo_admin_planning_redirect($msg, $sync_out['errors'] > 0 && $sync_out['synced'] === 0 ? 'error' : 'ok');
         }
         aquavelo_admin_planning_redirect('Session expirée : reconnectez-vous.', 'error');
     }
@@ -214,7 +218,16 @@ if ($authenticated) {
             $database->prepare('UPDATE am_free SET name = ?, date = ? WHERE id = ?')
                 ->execute([$new_name_db, $new_date_sql, $booking_id]);
             aquavelo_admin_planning_reset_reminders($database, $booking_id);
-            // Agenda Google : resynchro via cron / bouton admin (évite timeout → page blanche Safari)
+
+            $gcal_line = '';
+            try {
+                require_once __DIR__ . '/../google_calendar_rdv_helpers.php';
+                $gcal = aquavelo_gc_sync_booking_by_id($database, $booking_id, $booking);
+                $gcal_line = $gcal['line'] ?? '';
+            } catch (Throwable $e) {
+                error_log('Admin planning move gcal: ' . $e->getMessage());
+                $gcal_line = 'Agenda Google : erreur — utilisez « Synchroniser Google Agenda ».';
+            }
 
             $mail_ok = false;
             if (!empty($settings['mjusername'])) {
@@ -248,7 +261,9 @@ if ($authenticated) {
 
             $flash = 'RDV déplacé avec succès.';
             $flash .= $mail_ok ? ' Client notifié par email.' : ' (email client non envoyé — vérifiez les logs.)';
-            $flash .= ' Agenda Google : utilisez « Synchroniser Google Agenda » si besoin.';
+            if ($gcal_line !== '') {
+                $flash .= ' ' . $gcal_line;
+            }
             aquavelo_admin_planning_redirect($flash);
         } catch (Throwable $e) {
             error_log('Admin planning move: ' . $e->getMessage());

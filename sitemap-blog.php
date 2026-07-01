@@ -1,7 +1,7 @@
 <?php
 /**
- * Sitemap dynamique du blog (Blog.php + Post.php).
- * Accessible aussi via /sitemap-blog.xml (rewrite .htaccess).
+ * Sitemap contenu éditorial (conseilminceur + blog legacy).
+ * URL publique : https://www.aquavelo.com/sitemap-blog.xml
  */
 declare(strict_types=1);
 
@@ -11,6 +11,7 @@ while (ob_get_level() > 0) {
 
 header('Content-Type: application/xml; charset=UTF-8');
 header('Cache-Control: public, max-age=3600');
+header('X-Robots-Tag: noindex', true);
 
 $base = 'https://www.aquavelo.com';
 $today = date('Y-m-d');
@@ -47,10 +48,14 @@ function sitemap_blog_connect()
 
 $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-$xml .= sitemap_url($base . '/Blog.php', $today, 'weekly', '0.75');
+
+// Contenu éditorial principal (menus minceur + articles intégrés)
+$xml .= sitemap_url($base . '/conseilminceur', $today, 'daily', '0.85');
 
 $con = sitemap_blog_connect();
 if ($con) {
+    $xml .= sitemap_url($base . '/Blog.php', $today, 'weekly', '0.75');
+
     $posts = [];
     $result = mysqli_query($con, 'SELECT post_id, post_date_time FROM aquavelo_post ORDER BY post_date_time DESC');
     if ($result) {

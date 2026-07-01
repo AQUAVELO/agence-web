@@ -6,7 +6,8 @@
     # 1. EXCLUSIONS : Ne pas réécrire le dossier du FS Bucket et les assets
     # Cette règle permet d'accéder directement aux fichiers stockés dans /cloud
     RewriteRule ^(css|js|images|fonts|uploads|cloud|vendor)/ - [L]
-    # sitemap-blog.xml = fichier statique ; sitemap-blog.php = version dynamique (articles)
+    # Sitemap blog : XML dynamique avec en-tête charset UTF-8 (exigence Search Console)
+    RewriteRule ^sitemap-blog\.xml$ sitemap-blog.php [L]
     RewriteRule ^sitemap-blog\.php$ - [L]
     RewriteRule \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot|pdf|zip|xml|txt)$ - [L]
     

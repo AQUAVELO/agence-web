@@ -4,9 +4,6 @@
  * Soumettre dans Search Console : https://www.aquavelo.com/sitemap-blog.php
  */
 header('Content-Type: application/xml; charset=utf-8');
-header('X-Robots-Tag: noindex', true);
-
-require __DIR__ . '/Include/Database.php';
 
 $base = 'https://www.aquavelo.com';
 $today = date('Y-m-d');
@@ -27,12 +24,27 @@ function sitemap_url(string $loc, string $lastmod, string $changefreq, string $p
         . "  </url>\n";
 }
 
+function sitemap_blog_connect()
+{
+    $host = getenv('BLOG_MYSQL_HOST') ?: 'localhost';
+    $user = getenv('BLOG_MYSQL_USER') ?: 'aquaveloblog';
+    $pass = getenv('BLOG_MYSQL_PASSWORD') ?: 'e017D&xg';
+    $db = getenv('BLOG_MYSQL_DB') ?: 'aquaveloblog';
+    $port = (int) (getenv('BLOG_MYSQL_PORT') ?: 3306);
+
+    mysqli_report(MYSQLI_REPORT_OFF);
+    $con = @mysqli_connect($host, $user, $pass, $db, $port);
+
+    return $con ?: null;
+}
+
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 
 echo sitemap_url($base . '/Blog.php', $today, 'weekly', '0.75');
 
-if (!isset($con) || !$con) {
+$con = sitemap_blog_connect();
+if (!$con) {
     echo '</urlset>';
     exit;
 }
@@ -45,6 +57,7 @@ if ($result) {
     }
     mysqli_free_result($result);
 }
+mysqli_close($con);
 
 $totalPosts = count($posts);
 if ($totalPosts > $postsPerPage) {

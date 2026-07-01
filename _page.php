@@ -19,10 +19,9 @@
       "addressCountry": "FR"
     },
     "telephone": "<?= htmlspecialchars($row_center['phone'] ?? '', ENT_QUOTES, 'UTF-8'); ?>",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "description": "<?= htmlspecialchars($row_center['openhours'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
-    },
+    <?php if (!empty($row_center['openhours'])): ?>
+    "openingHours": <?= json_encode($row_center['openhours'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
+    <?php endif; ?>
     "priceRange": "$$",
     "url": "https://www.aquavelo.com/centres/<?= htmlspecialchars(strtolower($city ?? ''), ENT_QUOTES, 'UTF-8'); ?>",
     <?php if (!empty($row_center['facebook'])): ?>

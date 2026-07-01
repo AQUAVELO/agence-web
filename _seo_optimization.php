@@ -171,28 +171,10 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
       <?php endif; ?>
       "url": "https://www.aquavelo.com/centres/<?= urlencode($city); ?>",
       "priceRange": "€€",
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "21:00"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": "Saturday",
-          "opens": "09:00",
-          "closes": "14:00"
-        }
-      ],
-      "hasMap": "https://www.google.com/maps?q=<?= urlencode($row_center['address'] . ', ' . $city); ?>",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "127",
-        "bestRating": "5",
-        "worstRating": "1"
-      }
+      <?php if (!empty($row_center['openhours'])): ?>
+      "openingHours": <?= json_encode($row_center['openhours'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
+      <?php endif; ?>
+      "hasMap": "https://www.google.com/maps?q=<?= urlencode($row_center['address'] . ', ' . $city); ?>"
     }
     <?php endif; ?>
     <?php if ($page == 'aquabiking' || $page == 'home'): ?>

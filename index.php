@@ -747,12 +747,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       "longitude": "<?= htmlspecialchars($row_center['longitude'], ENT_QUOTES, 'UTF-8'); ?>"
     },
     <?php endif; ?>
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "08:00",
-      "closes": "20:00"
-    },
+    <?php if (!empty($row_center['openhours'])) : ?>
+    "openingHours": <?= json_encode($row_center['openhours'], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
+    <?php endif; ?>
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Services Aquavelo",
@@ -782,13 +779,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }
         }
       ]
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "127",
-      "bestRating": "5",
-      "worstRating": "1"
     }
   }
   </script>
@@ -1057,8 +1047,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="row">
           <aside class="col-md-3 widget"> 
             <img src="<?= BASE_PATH ?>images/content/logo-footer.png" alt="centre Aquavélo"> <br><br>
-            <h1 style="font-size: 12px;">Aquabiking collectif en piscine</h1>
-            <h1 class="darker">Éliminez votre cellulite et affinez votre silhouette</h1>
+            <p style="font-size: 12px; margin: 0;">Aquabiking collectif en piscine</p>
+            <p class="darker" style="margin: 0;">Éliminez votre cellulite et affinez votre silhouette</p>
             <p class="darker">&copy; 2014-<?= date('Y'); ?></p>
           </aside>
           <aside class="col-md-3 widget">

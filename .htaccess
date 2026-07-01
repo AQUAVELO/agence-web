@@ -6,6 +6,7 @@
     # 1. EXCLUSIONS : Ne pas réécrire le dossier du FS Bucket et les assets
     # Cette règle permet d'accéder directement aux fichiers stockés dans /cloud
     RewriteRule ^(css|js|images|fonts|uploads|cloud|vendor)/ - [L]
+    RewriteRule ^sitemap-blog\.xml$ sitemap-blog.php [L]
     RewriteRule \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot|pdf|zip|xml|txt)$ - [L]
     
     # Fichiers PHP utilitaires (accès direct autorisé)
@@ -65,8 +66,8 @@
     # Séances découverte obsolètes → Formulaire général
     RewriteRule ^seance-decouverte/(.*)$ /free [R=301,L]
     
-    # Blog et articles obsolètes → Accueil
-    RewriteRule ^(blog|Blog\.php|articles\.php|Post\.php).*$ / [R=301,L]
+    # Blog obsolète (articles.php) → Accueil — Blog.php et Post.php conservés pour le référencement
+    RewriteRule ^(blog|articles\.php).*$ / [R=301,L]
     
     # Pages admin et connexion → Accueil (404 évité)
     RewriteRule ^(Admin\.php|Login-Aquavelo-Blog\.php|Dashboard\.php|editpost\.php|NewPost\.php).*$ / [R=301,L]

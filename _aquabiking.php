@@ -351,7 +351,7 @@
                 <a href="#prix" title="Tarifs et prix de l'aquabiking">Combien coûte une séance d'Aquavélo ?</a>
               </h4>
               <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer">
-                <p itemprop="text">À partir de <strong>8 € la séance</strong> selon le forfait. Formules illimitées mensualisées disponibles pour pratiquer quotidiennement.</p>
+                <p itemprop="text">À partir de <strong>11 € la séance</strong> selon le forfait. Formules illimitées mensualisées disponibles pour pratiquer quotidiennement.</p>
               </div>
             </div>
           </div>

@@ -18,7 +18,7 @@
       <h1 class="page-title">Foire aux questions :</h1>
       <p>1) Combien coûte une séance d'Aquavélo ?
         </p>
-      <p>les prix varient entre 8 à 20 € la séance en fonction du nombre de séances souscrites. Nous proposons des formules illimitées mensualisées pour ceux veulent pratiquer quotidiennement cette activité.</p>
+      <p>Les tarifs démarrent à partir de 11 € la séance selon la formule choisie. Nous proposons des formules illimitées mensualisées pour ceux qui veulent pratiquer quotidiennement cette activité.</p>
       <p>2) que faut- il comme tenue pour pratiquer l'Aquavélo ?</p>
       <p>Il faut un maillot (une piéce ou 2 piéces pour les dames), short de bain ou maillot classique pour les messieurs, une serviette de bain, un gel douche, une bouteille d'eau car il faut s'hydrater durant le cours, un cadenas pour les vestiaires. Le bonnet de bain n'est pas insdispensable car vous ne mettez pas la tête sous l'eau.</p>
       <p>3) Est ce que je peux pratiquer l'Aquavélo étant enceinte ?</p>

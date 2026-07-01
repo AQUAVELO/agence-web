@@ -137,8 +137,8 @@ if ($page == 'conseilminceur') {
 }
 
 if ($page == 'vente_formule') {
-    $title = 'Formules et Tarifs Aquabiking | Abonnements à partir de 8€/séance';
-    $meta_description = 'Découvrez nos formules d\'abonnement aquabiking : séances à l\'unité, cartes 10 séances ou abonnements mensuels illimités. Tarifs dégressifs à partir de 8€/séance et offres promotionnelles.';
+    $title = 'Formules et Tarifs Aquabiking | Abonnements à partir de 11€/séance';
+    $meta_description = 'Découvrez nos formules d\'abonnement aquabiking : séances à l\'unité, cartes multi-séances ou abonnements mensuels illimités. Tarifs dégressifs à partir de 11€/séance et offres promotionnelles.';
 }
 
 if ($page == 'vente_cryo') {
@@ -163,7 +163,7 @@ if ($page == 'vente_cryoprod') {
 
 if ($page == 'vente_prix') {
     $title = 'Prix et Tarifs Détaillés Aquabiking | Grille Tarifaire Aquavelo';
-    $meta_description = 'Consultez nos prix transparents pour l\'aquabiking : séances individuelles dès 15€, forfaits, abonnements mensuels dès 49€. Tarifs dégressifs et réductions pour étudiants et seniors.';
+    $meta_description = 'Consultez nos prix transparents pour l\'aquabiking : séances à partir de 11€, forfaits multi-séances et abonnements mensuels. Tarifs dégressifs selon la formule choisie.';
 }
 
 if ($page == 'confirmation') {
@@ -773,9 +773,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           },
           "priceSpecification": {
             "@type": "PriceSpecification",
-            "price": "8",
+            "price": "11",
             "priceCurrency": "EUR",
-            "description": "À partir de 8€ la séance avec abonnement"
+            "description": "À partir de 11€ la séance avec abonnement"
           }
         }
       ]

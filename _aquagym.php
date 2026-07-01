@@ -371,8 +371,8 @@
             <i class="fa fa-question-circle"></i> Combien coûte une séance d'aquagym chez Aquavelo ?
           </h4>
           <p style="color: #666; font-size: 1.1rem;">
-            Les tarifs démarrent à <strong>partir de 8€ la séance</strong> avec un abonnement annuel. 
-            Nous proposons aussi des cartes 10 séances à 15€/séance et des abonnements mensuels illimités dès 49€. <br>
+            Les tarifs démarrent <strong>à partir de 11 € la séance</strong> selon la formule choisie.
+            Nous proposons aussi des forfaits multi-séances et des abonnements mensuels illimités. <br>
             🎁 <strong>La première séance est gratuite !</strong>
           </p>
         </div>

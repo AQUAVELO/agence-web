@@ -139,7 +139,7 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
       "offers": {
         "@type": "AggregateOffer",
         "priceCurrency": "EUR",
-        "lowPrice": "8",
+        "lowPrice": "11",
         "highPrice": "20",
         "description": "Tarifs dégressifs selon formule d'abonnement"
       }
@@ -227,7 +227,7 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
           "name": "Combien coûte une séance d'aquabiking chez Aquavelo ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Chez Aquavelo, les tarifs varient selon la formule choisie : à partir de 8€ la séance avec un abonnement annuel, 15€ la séance à l'unité, ou des forfaits 10 séances à tarif dégressif. La première séance découverte est gratuite sans engagement."
+            "text": "Chez Aquavelo, les tarifs démarrent à partir de 11 € la séance selon la formule choisie (forfaits multi-séances et abonnements disponibles). La première séance découverte est gratuite sans engagement."
           }
         }
       ]
@@ -283,7 +283,7 @@ $og_description = $meta_description ?? 'Cours d\'aquabiking et aquagym avec coac
           "name": "Combien coûte un cours d'aquagym chez Aquavelo ?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Chez Aquavelo, les tarifs d'aquagym sont identiques à ceux de l'aquabiking : à partir de 8€ la séance avec un abonnement annuel, 15€ la séance à l'unité, ou des forfaits 10 séances à tarif dégressif. La première séance découverte est gratuite sans engagement."
+            "text": "Chez Aquavelo, les tarifs d'aquagym sont identiques à ceux de l'aquabiking : à partir de 11 € la séance selon la formule choisie. La première séance découverte est gratuite sans engagement."
           }
         }
       ]

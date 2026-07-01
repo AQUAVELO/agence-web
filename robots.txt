@@ -64,8 +64,9 @@ Allow: /font-awesome-4.7.0/
 # Ralentir les crawlers pour éviter la surcharge
 Crawl-delay: 1
 
-# Sitemap
+# Sitemaps
 Sitemap: https://www.aquavelo.com/sitemap.xml
+Sitemap: https://www.aquavelo.com/sitemap-blog.php
 
 # Règles spécifiques pour Google
 User-Agent: Googlebot

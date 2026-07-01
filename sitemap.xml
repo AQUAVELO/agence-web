@@ -7,7 +7,7 @@
     <loc>https://www.aquavelo.com/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/aquavelo.webp</image:loc>
         <image:title>Aquabiking et Aquagym collectif en piscine avec coach - Aquavelo France</image:title>
@@ -19,7 +19,7 @@
     <loc>https://www.aquavelo.com/aquabiking</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/content/home-v1-promo.jpg</image:loc>
         <image:title>Aquabiking et Aquagym : bienfaits du sport aquatique pour maigrir</image:title>
@@ -30,7 +30,7 @@
     <loc>https://www.aquavelo.com/aquagym</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/aquagym-cours-collectif.jpg</image:loc>
         <image:title>Aquagym tonique : cours de gymnastique aquatique avec coach</image:title>
@@ -41,35 +41,35 @@
     <loc>https://www.aquavelo.com/centres</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/free</loc>
     <priority>0.95</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/franchise</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/conseilminceur</loc>
     <priority>0.8</priority>
     <changefreq>daily</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/contact</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
@@ -83,21 +83,21 @@
     <loc>https://www.aquavelo.com/vente_formule</loc>
     <priority>0.75</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/natation</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/cryolipolyse</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <!-- ========== PAGES DES CENTRES ========== -->
@@ -105,14 +105,14 @@
     <loc>https://www.aquavelo.com/centres/Aix-en-Provence</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Antibes</loc>
     <priority>0.85</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/planningAntibes.jpg</image:loc>
         <image:title>Planning des cours Aquavelo Antibes</image:title>
@@ -123,7 +123,7 @@
     <loc>https://www.aquavelo.com/centres/Cannes</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/PlanningCannes2026v2.png</image:loc>
         <image:title>Planning des cours Aquavelo Cannes 2026</image:title>
@@ -134,70 +134,70 @@
     <loc>https://www.aquavelo.com/centres/Collioure</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Dijon</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Fréjus</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Grasse</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Guilherand-Granges</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Hyères</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Mandelieu-la-Napoule</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Mérignac</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Montauroux</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Nice</loc>
     <priority>0.85</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/planningNice.jpg</image:loc>
         <image:title>Planning des cours Aquavelo Nice</image:title>
@@ -208,35 +208,35 @@
     <loc>https://www.aquavelo.com/centres/Puget-sur-Argens</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Saint-Étienne</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Saint-Raphaël</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Senlis</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Toulouse</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
     <image:image>
         <image:loc>https://www.aquavelo.com/images/planningToulouse.jpg</image:loc>
         <image:title>Planning des cours Aquavelo Toulouse</image:title>
@@ -247,28 +247,28 @@
     <loc>https://www.aquavelo.com/centres/Valbonne</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Valence</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Vallauris</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
     <loc>https://www.aquavelo.com/centres/Villebon-sur-Yvette</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 <!-- ========== CENTRES EN COURS D'OUVERTURE ========== -->
@@ -276,7 +276,7 @@
     <loc>https://www.aquavelo.com/centres/Paris</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
-    <lastmod>2026-03-06</lastmod>
+    <lastmod>2026-05-31</lastmod>
 </url>
 
 </urlset>

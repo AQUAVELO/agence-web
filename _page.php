@@ -66,6 +66,57 @@
   }
   </script>
 
+  <?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Où se trouve le centre Aquavelo à Cannes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le centre Aquavelo Cannes est situé au 60 avenue du Docteur Raymond Picaud, 06150 Cannes. Piscine privée chauffée dédiée à l'aquabiking et à l'aquagym collectifs avec coach."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Comment réserver une séance d'aquabike à Cannes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Réservez votre séance découverte gratuite de 45 minutes en ligne sur aquavelo.com/free ou par téléphone au 04 93 93 05 65. Les cours d'aquabiking et d'aquagym sont proposés du lundi au samedi selon le planning affiché sur la page centre."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Quelle est la différence entre aquabiking et aquagym au centre de Cannes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "L'aquabiking consiste à pédaler sur un vélo immergé dans l'eau pour brûler 400 à 600 calories par séance. L'aquagym tonique combine exercices cardio et renforcement musculaire dans l'eau. Les deux activités sont proposées au centre Aquavelo Cannes avec encadrement par un coach diplômé."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Proposez-vous une séance découverte gratuite à Cannes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Oui, la première séance d'aquabiking ou d'aquagym de 45 minutes est offerte à Cannes, sans engagement. Idéal pour tester le vélo aquatique dans notre piscine privée chauffée avant de choisir une formule."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Combien coûte une séance d'aquabiking à Cannes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Les tarifs démarrent à partir de 11 € la séance selon la formule choisie (forfaits multi-séances et abonnements disponibles). La première séance découverte est gratuite."
+        }
+      }
+    ]
+  }
+  </script>
+  <?php endif; ?>
+
   <?php if (isset($row_center['id']) && $row_center['id'] == 253) : ?>
     <script>
       !function(f,b,e,v,n,t,s) {
@@ -385,7 +436,7 @@
 <!-- Header -->
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left">Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?></h1>
+    <h1 class="page-title pull-left"><?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>Aquabiking et Aquagym à Cannes<?php else : ?>Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?><?php endif; ?></h1>
     <ol class="breadcrumb pull-right">
       <li><a href="<?= BASE_PATH ?>">Accueil</a></li>
       <li><a href="<?= BASE_PATH ?>centres">Centres</a></li>
@@ -718,6 +769,9 @@
 
             <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien de séances par semaine ?</h4>
             <p>Pour des résultats optimaux : <strong>2 à 3 séances par semaine</strong>. Premiers résultats visibles après 8-10 séances.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien coûte une séance ?</h4>
+            <p>Les tarifs démarrent <strong>à partir de 11 € la séance</strong> selon la formule choisie. Forfaits multi-séances et abonnements mensuels disponibles sur place.</p>
 
             <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
             <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>

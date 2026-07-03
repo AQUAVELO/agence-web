@@ -23,12 +23,13 @@ $request_uri = ltrim($request_uri, '/');
 
 // Router les pretty URLs vers les paramètres GET
 $routes = [
+    'vente' => ['p' => 'vente'],
     'vente_formule' => ['p' => 'vente_formule'],
     'vente_cryo' => ['p' => 'vente_cryo'],
     'vente_prix' => ['p' => 'vente_prix'],
     'vente_prixprod' => ['p' => 'vente_prixprod'],
     'vente_cryoprod' => ['p' => 'vente_cryoprod'],
-    'inscription' => ['p' => 'vente_formule'],
+    'inscription' => ['p' => 'vente'],
     'centres' => ['p' => 'centers'],
     'aquabiking' => ['p' => 'aquabiking'],
     'contact' => ['p' => 'contact'],
@@ -56,6 +57,13 @@ if (preg_match('#^centres/([^/]+)/?$#', $request_uri, $matches)) {
 if (preg_match('#^soin-madeiro-drainage/?$#', $request_uri)
     || (isset($_GET['p']) && $_GET['p'] === 'soin_madeiro_drainage')) {
     header('Location: ' . BASE_PATH . 'centres/Cannes', true, 301);
+    exit;
+}
+
+// Ancienne URL formules → /vente
+if (preg_match('#^vente_formule/?$#', $request_uri)
+    || (isset($_GET['p']) && $_GET['p'] === 'vente_formule')) {
+    header('Location: ' . BASE_PATH . 'vente', true, 301);
     exit;
 }
 
@@ -136,7 +144,7 @@ if ($page == 'conseilminceur') {
     $meta_description = 'Recettes minceur quotidiennes, menus équilibrés et conseils nutrition pour accompagner vos séances d\'aquabiking. Programme perte de poids complet avec coaching alimentaire gratuit.';
 }
 
-if ($page == 'vente_formule') {
+if ($page == 'vente') {
     $title = 'Formules et Tarifs Aquabiking | Abonnements à partir de 11€/séance';
     $meta_description = 'Découvrez nos formules d\'abonnement aquabiking : séances à l\'unité, cartes multi-séances ou abonnements mensuels illimités. Tarifs dégressifs à partir de 11€/séance et offres promotionnelles.';
 }
@@ -327,7 +335,7 @@ if (isset($_GET['city'])) {
       $canonical_url .= '/' . $page;
   }
   // Pages de vente (utiliser pretty URL sans .php)
-  elseif (in_array($page, ['vente_formule', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {
+  elseif (in_array($page, ['vente', 'vente_cryo', 'vente_prix', 'vente_prixprod', 'vente_cryoprod'])) {
       $canonical_url .= '/' . $page;
   }
   // Autres pages transactionnelles ou dynamiques : canonical vers l'accueil

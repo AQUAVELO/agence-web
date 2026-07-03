@@ -64,7 +64,7 @@ $models = [
         'subject' => "Merci de votre visite chez Aquavelo ! 🚴‍♀️💦",
         'body' => "Bonjour Jean,<br><br>
                   Merci d’être venu(e) découvrir l'Aquavelo🚴‍♀️💦 ! J’espère que vous avez apprécié. Nous serons ravis de vous revoir très vite 🌊.<br><br>
-                  N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
+                  N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
                   Cordialement,<br>
                   Claude<br>
                   Tél : 06 22 64 70 95"
@@ -75,7 +75,7 @@ $models = [
                   J’espère que vous allez bien 😊<br><br>
                   Je me permets de revenir vers vous suite à votre séance découverte d’Aquavelo🚴‍♀️💦.<br><br>
                   Beaucoup de personnes ressentent déjà les bienfaits après quelques séances : tonicité, bien-être, jambes plus légères et un vrai moment de détente 🌊.<br><br>
-                  Si vous souhaitez poursuivre l’expérience et finaliser votre inscription, vous pouvez le faire directement ici : <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
+                  Si vous souhaitez poursuivre l’expérience et finaliser votre inscription, vous pouvez le faire directement ici : <a href='https://www.aquavelo.com/vente' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
                   Je reste bien sûr disponible si vous avez la moindre question ou besoin d’informations complémentaires.<br><br>
                   Au plaisir de vous revoir prochainement 😊<br><br>
                   Cordialement,<br>

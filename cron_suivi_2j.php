@@ -84,7 +84,7 @@ foreach ($bookings as $booking) {
                                       J’espère que votre séance découverte Aquavelo vous a plu 💦 !<br>
                                       Si vous avez un moment, donnez-nous votre avis par retour email — cela nous aide à progresser 🌟.<br><br>
                                       Et si vous souhaitez continuer, vous pouvez dès maintenant vous inscrire en ligne via ce lien si cela n'a pas été fait :<br>
-                                      👉 <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
+                                      👉 <a href='https://www.aquavelo.com/vente' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquer ici</a><br><br>
                                       À très bientôt dans l’eau 🌊<br>
                                       Claude<br>
                                       Tél : 06 22 64 70 95";

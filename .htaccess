@@ -50,7 +50,7 @@
     RewriteRule ^$ /centres/Cannes? [R=301,L]
     
     RewriteCond %{QUERY_STRING} ^p=vente_formule$
-    RewriteRule ^$ /vente_formule? [R=301,L]
+    RewriteRule ^$ /vente? [R=301,L]
     
     RewriteCond %{QUERY_STRING} ^p=page&city=(.+)$
     RewriteRule ^$ /centres/%1? [R=301,L]
@@ -87,17 +87,19 @@
     RewriteRule ^concept-aquabiking/?$ /aquabiking [R=301,L]
 
     # 3. REDIRECTIONS SEO : Anciennes pages .php vers URLs propres
-    RewriteRule ^(vente_formule|vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
+    RewriteRule ^vente_formule\.php$ /vente [R=301,L]
+    RewriteRule ^(vente_cryo|vente_prix|vente_prixprod|vente_cryoprod)\.php$ $1 [R=301,L]
 
     # 3. ROUTES VERS index.php (Aquavelo spécifique)
     
     # Processus de vente et Inscription
-    RewriteRule ^vente_formule/?$ index.php?p=vente_formule [QSA,L]
+    RewriteRule ^vente_formule/?$ /vente [R=301,L]
+    RewriteRule ^vente/?$ index.php?p=vente [QSA,L]
     RewriteRule ^vente_cryo/?$ index.php?p=vente_cryo [QSA,L]
     RewriteRule ^vente_prix/?$ index.php?p=vente_prix [QSA,L]
     RewriteRule ^vente_prixprod/?$ index.php?p=vente_prixprod [QSA,L]
     RewriteRule ^vente_cryoprod/?$ index.php?p=vente_cryoprod [QSA,L]
-    RewriteRule ^inscription/?$ index.php?p=vente_formule [QSA,L]
+    RewriteRule ^inscription/?$ index.php?p=vente [QSA,L]
     
     # Gestion des centres et villes
     RewriteRule ^centres/([^/]+)/?$ index.php?p=page&city=$1 [QSA,L]

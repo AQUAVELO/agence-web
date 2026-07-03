@@ -81,7 +81,7 @@ foreach ($bookings as $booking) {
                         // Modèle CANNES, MANDELIEU, VALLAURIS
                         $mail->Body = "Bonjour " . $client_first_name . ",<br><br>
                                       Merci d’être venu(e) découvrir l'Aquavelo🚴‍♀️💦 ! J’espère que vous avez apprécié. Nous serons ravis de vous revoir très vite 🌊.<br><br>
-                                      N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
+                                      N’hésitez pas à me contacter si vous avez des questions ou des commentaires, ou pour finaliser votre inscription en <a href='https://www.aquavelo.com/vente' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquant ici</a> si cela n'a pas été fait.<br><br>
                                       Cordialement,<br>
                                       Claude<br>
                                       Tél : 06 22 64 70 95";

@@ -80,7 +80,7 @@ foreach ($bookings as $booking) {
                                       J’espère que vous en ressentez encore les bienfaits !<br><br>
                                       Si vous souhaitez commencer un rythme régulier et atteindre vos objectifs (forme, tonicité, minceur ou bien-être), je suis là pour vous conseiller la formule la plus adaptée si cela n'a pas été fait.<br><br>
                                       👉 Vous pouvez aussi acheter directement votre formule ici :<br>
-                                      <a href='https://www.aquavelo.com/vente_formule' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquez ici pour voir nos formules</a><br><br>
+                                      <a href='https://www.aquavelo.com/vente' style='color:#00acdc; font-weight:bold; text-decoration:underline;'>cliquez ici pour voir nos formules</a><br><br>
                                       N’hésitez pas à me répondre si vous avez la moindre question ou besoin d’un accompagnement personnalisé.<br><br>
                                       À très bientôt dans l’eau,<br>
                                       Claude<br>

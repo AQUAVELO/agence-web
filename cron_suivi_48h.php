@@ -53,7 +53,7 @@ foreach ($bookings as $booking) {
                     }
 
                     $prenom = explode(' ', trim(explode('(RDV:', $booking['name'])[0]))[0];
-                    $lien_inscription = "https://www.aquavelo.com/vente_formule";
+                    $lien_inscription = "https://www.aquavelo.com/vente";
 
                     $mail = new PHPMailer(true);
                     $mail->isSMTP();

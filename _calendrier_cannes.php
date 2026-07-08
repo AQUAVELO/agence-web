@@ -5,8 +5,10 @@
  */
 
 require_once '_settings.php';
+require_once __DIR__ . '/Include/cannes_group_closure.php';
 
 $center_id = isset($_GET['center']) ? (int)$_GET['center'] : 305;
+$closure_notice = cannes_group_closure_notice($center_id);
 
 // Récupérer les infos du centre dynamiquement
 $stmt_center = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
@@ -60,10 +62,15 @@ $new_planning = [
     'Samedi' => ['10:15' => 'AQUAVELO','11:15' => 'AQUAVELO','12:15' => 'AQUAVELO','13:15' => 'AQUAGYM']
 ];
 
-// Récupérer les réservations spécifiquement pour CE centre
-$bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id = ? AND name LIKE '%(RDV:%'");
-$bookings_query->execute([$center_id]);
-$existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
+// Récupérer les réservations (Cannes group partage center_id 305 en BDD)
+if (in_array($center_id, CANNES_GROUP_CENTER_IDS, true)) {
+    $bookings_query = $database->query("SELECT name FROM am_free WHERE center_id IN (305, 347, 349) AND name LIKE '%(RDV:%'");
+    $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
+} else {
+    $bookings_query = $database->prepare("SELECT name FROM am_free WHERE center_id = ? AND name LIKE '%(RDV:%'");
+    $bookings_query->execute([$center_id]);
+    $existing_bookings = $bookings_query->fetchAll(PDO::FETCH_COLUMN);
+}
 
 function isSlotTaken($date, $hour, $existing_bookings) {
     $search = $date . " à " . $hour;
@@ -85,6 +92,11 @@ for ($i = 0; $i < 21; $i++) {
     
     // On saute les dimanches (Pas de RDV le dimanche)
     if ($day_num === 7) continue;
+
+    // Fermeture estivale Cannes / Mandelieu / Vallauris
+    if (is_cannes_group_closed($center_id, $date)) {
+        continue;
+    }
 
     $days_fr = ['Monday'=>'Lundi','Tuesday'=>'Mardi','Wednesday'=>'Mercredi','Thursday'=>'Jeudi','Friday'=>'Vendredi','Saturday'=>'Samedi','Sunday'=>'Dimanche'];
     $day_fr = $days_fr[$day_name_en];
@@ -137,6 +149,11 @@ for ($i = 0; $i < 21; $i++) {
 <section class="content-area bg1" style="padding: 30px 0 100px 0;">
   <div class="container">
     <div style="max-width: 1100px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
+      <?php if ($closure_notice): ?>
+      <div style="margin-bottom: 20px; padding: 15px 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px; color: #856404;">
+        <strong>Fermeture exceptionnelle :</strong> <?= htmlspecialchars($closure_notice, ENT_QUOTES, 'UTF-8') ?>
+      </div>
+      <?php endif; ?>
       <div id="loading-overlay" style="display: none; text-align: center; margin-bottom: 20px; padding: 20px; background: #e8f8fc; border-radius: 10px;">
         <h3 style="color: #00a8cc;"><i class="fa fa-spinner fa-spin"></i> Enregistrement en cours...</h3>
       </div>

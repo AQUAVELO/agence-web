@@ -235,6 +235,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         $error[] = 'Veuillez sélectionner un créneau horaire sur le calendrier avant de valider.';
     }
 
+    if ($date_heure && in_array((int) $center_id, [305, 347, 349], true)) {
+        require_once __DIR__ . '/Include/cannes_group_closure.php';
+        if (is_cannes_group_rdv_closed((int) $center_id, $date_heure)) {
+            $error[] = 'Le centre est fermé sur cette période. Veuillez choisir un autre créneau.';
+        }
+    }
+
     if (empty($input_nom_complet)) $error[] = "Le nom et prénom sont obligatoires.";
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $error[] = "Une adresse email valide est obligatoire.";
     if (empty($tel)) $error[] = "Le numéro de téléphone est obligatoire.";

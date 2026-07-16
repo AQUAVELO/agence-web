@@ -105,22 +105,29 @@ try {
     unset($bk);
 }
 
+echo 'Lignes récupérées : ' . count($bookings) . "\n";
+
 $parseOk = 0;
 $parseFail = 0;
 $legacyRegexFail = 0;
 $now = new DateTime();
 
 foreach ($bookings as $b) {
-    $parsed = aquavelo_cron_parse_rdv_start($b);
-    if ($parsed) {
-        $parseOk++;
-    } else {
-        $parseFail++;
-        echo "  ECHEC parse #{$b['id']} : {$b['name']}\n";
-    }
+    try {
+        $parsed = aquavelo_cron_parse_rdv_start($b);
+        if ($parsed) {
+            $parseOk++;
+        } else {
+            $parseFail++;
+            echo "  ECHEC parse #{$b['id']} : {$b['name']}\n";
+        }
 
-    if (!preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', (string) $b['name'])) {
-        $legacyRegexFail++;
+        if (!preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', (string) $b['name'])) {
+            $legacyRegexFail++;
+        }
+    } catch (Throwable $e) {
+        $parseFail++;
+        echo "  ERREUR parse #{$b['id']} : " . $e->getMessage() . "\n";
     }
 }
 

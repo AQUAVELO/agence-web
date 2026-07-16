@@ -69,17 +69,41 @@ if ($smtpOk && $sendTests) {
 
 // 2. Analyse parsing RDV récents
 echo "--- Parsing RDV (50 dernières réservations) ---\n";
-$stmt = $database->query(
-    "SELECT id, name, email, center_id, reminder_sent, reminder_3h_sent, after_session_sent,
-            followup_48h_sent, followup_2d_sent, followup_7d_sent
-     FROM am_free
-     WHERE name LIKE '%(RDV:%'
-       AND name NOT LIKE '%BLOQUE%'
-       AND COALESCE(segment_id, '') <> 'admin-lock'
-     ORDER BY id DESC
-     LIMIT 50"
-);
-$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$bookings = [];
+try {
+    $stmt = $database->query(
+        "SELECT id, name, email, center_id, reminder_sent, reminder_3h_sent, after_session_sent,
+                followup_48h_sent, followup_2d_sent, followup_7d_sent
+         FROM am_free
+         WHERE name LIKE '%(RDV:%'
+           AND name NOT LIKE '%BLOQUE%'
+           AND COALESCE(segment_id, '') <> 'admin-lock'
+         ORDER BY id DESC
+         LIMIT 50"
+    );
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Throwable $e) {
+    echo "Requête détaillée impossible (" . $e->getMessage() . ") — repli sans colonnes suivi.\n";
+    $stmt = $database->query(
+        "SELECT id, name, email, center_id, reminder_sent
+         FROM am_free
+         WHERE name LIKE '%(RDV:%'
+           AND name NOT LIKE '%BLOQUE%'
+         ORDER BY id DESC
+         LIMIT 50"
+    );
+    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($bookings as &$bk) {
+        $bk += [
+            'reminder_3h_sent' => 0,
+            'after_session_sent' => 0,
+            'followup_48h_sent' => 0,
+            'followup_2d_sent' => 0,
+            'followup_7d_sent' => 0,
+        ];
+    }
+    unset($bk);
+}
 
 $parseOk = 0;
 $parseFail = 0;

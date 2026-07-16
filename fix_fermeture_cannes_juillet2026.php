@@ -1,16 +1,18 @@
 <?php
 /**
- * Suppression des réservations séance d'essai Cannes / Mandelieu / Vallauris
- * pour la fermeture du 27/07/2026 au 01/08/2026.
+ * Utilitaires maintenance planning Cannes.
  *
- * Usage :
- *   ?key=aquavelo123&dry=1   → aperçu sans suppression
- *   ?key=aquavelo123         → suppression BDD + Google Calendar
+ * Fermeture :
+ *   ?key=aquavelo123&dry=1
+ *   ?key=aquavelo123
+ *
+ * Renvoi confirmation email :
+ *   ?key=aquavelo123&action=resend&q=Hervieux&slot=17:15
+ *   ?key=aquavelo123&action=resend&q=Hervieux&slot=17:15&send=1
  */
 declare(strict_types=1);
 
 require_once '_settings.php';
-require_once __DIR__ . '/Include/cannes_group_closure.php';
 require_once __DIR__ . '/google_calendar_rdv_helpers.php';
 require_once __DIR__ . '/load_env.php';
 
@@ -21,9 +23,83 @@ if (!isset($_GET['key']) || $_GET['key'] !== $secret_key) {
     die('Accès non autorisé.');
 }
 
-$dry_run = isset($_GET['dry']) && $_GET['dry'] === '1';
-
 header('Content-Type: text/plain; charset=utf-8');
+
+if (isset($_GET['action']) && $_GET['action'] === 'resend') {
+    if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+        require_once __DIR__ . '/vendor/autoload.php';
+    }
+    require_once __DIR__ . '/Include/rdv_confirmation_mail.php';
+
+    $q = trim((string) ($_GET['q'] ?? ''));
+    $slot = trim((string) ($_GET['slot'] ?? ''));
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+    $send = isset($_GET['send']) && $_GET['send'] === '1';
+
+    if ($id > 0) {
+        $stmt = $database->prepare(
+            "SELECT id, name, email, phone, center_id, reference, segment_id, date
+             FROM am_free WHERE id = ? AND name LIKE '%(RDV:%'"
+        );
+        $stmt->execute([$id]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } elseif ($q !== '') {
+        $stmt = $database->prepare(
+            "SELECT id, name, email, phone, center_id, reference, segment_id, date
+             FROM am_free
+             WHERE center_id IN (305, 347, 349)
+               AND name LIKE ?
+               AND name LIKE '%(RDV:%'
+               AND name NOT LIKE '%BLOQUE%'
+               AND COALESCE(segment_id, '') <> 'admin-lock'
+             ORDER BY id DESC
+             LIMIT 20"
+        );
+        $stmt->execute(['%' . $q . '%']);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        die("Paramètre requis : q=Nom ou id=123\n");
+    }
+
+    if ($slot !== '') {
+        $slotNorm = str_replace('h', ':', strtolower($slot));
+        $rows = array_values(array_filter($rows, static function (array $row) use ($slotNorm): bool {
+            $parsed = aquavelo_gc_resolve_rdv_datetime($row);
+
+            return $parsed !== null && stripos($parsed['time'], $slotNorm) !== false;
+        }));
+    }
+
+    if ($rows === []) {
+        echo "Aucune réservation trouvée.\n";
+        exit;
+    }
+
+    echo count($rows) . " réservation(s) trouvée(s).\n\n";
+
+    foreach ($rows as $row) {
+        $parsed = aquavelo_gc_resolve_rdv_datetime($row);
+        $when = $parsed ? ($parsed['date'] . ' ' . $parsed['time']) : '?';
+        echo "ID #{$row['id']}\n";
+        echo "  Nom   : {$row['name']}\n";
+        echo "  Email : {$row['email']}\n";
+        echo "  Tél   : {$row['phone']}\n";
+        echo "  RDV   : $when\n";
+        echo "  Centre: {$row['center_id']}\n\n";
+
+        if ($send) {
+            $result = aquavelo_send_rdv_confirmation_to_client($database, $settings, $row);
+            echo $result['ok'] ? "  => ENVOYÉ : {$result['message']}\n\n" : "  => ÉCHEC : {$result['message']}\n\n";
+        }
+    }
+
+    if (!$send) {
+        echo "Mode consultation. Ajoutez &send=1 pour renvoyer l'email.\n";
+    }
+    exit;
+}
+
+require_once __DIR__ . '/Include/cannes_group_closure.php';
 
 echo $dry_run ? "=== MODE APERÇU (aucune suppression) ===\n\n" : "=== SUPPRESSION DES RÉSERVATIONS ===\n\n";
 

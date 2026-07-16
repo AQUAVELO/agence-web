@@ -4,6 +4,7 @@
  */
 
 require_once '_settings.php';
+require_once __DIR__ . '/Include/cron_email_helpers.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -21,12 +22,9 @@ $now = new DateTime();
 $count = 0;
 
 foreach ($bookings as $booking) {
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
+    $rdv_date = aquavelo_cron_parse_rdv_start($booking);
     
-    if (count($matches) === 3) {
-        $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
-        
-        if ($rdv_date) {
+    if ($rdv_date) {
             // Calcul précis en minutes
             $diff = $now->diff($rdv_date);
             $total_minutes_until = ($diff->days * 24 * 60) + ($diff->h * 60) + $diff->i;
@@ -99,7 +97,7 @@ foreach ($bookings as $booking) {
 
                     // --- ENVOI SMS ---
                     if (!empty($booking['phone'])) {
-                        $sms_text = "Bonjour " . $client_first_name . ", rappel de votre séance découverte Aquavelo aujourd’hui à " . $matches[2] . ". À très bientôt !";
+                        $sms_text = "Bonjour " . aquavelo_cron_client_first_name($booking) . ", rappel de votre séance découverte Aquavelo aujourd’hui à " . $rdv_date->format('H:i') . ". À très bientôt !";
                         sendSMS($booking['phone'], $sms_text);
                     }
                     // -----------------
@@ -110,7 +108,6 @@ foreach ($bookings as $booking) {
                     error_log("Erreur Cron Rappel 3h pour " . $booking['email'] . " : " . $mail->ErrorInfo);
                 }
             }
-        }
     }
 }
 echo "Rappels 3h envoyés : $count";

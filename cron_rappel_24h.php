@@ -4,6 +4,7 @@
  */
 
 require_once '_settings.php';
+require_once __DIR__ . '/Include/cron_email_helpers.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -22,52 +23,26 @@ $count = 0;
 $log = "[" . $now->format('Y-m-d H:i:s') . "] Lancement du Cron 24h\n";
 
 foreach ($bookings as $booking) {
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
+    $rdv_date = aquavelo_cron_parse_rdv_start($booking);
     
-    if (count($matches) === 3) {
-        $rdv_date = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
-        
-        if ($rdv_date) {
+    if ($rdv_date) {
             $diff = $now->diff($rdv_date);
             $hours_until = ($diff->days * 24) + $diff->h;
 
             if ($hours_until >= 18 && $hours_until <= 30 && $rdv_date > $now) {
                 try {
-                    $center_id = $booking['center_id'] ?: 305;
-                    
-                    // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
-                    $lookup_center_id = in_array((int)$center_id, [305, 347, 349]) ? 305 : $center_id;
-                    
-                    $stmt_c = $database->prepare("SELECT city, address, phone, email FROM am_centers WHERE id = ?");
-                    $stmt_c->execute([$lookup_center_id]);
-                    $center_info = $stmt_c->fetch();
-                    
-                    if (!$center_info) {
-                        $center_info = ['city' => 'Cannes', 'address' => '60 avenue du Docteur Raymond Picaud, Cannes', 'phone' => '04 93 93 05 65', 'email' => 'aqua.cannes@gmail.com'];
-                    }
+                    $center_id = (int) ($booking['center_id'] ?: 305);
+                    $center_info = aquavelo_cron_lookup_center($database, $center_id);
 
                     $log .= "Tentative d'envoi à : " . $booking['email'] . " (RDV le " . $rdv_date->format('Y-m-d H:i') . ")\n";
-                    $mail = new PHPMailer(true);
-                    $mail->isSMTP();
-                    $mail->Host = $settings['mjhost'];
-                    $mail->SMTPAuth = true;
-                    $mail->Username = $settings['mjusername'];
-                    $mail->Password = $settings['mjpassword'];
-                    $mail->Port = 587;
-                    $mail->CharSet = 'UTF-8';
-
-                    $mail->setFrom('service.clients@aquavelo.com', 'Aquavelo ' . $center_info['city']);
+                    $mail = aquavelo_cron_create_mailer($settings, $center_info);
                     $mail->addAddress($booking['email']);
-                    if (!empty($center_info['email'])) {
-                        $mail->addReplyTo($center_info['email'], 'Aquavelo ' . $center_info['city']);
-                    }
-                    $mail->isHTML(true);
                     
                     $mail->Subject = "Votre séance Aquavelo demain !";
                     
-                    $rdv_brut = str_replace(['(RDV: ', ')'], ['', ''], substr($booking['name'], strpos($booking['name'], "(RDV:") + 6));
+                    $rdv_brut = aquavelo_cron_rdv_label($booking);
                     $rdv_final = str_replace(['(', ')'], ['', ''], $rdv_brut);
-                    $client_first_name = explode(' ', trim(explode('(RDV:', $booking['name'])[0]))[0];
+                    $client_first_name = aquavelo_cron_client_first_name($booking);
 
                     $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($booking['email']) . "&rdv=" . urlencode($rdv_brut) . "&city=" . urlencode($center_info['city']);
                     $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($booking['name']) . "&email=" . urlencode($booking['email']) . "&phone=" . urlencode($booking['phone']) . "&old_rdv=" . urlencode($rdv_brut);
@@ -84,7 +59,7 @@ foreach ($bookings as $booking) {
                                   ✅ Un gel douche,<br>
                                   ✅ Une bouteille d'eau,<br>
                                   ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                  À très bientôt ! " . (in_array((int)$center_id, [305, 347, 349]) ? "Cordialement Claude" : "Cordialement,<br>Aquavelo " . $center_info['city']) . "<br><br>
+                                  À très bientôt ! " . aquavelo_cron_signature((int) $center_id, $center_info) . "<br><br>
                                   <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
                                   <p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
                                   <table cellspacing='0' cellpadding='0'><tr>
@@ -103,7 +78,6 @@ foreach ($bookings as $booking) {
             } else {
                 $log .= "Sauté : " . $booking['email'] . " (Hors fenêtre : " . $hours_until . "h avant)\n";
             }
-        }
     }
 }
 $log .= "Fin du Cron. Total envoyés : $count\n---\n";

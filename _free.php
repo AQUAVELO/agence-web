@@ -812,71 +812,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     }
 
                     // Email pour le CLIENT (RDV CONFIRMÉ sur Planning)
-                    if ($date_heure) {
-                        $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
-                        $clientMail->addAddress($email);
-                        if ($use_nice_style_email) {
-                            $clientMail->addBCC('claude@alesiaminceur.com');
-                            if (strtolower($email) !== 'claude@alesiaminceur.com') {
-                                $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
-                            }
-                        }
-                        $replyCenterEmail = aquavelo_first_human_center_reply_email($rawEmailCenter);
-                        if ($replyCenterEmail === '') {
-                            $replyCenterEmail = aquavelo_parse_recipient_email($email_center);
-                        }
-                        if (filter_var($replyCenterEmail, FILTER_VALIDATE_EMAIL) && !aquavelo_is_google_calendar_address($replyCenterEmail)) {
-                            $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);
-                        }
-                        $clientMail->Subject = "Confirmation de votre séance à Aquavelo $city";
-                        $rdv_formatted = str_replace(['(', ')'], ['pour un cours ', ''], $date_heure);
-                        
-                        // Pour Cannes/Mandelieu/Vallauris, utiliser les coordonnées de Cannes
-                        if (in_array((int)$center_id, [305, 347, 349])) {
-                            $stmt_cannes = $database->prepare('SELECT address, city, phone FROM am_centers WHERE id = 305');
-                            $stmt_cannes->execute();
-                            $cannes_info = $stmt_cannes->fetch();
-                            if ($cannes_info && !empty($cannes_info['address'])) {
-                                $lieu_rdv = $cannes_info['address'] . ", " . ($cannes_info['city'] ?? 'Cannes');
-                                $tel_rdv = $cannes_info['phone'] ?? '';
-                            } else {
-                                $lieu_rdv = '60 avenue du Docteur Raymond Picaud, Cannes';
-                                $tel_rdv = '04 93 93 05 65';
-                            }
+                    if ($date_heure && $new_booking_id) {
+                        require_once __DIR__ . '/Include/rdv_confirmation_mail.php';
+                        $confResult = aquavelo_send_rdv_confirmation_to_client($database, $settings, [
+                            'id' => $new_booking_id,
+                            'name' => $input_name_db,
+                            'email' => $email,
+                            'phone' => $tel,
+                            'center_id' => $center_id,
+                        ]);
+                        if ($confResult['ok']) {
+                            error_log("Email confirmation client envoyé $city: $email | message_id=" . $confResult['message']);
                         } else {
-                            // Infos centre pour l'email
-                            $lieu_rdv = $row_center_contact['address'] . ", " . $row_center_contact['city'];
-                            $tel_rdv = $row_center_contact['phone'];
-                        }
-
-                        // URLs pour Annuler / Modifier
-                        $url_annuler = "https://www.aquavelo.com/index.php?p=annulation&email=" . urlencode($email) . "&rdv=" . urlencode($date_heure) . "&city=" . urlencode($city);
-                        $url_modifier = "https://www.aquavelo.com/index.php?p=calendrier_cannes&center=" . $center_id . "&nom=" . urlencode($input_nom_complet) . "&email=" . urlencode($email) . "&phone=" . urlencode($tel) . "&old_rdv=" . urlencode($date_heure);
-
-                        $signature = in_array((int)$center_id, [305, 347, 349]) ? "Cordialement Claude" : "Cordialement,<br>Aquavelo $city";
-                        aquavelo_set_mail_body($clientMail, "Bonjour $input_nom_complet,<br><br>Votre séance est confirmée pour le <b>$rdv_formatted</b>.<br>
-                                      Lieu : $lieu_rdv<br>Tél : $tel_rdv<br><br>
-                                      <b>Important :</b> Merci d'arriver 15 minutes avant le début du cours.<br><br>
-                                      <b>🎒 N'oubliez pas de venir équipé(e) avec :</b><br>
-                                      ✅ Votre maillot de bain,<br>
-                                      ✅ Une serviette,<br>
-                                      ✅ Un gel douche,<br>
-                                      ✅ Une bouteille d'eau,<br>
-                                      ✅ Et des chaussures adaptées à l'aquabiking (nous vous en prêterons si vous n'en avez pas).<br><br>
-                                      À très bientôt ! $signature<br><br><hr style='border:none; border-top:1px solid #eee; margin:20px 0;'><p style='color:#999; font-size:0.9rem;'>Un contretemps ?</p>
-                                      <table cellspacing='0' cellpadding='0'><tr>
-                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_annuler' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Annuler</a></td>
-                                      <td width='10'></td>
-                                      <td align='center' width='120' height='35' bgcolor='#f0f0f0' style='border-radius:5px;'><a href='$url_modifier' style='font-size:12px; font-weight:bold; font-family:sans-serif; text-decoration:none; line-height:35px; width:100%; display:inline-block; color:#666;'>Modifier</a></td>
-                                      </tr></table>");
-                        try {
-                            $clientMail->send();
-                            error_log("Email confirmation client envoyé $city: $email | message_id=" . $clientMail->getLastMessageID());
-                        } catch (Exception $clientEmailException) {
-                            $clientError = $clientMail->ErrorInfo ?: $clientEmailException->getMessage();
-                            error_log("Erreur Email confirmation client $city: " . $clientError);
+                            error_log("Erreur Email confirmation client $city: " . $confResult['message']);
                             if ($use_nice_style_email && in_array((int)$center_id, $telegram_centers, true) && function_exists('sendTelegram')) {
-                                sendTelegram("<b>⚠️ Email confirmation $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($clientError));
+                                sendTelegram("<b>⚠️ Email confirmation $city non envoyé</b>\n📧 $email\nErreur: " . htmlspecialchars($confResult['message']));
                             }
                         }
                     }

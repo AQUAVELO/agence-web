@@ -25,6 +25,11 @@ if (!isset($_GET['key']) || $_GET['key'] !== $secret_key) {
 
 header('Content-Type: text/plain; charset=utf-8');
 
+if (isset($_GET['action']) && $_GET['action'] === 'audit') {
+    require __DIR__ . '/test_protocole_email.php';
+    exit;
+}
+
 if (isset($_GET['action']) && $_GET['action'] === 'resend') {
     if (file_exists(__DIR__ . '/vendor/autoload.php')) {
         require_once __DIR__ . '/vendor/autoload.php';

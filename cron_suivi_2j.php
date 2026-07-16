@@ -5,6 +5,7 @@
  */
 
 require_once '_settings.php';
+require_once __DIR__ . '/Include/cron_email_helpers.php';
 date_default_timezone_set('Europe/Paris');
 
 if (file_exists('vendor/autoload.php')) {
@@ -23,12 +24,9 @@ $now = new DateTime();
 $count = 0;
 
 foreach ($bookings as $booking) {
-    preg_match('/(\d{2}\/\d{2}\/\d{4}) à (\d{2}:\d{2})/', $booking['name'], $matches);
+    $rdv_start = aquavelo_cron_parse_rdv_start($booking);
     
-    if (count($matches) === 3) {
-        $rdv_start = DateTime::createFromFormat('d/m/Y H:i', $matches[1] . ' ' . $matches[2]);
-        
-        if ($rdv_start) {
+    if ($rdv_start) {
             $diff = $rdv_start->diff($now);
             $days_passed = $diff->days;
             $is_past = ($now > $rdv_start);
@@ -110,7 +108,6 @@ foreach ($bookings as $booking) {
                     error_log("Erreur Cron Suivi 2J: " . $mail->ErrorInfo);
                 }
             }
-        }
     }
 }
 

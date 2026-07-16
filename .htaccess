@@ -13,7 +13,7 @@
     
     # Fichiers PHP utilitaires (accès direct autorisé)
     RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|cron_sync_google)\.php$ - [L]
+    RewriteRule ^(check_paris12|test_connexion|fix_db_direct|api_handler|cron_sync_google|fix_fermeture_cannes_juillet2026|resend_confirmation_rdv)\.php$ - [L]
 
     # 2. REDIRECTIONS 301 - ?p= vers URLs propres (évite les doublons SEO)
     RewriteCond %{QUERY_STRING} ^p=aquabiking$

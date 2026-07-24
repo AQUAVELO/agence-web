@@ -74,42 +74,42 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Où se trouve le centre Aquavelo à Cannes ?",
+        "name": "Dois-je savoir nager pour faire de l'aquabike à Cannes ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Le centre Aquavelo Cannes est situé au 60 avenue du Docteur Raymond Picaud, 06150 Cannes. Piscine privée chauffée dédiée à l'aquabiking et à l'aquagym collectifs avec coach."
+          "text": "Non, le niveau d'eau arrive à la taille et les vélos sont stables."
         }
       },
       {
         "@type": "Question",
-        "name": "Comment réserver une séance d'aquabike à Cannes ?",
+        "name": "Combien de séances par semaine pour voir des résultats ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Réservez votre séance découverte gratuite de 45 minutes en ligne sur aquavelo.com/free ou par téléphone au 04 93 93 05 65. Les cours d'aquabiking et d'aquagym sont proposés du lundi au samedi selon le planning affiché sur la page centre."
+          "text": "2 à 3 séances par semaine suffisent pour des résultats visibles dès le premier mois."
         }
       },
       {
         "@type": "Question",
-        "name": "Quelle est la différence entre aquabiking et aquagym au centre de Cannes ?",
+        "name": "L'aquabike fait-il vraiment maigrir ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "L'aquabiking consiste à pédaler sur un vélo immergé dans l'eau pour brûler 400 à 600 calories par séance. L'aquagym tonique combine exercices cardio et renforcement musculaire dans l'eau. Les deux activités sont proposées au centre Aquavelo Cannes avec encadrement par un coach diplômé."
+          "text": "Oui. Une séance brûle entre 400 et 600 calories. Associé à une alimentation équilibrée, il favorise une perte de poids durable."
         }
       },
       {
         "@type": "Question",
-        "name": "Proposez-vous une séance découverte gratuite à Cannes ?",
+        "name": "Y a-t-il un parking à Aquavelo Cannes ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Oui, la première séance d'aquabiking ou d'aquagym de 45 minutes est offerte à Cannes, sans engagement. Idéal pour tester le vélo aquatique dans notre piscine privée chauffée avant de choisir une formule."
+          "text": "Oui, un parking privé gratuit de 40 places est disponible."
         }
       },
       {
         "@type": "Question",
-        "name": "Combien coûte une séance d'aquabiking à Cannes ?",
+        "name": "Proposez-vous des cours le week-end ?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Les tarifs démarrent à partir de 11 € la séance selon la formule choisie (forfaits multi-séances et abonnements disponibles). La première séance découverte est gratuite."
+          "text": "Oui, nous sommes ouverts 7 jours sur 7."
         }
       }
     ]
@@ -436,7 +436,7 @@
 <!-- Header -->
 <header class="main-header clearfix">
   <div class="container">
-    <h1 class="page-title pull-left"><?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>Aquabiking et Aquagym à Cannes<?php else : ?>Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?><?php endif; ?></h1>
+    <h1 class="page-title pull-left"><?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>Aquabike &amp; Aquagym à Cannes - Aquavelo<?php else : ?>Centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?><?php endif; ?></h1>
     <ol class="breadcrumb pull-right">
       <li><a href="<?= BASE_PATH ?>">Accueil</a></li>
       <li><a href="<?= BASE_PATH ?>centres">Centres</a></li>
@@ -487,7 +487,7 @@
     <div class="row mt-3">
       <div class="col-md-3 col-6 text-center">
         <img src="<?= $is_opening_soon ? BASE_PATH . 'images/content/home-v1-slider-03.webp' : BASE_PATH . 'cloud/thumbnail/center_' . htmlspecialchars($row_center['id'] ?? '', ENT_QUOTES, 'UTF-8') . '/1.jpg' ?>" 
-             alt="Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques" 
+             alt="<?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>Salle d'aquabike Aquavelo Cannes avec vélos aquatiques<?php else : ?>Salle d'aquabiking centre Aquavélo <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> avec vélos aquatiques<?php endif; ?>"
              class="img-fluid img-same" 
              style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
              width="300" 
@@ -514,7 +514,7 @@
                loading="lazy">
         <?php else : ?>
           <img src="<?= BASE_PATH ?>images/Cannes1.jpg" 
-               alt="Intérieur centre Aquavélo Cannes" 
+               alt="Piscine chauffée Aquavelo Cannes pour cours d'aquabike et aquagym"
                class="img-fluid img-same" 
                style="border-radius: 10px;"
                width="300" 
@@ -618,7 +618,7 @@
                 <div style="position: relative; cursor: pointer;" onclick="openPlanningModal()" title="Cliquer pour agrandir">
                   <img id="planning-image" 
                        src="<?= $planning_image ?>" 
-                       alt="Planning hebdomadaire cours aquabiking aquagym <?= htmlspecialchars($row_center['city']) ?>" 
+                       alt="<?php if ((int) $row_center['id'] === 305) : ?>Planning hebdomadaire des cours aquabike aquagym aqua boxing Cannes<?php else : ?>Planning hebdomadaire cours aquabiking aquagym <?= htmlspecialchars($row_center['city']) ?><?php endif; ?>"
                        class="img-fluid" 
                        style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease;"
                        onmouseover="this.style.transform='scale(1.02)'" 
@@ -738,6 +738,25 @@
         
         <!-- ⭐ 3. AUTRES CONTENUS -->
         <div class="other-content">
+          <?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>
+          <div style="margin-top: 40px;">
+            <h2 style="color: #00a8cc;">Aquabike Cannes : une séance efficace et sans douleur</h2>
+            <p>Pratiquez l'<strong>aquabike à Cannes</strong> dans une piscine chauffée entre 24 et 29°C. Chaque séance de 45 minutes vous permet de brûler jusqu'à 600 calories tout en préservant vos articulations. Le pédalage dans l'eau offre une résistance naturelle qui affine les cuisses, les fessiers et le ventre sans aucun impact.</p>
+
+            <h2 style="color: #00a8cc; margin-top: 30px;">Aquagym Cannes : tonifiez votre corps en douceur</h2>
+            <p>L'<strong>aquagym à Cannes</strong> est accessible à tous les niveaux. Nos coachs vous proposent des cours variés qui renforcent l'ensemble du corps, améliorent la posture et stimulent la circulation sanguine. Idéal pour les personnes qui souhaitent reprendre une activité physique sans forcer sur les articulations.</p>
+
+            <h2 style="color: #00a8cc; margin-top: 30px;">Aqua Boxing Cannes : cardio et renforcement en piscine</h2>
+            <p>Découvrez l'<strong>aqua boxing à Cannes</strong>, une discipline dynamique qui combine mouvements de boxe et résistance de l'eau. Une excellente façon de travailler le cardio, de sculpter les bras et d'évacuer le stress dans une ambiance énergique et motivante.</p>
+
+            <h2 style="color: #00a8cc; margin-top: 30px;">Pourquoi choisir Aquavelo Cannes ?</h2>
+            <p>Situé à Cannes (60 Avenue du Dr Raymond Picaud), à seulement quelques minutes de <a href="<?= BASE_PATH ?>centres/Mandelieu" style="color: #00a8cc; font-weight: 600;">Mandelieu-la-Napoule</a>, Aquavelo Cannes vous accueille 7 jours sur 7 avec plus de 70 séances hebdomadaires. Parking privé gratuit de 40 places, eau maintenue à la bonne température et coachs diplômés vous accompagnent dans vos objectifs minceur et bien-être.</p>
+
+            <h2 style="color: #00a8cc; margin-top: 30px;">Accès et parking à Cannes</h2>
+            <p>Facilement accessible en voiture avec un grand parking privé gratuit. Arrêt de bus « Leader » juste à côté. Idéal pour les habitants de Cannes, Mandelieu, Le Cannet, Vallauris et Mougins.</p>
+          </div>
+          <?php endif; ?>
+
           <!-- Section Pourquoi choisir -->
           <div style="margin-top: 40px;">
             <h3 style="color: #00a8cc;"><i class="fa fa-star"></i> Pourquoi Choisir l'Aquavélo à <?= htmlspecialchars($city ?? '', ENT_QUOTES, 'UTF-8'); ?> ?</h3>
@@ -761,6 +780,22 @@
           <div style="margin-top: 40px; background: #f8f9fa; padding: 25px; border-radius: 10px;">
             <h3 style="color: #00a8cc; margin-top: 0;"><i class="fa fa-question-circle"></i> Questions Fréquentes</h3>
             
+            <?php if (isset($row_center['id']) && (int) $row_center['id'] === 305) : ?>
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Dois-je savoir nager pour faire de l'aquabike à Cannes ?</h4>
+            <p><strong>Non</strong>, le niveau d'eau arrive à la taille et les vélos sont stables.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Combien de séances par semaine pour voir des résultats ?</h4>
+            <p><strong>2 à 3 séances par semaine</strong> suffisent pour des résultats visibles dès le premier mois.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquabike fait-il vraiment maigrir ?</h4>
+            <p><strong>Oui</strong>. Une séance brûle entre <strong>400 et 600 calories</strong>. Associé à une alimentation équilibrée, il favorise une perte de poids durable.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Y a-t-il un parking à Aquavelo Cannes ?</h4>
+            <p><strong>Oui</strong>, un parking privé gratuit de 40 places est disponible.</p>
+
+            <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Proposez-vous des cours le week-end ?</h4>
+            <p><strong>Oui</strong>, le centre Aquavelo Cannes est ouvert 7 jours sur 7.</p>
+            <?php else : ?>
             <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">Dois-je savoir nager ?</h4>
             <p><strong>Non</strong>, il n'est pas nécessaire de savoir nager. Le niveau d'eau arrive à la taille et vous êtes installé sur un vélo stable.</p>
 
@@ -775,6 +810,7 @@
 
             <h4 style="color: #00a8cc; margin-top: 20px; font-size: 1.1rem;">L'aquavélo fait-il maigrir ?</h4>
             <p><strong>Oui</strong>, brûlez <strong>400 à 600 calories par séance</strong>. Très efficace pour la perte de poids associé à une alimentation équilibrée.</p>
+            <?php endif; ?>
           </div>
 
           <!-- ⭐ Témoignages Google Business - Centre Cannes -->

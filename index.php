@@ -272,9 +272,13 @@ if (isset($_GET['city'])) {
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];
-  $title = "Aquabiking et Aquagym $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
-  
-  $meta_description = "🎁 Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking et aquagym avec coach, piscine privée chauffée. Perdez du poids rapidement. Brûlez 400-500 calories/séance. Réservez en ligne !";
+  if (isset($row_center['id']) && (int) $row_center['id'] === 305) {
+    $title = "Aquabike Cannes & Aquagym Cannes | Aquavelo - 1ère séance offerte";
+    $meta_description = "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à Cannes avec Aquavelo. Cours en piscine chauffée, coachs diplômés, parking privé et 1ère séance offerte. Réservez votre essai gratuit !";
+  } else {
+    $title = "Aquabiking et Aquagym $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
+    $meta_description = "Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking et aquagym avec coach, piscine privée chauffée. Perdez du poids rapidement. Brûlez 400-500 calories/séance. Réservez en ligne !";
+  }
   $meta_keywords = "aquavelo, aquabiking, waterbike, aquabike, aquagym, aquagym tonique, anti cellulite, amincissement, perte de poids, aquabiking $city, aquagym $city, centre aquabiking $city, centre aquagym $city, cours aquabike $city, cours aquagym $city, piscine $city, coach aquabiking $city, sport aquatique $city";
 }
 
@@ -354,7 +358,7 @@ if (isset($_GET['city'])) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
   
-  <title><?= $title; ?> | Aquavelo</title>
+  <title><?= htmlspecialchars($title ?? 'Aquavelo', ENT_QUOTES, 'UTF-8'); ?><?= (isset($row_center['id']) && (int) $row_center['id'] === 305) ? '' : ' | Aquavelo'; ?></title>
   
   <?php include '_seo_optimization.php'; ?>
   

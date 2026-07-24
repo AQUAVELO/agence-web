@@ -272,9 +272,28 @@ if (isset($_GET['city'])) {
   }
   $region = $row_center['region_nom'];
   $department = $row_center['department_nom'];
-  if (isset($row_center['id']) && (int) $row_center['id'] === 305) {
-    $title = "Aquabike Cannes & Aquagym Cannes | Aquavelo - 1ère séance offerte";
-    $meta_description = "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à Cannes avec Aquavelo. Cours en piscine chauffée, coachs diplômés, parking privé et 1ère séance offerte. Réservez votre essai gratuit !";
+  $local_meta = [
+    305 => [
+      'title' => "Aquabike Cannes & Aquagym Cannes | Aquavelo - 1ère séance offerte",
+      'description' => "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à Cannes avec Aquavelo. Cours en piscine chauffée, coachs diplômés, parking privé et 1ère séance offerte. Réservez votre essai gratuit !",
+    ],
+    347 => [
+      'title' => "Aquabike Mandelieu & Aquagym Mandelieu | Aquavelo - séance offerte",
+      'description' => "Découvrez l'aquabike, l'aquagym et l'aqua boxing à Mandelieu avec Aquavelo. Cours collectifs en piscine chauffée, coachs diplômés et séance découverte offerte sur réservation.",
+    ],
+    253 => [
+      'title' => "Aquabike Antibes & Aquagym Antibes | Aquavelo - séance offerte",
+      'description' => "Réservez votre séance d'aquabike ou d'aquagym à Antibes avec Aquavelo. Cours en piscine chauffée, coachs diplômés, aqua boxing et première séance offerte.",
+    ],
+    343 => [
+      'title' => "Aquabike Mérignac & Aquagym Mérignac | Aquavelo - séance offerte",
+      'description' => "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à Mérignac près de Bordeaux. Cours collectifs en piscine chauffée avec coachs diplômés et séance découverte offerte.",
+    ],
+  ];
+  $center_id = isset($row_center['id']) ? (int) $row_center['id'] : 0;
+  if (isset($local_meta[$center_id])) {
+    $title = $local_meta[$center_id]['title'];
+    $meta_description = $local_meta[$center_id]['description'];
   } else {
     $title = "Aquabiking et Aquagym $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
     $meta_description = "Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking et aquagym avec coach, piscine privée chauffée. Perdez du poids rapidement. Brûlez 400-500 calories/séance. Réservez en ligne !";
@@ -358,7 +377,7 @@ if (isset($_GET['city'])) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
   
-  <title><?= htmlspecialchars($title ?? 'Aquavelo', ENT_QUOTES, 'UTF-8'); ?><?= (isset($row_center['id']) && (int) $row_center['id'] === 305) ? '' : ' | Aquavelo'; ?></title>
+  <title><?= htmlspecialchars($title ?? 'Aquavelo', ENT_QUOTES, 'UTF-8'); ?><?= (isset($row_center['id']) && in_array((int) $row_center['id'], [305, 347, 253, 343], true)) ? '' : ' | Aquavelo'; ?></title>
   
   <?php include '_seo_optimization.php'; ?>
   

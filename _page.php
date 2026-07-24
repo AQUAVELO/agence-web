@@ -95,6 +95,46 @@ $local_seo_by_center = [
   ],
 ];
 $local_seo = $local_seo_by_center[$center_id_int] ?? null;
+$opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne', 'Aix-en-Provence'];
+$is_open_center_for_seo = !empty($city) && !in_array($city, $opening_soon_cities, true);
+if ($local_seo === null && $is_open_center_for_seo) {
+  $city_html = htmlspecialchars($city, ENT_QUOTES, 'UTF-8');
+  $address_html = htmlspecialchars($row_center['address'] ?? '', ENT_QUOTES, 'UTF-8');
+  $local_seo = [
+    'h1' => "Aquabike & Aquagym à $city - Aquavelo",
+    'image_alt' => "Salle d'aquabike Aquavelo $city avec vélos aquatiques",
+    'planning_alt' => "Planning hebdomadaire des cours aquabike aquagym aqua boxing $city",
+    'sections' => [
+      [
+        'title' => "Aquabike $city : une séance cardio sans impact",
+        'body' => "Pratiquez l'<strong>aquabike à $city_html</strong> pour brûler des calories, tonifier les jambes et stimuler la circulation grâce à la résistance naturelle de l'eau. Les séances sont efficaces tout en préservant les articulations.",
+      ],
+      [
+        'title' => "Aquagym $city : tonifiez votre corps en douceur",
+        'body' => "Les cours d'<strong>aquagym à $city_html</strong> renforcent l'ensemble du corps avec des mouvements accessibles. C'est une activité idéale pour reprendre le sport, améliorer la posture et travailler le cardio en piscine.",
+      ],
+      [
+        'title' => "Aqua Boxing $city : cardio et renforcement en piscine",
+        'body' => "L'<strong>aqua boxing à $city_html</strong> combine mouvements de boxe, cardio et résistance de l'eau. Cette discipline dynamique aide à se défouler, renforcer les bras et améliorer l'endurance.",
+      ],
+      [
+        'title' => "Pourquoi choisir Aquavelo $city ?",
+        'body' => "Aquavelo $city_html propose des cours collectifs encadrés par des coachs, dans une piscine chauffée et une ambiance motivante. La séance découverte offerte permet de tester l'aquabike ou l'aquagym avant de choisir une formule.",
+      ],
+      [
+        'title' => "Accès au centre Aquavelo $city",
+        'body' => ($address_html !== '' ? "Le centre Aquavelo $city_html est situé au $address_html. " : "Le centre Aquavelo $city_html est facilement accessible depuis la commune et les environs. ") . 'Réservez votre séance découverte gratuite en ligne selon les créneaux disponibles.',
+      ],
+    ],
+    'faqs' => [
+      ['question' => "Quels cours propose Aquavelo $city ?", 'answer' => "Aquavelo $city propose des cours d'aquabike, d'aquagym et d'aqua boxing selon le planning du centre."],
+      ['question' => "L'aquabike à $city est-il adapté aux débutants ?", 'answer' => "Oui, les séances sont encadrées par un coach et adaptées à différents niveaux."],
+      ['question' => "L'aquagym à $city aide-t-elle à se remettre en forme ?", 'answer' => "Oui, l'aquagym permet de tonifier le corps, travailler le cardio et reprendre une activité physique en douceur."],
+      ['question' => "Peut-on réserver une séance découverte à $city ?", 'answer' => "Oui, une séance découverte offerte est disponible sur réservation selon les créneaux du centre."],
+      ['question' => "Faut-il savoir nager pour faire de l'aquabike ?", 'answer' => "Non, l'activité se pratique dans un bassin où vous avez pied, avec un vélo stable et un encadrement par coach."],
+    ],
+  ];
+}
 ?>
   
   

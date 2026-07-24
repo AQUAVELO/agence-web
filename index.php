@@ -291,9 +291,13 @@ if (isset($_GET['city'])) {
     ],
   ];
   $center_id = isset($row_center['id']) ? (int) $row_center['id'] : 0;
+  $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne', 'Aix-en-Provence'];
   if (isset($local_meta[$center_id])) {
     $title = $local_meta[$center_id]['title'];
     $meta_description = $local_meta[$center_id]['description'];
+  } elseif (!in_array($city, $opening_soon_cities, true)) {
+    $title = "Aquabike $city & Aquagym $city | Aquavelo - séance offerte";
+    $meta_description = "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à $city avec Aquavelo. Cours collectifs en piscine chauffée, coachs diplômés et séance découverte offerte sur réservation.";
   } else {
     $title = "Aquabiking et Aquagym $city | 1ère Séance OFFERTE - Centre Aquavelo $department";
     $meta_description = "Première séance OFFERTE au centre Aquavelo de $city ($department) ! Cours d'aquabiking et aquagym avec coach, piscine privée chauffée. Perdez du poids rapidement. Brûlez 400-500 calories/séance. Réservez en ligne !";
@@ -377,7 +381,7 @@ if (isset($_GET['city'])) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
   
-  <title><?= htmlspecialchars($title ?? 'Aquavelo', ENT_QUOTES, 'UTF-8'); ?><?= (isset($row_center['id']) && in_array((int) $row_center['id'], [305, 347, 253, 343], true)) ? '' : ' | Aquavelo'; ?></title>
+  <title><?= htmlspecialchars($title ?? 'Aquavelo', ENT_QUOTES, 'UTF-8'); ?><?= isset($row_center['id']) ? '' : ' | Aquavelo'; ?></title>
   
   <?php include '_seo_optimization.php'; ?>
   

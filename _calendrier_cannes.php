@@ -8,7 +8,6 @@ require_once '_settings.php';
 require_once __DIR__ . '/Include/cannes_group_closure.php';
 
 $center_id = isset($_GET['center']) ? (int)$_GET['center'] : 305;
-$closure_notice = cannes_group_closure_notice($center_id);
 
 // Récupérer les infos du centre dynamiquement
 $stmt_center = $database->prepare("SELECT city, address, phone FROM am_centers WHERE id = ?");
@@ -150,11 +149,6 @@ for ($i = 0; $i < 21; $i++) {
 <section class="content-area bg1" style="padding: 30px 0 100px 0;">
   <div class="container">
     <div style="max-width: 1100px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1);">
-      <?php if ($closure_notice): ?>
-      <div style="margin-bottom: 20px; padding: 15px 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px; color: #856404;">
-        <strong>Fermeture exceptionnelle :</strong> <?= htmlspecialchars($closure_notice, ENT_QUOTES, 'UTF-8') ?>
-      </div>
-      <?php endif; ?>
       <div id="loading-overlay" style="display: none; text-align: center; margin-bottom: 20px; padding: 20px; background: #e8f8fc; border-radius: 10px;">
         <h3 style="color: #00a8cc;"><i class="fa fa-spinner fa-spin"></i> Enregistrement en cours...</h3>
       </div>

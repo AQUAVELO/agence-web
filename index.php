@@ -114,7 +114,7 @@ if ($page == 'aquagym') {
 }
 
 if ($page == 'centers') {
-    $title = 'Centres Aquabiking et Aquagym en France : Trouvez le Plus Proche | Aquavelo';
+    $title = 'Centres Aquabiking et Aquagym en France : Trouvez le Plus Proche';
     $meta_description = 'Trouvez votre centre d\'aquabiking et aquagym Aquavelo près de chez vous. Plus de 17 centres en France avec piscines privées chauffées, coaching professionnel et cours collectifs 7j/7. Aquabike + aquagym. Réservez votre séance découverte gratuite !';
 }
 

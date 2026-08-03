@@ -883,7 +883,7 @@ if (isset($_GET['success'])) {
       </div>
     <?php else: ?>
       <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
-        <h2 style="text-align: center; color: #00a8cc; margin-bottom: 25px;">Réservez votre séance gratuite</h2>
+        <h1 style="text-align: center; color: #00a8cc; margin-bottom: 25px; font-size: 2rem;">Réservez votre séance gratuite</h1>
         <form role="form" method="POST" action="<?= BASE_PATH ?>index.php?p=free" id="mainFreeForm">
             <div style="margin-bottom: 15px;"><label>Centre *</label>
                 <select name="center" id="centerSelect" required style="width: 100%; height: 45px; border: 1px solid #ddd; border-radius: 5px; padding: 0 10px;">

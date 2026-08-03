@@ -145,7 +145,7 @@
 </url>
 
 <url>
-    <loc>https://www.aquavelo.com/centres/Fréjus</loc>
+    <loc>https://www.aquavelo.com/centres/Fr%C3%A9jus</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
     <lastmod>2026-05-31</lastmod>
@@ -166,7 +166,7 @@
 </url>
 
 <url>
-    <loc>https://www.aquavelo.com/centres/Hyères</loc>
+    <loc>https://www.aquavelo.com/centres/Hy%C3%A8res</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
     <lastmod>2026-05-31</lastmod>
@@ -180,7 +180,7 @@
 </url>
 
 <url>
-    <loc>https://www.aquavelo.com/centres/Mérignac</loc>
+    <loc>https://www.aquavelo.com/centres/M%C3%A9rignac</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
     <lastmod>2026-05-31</lastmod>
@@ -212,14 +212,14 @@
 </url>
 
 <url>
-    <loc>https://www.aquavelo.com/centres/Saint-Étienne</loc>
+    <loc>https://www.aquavelo.com/centres/Saint-%C3%89tienne</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
     <lastmod>2026-05-31</lastmod>
 </url>
 
 <url>
-    <loc>https://www.aquavelo.com/centres/Saint-Raphaël</loc>
+    <loc>https://www.aquavelo.com/centres/Saint-Rapha%C3%ABl</loc>
     <priority>0.75</priority>
     <changefreq>weekly</changefreq>
     <lastmod>2026-05-31</lastmod>

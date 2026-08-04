@@ -349,7 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
         $is_second_session = false; // Variable pour compatibilité (fonctionnalité désactivée)
         $city = $row_center_contact['city'];
         $rawEmailCenter = isset($row_center_contact['email']) ? trim(str_replace(["\xc2\xa0", "\xe2\x80\xaf"], ' ', (string) $row_center_contact['email'])) : '';
-        $email_center = $rawEmailCenter !== '' ? $rawEmailCenter : 'claude@alesiaminceur.com';
+        $email_center = $rawEmailCenter !== '' ? $rawEmailCenter : 'directionalesiaminceur@gmail.com';
         $reference = 'AQ' . date('dmhis');
         $input_name_db = ($date_heure) ? $input_nom_complet . " (RDV: " . $date_heure . ")" : $input_nom_complet;
 
@@ -673,9 +673,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         foreach ($directorEmails as $dirTo) {
                             $mail = aquavelo_create_mailer($settings, $city);
                             $mail->addAddress($dirTo);
-                            if ($use_nice_style_email && !aquavelo_is_prospect_admin_technical_to($dirTo)) {
-                                $mail->addBCC('claude@alesiaminceur.com');
-                            }
                             //$addDirectionCcIfMissing($mail, $fbCc);
                             $mail->addReplyTo($email, $input_nom_complet);
                             $mail->Subject = $subject_admin;
@@ -697,7 +694,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                             $adminHasNonClaudeTo = true;
                         }
                         if ($adminRecipientsAdded === 0) {
-                            aquavelo_add_mail_recipients($mail, $email_center, 'claude@alesiaminceur.com');
+                            aquavelo_add_mail_recipients($mail, $email_center, 'directionalesiaminceur@gmail.com');
                             foreach ($mail->getToAddresses() as $admRow) {
                                 if (!empty($admRow[0]) && !aquavelo_is_prospect_admin_technical_to((string) $admRow[0])) {
                                     $adminHasNonClaudeTo = true;
@@ -730,9 +727,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                                     $adminHasNonClaudeTo = true;
                                 }
                             }
-                        }
-                        if ($use_nice_style_email && $adminHasNonClaudeTo) {
-                            $mail->addBCC('claude@alesiaminceur.com');
                         }
                         //$addDirectionCcIfMissing($mail, $fbCc);
                         $mail->addReplyTo($email, $input_nom_complet);

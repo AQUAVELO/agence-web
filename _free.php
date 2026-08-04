@@ -751,12 +751,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     if (!in_array((int)$center_id, [305, 347, 349, 343, 253]) && !$date_heure) {
                         $clientMail = aquavelo_create_mailer($settings, $city, $clientFromEmail, 'Aquavelo');
                         $clientMail->addAddress($email);
-                        if ($use_nice_style_email) {
-                            $clientMail->addBCC('claude@alesiaminceur.com');
-                            if (strtolower($email) !== 'claude@alesiaminceur.com') {
-                                $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
-                            }
-                        }
                         $replyCenterEmail = aquavelo_first_human_center_reply_email($rawEmailCenter);
                         if ($replyCenterEmail === '') {
                             $replyCenterEmail = aquavelo_parse_recipient_email($email_center);

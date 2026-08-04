@@ -123,13 +123,6 @@ if (!function_exists('aquavelo_send_rdv_confirmation_to_client')) {
         $clientMail->isHTML(true);
         $clientMail->addAddress($email);
 
-        if ($useNiceStyle) {
-            $clientMail->addBCC('claude@alesiaminceur.com');
-            if (strtolower($email) !== 'claude@alesiaminceur.com') {
-                $clientMail->addAddress('claude@alesiaminceur.com', 'Controle Aquavelo');
-            }
-        }
-
         $replyCenterEmail = aquavelo_rdv_mail_parse_email($rawEmailCenter);
         if ($replyCenterEmail !== '') {
             $clientMail->addReplyTo($replyCenterEmail, 'Aquavelo ' . $city);

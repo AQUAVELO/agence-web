@@ -38,9 +38,8 @@ $old_special_activities = [
     'Samedi'   => ['13:30' => 'AQUAGYM'],
 ];
 
-// 2. Planning MÉRIGNAC (ID: 343)
-$merignac_creneaux_semaine = ['09:30', '10:30', '11:30', '12:30', '16:30', '17:30', '18:30', '19:30'];
-$merignac_creneaux_samedi  = ['09:30', '10:30', '11:30'];
+// 2. Planning MÉRIGNAC (ID: 343) — Lun–Ven uniquement, pas de samedi
+$merignac_creneaux_semaine = ['10:30', '11:30', '12:30', '16:30', '17:30', '18:30'];
 
 // 3. Planning ANTIBES (ID: 253)
 $antibes_planning = [
@@ -103,9 +102,11 @@ for ($i = 0; $i < 21; $i++) {
 
     $current_slots = [];
     if ($center_id == 343) {
-        // ⭐ MÉRIGNAC
-        $times = ($day_num == 6) ? $merignac_creneaux_samedi : $merignac_creneaux_semaine;
-        foreach ($times as $t) {
+        // ⭐ MÉRIGNAC — Lun–Ven uniquement (pas de cours le samedi)
+        if ($day_num === 6) {
+            continue;
+        }
+        foreach ($merignac_creneaux_semaine as $t) {
             $current_slots[] = ['time' => $t, 'activity' => 'AQUAVELO'];
         }
     } elseif ($center_id == 253) {

@@ -159,17 +159,21 @@ $statusLabels = [
 
         <?php if (!empty($item['previous'])):
           $p0 = $item['previous'][0];
-          $prevWhen = (string) ($p0['attended_at'] ?? '');
-          if ($prevWhen !== '') {
-              try {
-                  $prevWhen = (new DateTime($prevWhen, new DateTimeZone('Europe/Paris')))->format('d/m/Y à H:i');
-              } catch (Throwable $e) {
+          $prevWhen = '';
+          if (function_exists('aquavelo_gc_parse_rdv_from_name')) {
+              $parsedPrev = aquavelo_gc_parse_rdv_from_name((string) ($p0['name'] ?? ''));
+              if ($parsedPrev) {
+                  $prevWhen = $parsedPrev['date'] . ' à ' . $parsedPrev['time'];
               }
-          } else {
-              $parsedPrev = function_exists('aquavelo_gc_parse_rdv_from_name')
-                  ? aquavelo_gc_parse_rdv_from_name((string) $p0['name'])
-                  : null;
-              $prevWhen = $parsedPrev ? ($parsedPrev['date'] . ' à ' . $parsedPrev['time']) : '';
+          }
+          if ($prevWhen === '') {
+              $partsPrev = explode('(RDV:', (string) ($p0['name'] ?? ''), 2);
+              if (isset($partsPrev[1])) {
+                  $prevWhen = trim($partsPrev[1]);
+                  if (substr($prevWhen, -1) === ')') {
+                      $prevWhen = trim(substr($prevWhen, 0, -1));
+                  }
+              }
           }
         ?>
         <div style="margin-top:12px; padding:10px 12px; background:#fff3e0; border:1px solid #ffb74d; border-radius:8px; color:#e65100; font-weight:700;">

@@ -490,16 +490,18 @@ function aquavelo_trial_set_attendance(PDO $database, int $bookingId, string $st
         $msg = 'Présence validée';
         if ($previous !== []) {
             $p = $previous[0];
-            $when = $p['attended_at'] ?? '';
-            if ($when === '' || $when === null) {
-                $parsed = aquavelo_gc_parse_rdv_from_name((string) $p['name']);
-                $when = $parsed ? ($parsed['date'] . ' à ' . $parsed['time']) : '';
+            // Afficher le créneau RDV (pas l'heure de clic "Présent")
+            $when = '';
+            $parsed = aquavelo_gc_parse_rdv_from_name((string) ($p['name'] ?? ''));
+            if ($parsed) {
+                $when = $parsed['date'] . ' à ' . $parsed['time'];
             } else {
-                try {
-                    $dt = new DateTime((string) $when, new DateTimeZone('Europe/Paris'));
-                    $when = $dt->format('d/m/Y à H:i');
-                } catch (Throwable $e) {
-                    /* keep raw */
+                $parts = explode('(RDV:', (string) ($p['name'] ?? ''), 2);
+                if (isset($parts[1])) {
+                    $when = trim($parts[1]);
+                    if (substr($when, -1) === ')') {
+                        $when = trim(substr($when, 0, -1));
+                    }
                 }
             }
             $msg .= ' — ⚠️ déjà venu' . ($when !== '' ? ' le ' . $when : '');

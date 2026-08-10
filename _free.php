@@ -363,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             $previous_was_present = false;
             
             if (in_array((int)$center_id, [305, 347, 349])) {
-                // Récupérer la dernière séance (RDV) existante pour cet email
+                // Dernière séance (RDV) existante pour cet email — date = créneau RDV (pas la validation présence)
                 $check_previous = $database->prepare("SELECT name, attendance_status, attended_at FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 1");
                 try {
                     $check_previous->execute([$email]);
@@ -376,20 +376,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 
                 if ($previous) {
                     $is_double_booking = true;
-                    // Extraire la date du champ name : "Nom (RDV: jj/mm/aaaa à hh:mm)"
-                    $parts = explode('(RDV:', $previous['name']);
+                    // Extraire la date du créneau : "Nom (RDV: Mardi 11/08/2026 à 13:30 (AQUABOXING))"
+                    $parts = explode('(RDV:', $previous['name'], 2);
                     if (isset($parts[1])) {
-                        $previous_booking_date = trim(str_replace(')', '', $parts[1]));
+                        $previous_booking_date = trim($parts[1]);
+                        if (substr($previous_booking_date, -1) === ')') {
+                            $previous_booking_date = trim(substr($previous_booking_date, 0, -1));
+                        }
                     }
                     if (($previous['attendance_status'] ?? '') === 'present') {
                         $previous_was_present = true;
-                        if (!empty($previous['attended_at'])) {
-                            try {
-                                $previous_booking_date = (new DateTime((string) $previous['attended_at']))->format('d/m/Y à H:i');
-                            } catch (Throwable $e) {
-                                /* keep RDV label */
-                            }
-                        }
                     }
                 }
             }
@@ -514,8 +510,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                              "📧 $email\n" .
                              "📞 $tel\n" .
                              "⚠️ Cette personne s'inscrit pour une 2ème séance d'essai !\n";
+                if (!empty($date_heure)) {
+                    $alert_msg .= "🗓️ Nouveau RDV : $date_heure\n";
+                }
                 if (!empty($previous_booking_date)) {
-                    $alert_msg .= "📅 1ère séance : $previous_booking_date";
+                    $alert_msg .= "📅 1ère séance (créneau) : $previous_booking_date";
                 }
                 if (!empty($previous_was_present)) {
                     $alert_msg .= "\n✅ Présence déjà validée lors d'un essai précédent";
@@ -618,14 +617,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                         if ($rescheduling_alert) {
                             $subject_admin = "🔄 REPLANIFICATION : $city - $input_nom_complet";
                         }
+                        $rdv_choisi_html = htmlspecialchars($date_heure !== '' ? $date_heure : 'Non renseigné', ENT_QUOTES, 'UTF-8');
                         $body_admin = "<h3>" . ($rescheduling_alert ? "🔄 Replanification de séance" : "Séance confirmée") . "</h3>
-                                      <b>Nom :</b> $input_nom_complet<br>
-                                      <b>Email :</b> $email<br>
-                                      <b>Tél :</b> $tel<br>
-                                      <b>Centre :</b> $city<br>
-                                      <b>RDV choisi :</b> $date_heure";
+                                      <b>Nom :</b> " . htmlspecialchars($input_nom_complet, ENT_QUOTES, 'UTF-8') . "<br>
+                                      <b>Email :</b> " . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . "<br>
+                                      <b>Tél :</b> " . htmlspecialchars($tel, ENT_QUOTES, 'UTF-8') . "<br>
+                                      <b>Centre :</b> " . htmlspecialchars($city, ENT_QUOTES, 'UTF-8') . "<br>
+                                      <b>RDV choisi :</b> $rdv_choisi_html";
                         if ($rescheduling_alert) {
-                            $body_admin .= "<br><br><b>Ancien RDV annulé :</b> " . htmlspecialchars($old_rdv);
+                            $body_admin .= "<br><br><b>Ancien RDV annulé :</b> " . htmlspecialchars($old_rdv, ENT_QUOTES, 'UTF-8');
+                        }
+                        if ($is_double_booking && $previous_booking_date !== '') {
+                            $body_admin .= "<br><br><p style='color:#c62828;font-weight:bold;'>⚠️ 2ème inscription — 1ère séance (créneau) : "
+                                . htmlspecialchars($previous_booking_date, ENT_QUOTES, 'UTF-8');
+                            if ($previous_was_present) {
+                                $body_admin .= " — présence déjà validée";
+                            }
+                            $body_admin .= "</p>";
                         }
                     } else {
                         $subject_admin = "Nouveau contact $city - $input_nom_complet";

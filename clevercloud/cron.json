@@ -33,5 +33,10 @@
     "id": "sync-google-calendar",
     "command": "php cron_sync_google.php",
     "schedule": "*/15 * * * *"
+  },
+  {
+    "id": "ingest-google-agenda",
+    "command": "php cron_ingest_google_agenda.php",
+    "schedule": "*/10 * * * *"
   }
 ]

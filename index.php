@@ -86,12 +86,17 @@ if ($page === 'admin_planning') {
     require_once __DIR__ . '/Include/admin_planning_run.php';
 }
 
+// Check-in présence séances d'essai
+if ($page === 'admin_checkin') {
+    require_once __DIR__ . '/Include/admin_checkin_run.php';
+}
+
 // En-tête HTTP pour les crawlers (complément meta robots) — admin / paiement par lien
-if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning'], true)) {
+if (in_array($page, ['reglement_lien', 'admin_reglements', 'admin_planning', 'admin_checkin'], true)) {
     header('X-Robots-Tag: noindex, nofollow', false);
 }
 // Admin règlements : pas de mise en cache (formulaire et liste à jour à chaque ouverture)
-if (in_array($page, ['admin_reglements', 'admin_planning'], true)) {
+if (in_array($page, ['admin_reglements', 'admin_planning', 'admin_checkin'], true)) {
     header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0', false);
     header('Pragma: no-cache', false);
 }
@@ -161,6 +166,11 @@ if ($page == 'reglement_lien') {
 
 if ($page == 'admin_reglements') {
     $title = 'Administration — Liens de règlement';
+    $meta_description = '';
+}
+
+if ($page == 'admin_checkin') {
+    $title = 'Check-in séances d\'essai | Aquavelo';
     $meta_description = '';
 }
 
@@ -320,7 +330,7 @@ if (isset($_GET['city'])) {
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php
-  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci', 'reglement_lien', 'admin_reglements', 'admin_planning'];
+  $noindex_pages = ['merci_rdv', 'calendrier_cannes', 'annulation', 'vente_ko', 'vente_ok', 'confirmation', 'inscription_client', 'inscription_nageur', 'formule_succes', 'merci', 'reglement_lien', 'admin_reglements', 'admin_planning', 'admin_checkin'];
   $is_noindex = in_array($page, $noindex_pages);
   ?>
   <meta name="robots" content="<?= $is_noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'; ?>">
@@ -1188,7 +1198,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </script>
   
   <script>
-  <?php if (!in_array($page, ['admin_planning', 'admin_reglements', 'reglement_lien'], true)): ?>
+  <?php if (!in_array($page, ['admin_planning', 'admin_checkin', 'admin_reglements', 'reglement_lien'], true)): ?>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('<?= BASE_PATH ?>service-worker.js')
     .then(function(registration) {

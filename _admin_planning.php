@@ -150,9 +150,12 @@ try {
 
 <section class="content-area bg1" style="padding: 40px 0;">
   <div class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 10px;">
         <h2 style="color: #00a8cc; margin: 0;">🗓️ Admin Planning (Cannes / Mandelieu / Vallauris) v2</h2>
-        <a href="<?= htmlspecialchars(aquavelo_admin_planning_url() . '&logout=1') ?>" class="btn btn-default">Déconnexion</a>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="<?= htmlspecialchars(aquavelo_canonical_base_url() . 'index.php?p=admin_checkin', ENT_QUOTES, 'UTF-8') ?>" class="btn btn-primary" style="background:#2e7d32;border:none;">✅ Check-in présence</a>
+          <a href="<?= htmlspecialchars(aquavelo_admin_planning_url() . '&logout=1') ?>" class="btn btn-default">Déconnexion</a>
+        </div>
     </div>
 
     <?php if ($admin_planning_flash !== ''): ?>

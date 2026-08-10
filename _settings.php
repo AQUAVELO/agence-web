@@ -55,6 +55,18 @@ if (!function_exists('aquavelo_admin_planning_url')) {
     }
 }
 
+if (!function_exists('aquavelo_admin_checkin_url')) {
+    function aquavelo_admin_checkin_url(array $query = []): string
+    {
+        $base = aquavelo_canonical_base_url() . 'index.php?p=admin_checkin';
+        if ($query === []) {
+            return $base;
+        }
+
+        return $base . '&' . http_build_query($query);
+    }
+}
+
 /** Image de secours si la vignette centre (cloud/thumbnail/center_ID/1.jpg) est absente */
 define('CENTER_THUMB_FALLBACK', BASE_PATH . 'images/content/home-v1-slider-03.webp');
 

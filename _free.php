@@ -360,12 +360,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
             // A. Vérification double inscription pour Cannes/Mandelieu/Vallauris
             $is_double_booking = false;
             $previous_booking_date = '';
+            $previous_was_present = false;
             
             if (in_array((int)$center_id, [305, 347, 349])) {
                 // Récupérer la dernière séance (RDV) existante pour cet email
-                $check_previous = $database->prepare("SELECT name FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 1");
-                $check_previous->execute([$email]);
-                $previous = $check_previous->fetch();
+                $check_previous = $database->prepare("SELECT name, attendance_status, attended_at FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 1");
+                try {
+                    $check_previous->execute([$email]);
+                    $previous = $check_previous->fetch();
+                } catch (Throwable $e) {
+                    $check_previous = $database->prepare("SELECT name FROM am_free WHERE email = ? AND name LIKE '%(RDV:%' ORDER BY id DESC LIMIT 1");
+                    $check_previous->execute([$email]);
+                    $previous = $check_previous->fetch();
+                }
                 
                 if ($previous) {
                     $is_double_booking = true;
@@ -373,6 +380,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                     $parts = explode('(RDV:', $previous['name']);
                     if (isset($parts[1])) {
                         $previous_booking_date = trim(str_replace(')', '', $parts[1]));
+                    }
+                    if (($previous['attendance_status'] ?? '') === 'present') {
+                        $previous_was_present = true;
+                        if (!empty($previous['attended_at'])) {
+                            try {
+                                $previous_booking_date = (new DateTime((string) $previous['attended_at']))->format('d/m/Y à H:i');
+                            } catch (Throwable $e) {
+                                /* keep RDV label */
+                            }
+                        }
                     }
                 }
             }
@@ -388,6 +405,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                 $stmt_bid->execute([$email, $reference]);
                 $row_bid = $stmt_bid->fetch();
                 $new_booking_id = $row_bid ? (int)$row_bid['id'] : 0;
+            }
+
+            // Marquer la source site si colonnes présence présentes
+            if ($new_booking_id && $date_heure && in_array((int) $center_id, [305, 347, 349], true)) {
+                try {
+                    $database->prepare("UPDATE am_free SET trial_source = 'site', attendance_status = COALESCE(attendance_status, 'pending') WHERE id = ?")
+                        ->execute([$new_booking_id]);
+                } catch (Throwable $e) {
+                    /* colonnes absentes : ignoré */
+                }
             }
 
             // B.2 Synchronisation immédiate Google Calendar (Cannes, Mandelieu, Vallauris)
@@ -489,6 +516,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nom'])) {
                              "⚠️ Cette personne s'inscrit pour une 2ème séance d'essai !\n";
                 if (!empty($previous_booking_date)) {
                     $alert_msg .= "📅 1ère séance : $previous_booking_date";
+                }
+                if (!empty($previous_was_present)) {
+                    $alert_msg .= "\n✅ Présence déjà validée lors d'un essai précédent";
                 }
                 sendTelegram($alert_msg);
             }

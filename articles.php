@@ -92,8 +92,8 @@ fbq('track', 'PageView');
         <div class="col-md-3 col-6 text-center">
           <a href="https://www.aquavelo.com/seance-decouverte/<?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>"
              style="display: block; width: 100%;">
-            <img src="/images/offre-av-juillet-2026.png?v=2" 
-                 alt="Promotion juillet 2026 — 1 formule achetée = 1 formule offerte Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
+            <img src="/images/offre-septembre-2026-card.jpg?v=1" 
+                 alt="Promotion rentrée 2026 — jusqu'à 100€ de réduction sur votre formule Aquavélo <?= htmlspecialchars($promotions[$row_center['id']], ENT_QUOTES, 'UTF-8'); ?>" 
                  class="img-fluid img-same"
                  style="border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"
                  width="300"

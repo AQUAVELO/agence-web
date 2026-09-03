@@ -93,6 +93,22 @@ $local_seo_by_center = [
       ['question' => 'Quels quartiers sont proches du centre ?', 'answer' => 'Le centre cible notamment Mérignac, Bordeaux, Pessac, Talence et les communes voisines de la métropole bordelaise.'],
     ],
   ],
+  179 => [
+    'h1' => 'Aquabike à Nice - Aquavelo',
+    'image_alt' => "Salle d'aquabike Aquavelo Nice avec vélos aquatiques",
+    'planning_alt' => 'Planning hebdomadaire des cours aquabike Nice',
+    'sections' => [
+      ['title' => 'Aquabike Nice : une séance cardio sans impact', 'body' => "Pratiquez l'<strong>aquabike à Nice</strong> pour brûler des calories, tonifier les jambes et stimuler la circulation grâce à la résistance naturelle de l'eau. Les séances sont efficaces tout en préservant les articulations."],
+      ['title' => 'Pourquoi choisir Aquavelo Nice ?', 'body' => "Aquavelo Nice propose des cours d'aquabike collectifs encadrés par des coachs, dans une piscine chauffée et une ambiance motivante. La séance découverte offerte permet de tester l'aquabike avant de choisir une formule."],
+      ['title' => 'Accès au centre Aquavelo Nice', 'body' => 'Le centre Aquavelo Nice est facilement accessible depuis Nice et les communes voisines. Réservez votre séance découverte gratuite en ligne selon les créneaux disponibles.'],
+    ],
+    'faqs' => [
+      ['question' => 'Quels cours propose Aquavelo Nice ?', 'answer' => "Aquavelo Nice propose des cours d'aquabike selon le planning du centre."],
+      ['question' => "L'aquabike à Nice est-il adapté aux débutants ?", 'answer' => 'Oui, les séances sont encadrées par un coach et adaptées à différents niveaux.'],
+      ['question' => "Peut-on réserver une séance découverte à Nice ?", 'answer' => 'Oui, une séance découverte offerte est disponible sur réservation selon les créneaux du centre.'],
+      ['question' => "Faut-il savoir nager pour faire de l'aquabike ?", 'answer' => "Non, l'activité se pratique dans un bassin où vous avez pied, avec un vélo stable et un encadrement par coach."],
+    ],
+  ],
 ];
 $local_seo = $local_seo_by_center[$center_id_int] ?? null;
 $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne', 'Aix-en-Provence'];
@@ -565,7 +581,7 @@ if ($local_seo === null && $is_open_center_for_seo) {
     
     <a href="<?= BASE_PATH ?>?p=free" class="promo-banner" style="display: block; text-decoration: none; cursor: pointer;" aria-label="Réserver une séance découverte gratuite">
       <h2>🎁 Séance Découverte GRATUITE 45min</h2>
-      <p>✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé</p>
+      <p><?= $center_id_int === 179 ? '✓ Aquabiking • ✓ Sans engagement • ✓ Coaching personnalisé' : '✓ Aquabiking + Aquagym • ✓ Sans engagement • ✓ Coaching personnalisé'; ?></p>
     </a>
   </div>
 </section>

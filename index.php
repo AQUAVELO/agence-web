@@ -299,6 +299,10 @@ if (isset($_GET['city'])) {
       'title' => "Aquabike Mérignac & Aquagym Mérignac | Aquavelo - séance offerte",
       'description' => "Pratiquez l'aquabike, l'aquagym et l'aqua boxing à Mérignac près de Bordeaux. Cours collectifs en piscine chauffée avec coachs diplômés et séance découverte offerte.",
     ],
+    179 => [
+      'title' => "Aquabike Nice | Aquavelo - séance offerte",
+      'description' => "Pratiquez l'aquabike à Nice avec Aquavelo. Cours collectifs en piscine chauffée, coachs diplômés et séance découverte offerte sur réservation.",
+    ],
   ];
   $center_id = isset($row_center['id']) ? (int) $row_center['id'] : 0;
   $opening_soon_cities = ['Dijon', 'Collioure', 'Montauroux', 'Paris', 'Valbonne', 'Aix-en-Provence'];

@@ -37,6 +37,114 @@
         date_default_timezone_set('Europe/Paris');
         $jour_du_mois = date('j');
         $date_cache_buster = date('YmdHis');
+
+        if (!function_exists('aquavelo_menu_photo_url')) {
+            /**
+             * Résout l'URL publique d'une photo de plat (images/ ou images/recette/).
+             * Retourne null si aucun fichier n'existe, pour éviter les images cassées.
+             */
+            function aquavelo_menu_photo_url(?string $photo_db, string $dish_name = ''): ?string
+            {
+                static $recette_files = null;
+                $images_dir = __DIR__ . '/images/';
+                $recette_dir = $images_dir . 'recette/';
+
+                if ($recette_files === null) {
+                    $recette_files = [];
+                    if (is_dir($recette_dir)) {
+                        foreach (scandir($recette_dir) as $f) {
+                            if ($f === '.' || $f === '..' || !is_file($recette_dir . $f)) {
+                                continue;
+                            }
+                            $ext = strtolower((string) pathinfo($f, PATHINFO_EXTENSION));
+                            if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true)) {
+                                continue;
+                            }
+                            $recette_files[] = $f;
+                        }
+                    }
+                }
+
+                $candidates = [];
+                $photo_db = str_replace('\\', '/', trim((string) $photo_db));
+                if ($photo_db !== '') {
+                    $candidates[] = ltrim($photo_db, '/');
+                    $candidates[] = 'recette/' . basename($photo_db);
+                    $candidates[] = basename($photo_db);
+                }
+
+                foreach ($candidates as $rel) {
+                    if ($rel !== '' && is_file($images_dir . $rel)) {
+                        return 'images/' . $rel;
+                    }
+                }
+
+                $want = strtolower(basename($photo_db));
+                if ($want !== '') {
+                    foreach ($recette_files as $f) {
+                        if (strtolower($f) === $want) {
+                            return 'images/recette/' . $f;
+                        }
+                    }
+                }
+
+                $normalize = static function (string $text): string {
+                    $text = strtr($text, [
+                        'à' => 'a', 'â' => 'a', 'ä' => 'a', 'á' => 'a',
+                        'é' => 'e', 'è' => 'e', 'ê' => 'e', 'ë' => 'e',
+                        'î' => 'i', 'ï' => 'i', 'í' => 'i',
+                        'ô' => 'o', 'ö' => 'o', 'ó' => 'o',
+                        'ù' => 'u', 'û' => 'u', 'ü' => 'u',
+                        'ç' => 'c', 'ñ' => 'n',
+                    ]);
+                    return strtolower($text);
+                };
+
+                $hay = $normalize($dish_name . ' ' . pathinfo($photo_db, PATHINFO_FILENAME));
+                $stop = ['de', 'du', 'des', 'la', 'le', 'les', 'et', 'au', 'aux', 'en', 'un', 'une', 'avec', 'sans', 'sur', 'pain', 'complet'];
+                $words = preg_split('/[^a-z0-9]+/', $hay, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                $words = array_values(array_filter($words, static function ($w) use ($stop) {
+                    return strlen($w) >= 3 && !in_array($w, $stop, true);
+                }));
+
+                $best = null;
+                $bestScore = 0;
+                foreach ($recette_files as $f) {
+                    $name = $normalize((string) pathinfo($f, PATHINFO_FILENAME));
+                    $fileWords = preg_split('/[^a-z0-9]+/', $name, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                    $common = count(array_intersect($words, $fileWords));
+                    if ($common > $bestScore) {
+                        $bestScore = $common;
+                        $best = $f;
+                    }
+                }
+
+                if ($best !== null && $bestScore >= 2) {
+                    return 'images/recette/' . $best;
+                }
+
+                $distinctive = ['omelette', 'smoothie', 'quinoa', 'avocat', 'poulet', 'saumon', 'tofu', 'wrap', 'porridge', 'pancake', 'granola', 'houmous', 'cabillaud', 'crevette', 'taboule', 'dinde', 'compote', 'crepe', 'yaourt'];
+                if ($best !== null && $bestScore >= 1) {
+                    foreach ($words as $w) {
+                        if (in_array($w, $distinctive, true) && strpos($normalize($best), $w) !== false) {
+                            return 'images/recette/' . $best;
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        if (!empty($all_menus) && is_array($all_menus)) {
+            foreach ($all_menus as &$menu_row) {
+                $menu_row['photo_pet_dej_url'] = aquavelo_menu_photo_url($menu_row['photo_pet_dej'] ?? '', $menu_row['petit_dejeuner_menu'] ?? '');
+                $menu_row['photo_repas_midi_url'] = aquavelo_menu_photo_url($menu_row['photo_repas_midi'] ?? '', $menu_row['repas_midi_menu'] ?? '');
+                $menu_row['photo_souper_url'] = aquavelo_menu_photo_url($menu_row['photo_souper'] ?? '', $menu_row['souper_menu'] ?? '');
+                $menu_row['photo_collation_url'] = aquavelo_menu_photo_url($menu_row['photo_collation'] ?? '', $menu_row['collation_menu'] ?? '');
+            }
+            unset($menu_row);
+        }
     ?>
 
 
@@ -194,9 +302,10 @@
                 echo "<p style='color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0;'>" . htmlspecialchars($menu_datam[$fields['recette']] ?? 'Non disponible') . "</p>";
                 echo "</div>";
 
-                if (!empty($menu_datam[$fields['photo']])) {
+                $photo_url = aquavelo_menu_photo_url($menu_datam[$fields['photo']] ?? '', $menu_datam[$fields['menu']] ?? '');
+                if ($photo_url) {
                     echo "<div style='text-align: center; margin-top: 20px;'>";
-                    echo "<img src='images/" . htmlspecialchars($menu_datam[$fields['photo']]) . "?v=$date_cache_buster' ";
+                    echo "<img src='" . htmlspecialchars($photo_url) . "?v=$date_cache_buster' ";
                     echo "alt='Photo $title' ";
                     echo "style='width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);'>";
                     echo "</div>";
@@ -395,10 +504,10 @@ function afficherMenu() {
             const menu = JSON.parse(selectedValue);
             
             const sections = [
-                {title: "Petit Déjeuner", menu: menu.petit_dejeuner_menu, recette: menu.petit_dejeuner_recette, icon: "fa-coffee", color: "#ff9800"},
-                {title: "Déjeuner", menu: menu.repas_midi_menu, recette: menu.repas_midi_recette, icon: "fa-cutlery", color: "#00d4ff"},
-                {title: "Dîner", menu: menu.souper_menu, recette: menu.souper_recette, icon: "fa-moon-o", color: "#00a8cc"},
-                {title: "Collation", menu: menu.collation_menu, recette: menu.collation_recette, icon: "fa-apple", color: "#4caf50"}
+                {title: "Petit Déjeuner", menu: menu.petit_dejeuner_menu, recette: menu.petit_dejeuner_recette, photo: menu.photo_pet_dej_url, icon: "fa-coffee", color: "#ff9800"},
+                {title: "Déjeuner", menu: menu.repas_midi_menu, recette: menu.repas_midi_recette, photo: menu.photo_repas_midi_url, icon: "fa-cutlery", color: "#00d4ff"},
+                {title: "Dîner", menu: menu.souper_menu, recette: menu.souper_recette, photo: menu.photo_souper_url, icon: "fa-moon-o", color: "#00a8cc"},
+                {title: "Collation", menu: menu.collation_menu, recette: menu.collation_recette, photo: menu.photo_collation_url, icon: "fa-apple", color: "#4caf50"}
             ];
 
             let recetteHTML = `
@@ -420,6 +529,7 @@ function afficherMenu() {
                             <p style="color: #666; margin-bottom: 15px; line-height: 1.6;">${section.menu || 'Non disponible'}</p>
                             <p style="margin-bottom: 10px;"><strong style="color: #00a8cc;">Recette :</strong></p>
                             <p style="color: #666; margin: 0; line-height: 1.6; font-size: 0.95rem;">${section.recette || 'Non disponible'}</p>
+                            ${section.photo ? `<div style="text-align:center;margin-top:15px;"><img src="${section.photo}?v=<?php echo $date_cache_buster; ?>" alt="Photo ${section.title}" style="width:100%;max-width:300px;height:200px;object-fit:cover;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>` : ''}
                         </div>
                     </div>
                 `;

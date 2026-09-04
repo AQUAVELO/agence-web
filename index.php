@@ -237,7 +237,7 @@ $menu_querym->execute();
 $menu_datam = $menu_querym->fetch(PDO::FETCH_ASSOC);
 
 // Requête pour récupérer tous les menus
-$all_menus_query = $database->prepare('SELECT day_number, petit_dejeuner_menu, repas_midi_menu, souper_menu, collation_menu, petit_dejeuner_recette, repas_midi_recette, souper_recette, collation_recette FROM menu ORDER BY day_number ASC');
+$all_menus_query = $database->prepare('SELECT day_number, petit_dejeuner_menu, repas_midi_menu, souper_menu, collation_menu, petit_dejeuner_recette, repas_midi_recette, souper_recette, collation_recette, photo_pet_dej, photo_repas_midi, photo_souper, photo_collation FROM menu ORDER BY day_number ASC');
 $all_menus_query->execute();
 $all_menus = $all_menus_query->fetchAll(PDO::FETCH_ASSOC);
 

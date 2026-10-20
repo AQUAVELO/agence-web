@@ -21,11 +21,13 @@ echo "Démarrage des tâches planifiées...\n\n";
 $tasks = [
     'Rappels 24h' => 'cron_rappel_24h.php',
     'Rappels 3h' => 'cron_rappel_3h.php',
+    'WhatsApp 1h après RDV' => 'cron_whatsapp_1h.php',
     'Suivi après séance' => 'cron_apres_seance.php',
     'Suivi 48h' => 'cron_suivi_48h.php',
     'Suivi J+2' => 'cron_suivi_2j.php',
     'Suivi J+7' => 'cron_suivi_7j.php',
-    'Sync Google Calendar' => 'cron_sync_google.php'
+    'Sync Google Calendar' => 'cron_sync_google.php',
+    'Sandbox Resamania (Agenda du jour)' => 'cron_resamania_sandbox_agenda.php',
 ];
 
 foreach ($tasks as $name => $file) {

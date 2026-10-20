@@ -10,6 +10,11 @@
     "schedule": "10 * * * *"
   },
   {
+    "id": "whatsapp-1h",
+    "command": "php cron_whatsapp_1h.php",
+    "schedule": "8,23,38,53 * * * *"
+  },
+  {
     "id": "suivi-apres-seance",
     "command": "php cron_apres_seance.php",
     "schedule": "20 * * * *"
@@ -38,5 +43,10 @@
     "id": "ingest-google-agenda",
     "command": "php cron_ingest_google_agenda.php",
     "schedule": "*/10 * * * *"
+  },
+  {
+    "id": "resamania-sandbox-agenda",
+    "command": "php cron_resamania_sandbox_agenda.php",
+    "schedule": "0 6,7 * * *"
   }
 ]

@@ -101,6 +101,12 @@ $settings['tg_chat_id'] = '6535972843';
 // ⭐ Configuration SMSFactor
 $settings['smsfactor_token'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMzIzOSIsImlhdCI6MTc2ODkyMjIzOS4wMjUwMjZ9.CXCqk_FX_6WzK6Hk3MosVXWTgsDtntI2t7j6W5Q5o4Y';
 
+// WhatsApp Cloud API (Meta) — à renseigner dans Clever Cloud / .env
+$settings['whatsapp_token'] = getenv('WHATSAPP_TOKEN') ?: '';
+$settings['whatsapp_phone_number_id'] = getenv('WHATSAPP_PHONE_NUMBER_ID') ?: '';
+$settings['whatsapp_template'] = getenv('WHATSAPP_TEMPLATE_NAME') ?: '';
+$settings['whatsapp_template_lang'] = getenv('WHATSAPP_TEMPLATE_LANG') ?: 'fr';
+
 if (!function_exists('sendTelegram')) {
     function sendTelegram($message, $chat_id = null) {
         global $settings;
@@ -169,21 +175,138 @@ if (!function_exists('sendSMS')) {
     }
 }
 
-try {
-    $conn = new PDO(
-        "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']};connect_timeout=5",
-        $settings['dbusername'],
-        $settings['dbpassword'],
-        [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_TIMEOUT            => 5,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET wait_timeout=30",
-        ]
-    );
-    $database = $conn;
-} catch (PDOException $e) {
-    http_response_code(503);
-    die("Service temporairement indisponible. Veuillez réessayer dans quelques instants.");
+if (!function_exists('aquavelo_normalize_msisdn')) {
+    function aquavelo_normalize_msisdn($phone): string
+    {
+        $phone = preg_replace('/[^0-9]/', '', (string) $phone);
+        if ($phone === '') {
+            return '';
+        }
+        if (strpos($phone, '0033') === 0) {
+            $phone = '33' . substr($phone, 4);
+        }
+        if (strpos($phone, '0') === 0 && (strpos($phone, '06') === 0 || strpos($phone, '07') === 0)) {
+            $phone = '33' . substr($phone, 1);
+        }
+
+        return $phone;
+    }
+}
+
+if (!function_exists('sendWhatsApp')) {
+    /**
+     * Envoi WhatsApp via Meta Cloud API.
+     * Si WHATSAPP_TEMPLATE_NAME est défini, envoie un modèle (obligatoire hors fenêtre 24 h).
+     *
+     * @param array{template_params?:list<string>} $options
+     * @return array{ok:bool,skipped?:bool,error?:string,raw?:string}
+     */
+    function sendWhatsApp(string $phone, string $message, array $options = []): array
+    {
+        global $settings;
+        $token = trim((string) ($settings['whatsapp_token'] ?? ''));
+        $phoneNumberId = trim((string) ($settings['whatsapp_phone_number_id'] ?? ''));
+        $template = trim((string) ($settings['whatsapp_template'] ?? ''));
+        $templateLang = trim((string) ($settings['whatsapp_template_lang'] ?? 'fr')) ?: 'fr';
+
+        if ($token === '' || $phoneNumberId === '') {
+            return ['ok' => false, 'error' => 'WhatsApp API non configurée (WHATSAPP_TOKEN / WHATSAPP_PHONE_NUMBER_ID).'];
+        }
+
+        $to = aquavelo_normalize_msisdn($phone);
+        if ($to === '' || strlen($to) < 10) {
+            return ['ok' => false, 'skipped' => true, 'error' => 'Numéro invalide'];
+        }
+
+        $payload = [
+            'messaging_product' => 'whatsapp',
+            'to' => $to,
+        ];
+        if ($template !== '') {
+            $params = [];
+            $tplParams = $options['template_params'] ?? $options['template_params'] ?? [];
+            foreach ($tplParams as $p) {
+                $params[] = ['type' => 'text', 'text' => (string) $p];
+            }
+            $payload['type'] = 'template';
+            $payload['template'] = [
+                'name' => $template,
+                'language' => ['code' => $templateLang],
+            ];
+            if ($params !== []) {
+                $payload['template']['components'] = [[
+                    'type' => 'body',
+                    'parameters' => $params,
+                ]];
+            }
+        } else {
+            $payload['type'] = 'text';
+            $payload['text'] = ['body' => $message, 'preview_url' => true];
+        }
+
+        $url = 'https://graph.facebook.com/v21.0/' . rawurlencode($phoneNumberId) . '/messages';
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token,
+            ],
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 15,
+        ]);
+        $raw = curl_exec($ch);
+        $curlErr = curl_error($ch);
+        $http = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($raw === false) {
+            return ['ok' => false, 'error' => $curlErr !== '' ? $curlErr : 'Erreur cURL WhatsApp'];
+        }
+        $json = json_decode((string) $raw, true);
+        $ok = $http >= 200 && $http < 300 && is_array($json) && isset($json['messages'][0]['id']);
+        if (!$ok) {
+            $apiErr = is_array($json) ? (string) ($json['error']['message'] ?? ('HTTP ' . $http)) : ('HTTP ' . $http);
+
+            return ['ok' => false, 'error' => $apiErr, 'raw' => (string) $raw];
+        }
+
+        return ['ok' => true, 'raw' => (string) $raw];
+    }
+}
+
+if (!function_exists('sendWhatsAppConfigured')) {
+    function sendWhatsAppConfigured(): bool
+    {
+        global $settings;
+        $token = trim((string) ($settings['whatsapp_token'] ?? ''));
+        $phoneNumberId = trim((string) ($settings['whatsapp_phone_number_id'] ?? ''));
+
+        return $token !== '' && $phoneNumberId !== '';
+    }
+}
+
+if (getenv('AQUAVELO_SKIP_DB') === '1') {
+    $database = null;
+} else {
+    try {
+        $conn = new PDO(
+            "mysql:host={$settings['dbhost']};port={$settings['dbport']};dbname={$settings['dbname']};connect_timeout=5",
+            $settings['dbusername'],
+            $settings['dbpassword'],
+            [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_TIMEOUT            => 5,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET wait_timeout=30",
+            ]
+        );
+        $database = $conn;
+    } catch (PDOException $e) {
+        http_response_code(503);
+        die("Service temporairement indisponible. Veuillez réessayer dans quelques instants.");
+    }
 }
 
 $cachePath = __DIR__ . '/cache';
